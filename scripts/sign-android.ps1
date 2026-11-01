@@ -31,7 +31,14 @@ try {
     if ($LASTEXITCODE -ne 0) { throw 'APK signature verification failed.' }
     & (Join-Path $imposterBuildTools.FullName 'zipalign.exe') -c -P 16 4 $imposterDestination
     if ($LASTEXITCODE -ne 0) { throw 'Signed APK alignment verification failed.' }
-    $imposterHash = (Get-FileHash -Algorithm SHA256 -LiteralPath $imposterDestination).Hash.ToLowerInvariant()
+    $imposterHashAlgorithm = [Security.Cryptography.SHA256]::Create()
+    $imposterApkStream = [IO.File]::OpenRead($imposterDestination)
+    try {
+        $imposterHash = [BitConverter]::ToString($imposterHashAlgorithm.ComputeHash($imposterApkStream)).Replace('-', '').ToLowerInvariant()
+    } finally {
+        $imposterApkStream.Dispose()
+        $imposterHashAlgorithm.Dispose()
+    }
     [IO.File]::WriteAllText("$imposterDestination.sha256", "$imposterHash  $([IO.Path]::GetFileName($imposterDestination))`n")
     Write-Output "Ready: $imposterDestination"
 } finally { Remove-Item Env:IMPOSTER_SIGNING_PASSWORD -ErrorAction SilentlyContinue }
