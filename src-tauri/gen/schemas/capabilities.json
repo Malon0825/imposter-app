@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Local game UI and QR scanning","local":true,"windows":["main"],"permissions":["core:default","barcode-scanner:allow-scan","barcode-scanner:allow-cancel","barcode-scanner:allow-check-permissions","barcode-scanner:allow-request-permissions","barcode-scanner:allow-open-app-settings"]}}

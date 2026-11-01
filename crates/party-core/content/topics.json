@@ -1,0 +1,1084 @@
+[
+  {
+    "id": "everyday",
+    "name": "Everyday",
+    "icon": "cup",
+    "description": "Easy.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Wallet",
+        "hint": "Pocket"
+      },
+      {
+        "word": "umbrella",
+        "hint": "Weather"
+      },
+      {
+        "word": "mirror",
+        "hint": "Reflection"
+      },
+      {
+        "word": "pillow",
+        "hint": "Comfort"
+      },
+      {
+        "word": "toothbrush",
+        "hint": "Routine"
+      },
+      {
+        "word": "scissors",
+        "hint": "Craft"
+      },
+      {
+        "word": "key",
+        "hint": "Access"
+      },
+      {
+        "word": "candle",
+        "hint": "Evening"
+      },
+      {
+        "word": "backpack",
+        "hint": "Journey"
+      },
+      {
+        "word": "remote control",
+        "hint": "Couch"
+      }
+    ]
+  },
+  {
+    "id": "food",
+    "name": "Food",
+    "icon": "pizza",
+    "description": "Easy.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Pizza",
+        "hint": "Slice"
+      },
+      {
+        "word": "sushi",
+        "hint": "Rice"
+      },
+      {
+        "word": "dumpling",
+        "hint": "Parcel"
+      },
+      {
+        "word": "taco",
+        "hint": "Fold"
+      },
+      {
+        "word": "curry",
+        "hint": "Spice"
+      },
+      {
+        "word": "noodles",
+        "hint": "Bowl"
+      },
+      {
+        "word": "ice cream",
+        "hint": "Summer"
+      },
+      {
+        "word": "popcorn",
+        "hint": "Cinema"
+      },
+      {
+        "word": "coffee",
+        "hint": "Morning"
+      },
+      {
+        "word": "bubble tea",
+        "hint": "Straw"
+      }
+    ]
+  },
+  {
+    "id": "animals",
+    "name": "Animals",
+    "icon": "paw",
+    "description": "Easy.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Octopus",
+        "hint": "Arms"
+      },
+      {
+        "word": "penguin",
+        "hint": "Colony"
+      },
+      {
+        "word": "butterfly",
+        "hint": "Garden"
+      },
+      {
+        "word": "elephant",
+        "hint": "Memory"
+      },
+      {
+        "word": "dolphin",
+        "hint": "Leap"
+      },
+      {
+        "word": "owl",
+        "hint": "Night"
+      },
+      {
+        "word": "cactus",
+        "hint": "Desert"
+      },
+      {
+        "word": "mushroom",
+        "hint": "Shade"
+      },
+      {
+        "word": "waterfall",
+        "hint": "Mist"
+      },
+      {
+        "word": "volcano",
+        "hint": "Mountain"
+      },
+      {
+        "word": "Dog",
+        "hint": "Paws"
+      }
+    ]
+  },
+  {
+    "id": "places",
+    "name": "Places",
+    "icon": "pin",
+    "description": "Easy.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Library",
+        "hint": "Quiet"
+      },
+      {
+        "word": "supermarket",
+        "hint": "Basket"
+      },
+      {
+        "word": "hospital",
+        "hint": "Corridor"
+      },
+      {
+        "word": "cinema",
+        "hint": "Tickets"
+      },
+      {
+        "word": "bakery",
+        "hint": "Morning"
+      },
+      {
+        "word": "airport",
+        "hint": "Queue"
+      },
+      {
+        "word": "museum",
+        "hint": "Glass"
+      },
+      {
+        "word": "playground",
+        "hint": "Laughter"
+      },
+      {
+        "word": "salon",
+        "hint": "Chair"
+      },
+      {
+        "word": "fire station",
+        "hint": "Alarm"
+      }
+    ]
+  },
+  {
+    "id": "jobs",
+    "name": "Jobs",
+    "icon": "case",
+    "description": "Easy.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Chef",
+        "hint": "Heat"
+      },
+      {
+        "word": "firefighter",
+        "hint": "Team"
+      },
+      {
+        "word": "pilot",
+        "hint": "Uniform"
+      },
+      {
+        "word": "teacher",
+        "hint": "Board"
+      },
+      {
+        "word": "detective",
+        "hint": "Questions"
+      },
+      {
+        "word": "farmer",
+        "hint": "Seasons"
+      },
+      {
+        "word": "dentist",
+        "hint": "Chair"
+      },
+      {
+        "word": "journalist",
+        "hint": "Deadline"
+      },
+      {
+        "word": "architect",
+        "hint": "Sketch"
+      },
+      {
+        "word": "magician",
+        "hint": "Surprise"
+      }
+    ]
+  },
+  {
+    "id": "travel",
+    "name": "Travel",
+    "icon": "plane",
+    "description": "Easy–medium.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Passport",
+        "hint": "Stamp"
+      },
+      {
+        "word": "suitcase",
+        "hint": "Handle"
+      },
+      {
+        "word": "boarding pass",
+        "hint": "Gate"
+      },
+      {
+        "word": "campsite",
+        "hint": "Stars"
+      },
+      {
+        "word": "souvenir",
+        "hint": "Memory"
+      },
+      {
+        "word": "sunscreen",
+        "hint": "Skin"
+      },
+      {
+        "word": "hostel",
+        "hint": "Bunk"
+      },
+      {
+        "word": "road trip",
+        "hint": "Playlist"
+      },
+      {
+        "word": "jet lag",
+        "hint": "Clock"
+      },
+      {
+        "word": "cruise",
+        "hint": "Deck"
+      }
+    ]
+  },
+  {
+    "id": "movies",
+    "name": "Movies",
+    "icon": "film",
+    "description": "Easy–medium.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Superhero",
+        "hint": "Cape"
+      },
+      {
+        "word": "zombie",
+        "hint": "Crowd"
+      },
+      {
+        "word": "vampire",
+        "hint": "Night"
+      },
+      {
+        "word": "time machine",
+        "hint": "Paradox"
+      },
+      {
+        "word": "plot twist",
+        "hint": "Surprise"
+      },
+      {
+        "word": "villain",
+        "hint": "Plan"
+      },
+      {
+        "word": "dragon",
+        "hint": "Treasure"
+      },
+      {
+        "word": "haunted house",
+        "hint": "Creak"
+      },
+      {
+        "word": "spaceship",
+        "hint": "Journey"
+      },
+      {
+        "word": "detective story",
+        "hint": "Evidence"
+      }
+    ]
+  },
+  {
+    "id": "music",
+    "name": "Music",
+    "icon": "music",
+    "description": "Easy–medium.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Karaoke",
+        "hint": "Friends"
+      },
+      {
+        "word": "guitar",
+        "hint": "Strings"
+      },
+      {
+        "word": "drums",
+        "hint": "Rhythm"
+      },
+      {
+        "word": "microphone",
+        "hint": "Stage"
+      },
+      {
+        "word": "concert",
+        "hint": "Crowd"
+      },
+      {
+        "word": "choir",
+        "hint": "Harmony"
+      },
+      {
+        "word": "orchestra",
+        "hint": "Conductor"
+      },
+      {
+        "word": "DJ",
+        "hint": "Mix"
+      },
+      {
+        "word": "duet",
+        "hint": "Pair"
+      },
+      {
+        "word": "lullaby",
+        "hint": "Bedtime"
+      }
+    ]
+  },
+  {
+    "id": "sports",
+    "name": "Sports",
+    "icon": "ball",
+    "description": "Easy.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Basketball",
+        "hint": "Bounce"
+      },
+      {
+        "word": "football (soccer)",
+        "hint": "Pitch"
+      },
+      {
+        "word": "badminton",
+        "hint": "Feathers"
+      },
+      {
+        "word": "swimming",
+        "hint": "Lanes"
+      },
+      {
+        "word": "bowling",
+        "hint": "Pins"
+      },
+      {
+        "word": "boxing",
+        "hint": "Gloves"
+      },
+      {
+        "word": "surfing",
+        "hint": "Waves"
+      },
+      {
+        "word": "chess",
+        "hint": "Strategy"
+      },
+      {
+        "word": "skateboarding",
+        "hint": "Balance"
+      },
+      {
+        "word": "volleyball",
+        "hint": "Net"
+      }
+    ]
+  },
+  {
+    "id": "gaming",
+    "name": "Gaming",
+    "icon": "game",
+    "description": "Medium; familiarity-dependent.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Respawn",
+        "hint": "Return"
+      },
+      {
+        "word": "boss fight",
+        "hint": "Pattern"
+      },
+      {
+        "word": "loot",
+        "hint": "Chest"
+      },
+      {
+        "word": "checkpoint",
+        "hint": "Progress"
+      },
+      {
+        "word": "avatar",
+        "hint": "Identity"
+      },
+      {
+        "word": "speedrun",
+        "hint": "Precision"
+      },
+      {
+        "word": "power-up",
+        "hint": "Energy"
+      },
+      {
+        "word": "controller",
+        "hint": "Buttons"
+      },
+      {
+        "word": "open world",
+        "hint": "Freedom"
+      },
+      {
+        "word": "side quest",
+        "hint": "Detour"
+      }
+    ]
+  },
+  {
+    "id": "technology",
+    "name": "Technology",
+    "icon": "wifi",
+    "description": "Easy–medium.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Meme",
+        "hint": "Remix"
+      },
+      {
+        "word": "emoji",
+        "hint": "Reaction"
+      },
+      {
+        "word": "password",
+        "hint": "Secret"
+      },
+      {
+        "word": "Wi-Fi",
+        "hint": "Signal"
+      },
+      {
+        "word": "screenshot",
+        "hint": "Receipt"
+      },
+      {
+        "word": "livestream",
+        "hint": "Audience"
+      },
+      {
+        "word": "group chat",
+        "hint": "Notifications"
+      },
+      {
+        "word": "spam",
+        "hint": "Filter"
+      },
+      {
+        "word": "chatbot",
+        "hint": "Conversation"
+      },
+      {
+        "word": "power bank",
+        "hint": "Charge"
+      }
+    ]
+  },
+  {
+    "id": "chaos",
+    "name": "Everyday chaos",
+    "icon": "spark",
+    "description": "Medium; short phrases.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Oversleeping",
+        "hint": "Alarm"
+      },
+      {
+        "word": "wrong group chat",
+        "hint": "Audience"
+      },
+      {
+        "word": "dead phone battery",
+        "hint": "Socket"
+      },
+      {
+        "word": "lost luggage",
+        "hint": "Carousel"
+      },
+      {
+        "word": "awkward silence",
+        "hint": "Crickets"
+      },
+      {
+        "word": "missed bus",
+        "hint": "Schedule"
+      },
+      {
+        "word": "spilled coffee",
+        "hint": "Sleeve"
+      },
+      {
+        "word": "forgotten birthday",
+        "hint": "Calendar"
+      },
+      {
+        "word": "burnt toast",
+        "hint": "Smoke"
+      },
+      {
+        "word": "wardrobe malfunction",
+        "hint": "Timing"
+      }
+    ]
+  },
+  {
+    "id": "hobbies",
+    "name": "Hobbies",
+    "icon": "brush",
+    "description": "Easy–medium.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Gardening",
+        "hint": "Seasons"
+      },
+      {
+        "word": "knitting",
+        "hint": "Loops"
+      },
+      {
+        "word": "photography",
+        "hint": "Light"
+      },
+      {
+        "word": "pottery",
+        "hint": "Hands"
+      },
+      {
+        "word": "origami",
+        "hint": "Fold"
+      },
+      {
+        "word": "baking",
+        "hint": "Oven"
+      },
+      {
+        "word": "painting",
+        "hint": "Layers"
+      },
+      {
+        "word": "birdwatching",
+        "hint": "Patience"
+      },
+      {
+        "word": "journaling",
+        "hint": "Reflection"
+      },
+      {
+        "word": "magic trick",
+        "hint": "Misdirection"
+      }
+    ]
+  },
+  {
+    "id": "celebrations",
+    "name": "Celebrations",
+    "icon": "gift",
+    "description": "Medium; cultural familiarity varies.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Birthday cake",
+        "hint": "Candles"
+      },
+      {
+        "word": "fireworks",
+        "hint": "Sky"
+      },
+      {
+        "word": "wedding",
+        "hint": "Promise"
+      },
+      {
+        "word": "graduation",
+        "hint": "Cap"
+      },
+      {
+        "word": "costume party",
+        "hint": "Disguise"
+      },
+      {
+        "word": "lantern",
+        "hint": "Glow"
+      },
+      {
+        "word": "parade",
+        "hint": "Street"
+      },
+      {
+        "word": "gift wrapping",
+        "hint": "Ribbon"
+      },
+      {
+        "word": "New Year's countdown",
+        "hint": "Midnight"
+      },
+      {
+        "word": "family reunion",
+        "hint": "Stories"
+      }
+    ]
+  },
+  {
+    "id": "space",
+    "name": "Space & science",
+    "icon": "planet",
+    "description": "Medium.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Sun",
+        "hint": "Shade"
+      },
+      {
+        "word": "Moon",
+        "hint": "Tides"
+      },
+      {
+        "word": "Mars",
+        "hint": "Dust"
+      },
+      {
+        "word": "Saturn",
+        "hint": "Rings"
+      },
+      {
+        "word": "comet",
+        "hint": "Tail"
+      },
+      {
+        "word": "asteroid",
+        "hint": "Fragments"
+      },
+      {
+        "word": "astronaut",
+        "hint": "Suit"
+      },
+      {
+        "word": "rocket",
+        "hint": "Launch"
+      },
+      {
+        "word": "telescope",
+        "hint": "Lens"
+      },
+      {
+        "word": "gravity",
+        "hint": "Weight"
+      }
+    ]
+  },
+  {
+    "id": "emotions",
+    "name": "Emotions",
+    "icon": "heart",
+    "description": "Medium.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Jealousy",
+        "hint": "Comparison"
+      },
+      {
+        "word": "excitement",
+        "hint": "Anticipation"
+      },
+      {
+        "word": "embarrassment",
+        "hint": "Blush"
+      },
+      {
+        "word": "relief",
+        "hint": "Exhale"
+      },
+      {
+        "word": "curiosity",
+        "hint": "Questions"
+      },
+      {
+        "word": "frustration",
+        "hint": "Obstacle"
+      },
+      {
+        "word": "pride",
+        "hint": "Achievement"
+      },
+      {
+        "word": "loneliness",
+        "hint": "Distance"
+      },
+      {
+        "word": "gratitude",
+        "hint": "Appreciation"
+      },
+      {
+        "word": "surprise",
+        "hint": "Unexpected"
+      }
+    ]
+  },
+  {
+    "id": "memory",
+    "name": "Psychology",
+    "icon": "brain",
+    "description": "Medium–challenge.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Daydreaming",
+        "hint": "Window"
+      },
+      {
+        "word": "déjà vu",
+        "hint": "Familiar"
+      },
+      {
+        "word": "distraction",
+        "hint": "Noise"
+      },
+      {
+        "word": "habit",
+        "hint": "Repetition"
+      },
+      {
+        "word": "motivation",
+        "hint": "Goal"
+      },
+      {
+        "word": "nostalgia",
+        "hint": "Keepsake"
+      },
+      {
+        "word": "attention",
+        "hint": "Focus"
+      },
+      {
+        "word": "memory",
+        "hint": "Past"
+      },
+      {
+        "word": "imagination",
+        "hint": "Possibility"
+      },
+      {
+        "word": "learning",
+        "hint": "Practice"
+      }
+    ]
+  },
+  {
+    "id": "social",
+    "name": "Social behavior",
+    "icon": "people",
+    "description": "Challenge.",
+    "opt_in": false,
+    "words": [
+      {
+        "word": "Peer pressure",
+        "hint": "Crowd"
+      },
+      {
+        "word": "first impression",
+        "hint": "Arrival"
+      },
+      {
+        "word": "conformity",
+        "hint": "Uniform"
+      },
+      {
+        "word": "persuasion",
+        "hint": "Pitch"
+      },
+      {
+        "word": "cooperation",
+        "hint": "Shared"
+      },
+      {
+        "word": "competition",
+        "hint": "Race"
+      },
+      {
+        "word": "empathy",
+        "hint": "Perspective"
+      },
+      {
+        "word": "trust",
+        "hint": "Reliability"
+      },
+      {
+        "word": "stereotype",
+        "hint": "Assumption"
+      },
+      {
+        "word": "confirmation bias",
+        "hint": "Selective"
+      }
+    ]
+  },
+  {
+    "id": "dating",
+    "name": "Relationships",
+    "icon": "heart",
+    "description": "Medium; opt-in relationship themes.",
+    "opt_in": true,
+    "words": [
+      {
+        "word": "Crush",
+        "hint": "Butterflies"
+      },
+      {
+        "word": "first date",
+        "hint": "Introductions"
+      },
+      {
+        "word": "flirting",
+        "hint": "Signals"
+      },
+      {
+        "word": "long-distance relationship",
+        "hint": "Distance"
+      },
+      {
+        "word": "breakup",
+        "hint": "Closure"
+      },
+      {
+        "word": "anniversary",
+        "hint": "Calendar"
+      },
+      {
+        "word": "proposal",
+        "hint": "Promise"
+      },
+      {
+        "word": "blind date",
+        "hint": "Surprise"
+      },
+      {
+        "word": "love letter",
+        "hint": "Envelope"
+      },
+      {
+        "word": "matchmaking",
+        "hint": "Introduction"
+      }
+    ]
+  },
+  {
+    "id": "puberty",
+    "name": "Body & puberty",
+    "icon": "body",
+    "description": "Medium; opt-in educational body vocabulary.",
+    "opt_in": true,
+    "words": [
+      {
+        "word": "Puberty",
+        "hint": "Change"
+      },
+      {
+        "word": "menstruation",
+        "hint": "Calendar"
+      },
+      {
+        "word": "erection",
+        "hint": "Response"
+      },
+      {
+        "word": "ovulation",
+        "hint": "Cycle"
+      },
+      {
+        "word": "uterus",
+        "hint": "Anatomy"
+      },
+      {
+        "word": "ovaries",
+        "hint": "Pair"
+      },
+      {
+        "word": "testes",
+        "hint": "Glands"
+      },
+      {
+        "word": "sperm",
+        "hint": "Cells"
+      },
+      {
+        "word": "breast development",
+        "hint": "Development"
+      },
+      {
+        "word": "body hair",
+        "hint": "Growth"
+      }
+    ]
+  },
+  {
+    "id": "health",
+    "name": "Sex education",
+    "icon": "health",
+    "description": "Medium–challenge; opt-in sexual-health vocabulary.",
+    "opt_in": true,
+    "words": [
+      {
+        "word": "Condom",
+        "hint": "Wrapper"
+      },
+      {
+        "word": "contraception",
+        "hint": "Planning"
+      },
+      {
+        "word": "lubricant",
+        "hint": "Comfort"
+      },
+      {
+        "word": "pregnancy test",
+        "hint": "Result"
+      },
+      {
+        "word": "IUD",
+        "hint": "Device"
+      },
+      {
+        "word": "vaccination",
+        "hint": "Appointment"
+      },
+      {
+        "word": "STI screening",
+        "hint": "Laboratory"
+      },
+      {
+        "word": "fertility",
+        "hint": "Timing"
+      },
+      {
+        "word": "prenatal care",
+        "hint": "Checkup"
+      },
+      {
+        "word": "reproductive health",
+        "hint": "Wellbeing"
+      }
+    ]
+  },
+  {
+    "id": "consent",
+    "name": "Consent",
+    "icon": "shield",
+    "description": "Medium–challenge; opt-in interpersonal concepts.",
+    "opt_in": true,
+    "words": [
+      {
+        "word": "Consent",
+        "hint": "Choice"
+      },
+      {
+        "word": "boundaries",
+        "hint": "Limits"
+      },
+      {
+        "word": "privacy",
+        "hint": "Curtain"
+      },
+      {
+        "word": "permission",
+        "hint": "Ask"
+      },
+      {
+        "word": "refusal",
+        "hint": "Decline"
+      },
+      {
+        "word": "respect",
+        "hint": "Dignity"
+      },
+      {
+        "word": "communication",
+        "hint": "Listening"
+      },
+      {
+        "word": "personal space",
+        "hint": "Distance"
+      },
+      {
+        "word": "mutual agreement",
+        "hint": "Together"
+      },
+      {
+        "word": "bodily autonomy",
+        "hint": "Control"
+      }
+    ]
+  }
+]

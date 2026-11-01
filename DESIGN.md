@@ -1,0 +1,9 @@
+# Approved visual system
+
+Authority: the six boards in design/proposal-v1, approved by the user. Android-first. App screens use charcoal #141916 / #171A18, warm ivory #F4F1E8, muted sage #B4C8AD, lime #D6F56B for actions, and terracotta #D98672 for imposter/incorrect state. Large rounded grotesk typography, condensed welcome wordmark, 16px radii, 52px minimum primary actions, generous space. No persistent bottom tabs in a party. Use real QR codes and native camera/settings paths rather than the illustrative QR/status bars in the mockups.
+
+Do not reproduce outer presentation backgrounds, fake device frames or OS status bars inside the app. Match the screen interiors. Secret card artwork and eye motif, initials avatars, flat list separators, ivory secret-word panel, restrained celebration. Public discussion must never expose roles or words. Card reveal 420ms; forward page transitions 240ms; results 500ms; sheets rise; punishment turns crossfade. Respect reduced-motion and concealed content on backgrounding.
+
+Visual parity was reviewed across all 24 proposal states; see design/VISUAL-REVIEW.md and its screenshot gallery. Primary buttons are 60px at ordinary phone sizes, with 48px secondary touch targets; headings and avatars scale down on compact phones. The six featured topic tiles match the proposal, with the remaining packs in a contained scrolling grid. Use portrait cards for welcome/private roles, separate landscape cards for discussion, and the textured envelope for locked votes. Preserve the corrected role-heading alignment, sage/terracotta hints, filled trophy/crown, and final confetti. Changes to these layouts should be checked using scripts/visual-capture.js.
+
+Motion behavior, interruption rules, reduced-motion alternatives, and tuning controls are documented in [design/MOTION.md](design/MOTION.md). Use the shared motion components and tokens when extending interactions.

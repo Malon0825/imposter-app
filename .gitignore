@@ -147,3 +147,34 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Imposter app and local build material
+node_modules/
+dist/
+target/
+.env*
+*.log
+src-tauri/gen/android/.gradle/
+src-tauri/gen/android/**/build/
+src-tauri/gen/android/local.properties
+src-tauri/gen/android/tauri.settings.gradle
+src-tauri/gen/android/app/tauri.build.gradle.kts
+src-tauri/gen/android/app/tauri.properties
+src-tauri/gen/android/app/src/main/jniLibs/
+releases/*.apk
+releases/*.sha256
+output/
+.playwright-cli/
+.tools/
+.xwin-cache/
+*.tsbuildinfo
+src-tauri/gen/android/.kotlin/
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.credential.xml
+*.apk
+*.apk.idsig
+*.aab
+.signing/

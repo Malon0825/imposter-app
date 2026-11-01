@@ -1,0 +1,22 @@
+[package]
+name = "imposter-app"
+version = "1.0.0"
+edition = "2021"
+
+[lib]
+name = "imposter_app_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-barcode-scanner = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+party-core = { path = "../crates/party-core" }
+tokio = { version = "1", features = ["sync", "time"] }
+
+[target.'cfg(target_os = "android")'.dependencies]
+jni = "0.21"

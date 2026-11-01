@@ -1,0 +1,147 @@
+/* Motion-only refinements preserve the approved resting layouts. */
+.button:not(:disabled):active,
+.icon-button:not(:disabled):active {
+  filter: brightness(0.94);
+}
+.topic-tile,
+.ballot-row,
+.radio-mark {
+  transition:
+    border-color 140ms ease-out,
+    background-color 140ms ease-out;
+}
+.selection-mark {
+  display: inline-flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.expand-section {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.progress-dots.motion-progress {
+  gap: var(--progress-gap);
+  flex-wrap: nowrap;
+}
+.progress-dots.motion-progress > i {
+  width: var(--progress-size);
+  height: var(--progress-size);
+  flex: 0 0 var(--progress-size);
+  transition: border-color 140ms ease-out;
+}
+.motion-progress > i.complete {
+  border-color: var(--lime);
+}
+.progress-fill {
+  display: block;
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: var(--lime);
+}
+.locked .progress-dots.motion-progress > i:not(:last-child):after {
+  width: var(--progress-gap);
+  left: calc(var(--progress-size) - 1px);
+  top: calc(var(--progress-size) / 2 - 2px);
+}
+.envelope-rays {
+  animation: lock-rays 280ms var(--ease) 140ms both;
+}
+@keyframes lock-rays {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bottom-sheet {
+  padding-top: 52px;
+  max-height: calc(
+    100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) -
+      12px
+  );
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.sheet-grab {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 104px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  padding: 0;
+  cursor: grab;
+  touch-action: none;
+}
+.sheet-grab:active {
+  cursor: grabbing;
+}
+.sheet-grab > span {
+  width: 40px;
+  height: 4px;
+  border-radius: 4px;
+  background: currentColor;
+  opacity: 0.55;
+}
+.sheet-grab:disabled {
+  cursor: default;
+}
+.confetti-burst {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.confetti-burst > i {
+  width: 6px;
+  height: 9px;
+}
+.confetti-burst > i:nth-child(3n) {
+  background: var(--ink);
+}
+.confetti-burst > i:nth-child(3n + 1) {
+  background: var(--muted);
+}
+.busy-indicator {
+  animation: busy-enter 120ms ease-out both;
+}
+@keyframes busy-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+html[data-motion-paused] * {
+  animation-play-state: paused !important;
+}
+html[data-private-concealed] .role-back {
+  visibility: hidden !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .topic-tile,
+  .ballot-row,
+  .radio-mark {
+    transition: none;
+  }
+  .envelope-rays,
+  .busy-indicator {
+    animation: none;
+  }
+}
