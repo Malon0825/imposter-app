@@ -1,6 +1,9 @@
 # Add project specific ProGuard rules here.
 -keep class com.imposter.party.PartyPlugin { *; }
 -keep class com.imposter.party.HostService { *; }
+# ML Kit discovers these registrars by manifest name and a reflected constructor.
+# Preserve both when the release optimizer removes otherwise-unreferenced code.
+-keep class com.google.mlkit.**.*Registrar { *; }
 # You can control the set of applied configuration files using the
 # proguardFiles setting in build.gradle.
 #
