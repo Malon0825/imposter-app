@@ -14,6 +14,32 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   color-scheme: dark;
 }
+.web-join-heading {
+  text-align: center;
+  margin: auto 0 24px;
+}
+.web-join-heading .cards-art {
+  width: min(62vw, 230px);
+  height: min(18vh, 140px);
+  object-fit: contain;
+  margin: 12px auto 20px;
+}
+.web-join-heading h1 { font-size: clamp(28px, 8vw, 38px); }
+.web-join-heading p { margin-top: 10px; }
+.web-join-note { margin: 20px 0 8px; text-align: center; }
+.web-privacy { font-size: 12px; text-align: center; line-height: 1.4; }
+.screen-web_join .actions { margin-top: auto; padding-top: 20px; }
+.screen-web_join .setting-row span { font-size: 15px; line-height: 1.45; }
+.screen-web_join .web-join-note { font-size: 14px; line-height: 1.45; margin: 16px 0 6px; }
+.screen-web_join .web-privacy { font-size: 12px; line-height: 1.4; }
+a.button { text-decoration: none; }
+.qr-sheet .qr-guidance { font-size: 14px; margin: 12px 0; }
+.bottom-sheet.qr-sheet > img { width: min(100%, 330px, 40svh); height: auto; max-width: 100%; aspect-ratio: 1; }
+.invitation-link { font-size: 13px; width: 100%; min-height: 40px; margin-bottom: 12px; text-overflow: ellipsis; }
+@media(max-height:720px) {
+  .web-join-heading .cards-art { height: 110px; margin: 0 auto 8px; }
+  .web-join-heading { margin-bottom: 16px; }
+}
 * {
   box-sizing: border-box;
 }

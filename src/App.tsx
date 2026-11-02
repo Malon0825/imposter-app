@@ -14,7 +14,13 @@ import {
   native,
   saveSession,
   storedSession,
+  webGuest,
+  entryInvitation,
+  persistentResume,
+  ApiError,
 } from "./api";
+import { parseInvitation, androidAppLink } from "./invitation";
+import { preferences, requestId } from "./storage";
 import type {
   Credentials,
   DeviceStatus,
@@ -50,6 +56,7 @@ import {
 } from "./illustrations";
 
 type Page =
+  | "web_join"
   | "home"
   | "create"
   | "host_setup"
@@ -182,7 +189,7 @@ function CoffeeCup() {
 export default function App() {
   const reduced = useReducedMotion();
   const visible = usePageVisible();
-  const [page, setPage] = useState<Page>("home");
+  const [page, setPage] = useState<Page>(webGuest ? "web_join" : "home");
   const [direction, setDirection] = useState(1);
   const [returnPage, setReturnPage] = useState<Page>("home");
   const [view, setView] = useState<View | null>(null);
@@ -196,14 +203,15 @@ export default function App() {
   const [disconnected, setDisconnected] = useState(false);
   const [booting, setBooting] = useState(true);
   const [status, setStatus] = useState<DeviceStatus | null>(null);
-  const [name, setName] = useState(localStorage.getItem("imposter.name") || "");
+  const [name, setName] = useState(preferences.getItem("imposter.name") || "");
   const [partyName, setPartyName] = useState("Friday night");
   const [wifi, setWifi] = useState("");
-  const [invitation, setInvitation] = useState("");
+  const [invitation, setInvitation] = useState(webGuest ? entryInvitation : "");
   const [details, setDetails] = useState<{
     name: string;
     host_name: string;
     wifi: string;
+    phase?: string;
   } | null>(null);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [topicSearch, setTopicSearch] = useState("");
@@ -226,6 +234,11 @@ export default function App() {
   const scanCancelled = useRef(false);
   const cameraStream = useRef<MediaStream | null>(null);
   const polling = useRef(false);
+  const actionAttempt = useRef<{ key: string; id: string } | null>(null);
+  const externalHandled = useRef("");
+  const [checkingHost, setCheckingHost] = useState(false);
+  const [sessionBlocked, setSessionBlocked] = useState("");
+  const [canResume] = useState(() => !webGuest || persistentResume());
 
   const accept = useCallback((v: View) => {
     if (current.current?.id === v.id && current.current.revision > v.revision)
@@ -242,6 +255,7 @@ export default function App() {
       setDirection(1);
       setPage(null);
       setDisconnected(false);
+      setSessionBlocked("");
     },
     [accept],
   );
@@ -261,15 +275,19 @@ export default function App() {
   };
   const act = async (kind: string, value: unknown = null) => {
     if (!current.current) return;
+    const key = JSON.stringify([current.current.round_id, kind, value]);
+    if (actionAttempt.current?.key !== key)
+      actionAttempt.current = { key, id: requestId() };
     const v = await api<View>("action", {
       session_id: sessionId,
       action: {
-        id: crypto.randomUUID(),
+        id: actionAttempt.current.id,
         round_id: current.current.round_id,
         kind,
         value,
       },
     });
+    actionAttempt.current = null;
     accept(v);
   };
   const send = (kind: string, value: unknown = null) =>
@@ -310,7 +328,8 @@ export default function App() {
         if (mounted) adopt(s);
       } catch (e) {
         if (mounted) {
-          clearSession();
+          if (!webGuest || !(e instanceof ApiError) || e.code !== "unreachable")
+            clearSession();
           setError(errorText(e));
         }
       } finally {
@@ -323,11 +342,83 @@ export default function App() {
   }, [adopt, refreshDevice]);
 
   useEffect(() => {
-    if (!sessionId || view?.phase === "ended") return;
+    if (!webGuest || booting || page !== "web_join" || sessionId || !invitation)
+      return;
+    let active = true;
+    setCheckingHost(true);
+    api<NonNullable<typeof details>>("inspect", { invitation })
+      .then((d) => {
+        if (active) {
+          setDetails(d);
+          setError("");
+        }
+      })
+      .catch((e) => {
+        if (active) setError(errorText(e));
+      })
+      .finally(() => {
+        if (active) setCheckingHost(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [booting, page, sessionId, invitation]);
+
+  useEffect(() => {
+    if (!native) return;
+    const update = () => void refreshDevice();
+    window.addEventListener("imposter-invitation", update);
+    return () => window.removeEventListener("imposter-invitation", update);
+  }, [refreshDevice]);
+
+  useEffect(() => {
+    const incoming = status?.invitation;
+    if (!incoming) {
+      externalHandled.current = "";
+      return;
+    }
+    if (
+      !native ||
+      booting ||
+      busy ||
+      !incoming ||
+      externalHandled.current === incoming
+    )
+      return;
+    externalHandled.current = incoming;
+    void device("consumeInvitation")
+      .then(setStatus)
+      .catch(() => {});
+    try {
+      const parsed = parseInvitation(incoming);
+      if (current.current?.id === parsed.native.party_id) return;
+      if (current.current) {
+        setConfirm({
+          title: "Join another party?",
+          body: "Leave this party before opening the new invitation. Hosting players will end their current party.",
+          label: "Leave and continue",
+          action: () =>
+            execute(async () => {
+              if (current.current?.phase !== "ended")
+                await act(current.current?.is_host ? "end" : "leave");
+              await close();
+              setConfirm(null);
+              readInvitation(incoming);
+            }),
+        });
+      } else readInvitation(incoming);
+    } catch (e) {
+      setError(errorText(e));
+    }
+  }, [status?.invitation, booting, busy]);
+
+  useEffect(() => {
+    if (!sessionId || view?.phase === "ended" || sessionBlocked) return;
     let active = true;
     let failures = 0;
     const refresh = async () => {
       if (polling.current) return;
+      if (webGuest && document.hidden) return;
       polling.current = true;
       try {
         const v = await api<View>("state", { session_id: sessionId });
@@ -336,7 +427,17 @@ export default function App() {
           setDisconnected(false);
           failures = 0;
         }
-      } catch {
+      } catch (e) {
+        if (
+          active &&
+          e instanceof ApiError &&
+          ["controller_replaced", "no_player"].includes(e.code)
+        ) {
+          setSessionBlocked(e.message);
+          setDisconnected(true);
+          setRevealed(false);
+          return;
+        }
         if (active && ++failures >= 2) {
           setDisconnected(true);
           setRevealed(false);
@@ -351,12 +452,17 @@ export default function App() {
       refresh();
     };
     window.addEventListener("focus", focus);
+    const visibility = () => {
+      if (!document.hidden) focus();
+    };
+    document.addEventListener("visibilitychange", visibility);
     return () => {
       active = false;
       clearInterval(timer);
       window.removeEventListener("focus", focus);
+      document.removeEventListener("visibilitychange", visibility);
     };
-  }, [sessionId, view?.phase, accept, refreshDevice]);
+  }, [sessionId, view?.phase, accept, refreshDevice, sessionBlocked]);
 
   useEffect(() => {
     setRevealed(false);
@@ -377,9 +483,15 @@ export default function App() {
       }
     };
     document.addEventListener("visibilitychange", hide);
+    const conceal = () => {
+      document.documentElement.setAttribute("data-private-concealed", "");
+      setRevealed(false);
+    };
+    window.addEventListener("pagehide", conceal);
     hide();
     return () => {
       document.removeEventListener("visibilitychange", hide);
+      window.removeEventListener("pagehide", conceal);
       document.documentElement.removeAttribute("data-motion-paused");
     };
   }, [refreshDevice]);
@@ -475,7 +587,7 @@ export default function App() {
       if (e.key !== "Tab") return;
       const nodes = [
         ...document.querySelectorAll<HTMLElement>(
-          ".bottom-sheet button:not(:disabled)",
+          ".bottom-sheet button:not(:disabled), .bottom-sheet input:not(:disabled), .bottom-sheet a[href]",
         ),
       ];
       const first = nodes[0],
@@ -500,6 +612,7 @@ export default function App() {
   const nav = (p: Page, explicitDirection?: number) => {
     const depth: Record<string, number> = {
       home: 0,
+      web_join: 0,
       create: 1,
       host_setup: 2,
       scan: 1,
@@ -518,7 +631,7 @@ export default function App() {
       setRevealed(false);
     }
     setError("");
-    setPage(p);
+    setPage(webGuest && p === "home" ? "web_join" : p);
     setShowQr(false);
   };
   const help = () => {
@@ -538,7 +651,9 @@ export default function App() {
     setCredentials(null);
     current.current = null;
     setView(null);
+    setDetails(null);
     setDisconnected(false);
+    setSessionBlocked("");
     nav("home", -1);
   };
   const askLeave = () => {
@@ -575,7 +690,7 @@ export default function App() {
         player: name.trim(),
         wifi: wifi.trim() || "Home Wi-Fi",
       });
-      localStorage.setItem("imposter.name", name.trim());
+      preferences.setItem("imposter.name", name.trim());
       adopt(s);
     } catch (e) {
       if (useBackground) await device("stopHosting").catch(() => {});
@@ -583,10 +698,9 @@ export default function App() {
     }
   };
   const readInvitation = (text: string) => {
-    if (!text.trim().startsWith("imposter://join/"))
-      throw new Error("Use the QR or invitation from an IMPOSTER party.");
-    if (text.length > 6000) throw new Error("This invitation is too long.");
-    setInvitation(text.trim());
+    const parsed = parseInvitation(text);
+    if (scanning) void stopScan();
+    setInvitation(parsed.text);
     setDetails(null);
     nav("wifi");
   };
@@ -739,7 +853,10 @@ export default function App() {
             : `${playerName(view?.host_id)}’s party`}
           .
         </p>
-        <p className="muted">Your place and score are saved.</p>
+        <p className="muted">
+          {sessionBlocked ||
+            "Your place and score stay with the host while this party is running."}
+        </p>
         <div className="setting-row">
           <Icon name="wifi" />
           <div>
@@ -755,7 +872,7 @@ export default function App() {
         <>
           <Button
             kind="outline"
-            disabled={busy}
+            disabled={busy || !!sessionBlocked}
             onClick={() =>
               execute(async () => {
                 const v = await api<View>("state", { session_id: sessionId });
@@ -793,6 +910,131 @@ export default function App() {
           <p className="muted">Finding your party…</p>
         </div>
       );
+    if (webGuest && page === "web_join") {
+      let parsed: ReturnType<typeof parseInvitation> | null = null;
+      try {
+        parsed = parseInvitation(invitation);
+      } catch {
+        /* Explain missing/invalid links below. */
+      }
+      const saved = storedSession();
+      const android = /Android/i.test(navigator.userAgent);
+      const joinable =
+        details &&
+        details.phase !== "ended" &&
+        (!details.phase || details.phase === "lobby");
+      return (
+        <>
+          <Header
+            title="IMPOSTER"
+            right={
+              <button
+                className="icon-button"
+                onClick={help}
+                aria-label="How to play"
+              >
+                <Icon name="info" />
+              </button>
+            }
+          />
+          <div className="web-join-heading">
+            <Cards />
+            <h1>{details?.name || "One room. One secret."}</h1>
+            <p className="muted">
+              {details
+                ? `Hosted by ${details.host_name}`
+                : "Your host has the invitation."}
+            </p>
+          </div>
+          <div className="setting-row">
+            <Icon name="wifi" />
+            <div>
+              <strong>
+                {details?.wifi ||
+                  parsed?.native.wifi ||
+                  "Join the host’s Wi-Fi"}
+              </strong>
+              <span>
+                {checkingHost
+                  ? "Finding the host…"
+                  : details
+                    ? "Connected locally · No internet needed"
+                    : "Connect to the shared Wi-Fi, then scan the host’s QR."}
+              </span>
+            </div>
+          </div>
+          <p className="muted compact web-join-note">
+            {details?.phase === "ended"
+              ? "This party has ended. Ask the host for a new invitation."
+              : details?.phase && details.phase !== "lobby"
+                ? "A round is in progress. New players can join when the host returns to the lobby."
+                : "Play here in your browser. No app or account needed."}
+          </p>
+          {!canResume && (
+            <p className="compact terra">
+              Site storage is unavailable. Keep this tab open to retain your
+              place.
+            </p>
+          )}
+          <p className="muted compact web-privacy">
+            Local browser play uses an unencrypted connection. Use Wi-Fi you
+            trust.
+          </p>
+          {footer(
+            <>
+              {saved && (
+                <Button
+                  disabled={busy || checkingHost}
+                  onClick={() =>
+                    execute(async () =>
+                      adopt(
+                        await api<SessionData>("resume", {
+                          ...saved.credentials,
+                        }),
+                      ),
+                    )
+                  }
+                >
+                  Reconnect my player
+                </Button>
+              )}
+              {android && parsed?.browser && !saved && (
+                <a className="button outline" href={androidAppLink(invitation)}>
+                  Open in Imposter
+                </a>
+              )}
+              {joinable && !saved ? (
+                <Button
+                  disabled={busy || checkingHost}
+                  onClick={() => nav("identity")}
+                >
+                  Continue in browser
+                </Button>
+              ) : (
+                parsed &&
+                !saved && (
+                  <Button
+                    kind="outline"
+                    disabled={busy || checkingHost}
+                    onClick={() =>
+                      execute(async () => {
+                        setDetails(
+                          await api<NonNullable<typeof details>>("inspect", {
+                            invitation,
+                          }),
+                        );
+                      })
+                    }
+                  >
+                    {checkingHost ? "Finding the host…" : "Check connection"}
+                  </Button>
+                )
+              )}
+            </>,
+          )}
+        </>
+      );
+    }
     if (page === "help")
       return (
         <>
@@ -1110,8 +1352,8 @@ export default function App() {
               <textarea
                 value={invitation}
                 onChange={(e) => setInvitation(e.target.value)}
-                maxLength={6000}
-                placeholder="imposter://join/…"
+                maxLength={10000}
+                placeholder="Paste the host’s party link or invitation"
                 required
                 autoCapitalize="none"
                 spellCheck={false}
@@ -1128,16 +1370,7 @@ export default function App() {
     if (page === "wifi") {
       let label = "the host’s Wi-Fi";
       try {
-        const raw = invitation.split("/").pop() || "";
-        label =
-          JSON.parse(
-            new TextDecoder().decode(
-              Uint8Array.from(
-                atob(raw.replace(/-/g, "+").replace(/_/g, "/")),
-                (c) => c.charCodeAt(0),
-              ),
-            ),
-          ).wifi || label;
+        label = parseInvitation(invitation).native.wifi;
       } catch {
         /* Backend validates before admission. */
       }
@@ -1191,7 +1424,7 @@ export default function App() {
                       wifi: string;
                     }>("inspect", { invitation });
                     setDetails(d);
-                    setNotice("Host reachable. You’re on the right network.");
+                    setNotice("Host reachable on this connection.");
                   })
                 }
               >
@@ -1209,7 +1442,7 @@ export default function App() {
     if (page === "identity")
       return (
         <>
-          <Header back={() => nav("wifi")} />
+          <Header back={() => nav(webGuest ? "web_join" : "wifi")} />
           <div className="reach-status">
             <span className="success-disc">
               <Icon name="check" />
@@ -1238,7 +1471,7 @@ export default function App() {
                   invitation,
                   player: name.trim(),
                 });
-                localStorage.setItem("imposter.name", name.trim());
+                preferences.setItem("imposter.name", name.trim());
                 adopt(s);
               });
             }}
@@ -2235,17 +2468,51 @@ export default function App() {
               <Icon name="x" />
             </button>
             <h2 id="invitation-title">Bring everyone together</h2>
-            <p className="muted">Connect to {view?.wifi}, then scan.</p>
+            <p className="muted">Connect to {view?.wifi} first, then scan.</p>
             <img
               src={qr}
-              alt="Scan this invitation in IMPOSTER to join the party"
+              alt="Scan with your phone’s Camera for browser play, or inside Imposter for app play"
+            />
+            <p className="compact muted qr-guidance">
+              Use your phone’s Camera to play in your default browser. Have
+              Imposter? Use Join party → Scan invitation in the app.
+            </p>
+            <input
+              className="invitation-link"
+              aria-label="Party link"
+              readOnly
+              value={credentials?.invitation || ""}
+              onFocus={(e) => e.currentTarget.select()}
             />
             <Button
               kind="outline"
               onClick={() =>
                 execute(async () => {
-                  await navigator.clipboard.writeText(credentials!.invitation);
-                  setNotice("Invitation copied");
+                  let copied = false;
+                  try {
+                    if (navigator.clipboard?.writeText) {
+                      await navigator.clipboard.writeText(
+                        credentials!.invitation,
+                      );
+                      copied = true;
+                    }
+                  } catch {
+                    /* A selected text field remains available if clipboard access is denied. */
+                  }
+                  if (!copied) {
+                    const field =
+                      document.querySelector<HTMLInputElement>(
+                        ".invitation-link",
+                      );
+                    field?.focus();
+                    field?.select();
+                    copied = document.execCommand("copy");
+                  }
+                  setNotice(
+                    copied
+                      ? "Invitation copied"
+                      : "Press and hold the selected link to copy it.",
+                  );
                 })
               }
             >

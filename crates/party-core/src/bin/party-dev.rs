@@ -46,9 +46,15 @@ async fn call(
 ) -> Result<Json<Value>, Error> {
     let v = match method.as_str() {
         "create" => {
-            let session = Session::create(&b.name, &b.player, &b.wifi, Some("127.0.0.1".into()))
-                .await
-                .map_err(err)?;
+            let session = Session::create_with_web(
+                &b.name,
+                &b.player,
+                &b.wifi,
+                Some("127.0.0.1".into()),
+                s.web_assets.clone(),
+            )
+            .await
+            .map_err(err)?;
             let c = session.credentials();
             let view = session.snapshot().await.map_err(err)?;
             let id = s.insert(session).await;
@@ -110,7 +116,10 @@ async fn main() {
         .route("/api/{method}", post(call))
         .layer(axum::extract::DefaultBodyLimit::max(16 * 1024))
         .layer(middleware::from_fn(guard))
-        .with_state(Arc::new(Sessions::default()));
+        .with_state(Arc::new(Sessions::with_web_assets(
+            party_core::network::load_web_assets(std::path::Path::new("dist"))
+                .expect("Run npm run build before starting the development host"),
+        )));
     let listener = tokio::net::TcpListener::bind("127.0.0.1:3142")
         .await
         .expect("Port 3142 available");

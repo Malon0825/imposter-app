@@ -155,20 +155,39 @@ async function checkMotion(page) {
       { selector, duration },
     );
   const rest = async () => {
-    await page.waitForTimeout(450);
+    // Allow a busy emulator/browser host time to deliver animation frames.
+    await page.waitForFunction(() => {
+      const e = document.querySelector("main");
+      if (!e || e.inert) return false;
+      const s = getComputedStyle(e);
+      const m = new DOMMatrixReadOnly(
+        s.transform === "none" ? undefined : s.transform,
+      );
+      return (
+        Math.abs(m.m41) < 0.1 &&
+        Math.abs(m.m42) < 0.1 &&
+        Number(s.opacity) > 0.99
+      );
+    }, undefined, { timeout: 3000 });
     const state = await page.locator("main").evaluate((e) => {
       const s = getComputedStyle(e),
         m = new DOMMatrixReadOnly(
           s.transform === "none" ? undefined : s.transform,
         );
-      return { x: m.m41, y: m.m42, opacity: Number(s.opacity), inert: e.inert };
+      return {
+        x: m.m41,
+        y: m.m42,
+        opacity: Number(s.opacity),
+        inert: e.inert,
+        screen: e.className,
+      };
     });
     assert(
       Math.abs(state.x) < 0.1 &&
         Math.abs(state.y) < 0.1 &&
         state.opacity > 0.99 &&
         !state.inert,
-      "Screen did not return to its resting state",
+      "Screen did not return to its resting state: " + JSON.stringify(state),
     );
   };
 

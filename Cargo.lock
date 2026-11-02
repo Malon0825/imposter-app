@@ -1639,7 +1639,7 @@ dependencies = [
 
 [[package]]
 name = "imposter-app"
-version = "1.0.0"
+version = "1.1.0"
 dependencies = [
  "jni",
  "party-core",
@@ -2371,7 +2371,7 @@ dependencies = [
 
 [[package]]
 name = "party-core"
-version = "1.0.0"
+version = "1.1.0"
 dependencies = [
  "axum",
  "axum-server",

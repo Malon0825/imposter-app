@@ -1,10 +1,14 @@
 # Local-party Imposter game — working plan
 
-Status: Android-first implementation complete; physical-device playtesting remains. Updated 2026-11-01. This document preserves the original brainstorm and proposals below. [README.md](README.md) records the delivered behavior, build instructions, verification, and current limits; [DESIGN.md](DESIGN.md) records the approved visual system.
+Status: Android-first implementation complete; physical-device playtesting remains. Updated 2026-11-02. This document preserves the original brainstorm and proposals below. [README.md](README.md) records the delivered behavior, build instructions, verification, and current limits; [DESIGN.md](DESIGN.md) records the approved visual system.
 
 Implementation decisions: 3–12 players, one independently random imposter, no self-votes, everyone participates in the single runoff, repeated ties mean escape, original civilian ballots determine +1 awards, and cumulative scores/punishment participation are public after resolution. Categories are chosen publicly in the lobby; private role cards show only each player's word or hint. Dare givers are randomly chosen from other connected players. Party state is in host memory and does not survive host process death. Native guest identities are saved for reconnection. Transport uses authenticated, certificate-pinned HTTPS with revisioned state polling rather than the initially proposed WebSockets. All 22 bundled topic packs have authored hints (221 pairs); hints still need human playtesting.
 
+2026-11-02 implementation: [browser guests with an Android host](design/WEB-GUEST-IMPLEMENTATION.md), delivered as the 1.1.0 preview. Only the host needs to install the app; guests may use their updated Android app or a browser in the same party. The user confirmed offline play on the same Wi-Fi. One shared URL QR opens the browser through external readers and is parsed natively by Imposter's scanner; the Android landing page offers an explicit app-opening action where supported. The [approved plan](design/WEB-GUEST-PLAN.md) is retained below its status note. Automated browser/emulator checks passed; physical phone, camera, and shared-router validation remain pending because devices are unavailable. Browser traffic uses local HTTP with the security limits documented in the implementation record.
+
 ## 1. Product direction
+
+Browser choice for the proposed web guest mode: respect each phone's default browser on iPhone and Android. Do not force Safari or Chrome; validate multiple modern browsers and use capability checks rather than a browser-brand restriction.
 
 Build a social deduction party game using Tauri and Rust, with Android first and iOS later. Each player installs the app on their own phone. One player creates a local party; their phone hosts the session and also acts as their playing device. Other players join by scanning its QR code.
 

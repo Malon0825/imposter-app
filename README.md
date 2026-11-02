@@ -2,15 +2,17 @@
 
 An Android-first, local multiplayer party game built with Tauri 2, Rust, React, and TypeScript. Each player uses their own phone. One phone hosts the party; everyone joins its reachable local Wi-Fi network using an invitation QR code. No account or internet service is required for native play.
 
+Version 1.1.0 adds offline browser guests. Only the Android host needs the app: iPhone and Android guests can open the same invitation in their default browser, while installed Android guests can scan it inside Imposter. The host bundles and serves every guest page, font, and image. See [browser guest setup and verification](design/WEB-GUEST-IMPLEMENTATION.md). Physical iPhone and shared-router checks remain unverified; this build is a browser-guest preview.
+
 The interface implements the [approved screen designs](design/proposal-v1/README.md): charcoal, ivory, lime, tactile secret-card artwork, animated role reveals, short page transitions, bottom sheets, sequential punishment turns, and animated standings. Fonts and artwork are bundled for offline use. Reduced-motion preferences are respected.
 
 The [visual comparison review](design/VISUAL-REVIEW.md) links all 24 before/after screenshots, the side-by-side proposal gallery, and compact/tall phone captures. Open the live gallery at `http://127.0.0.1:1428/output/playwright/visual-review/index.html` while the preview is running.
 
 ## Play
 
-1. Download **imposter-1.0.0-android.apk** from the [v1.0.0 release](https://github.com/Malon0825/imposter-app/releases/tag/v1.0.0) on each Android phone, open it, and allow installation from your browser when Android asks. Connect everyone to the same router's Wi-Fi. The signed APK includes ARM64 phones and x86_64 emulators; minimum Android 8 / API 26.
+1. Download **imposter-1.1.0-android.apk** from the [v1.1.0 preview](https://github.com/Malon0825/imposter-app/releases/tag/v1.1.0) on the Android host, open it, and allow installation from your browser when Android asks. Android guests may also install it; browser guests need no installation. Connect everyone to the same reachable router's Wi-Fi. The signed APK includes ARM64 phones and x86_64 emulators; minimum Android 8 / API 26. The [v1.0.0 release](https://github.com/Malon0825/imposter-app/releases/tag/v1.0.0) remains the stable native-only release.
 2. Choose **Host party**, enter a name, and label the shared Wi-Fi. The host can enable background hosting with an ongoing notification, visit battery settings, or choose to keep the app open.
-3. Guests choose **Join party**, scan the host's QR, check the Wi-Fi connection, enter a unique name, and mark themselves ready. Tapping the host's QR enlarges it. Copy/paste invitations are also supported.
+3. Guests scan the host's QR using their Camera/QR reader to join through their chosen browser, or use **Join party → Scan invitation** inside the updated Android app to play natively. Android browser joining also offers **Open in Imposter** where supported. Enter a unique name and mark ready. Tapping the host's QR enlarges it; copy/paste is supported. Browser traffic uses unencrypted local HTTP, so use Wi-Fi you trust.
 4. The host selects topic packs and starts the round with 3–12 players. Each player privately reveals their role, then hides it and marks ready.
 5. Talk and give clues face to face. The host opens secret voting whenever the group is ready. There is no game timer.
 6. Review results, take Drink/Dare/Skip turns, and see cumulative rankings. The host starts another round or ends the party.
@@ -25,6 +27,7 @@ Install Node.js, Rust, and the native build prerequisites for your operating sys
 
 ```powershell
 npm ci
+npm run build
 npm run dev:server
 ```
 
@@ -79,7 +82,7 @@ Party state and scores live in host memory. Force stopping or killing the host e
 npm test
 ```
 
-This builds the frontend and runs 12 Rust tests covering scoring, ties, role privacy, ready gates, duplicate/stale actions, disconnect/reconnect, punishment ownership, content integrity, real TLS clients, certificate trust, and invalid invitations.
+This builds the frontend and runs 15 Rust tests covering scoring, ties, role privacy, ready gates, duplicate/stale actions, disconnect/reconnect, punishment ownership, content integrity, real TLS clients, certificate trust, shared invitations, production browser authorization/recovery, mixed-client games, and server shutdown.
 
 With both preview processes running and a Playwright CLI browser session open at the preview URL, the browser scenario can be replayed using:
 
@@ -92,6 +95,6 @@ The scenario creates four players, plays two rounds, checks concealed/private ca
 
 Motion checks use `scripts/motion-check.js` in a separate Playwright session. They exercise rapid navigation and selection, sheet drag/cancel, immediate private-card concealment, score counting, celebration cleanup, and reduced motion. After that check, `scripts/motion-demo.js` records a representative flow using isolated sample-party state. See [design/MOTION.md](design/MOTION.md) for timings and tuning.
 
-Completed verification: frontend production build, all 12 Rust tests, the four-player/two-round browser scenario, an installed API 36 Android emulator, native Wi-Fi/battery/notification paths, real encrypted native-host clients, a 20-second background-hosting check, foreground-service shutdown after ending the party, and an installed Android guest joining an encrypted Rust host and restoring the same identity after process restart. Android back-button confirmation, camera permission, and scanner cancellation were also checked. The 22 topic packs contain 221 authored word/hint pairs.
+Completed native baseline verification: frontend production build, the four-player/two-round browser scenario, an installed API 36 Android emulator, native Wi-Fi/battery/notification paths, real encrypted native-host clients, a 20-second background-hosting check, foreground-service shutdown after ending the party, and an installed Android guest joining an encrypted Rust host and restoring the same identity after process restart. Android back-button confirmation, camera permission, and scanner cancellation were also checked. The 22 topic packs contain 221 authored word/hint pairs. Current browser-preview verification includes all 15 Rust tests, Chromium/WebKit/Firefox guest flows, 12-player capacity, and an installed Android host serving mixed native/browser players; see [the implementation record](design/WEB-GUEST-IMPLEMENTATION.md) for evidence and limits.
 
 Remaining device validation: QR recognition through physical cameras, multiple physical phones on one router, screen-off hosting over longer sessions, manufacturer-specific battery restrictions, and playtesting hint quality. A foreground service improves hosting continuity but cannot guarantee survival after force stop or operating-system process termination.

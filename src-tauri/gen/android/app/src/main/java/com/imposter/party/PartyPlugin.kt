@@ -61,10 +61,15 @@ class PartyPlugin(private val activity: Activity) : Plugin(activity) {
             put("ip", ip ?: "")
             put("battery_unrestricted", power.isIgnoringBatteryOptimizations(activity.packageName))
             put("background_supported", true)
+            put("invitation", activity.intent?.dataString ?: "")
         }
     }
 
     @Command fun status(invoke: Invoke) { invoke.resolve(information()) }
+    @Command fun consumeInvitation(invoke: Invoke) {
+        activity.intent?.data = null
+        invoke.resolve(information())
+    }
 
     @Command fun minimize(invoke: Invoke) {
         activity.moveTaskToBack(true)

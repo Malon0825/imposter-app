@@ -17,6 +17,7 @@ export interface Topic {
 }
 export interface Credentials {
   invitation: string;
+  native_invitation?: string;
   token: string;
   player_id: string;
   is_host: boolean;
@@ -72,4 +73,5 @@ export interface DeviceStatus {
   ip: string;
   battery_unrestricted: boolean;
   background_supported: boolean;
+  invitation?: string;
 }

@@ -1,6 +1,7 @@
 use party_core::{game::Action, network::Sessions, Session};
 use serde_json::{json, Value};
 use tauri::{Manager, State};
+include!(concat!(env!("OUT_DIR"), "/web_assets.rs"));
 
 #[cfg(target_os = "android")]
 struct Native(tauri::plugin::PluginHandle<tauri::Wry>);
@@ -36,6 +37,7 @@ async fn native_action(app: tauri::AppHandle, operation: String) -> Result<Value
         "stopHosting",
         "secureScreen",
         "minimize",
+        "consumeInvitation",
     ]
     .contains(&operation.as_str())
     {
@@ -56,7 +58,9 @@ async fn game_create(
         return Err("Connect to the shared router's Wi-Fi before hosting.".into());
     }
     let address = status["ip"].as_str().map(str::to_string);
-    let session = Session::create(&name, &player, &wifi, address).await?;
+    let session =
+        Session::create_with_web(&name, &player, &wifi, address, sessions.web_assets.clone())
+            .await?;
     let credentials = session.credentials();
     let view = session.snapshot().await?;
     let id = sessions.insert(session).await;
@@ -114,14 +118,8 @@ async fn game_action(
     action: Action,
 ) -> Result<Value, String> {
     let session = sessions.get(&session_id).await?;
-    let ending = action.kind == "end" && session.credentials()["is_host"] == true;
     let view = session.send(action).await?;
-    if ending {
-        tauri::async_runtime::spawn(async move {
-            tokio::time::sleep(std::time::Duration::from_secs(3)).await;
-            let _ = platform(app, "stopHosting".into()).await;
-        });
-    }
+    let _ = app;
     Ok(view)
 }
 #[tauri::command]
@@ -132,6 +130,10 @@ async fn game_close(
 ) -> Result<(), String> {
     let session = sessions.get(&session_id).await?;
     if session.credentials()["is_host"] == true {
+        if session.snapshot().await?["phase"] == "ended" {
+            // Give visible guests a final polling opportunity before closing the LAN server.
+            tokio::time::sleep(std::time::Duration::from_secs(1)).await;
+        }
         let _ = platform(app, "stopHosting".into()).await;
     }
     sessions.remove(&session_id).await;
@@ -144,7 +146,8 @@ fn game_catalog() -> Value {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let mut builder = tauri::Builder::default().manage(Sessions::default());
+    let mut builder =
+        tauri::Builder::default().manage(Sessions::with_web_assets(bundled_web_assets()));
     #[cfg(target_os = "android")]
     {
         builder = builder.plugin(

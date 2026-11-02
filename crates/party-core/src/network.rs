@@ -17,6 +17,9 @@ use std::{
 use tokio::sync::Mutex;
 use uuid::Uuid;
 
+mod web;
+pub use web::{load_web_assets, SharedInvitation, WebAsset, WebAssets};
+
 type ApiError = (StatusCode, Json<Value>);
 fn err(s: impl ToString) -> ApiError {
     (
@@ -60,6 +63,9 @@ impl Invitation {
         )
     }
     pub fn parse(text: &str) -> GameResult<Self> {
+        if text.trim().starts_with("http://") {
+            return SharedInvitation::parse(text).map(|shared| shared.native);
+        }
         if text.len() > 6000 {
             return Err("That invitation is too long.".into());
         }
@@ -119,10 +125,14 @@ pub struct Host {
     invitation: Invitation,
     seen: Mutex<HashMap<String, Instant>>,
     shutdown: axum_server::Handle,
+    web: Option<web::WebHost>,
 }
 impl Drop for Host {
     fn drop(&mut self) {
         self.shutdown.shutdown();
+        if let Some(web) = &self.web {
+            web.shutdown.notify_one();
+        }
     }
 }
 // The server owns a Weak host state so closing the last local session stops it.
@@ -217,6 +227,29 @@ impl Session {
         wifi: &str,
         address: Option<String>,
     ) -> GameResult<Self> {
+        Self::create_inner(name, player, wifi, address, None).await
+    }
+    pub async fn create_with_web(
+        name: &str,
+        player: &str,
+        wifi: &str,
+        address: Option<String>,
+        assets: Arc<WebAssets>,
+    ) -> GameResult<Self> {
+        if !assets.contains_key("/index.html") {
+            return Err(
+                "The browser game bundle is missing. Rebuild the app before hosting.".into(),
+            );
+        }
+        Self::create_inner(name, player, wifi, address, Some(assets)).await
+    }
+    async fn create_inner(
+        name: &str,
+        player: &str,
+        wifi: &str,
+        address: Option<String>,
+        assets: Option<Arc<WebAssets>>,
+    ) -> GameResult<Self> {
         let _ = rustls::crypto::ring::default_provider().install_default();
         let game = Game::new(name, player, wifi)?;
         let ip = address.unwrap_or_else(local_ip);
@@ -249,12 +282,22 @@ impl Session {
         let token = game.players[0].token.clone();
         let player_id = game.host.clone();
         let handle = axum_server::Handle::new();
+        let (web, web_listener) = if let Some(assets) = assets {
+            let (web, listener) = web::prepare(&invitation, assets)?;
+            (Some(web), Some(listener))
+        } else {
+            (None, None)
+        };
         let host = Arc::new(Host {
             game: Mutex::new(game),
             invitation: invitation.clone(),
             seen: Mutex::new(HashMap::new()),
             shutdown: handle.clone(),
+            web,
         });
+        if let Some(listener) = web_listener {
+            web::serve(&host, listener);
+        }
         let weak = Arc::downgrade(&host);
         let router = Router::new()
             .route("/inspect", get(inspect))
@@ -349,7 +392,7 @@ impl Session {
         Ok(session)
     }
     pub fn credentials(&self) -> Value {
-        json!({"invitation":self.invitation.encode(),"token":self.token,"player_id":self.player_id,"is_host":self.host.is_some()})
+        json!({"invitation":self.invitation(),"native_invitation":self.invitation.encode(),"token":self.token,"player_id":self.player_id,"is_host":self.host.is_some()})
     }
     pub async fn snapshot(&self) -> GameResult<Value> {
         if let Some(host) = &self.host {
@@ -384,6 +427,9 @@ impl Session {
         }
     }
     pub fn invitation(&self) -> String {
+        if let Some(web) = self.host.as_ref().and_then(|host| host.web.as_ref()) {
+            return web.invitation.encode();
+        }
         self.invitation.encode()
     }
 }
@@ -407,8 +453,15 @@ async fn response(r: Result<reqwest::Response, reqwest::Error>) -> GameResult<Va
 #[derive(Default)]
 pub struct Sessions {
     pub entries: Mutex<HashMap<String, Arc<Session>>>,
+    pub web_assets: Arc<WebAssets>,
 }
 impl Sessions {
+    pub fn with_web_assets(assets: WebAssets) -> Self {
+        Self {
+            entries: Mutex::new(HashMap::new()),
+            web_assets: Arc::new(assets),
+        }
+    }
     pub async fn insert(&self, s: Session) -> String {
         let id = Uuid::new_v4().to_string();
         self.entries.lock().await.insert(id.clone(), Arc::new(s));
