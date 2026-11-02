@@ -6,6 +6,8 @@ Version 1.1.0 adds offline browser guests. Only the Android host needs the app: 
 
 The interface implements the [approved screen designs](design/proposal-v1/README.md): charcoal, ivory, lime, tactile secret-card artwork, animated role reveals, short page transitions, bottom sheets, sequential punishment turns, and animated standings. Fonts and artwork are bundled for offline use. Reduced-motion preferences are respected.
 
+The [single-page website](docs/README.md) includes 26 actual app screenshots, game rules, installation help, and direct 1.1.0 APK downloads. Its static source is in `docs/`; the repository owner can publish it by selecting **main → /docs** in [GitHub Pages settings](https://github.com/Malon0825/imposter-app/settings/pages).
+
 The [visual comparison review](design/VISUAL-REVIEW.md) links all 24 before/after screenshots, the side-by-side proposal gallery, and compact/tall phone captures. Open the live gallery at `http://127.0.0.1:1428/output/playwright/visual-review/index.html` while the preview is running.
 
 ## Play

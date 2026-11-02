@@ -52,17 +52,26 @@ async function captureVisuals(page) {
       earned: 0,
     },
   ];
+  const sampleNative = {
+    version: 1,
+    wifi: "Home Wi-Fi",
+    party_name: "Friday night",
+    endpoint: "https://192.168.1.10:4567/",
+    party_id: "visual-review",
+    admission: "11111111-1111-4111-8111-111111111111",
+    certificate: "visual-review-only",
+    expires: Math.floor(Date.now() / 1000) + 3600,
+  };
   const invitation =
-    "imposter://join/" +
+    "http://192.168.1.10:4568/join#invite=" +
     btoa(
       JSON.stringify({
-        version: 1,
-        wifi: "Home Wi-Fi",
-        party_name: "Friday night",
-        endpoint: "https://192.168.1.10:4567/",
-        party_id: "visual-review",
-        admission: "visual-fixture-not-an-invitation",
-        certificate: "visual-review-only",
+            version: 2,
+            native: sampleNative,
+            browser: {
+              endpoint: "http://192.168.1.10:4568/",
+              admission: "22222222-2222-4222-8222-222222222222",
+            },
       }),
     );
   const view = (phase = "lobby", extra = {}) => ({
