@@ -1,222 +1,139 @@
-# Topic library — research and first content proposal
+# Offline topic library
 
-Prepared 2026-11-01. Draft for discussion, not an approved or playtested launch database.
+Reviewed 2026-11-17. The current source catalog contains **23 topics, 24–31 word/hint pairs per topic, 581 pairs total**. All 552 original words and Classic hints are preserved. The mode review added 29 words and classified every entry for Classic, Act It and Sound Only. This is an editorial review; difficulty still needs group playtesting.
 
-## Direction
+## Source of truth
 
-Offer 22 selectable topic packs, with 10 candidate words or short phrases each below: 220 initial entries. These samples establish variety and vocabulary level; expand the approved packs after playtesting rather than treating ten entries as enough for release.
+Edit `crates/party-core/content/topics.json`. Each entry has its secret word, Classic hint, explicit `modes` and nonverbal `mode_hints`. The app bundles this file for offline play and calculates topic counts from its contents. Update `crates/party-core/content/hint-review.json` for Classic associations and `crates/party-core/content/mode-review.json` for word-by-word nonverbal examples, exclusions and filtered hint alternatives. Both review records are used by development checks and are not loaded into player views.
 
-This remains a secret-word bluffing game, not a trivia quiz. A useful entry is recognizable to most of the group, supports several indirect clues, and sits among plausible alternatives. Abstract topics are a deliberate challenge option alongside easy objects, food, and places.
+`TOPICS.md` describes scope and authoring policy. It is not a second word database. `scripts/prepare-content.py` validates and formats the JSON; it no longer rebuilds content from an old prose proposal and a separate positional hint list.
 
-The pack divisions, sample entries, difficulty judgments, and fun-factor assessments are our editorial proposals. Sources establish subject coverage, not that this game design is effective or that these words have been tested.
+Check without writing:
 
-## Research basis
+```powershell
+python scripts/prepare-content.py --check
+npm run test:core
+```
 
-- **Psychology:** the American Psychological Association covers emotions, learning/memory, perception/attention, personality, and social relationships. Use these as distinct accessible domains rather than one enormous Psychology category. Source: [APA psychology topics](https://www.apa.org/topics/).
-- **Sex education:** UNESCO's guidance frames sexuality education around informed, respectful learning about sex and relationships. Separate educational body/health vocabulary from relationship concepts, rather than presenting the whole domain as explicit entertainment. Source: [UNESCO sexuality education guidance](https://www.unesco.org/en/articles/international-technical-guidance-sexuality-education-evidence-informed-approach).
-- **Space:** NASA's overview supports a familiar vocabulary of planets and other solar-system objects. Source: [NASA solar-system facts](https://science.nasa.gov/solar-system/solar-system-facts/).
+Format after editing:
 
-The everyday entertainment/lifestyle packs below are original editorial curation, not a claim of scientific research into popularity. No copied commercial word lists or dare content are included.
+```powershell
+python scripts/prepare-content.py
+```
 
-## A. Everyday and party packs
+## Topic boundaries
 
-### 01. Everyday Objects
+Topics currently have 24–31 entries. Keep at least 20 reviewed Classic pairs per topic and at least 10 accepted words for each playable topic/mode combination; do not inflate counts with alternate spellings or duplicate concepts. A topic with fewer than 10 nonverbal candidates is unavailable in that mode.
 
-Easy. A good first-round pack: lots of shared experience and multiple uses to describe.
+- **Everyday:** Household and personal objects, such as Wallet, Toothbrush and Lamp.
+- **Food:** Foods, meals, snacks and drinks, such as Sushi, Curry and Lemonade.
+- **Animals:** Animals only, including mammals, birds, reptiles, amphibians, insects and marine animals. Dog, Bee and Octopus belong here.
+- **Nature:** Plants, fungi, landscapes, weather and natural phenomena. Cactus, Mushroom, Waterfall, Volcano, Rain and Thunder belong here. Fungi are included as their own kind of nature vocabulary, not labelled as plants.
+- **Places:** Buildings, venues and locations around town, such as Library, Hospital and Train station.
+- **Jobs:** Occupations and professional roles, such as Chef, Electrician and Coach.
+- **Travel:** Trip essentials, transport, preparation and vacation experiences, such as Passport, Layover, Road trip, Airplane, Train and Ferry.
+- **Movies:** Film-making, genres, fictional archetypes and story worlds, such as Screenplay, Superhero and Cliffhanger. A dragon is a fictional story creature in this pack, not a real animal.
+- **Music:** Instruments, song structure and performance, such as Guitar, Chorus and Rehearsal.
+- **Sports:** Physical sports and athletic activities, such as Basketball, Archery and Swimming. Chess belongs in Hobbies.
+- **Gaming:** Video-game mechanics, terminology and equipment, such as Respawn, Inventory and Controller.
+- **Technology:** Digital devices, software and internet habits, such as Smartphone, Screenshot and Web browser.
+- **Everyday chaos:** Recognizable mishaps and awkward situations, such as Lost luggage, Spilled coffee and Phone ringing in a meeting.
+- **Hobbies:** Leisure activities, crafts, creative interests and tabletop pursuits, such as Gardening, Photography, Chess, Beatboxing, Tap dancing, Metal detecting, Billiards and Dominoes.
+- **Celebrations:** Parties, festivals, ceremonies and associated objects, such as Wedding, Lantern and Diwali.
+- **Space & science:** Astronomy, exploration and related science, such as Moon, Rover and Gravity.
+- **Emotions:** Feelings and emotional experiences, such as Jealousy, Relief and Nostalgia.
+- **Psychology:** Thinking, perception, attention, learning and memory, such as Daydreaming, Confirmation bias and Imagination. Cognitive biases belong here rather than being treated solely as social behavior.
+- **Social behavior:** Group behavior and interpersonal dynamics, such as Cooperation, Peer pressure and Negotiation.
+- **Relationships:** Dating and relationship experiences, such as First date, Anniversary and Reconciliation. Opt-in.
+- **Body & puberty:** Educational anatomy and puberty vocabulary, such as Menstruation, Growth spurt and Uterus. Opt-in.
+- **Sex education:** Sexual and reproductive health vocabulary, including contraception, screening, pregnancy and menstrual products. HPV vaccination replaces the overly general Vaccination entry. Opt-in.
+- **Consent:** Consent, boundaries, privacy, communication and situations that affect personal choice, such as Bodily autonomy, Check-in and Coercion. Opt-in.
 
-Wallet, umbrella, mirror, pillow, toothbrush, scissors, key, candle, backpack, remote control.
+Choose a single primary topic for each entry. Related concepts may have different primary topics: a Backpack is an object, Backpacking is a travel activity, and Gardening is a hobby while Cactus is nature. Do not repeat the same word across packs to increase its selection odds.
 
-### 02. Food and Drinks
+## Imposter hint policy
 
-Easy. Sensory clues offer many ways to bluff. Broaden across cuisines when expanding.
+Civilians receive the secret word. The imposter receives an explicit role label and one authored starting hint, never the secret word. Hints remain mandatory and private. Guessing the word does not itself end the round or award points.
 
-Pizza, sushi, dumpling, taco, curry, noodles, ice cream, popcorn, coffee, bubble tea.
+A useful hint gives the imposter a direction for contributing a clue while leaving several believable answers. Merely being related to the target is insufficient. We review the cue from the imposter's side first, including the conservative case where only its own topic is selected.
 
-### 03. Animals and Nature
+### Research basis and editorial decisions
 
-Easy. Behavior, habitat, movement, and appearance create different clue paths.
+- The official [Codenames overview](https://www.czechgames.com/games/codenames) describes single-word clues linking multiple candidate words. We borrow the idea of checking a cue against several explicit candidates; our goal is to preserve uncertainty for bluffing rather than help a teammate identify every target.
+- The [Small World of Words paper](https://pubmed.ncbi.nlm.nih.gov/30298265/) distinguishes the dominant responses people give from additional weaker associations collected through multiple responses. This informed our decision to reject a familiar but dominant giveaway and also to reject an association that only works through a remote chain of ideas. That is an editorial inference for this game, not a tested finding about our library.
+- [De Deyne, Navarro and Storms (2013)](https://escholarship.org/uc/item/1596128p) distinguish forward and backward associative strength. We therefore review both directions: does seeing the hint suggest useful possibilities, and does the hint feel natural after seeing the secret word? An explanation that sounds plausible only after revealing the answer is insufficient.
+- The official [Codenames App FAQ](https://faq.codenamesapp.com/en/gameplay/how-to-play/rules-and-clues/) describes checking word forms and blocking clues about letters. For this game we retain stricter authored rules: meaning-based associations, no spelling cues, no translations, no repeated answer fragments, and no synonyms or near-definitions that identify the answer.
 
-Octopus, penguin, butterfly, elephant, dolphin, owl, cactus, mushroom, waterfall, volcano.
+These sources informed the review method. We did not measure human association strengths for these pairs. The candidate sets below are original editorial judgments, not responses from an association dataset or simulated player results.
 
-### 04. Places Around Town
+### Selection and rejection rules
 
-Easy. People can describe what happens there without naming the location.
+1. **Natural connection.** Prefer a familiar context, material, setting, consequence, action or experience. A reviewer should be able to explain the relationship in one short sentence without inventing an unusual situation. Different possible meanings of a word can be useful, but spelling tricks and chains of several indirect links are unsuitable.
+2. **Useful uncertainty.** Record 3–6 plausible answers from the same topic, including the target. At least two others must fit naturally. Do not pad a set with weak connections simply to pass validation. This range is our practical authoring rule, not a scientific estimate of guessing probability. The list need not contain every possible answer.
+3. **No dominant giveaway.** Even with alternatives, reject a cue if one answer feels overwhelmingly obvious. Counted alternatives do not prove equal plausibility. Avoid characteristic sounds, signature anatomy, unique tools, exact opposites and near-definitions when they immediately identify the target.
+4. **Enough information to bluff.** Check that a player who sees only the topic and hint can offer a relevant follow-up clue. A cue that covers almost the whole pack gives little help. Reject empty labels such as Thing, Animal or Anatomy, and reassess broad labels such as Audience in Movies.
+5. **Plain language.** Use one familiar alphabetic word, allowing a normal hyphenated word. A specialist secret word should still have an accessible hint; difficulty should not come from an obscure clue vocabulary.
+6. **Clean word choices.** If an entry is a category label or too close to another concept to support distinct rounds, replace it rather than force a poor hint. Keep exactly one primary topic and avoid alternate spellings as separate entries.
+7. **Topic context and repeat review.** Check with the narrowest relevant public context. Shared hints can be useful because they preserve alternatives. They are not automatically defects, but excessive reuse or a hint that covers nearly the entire topic needs revision.
 
-Library, supermarket, hospital, cinema, bakery, airport, museum, playground, salon, fire station.
+Examples from this pass:
 
-### 05. Jobs and Roles
+- **Piano → Classical:** also fits Violin, Orchestra, Flute and Harp. Replaces Keys, which strongly singled out Piano in this pack.
+- **Comedy → Timing:** also fits Plot twist and Stunt double. Replaces Audience, which offered almost no distinction among movie entries.
+- **Mouse → Desktop:** also fits Keyboard, Printer and Laptop. Replaces Cursor, which pointed too directly to Mouse.
+- **Souvenir → Market:** also fits Tour guide and Sightseeing. Replaces Keepsake, a near-synonym for the answer.
+- **Dog → Paws:** also fits Cat, Bear and Fox. Retained because the relationship is natural and useful.
+- **Guitar → Strings:** also fits Violin and Harp. Retained for the same reason.
 
-Easy. Use duties, tools, and workplaces as clues.
+### Educational vocabulary accuracy
 
-Chef, firefighter, pilot, teacher, detective, farmer, dentist, journalist, architect, magician.
+An association is not a definition, diagnosis or instruction. Check anatomical and health connections against reliable educational sources. [NIH's puberty overview](https://newsinhealth.nih.gov/2026/08/navigating-puberty) supports the connections among glands, hormonal signals and physical changes. [NIDDK's anatomy description](https://www.niddk.nih.gov/news/media-library/17880) supports the blood-flow association for Erection. [NHS's menopause overview](https://www.nhs.uk/conditions/menopause-and-perimenopause/what-are-menopause-and-perimenopause/) supports Menopause → Hormones.
 
-### 06. Travel and Vacation
+Keep consent vocabulary accurate in tone and meaning. [RAINN's consent guidance](https://rainn.org/share-the-facts/consent-101-respect-boundaries-and-building-trust/) states that silence, pressure, and being too intoxicated to make informed decisions do not establish consent. Silence therefore uses Pause, never Agreement or Permission; Coercion and Manipulation use cues about pressure tactics. Related candidate words do not imply that the concepts are equivalent or that any behavior is acceptable.
 
-Easy–medium. Familiar situations create lively clues without needing geography expertise.
+### Review record and validation
 
-Passport, suitcase, boarding pass, campsite, souvenir, sunscreen, hostel, road trip, jet lag, cruise.
+`crates/party-core/content/hint-review.json` records 409 topic-specific associations covering all 581 Classic pairs. Each association names its hint and 3–6 plausible secret words from that pack. These are editorial alternatives, not instructions to the player or additional hints delivered during a round.
 
-### 07. Movies and Story Worlds
+`python scripts/prepare-content.py --check` validates all three content files and the generated mode inventory. Checks cover pack sizes, unique words/topics, hint syntax and answer fragments, category labels, opt-in settings, complete review coverage, exact mode names, missing mode hints, explicit examples or exclusions, and alternatives inside the same filtered pool. Rust tests check safe selection, the 10-word boundary, repeat history, privacy and the Nature/Animals separation. `npm run test:content` also runs negative tests against malformed and stale review data.
 
-Easy–medium. Archetypes and story concepts avoid dependence on a particular franchise.
+These checks cannot establish semantic correctness, detect every synonym or word stem, prove that alternatives are equally plausible, or certify gameplay difficulty. Review those properties manually; passing the checks is only a maintenance safeguard.
 
-Superhero, zombie, vampire, time machine, plot twist, villain, dragon, haunted house, spaceship, detective story.
+## Game-mode review
 
-### 08. Music and Performance
+[TOPIC-MODES.md](TOPIC-MODES.md) lists every word, its accepted/excluded modes and per-topic counts. Regenerate it after content changes with `python scripts/prepare-content.py --write-mode-report`.
 
-Easy–medium. Sound, performance, and audience clues work well together.
+- **Classic:** all 23 topics, 581 words.
+- **Act It:** 21 playable topics, 486 words in those pools. Body & puberty has 6 tentative candidates and Sex education has 4, so neither topic enters the acting draw.
+- **Sound Only:** 14 playable topics, 194 words in those pools. Food, Gaming, Space & science, Psychology, Social behavior, Relationships, Body & puberty, Sex education and Consent are unavailable. Food has 6 sound candidates, Space & science has 1 and Body & puberty has 1; these small subsets remain blocked.
 
-Karaoke, guitar, drums, microphone, concert, choir, orchestra, DJ, duet, lullaby.
+Additions strengthen natural sound pools: Everyday +7, Nature +6, Travel +6, Technology +5 and Hobbies +5. Their sound pools now contain 16, 14, 13, 12 and 12 words respectively. Other topics are withheld when ten distinct useful clues would require weak associations or a change in subject.
 
-### 09. Sports and Play
+For Act It, accept a short solo physical clue without speaking, spelling, mouthing, required props or contact. For Sound Only, accept a familiar player-made noise without words, lyrics, gestures as extra clues or recordings. Generic noises that could fit almost anything do not establish compatibility. Fictional creature and machine sounds are acceptable in Movies; they are not used to claim silent space phenomena have real sounds.
 
-Easy. Include several sporting traditions rather than assuming one national favorite.
+Each accepted word has a concrete example and each excluded word has a reason in the mode review. Existing hints were reconsidered after filtering: a playable nonverbal hint must retain 3–6 reviewed candidate answers inside that mode's actual word pool. Some words therefore have a different private hint for acting or sound. Small unavailable subsets retain Classic hints only as editorial references; those hints are not approved for dealing in the unavailable mode.
 
-Basketball, football (soccer), badminton, swimming, bowling, boxing, surfing, chess, skateboarding, volleyball.
+Use `Topic::supports_mode`, `Topic::words_for_mode`, `Topic::draw_word`, `topics_for_mode` and `modes_for_topics` for the upcoming rule flow. The draw rejects undersized topics and never falls back to incompatible words. Shared word history survives switching modes; exhaustion clears only the eligible subset. The host's enabled topic IDs continue to control access, including opt-in packs.
 
-### 10. Gaming
+The active game currently calls the shared selector with Classic. This content change prepares the mode data and guards; the proposed rule-reveal screens and session toggle still await implementation. It does not update an already distributed APK.
 
-Medium; familiarity-dependent. Good for groups who play games, not a universal default.
+## Review and playtesting
 
-Respawn, boss fight, loot, checkpoint, avatar, speedrun, power-up, controller, open world, side quest.
+The first 2026-11-16 pass separated Nature from Animals and expanded all 23 packs to 24 pairs. The second pass used the research-informed method above to review all 552 pairs, revise 160 pairs, and record plausible alternatives for every hint. Five secret words changed:
 
-### 11. Internet and Technology
+- **Credits → Alien:** adds a clear third science-fiction candidate alongside Time machine and Spaceship for Future.
+- **Recall → Tip-of-the-tongue:** replaces a concept close to Memory with a recognizable retrieval experience.
+- **Concentration → Multitasking:** broadens the attention-related entries with a more distinct everyday activity.
+- **Reward → Procrastination:** replaces a broad word and its unhelpful Games cue with an everyday psychological behavior and Deadline.
+- **Reproductive health → Menopause:** replaces a topic-level label with a specific reproductive-health concept.
 
-Easy–medium. Shared digital habits without depending on short-lived celebrity news.
+At the end of the 2026-11-16 passes all topics had 24 words. The 2026-11-17 mode pass added 29 entries while preserving the original words and Classic hints. The four relationship/educational packs remain opt-in. The library has received an editorial review, not a human playtest certification.
 
-Meme, emoji, password, Wi-Fi, screenshot, livestream, group chat, spam, chatbot, power bank.
+For the next playtest:
 
-### 12. Everyday Chaos
-
-Medium; short phrases. Relatable mishaps provide humorous material without requiring personal disclosures.
-
-Oversleeping, wrong group chat, dead phone battery, lost luggage, awkward silence, missed bus, spilled coffee, forgotten birthday, burnt toast, wardrobe malfunction.
-
-### 13. Hobbies and Creativity
-
-Easy–medium. Helps include interests beyond gaming and sports.
-
-Gardening, knitting, photography, pottery, origami, baking, painting, birdwatching, journaling, magic trick.
-
-### 14. Celebrations and Traditions
-
-Medium; cultural familiarity varies. Use a preview so the group knows what it is selecting.
-
-Birthday cake, fireworks, wedding, graduation, costume party, lantern, parade, gift wrapping, New Year's countdown, family reunion.
-
-## B. Curious minds
-
-### 15. Space and Science
-
-Medium. Concrete objects and familiar phenomena first; technical vocabulary can be an expansion.
-
-Sun, Moon, Mars, Saturn, comet, asteroid, astronaut, rocket, telescope, gravity.
-
-### 16. Emotions — Psychology
-
-Medium. Players can describe situations, expressions, or sensations. Do not ask players to identify which person at the party “has” an emotion.
-
-Jealousy, excitement, embarrassment, relief, curiosity, frustration, pride, loneliness, gratitude, surprise.
-
-### 17. Mind and Memory — Psychology
-
-Medium–challenge. More abstract and familiarity-dependent than objects.
-
-Daydreaming, déjà vu, distraction, habit, motivation, nostalgia, attention, memory, imagination, learning.
-
-### 18. Social Behavior — Psychology
-
-Challenge. Works for groups who enjoy discussing why people act as they do. Not a personality test or diagnosis game.
-
-Peer pressure, first impression, conformity, persuasion, cooperation, competition, empathy, trust, stereotype, confirmation bias.
-
-## C. Relationships and sex education
-
-These are distinct, clearly labelled packs selected intentionally by the group. Do not silently mix them into a default random pack. Educational terminology is not the same as explicit content; final audience suitability and store content declarations depend on the actual reviewed word set.
-
-### 19. Dating and Relationships
-
-Medium; opt-in relationship themes. Situations invite playful clues without requiring personal stories.
-
-Crush, first date, flirting, long-distance relationship, breakup, anniversary, proposal, blind date, love letter, matchmaking.
-
-### 20. Body and Puberty — Sex Education
-
-Medium; opt-in educational body vocabulary. Use ordinary or anatomical terms consistently.
-
-Puberty, menstruation, erection, ovulation, uterus, ovaries, testes, sperm, breast development, body hair.
-
-### 21. Sexual Health — Sex Education
-
-Medium–challenge; opt-in sexual-health vocabulary. Entries are words to describe, not prompts for medical advice or personal health disclosures.
-
-Condom, contraception, lubricant, pregnancy test, IUD, vaccination, STI screening, fertility, prenatal care, reproductive health.
-
-### 22. Consent and Communication — Sex Education
-
-Medium–challenge; opt-in interpersonal concepts. Keep the clue about the concept, not another player's experiences.
-
-Consent, boundaries, privacy, permission, refusal, respect, communication, personal space, mutual agreement, bodily autonomy.
-
-Some entries in this last pack are close concepts: playtest whether players can distinguish them through multiple clues. If rounds feel ambiguous, replace overlapping entries or merge exact equivalents into one canonical entry.
-
-## Topic selection flow — proposal
-
-1. Host opens **Topics** in the lobby.
-2. Show pack name, short description, difficulty, educational/relationship labels where applicable, and a few sample entries.
-3. Host selects one or more packs. Keep opt-in packs out of automatic default selections.
-4. Everyone sees the selected pack names before marking Ready. Setup changes clear readiness, following the existing game plan.
-5. Choose one pack for the round, then one unused entry within it. Recommended: equal chance per selected pack rather than allowing a much larger pack to dominate.
-6. Do not expose the chosen word publicly before results. The imposter always receives an explicit imposter role label and a related starting-word hint. Whether the round's pack name is also visible is still a separate difficulty decision; test hints with the actual category visibility.
-
-Do not alter role randomness: word-repeat avoidance is separate from the fully independent imposter assignment.
-
-## Content preparation rules
-
-- Start concrete/easy for first-time groups; make specialist packs discoverable rather than mandatory.
-- Prefer concise entries, but permit clear short phrases where they are more familiar than a formal term.
-- Review every entry for several possible clues and plausible neighboring answers. Familiarity and clue quality matter more than pack size.
-- Track canonical meaning, display term, mandatory imposter starting-word hint, aliases/localizations, primary pack, difficulty, topic labels, and source/review notes where relevant. These are editorial requirements, not a finalized database schema.
-- Resolve ambiguous words: “football (soccer)” is intentional; unqualified “football” means different games in different regions.
-- Do not duplicate the same concept under several spellings to increase its selection odds. Keep broad/abstract concepts out of the easy pack by accident.
-- Avoid using diagnoses as casual insults or treating stereotypes, personality quizzes, or popular relationship labels as established science.
-- Psychology/sex-education entries do not require players to reveal their own sexuality, anatomy, health history, or relationships.
-- Any explanatory facts added later need a separate accuracy review. This draft lists game vocabulary, not definitions, health guidance, or proof of educational effectiveness.
-- Keep word/hint content distinct: the mandatory starting-word hint should not be the definition that immediately identifies the answer. The 220 candidates above are not yet fully paired or release-ready.
-- All approved content should be bundled for offline local play. There is no AI-generated topic or dare dependency during a party.
-
-## Mandatory imposter hint — confirmed mechanic
-
-Civilian screen: **You are a civilian · Secret word: Dog**.
-
-Imposter screen: **You are the imposter · Hint: Paws**.
-
-The imposter knows their role and receives one related word as a starting clue for bluffing. They do not receive the actual secret word. There is no option to disable this hint. Use authored, bundled pairs, not a hint generated during the game.
-
-Authoring rules:
-
-- Give an indirect association that fits several plausible answers. **Paws** fits Dog, Cat, Bear, and other animals; it offers a foothold without uniquely identifying Dog.
-- Reject synonyms, translations, word fragments, spelling cues, or near-definitions. **Canine** for Dog is too direct; a unique familiar sound such as **Bark** is likely too revealing for the intended difficulty.
-- Avoid clues so broad they are useless: **Thing** does not help an imposter join the conversation.
-- Judge the pair within its pack and actual public context. Paws is a useful example, not a guarantee of difficulty; if all other selected animal entries lack paws, it becomes easier to infer Dog.
-- Prefer a single familiar word for the hint. Review translations as pairs rather than translating each term independently; associations and ambiguity vary across languages.
-- Do not expose the exact imposter hint on civilian screens before the round ends. Keep it stable through reconnects.
-- Playtest two separate outcomes: can the imposter contribute a plausible clue, and do they immediately identify the answer? Adjust pairs that fail either side.
-
-Add Dog as a candidate when expanding the animal pack; it is the confirmed mechanic example, not an extra entry in the 220 counted samples. Other word/hint pairs need drafting and review before implementation.
-
-## Recommended launch preparation
-
-Keep these 22 as the proposed catalog and select a smaller balanced set for the first playtest: Everyday Objects, Food and Drinks, Animals and Nature, Everyday Chaos, Internet and Technology, Emotions, Mind and Memory, Dating and Relationships, Body and Puberty, and Sexual Health. Use different groups for specialist packs rather than forcing every tester through them.
-
-Test a small batch from each selected pack. Observe unfamiliar words, instantly revealing clues, ambiguous concepts, repeated clue patterns, and whether an imposter can reasonably bluff. “Fun” remains a playtest finding, not something the research sources certify.
-
-After approving the catalog, a reasonable content-production target is 40–60 reviewed entries per launch pack, adjusted by quality rather than filled mechanically. This is a proposed target, not completed content. Local food, festivals, language-specific humor, and regional pop culture can become additional packs once the launch audience/languages are chosen.
-
-## Decisions to carry forward
-
-- Which packs are in the first release versus later expansion?
-- Which languages and regional references should the launch content support?
-- Is the round category visible to everyone? The related starting-word hint is already mandatory and separate from category visibility.
-- Do we offer Easy / Mixed / Challenge filters, or keep difficulty as a pack label initially?
-- Confirm the opt-in treatment and desired audience for relationship/sex-education packs before final content review.
+1. Show fresh participants only the topic and hint. Ask for a plausible spoken clue and a few possible answers, without showing the editorial candidate list.
+2. Record unfamiliar wording, hints that repeatedly cause an immediate exact guess, and hints that leave players unable to contribute. Do not treat a single correct guess as proof that a hint is bad.
+3. Reveal the target and ask whether the connection feels natural. Capture any explanation that depends on specialist knowledge, a regional reference or an invented scenario.
+4. Run ordinary rounds with different speaker orders and topic selections. Judge whether the imposter can participate and whether the clue creates a consistent advantage or disadvantage.
+5. Rework the word and hint together, update the review record, and repeat with fresh participants. Record actual observations before making claims about difficulty or balance.
+6. For nonverbal modes, separately test the word-holder's example and the imposter's topic-plus-mode-hint. Record words that produce only the same generic sound or a long acted story, then exclude or revise them. Recheck the 10-word threshold and filtered alternatives after every removal.

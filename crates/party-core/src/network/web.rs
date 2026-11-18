@@ -117,7 +117,20 @@ pub(super) struct WebHost {
 struct BrowserSessions {
     players: HashMap<String, BrowserPlayer>,
     joins: HashMap<String, (String, String)>, // pending join proof -> name, resume token
+    recoveries: HashMap<String, Recovery>,    // private browser proof -> host-reviewed request
 }
+struct Recovery {
+    id: String,
+    player_id: String,
+    created: Instant,
+    decision: RecoveryDecision,
+}
+enum RecoveryDecision {
+    Pending,
+    Approved(String),
+    Rejected,
+}
+const RECOVERY_TTL: Duration = Duration::from_secs(120);
 struct BrowserPlayer {
     player_id: String,
     controller: String,
@@ -163,6 +176,7 @@ pub(super) fn serve(host: &Arc<Host>, listener: tokio::net::TcpListener) {
         .route("/guest/bootstrap", post(bootstrap))
         .route("/guest/join", post(browser_join))
         .route("/guest/resume", post(resume))
+        .route("/guest/recover", post(recover))
         .route("/guest/state", post(browser_state))
         .route("/guest/action", post(browser_action))
         .fallback(static_asset)
@@ -301,6 +315,208 @@ fn uuid(text: &str) -> bool {
 }
 fn credentials(host: &Host, token: &str, player: &BrowserPlayer, view: Value) -> Value {
     json!({"session_id":player.player_id,"credentials":{"invitation":web(host).invitation.encode(),"token":token,"player_id":player.player_id,"is_host":false},"view":view})
+}
+
+pub(super) async fn host_view(host: &Host, player_id: &str) -> Value {
+    let sessions = web(host).sessions.lock().await;
+    let game = host.game.lock().await;
+    let mut view = game.view(player_id);
+    let mut pending: Vec<_> = sessions
+        .recoveries
+        .values()
+        .filter(|r| {
+            r.created.elapsed() < RECOVERY_TTL && matches!(r.decision, RecoveryDecision::Pending)
+        })
+        .filter_map(|r| {
+            game.players
+                .iter()
+                .find(|p| p.id == r.player_id && !p.left && !p.connected)
+                .map(|p| {
+                    (
+                        r.created,
+                        json!({"id":r.id,"name":p.name,"code":r.id[..6].to_uppercase()}),
+                    )
+                })
+        })
+        .collect();
+    pending.sort_by_key(|(created, _)| *created);
+    view["reconnect_requests"] = json!(pending.into_iter().map(|(_, r)| r).collect::<Vec<_>>());
+    view
+}
+
+// Only the locally owned host session calls this. Guest actions cannot approve recovery.
+pub(super) async fn decide_recovery(host: &Host, action: &Action) -> GameResult<()> {
+    let mut sessions = web(host).sessions.lock().await;
+    let game = host.game.lock().await;
+    if game.phase == "ended"
+        || action.round_id != game.round.id
+        || action.id.is_empty()
+        || action.id.len() > 80
+    {
+        return Err("This recovery request is no longer available.".into());
+    }
+    let request_id = action.value.as_str().unwrap_or_default();
+    let proof = sessions
+        .recoveries
+        .iter()
+        .find(|(_, r)| r.id == request_id && r.created.elapsed() < RECOVERY_TTL)
+        .map(|(proof, _)| proof.clone())
+        .ok_or("This recovery request expired. Ask the player to try again.")?;
+    let recovery = &sessions.recoveries[&proof];
+    if !matches!(recovery.decision, RecoveryDecision::Pending) {
+        return Ok(()); // A retried host approval must not rotate credentials twice.
+    }
+    let id = recovery.player_id.clone();
+    if action.kind == "reject_reconnect" {
+        sessions.recoveries.get_mut(&proof).unwrap().decision = RecoveryDecision::Rejected;
+        return Ok(());
+    }
+    if !game
+        .players
+        .iter()
+        .any(|p| p.id == id && !p.left && !p.connected)
+    {
+        return Err("This player has already reconnected or left the party.".into());
+    }
+    let old_tokens: Vec<_> = sessions
+        .players
+        .iter()
+        .filter(|(_, p)| p.player_id == id)
+        .map(|(token, _)| token.clone())
+        .collect();
+    sessions.players.retain(|_, p| p.player_id != id);
+    sessions
+        .joins
+        .retain(|_, (_, token)| !old_tokens.contains(token));
+    for recovery in sessions
+        .recoveries
+        .values_mut()
+        .filter(|r| r.player_id == id)
+    {
+        recovery.decision = RecoveryDecision::Rejected;
+    }
+    let token = Uuid::new_v4().to_string();
+    sessions.players.insert(
+        token.clone(),
+        BrowserPlayer {
+            player_id: id,
+            controller: String::new(),
+        },
+    );
+    let recovery = sessions.recoveries.get_mut(&proof).unwrap();
+    recovery.decision = RecoveryDecision::Approved(token);
+    recovery.created = Instant::now();
+    Ok(())
+}
+
+#[derive(Deserialize)]
+struct Recover {
+    party_id: String,
+    admission: String,
+    name: String,
+    request_id: String,
+    controller: String,
+}
+async fn recover(State(state): State<HostState>, Json(body): Json<Recover>) -> Response {
+    let Ok(host) = upgrade(&state) else {
+        return error(StatusCode::GONE, "party_closed", "This party closed.");
+    };
+    if !valid_admission(&host, &body.party_id, &body.admission) {
+        return error(
+            StatusCode::UNAUTHORIZED,
+            "invitation_expired",
+            "Scan the host's current QR to reconnect.",
+        );
+    }
+    if !uuid(&body.request_id) || !uuid(&body.controller) {
+        return bad("Invalid recovery request.");
+    }
+    let name = match crate::game::clean_name(&body.name) {
+        Ok(name) => name,
+        Err(message) => return bad(&message),
+    };
+    let mut sessions = web(&host).sessions.lock().await;
+    let mut game = host.game.lock().await;
+    sessions
+        .recoveries
+        .retain(|_, r| r.created.elapsed() < RECOVERY_TTL);
+    if game.phase == "ended" {
+        return error(
+            StatusCode::GONE,
+            "party_closed",
+            "This party has ended. Ask the host for a new invitation.",
+        );
+    }
+    let Some(player) = game
+        .players
+        .iter()
+        .find(|p| p.id != game.host && !p.left && p.name.to_lowercase() == name.to_lowercase())
+    else {
+        return error(StatusCode::CONFLICT, "recovery_unavailable", "No returning player has that name. Use the name you joined with, or join as a new player in the lobby.");
+    };
+    let id = player.id.clone();
+    let connected = player.connected;
+    if let Some(recovery) = sessions.recoveries.get(&body.request_id) {
+        if recovery.player_id != id {
+            return bad("That recovery request was already used for another player.");
+        }
+        match &recovery.decision {
+            RecoveryDecision::Rejected => {
+                return error(
+                    StatusCode::FORBIDDEN,
+                    "recovery_rejected",
+                    "The host declined this request. Check with them before trying again.",
+                )
+            }
+            RecoveryDecision::Approved(token) => {
+                let token = token.clone();
+                let Some(player) = sessions.players.get_mut(&token) else {
+                    return error(
+                        StatusCode::CONFLICT,
+                        "recovery_unavailable",
+                        "This recovery was replaced. Ask the host to reconnect you again.",
+                    );
+                };
+                player.controller = body.controller;
+                game.connection(&id, true);
+                let result = credentials(&host, &token, player, game.view(&id));
+                drop(game);
+                drop(sessions);
+                host.seen.lock().await.insert(id, Instant::now());
+                return Json(json!({"status":"approved","session":result})).into_response();
+            }
+            RecoveryDecision::Pending => {}
+        }
+    } else {
+        if connected || !sessions.players.values().any(|p| p.player_id == id) {
+            return error(StatusCode::CONFLICT, "recovery_unavailable", "That player is still connected. Close their old tab, wait about 10 seconds, then try again.");
+        }
+        if sessions.recoveries.len() >= 48 {
+            return error(
+                StatusCode::TOO_MANY_REQUESTS,
+                "rate_limit",
+                "Too many recovery requests. Wait two minutes and try again.",
+            );
+        }
+        sessions.recoveries.insert(
+            body.request_id.clone(),
+            Recovery {
+                id: Uuid::new_v4().to_string(),
+                player_id: id,
+                created: Instant::now(),
+                decision: RecoveryDecision::Pending,
+            },
+        );
+    }
+    if connected {
+        return error(
+            StatusCode::CONFLICT,
+            "recovery_unavailable",
+            "This player has already reconnected. Use their active tab.",
+        );
+    }
+    let recovery = &sessions.recoveries[&body.request_id];
+    Json(json!({"status":"pending","code":recovery.id[..6].to_uppercase()})).into_response()
 }
 async fn browser_join(State(state): State<HostState>, Json(body): Json<BrowserJoin>) -> Response {
     let Ok(host) = upgrade(&state) else {
@@ -470,8 +686,11 @@ async fn browser_request(state: HostState, headers: HeaderMap, action: Option<Ac
     if let Some(action) = action {
         if ![
             "ready",
+            "topic_vote",
             "role_ready",
+            "clue",
             "vote",
+            "report",
             "choice",
             "done",
             "skip",
@@ -619,6 +838,236 @@ mod tests {
             value,
         }
     }
+    fn recovery_body(invite: &SharedInvitation, name: &str) -> Value {
+        json!({"party_id":invite.native.party_id,"admission":invite.browser.admission,
+            "name":name,"request_id":Uuid::new_v4().to_string(),"controller":Uuid::new_v4().to_string()})
+    }
+    async fn recovery(
+        client: &Client,
+        invite: &SharedInvitation,
+        body: Value,
+    ) -> reqwest::Response {
+        request(client, invite, "guest/recover", body, None, "")
+            .send()
+            .await
+            .unwrap()
+    }
+    #[tokio::test]
+    async fn host_approved_recovery_preserves_identity_role_score_and_locked_vote() {
+        let host = host().await;
+        let invite = SharedInvitation::parse(&host.invitation()).unwrap();
+        let client = Client::new();
+        let original = joined(&client, &invite, "Mia", &Uuid::new_v4().to_string()).await;
+        joined(&client, &invite, "Ben", &Uuid::new_v4().to_string()).await;
+        let id = original["credentials"]["player_id"].as_str().unwrap();
+        let original_role;
+        {
+            let mut game = host.host.as_ref().unwrap().game.lock().await;
+            for player in &mut game.players {
+                player.ready = true;
+            }
+            game.players.iter_mut().find(|p| p.id == id).unwrap().points = 7;
+            game.apply(&host.player_id, &command(0, "start", Value::Null))
+                .unwrap();
+            for voter in game.round.roster.clone() {
+                game.apply(&voter, &command(1, "topic_vote", json!(["food"])))
+                    .unwrap();
+            }
+            game.apply(&host.player_id, &command(1, "begin_round", Value::Null))
+                .unwrap();
+            original_role = game.view(id)["private_role"].clone();
+            game.connection(id, false);
+            assert!(game.paused);
+        }
+        let body = recovery_body(&invite, " mia ");
+        let pending: Value = recovery(&client, &invite, body.clone())
+            .await
+            .json()
+            .await
+            .unwrap();
+        assert_eq!(pending["status"], "pending");
+        assert!(pending.get("session").is_none());
+        assert!(pending.get("credentials").is_none());
+        let view = host.snapshot().await.unwrap();
+        let review = &view["reconnect_requests"][0];
+        assert_eq!(review["code"], pending["code"]);
+        assert_ne!(review["id"], body["request_id"]); // Public approval ID is not the private recovery proof.
+        let approve = command(1, "approve_reconnect", review["id"].clone());
+        host.send(approve.clone()).await.unwrap();
+        host.send(approve).await.unwrap();
+        let recovered: Value = recovery(&client, &invite, body.clone())
+            .await
+            .json()
+            .await
+            .unwrap();
+        let session = &recovered["session"];
+        assert_eq!(session["credentials"]["player_id"], id);
+        assert_ne!(
+            session["credentials"]["token"],
+            original["credentials"]["token"]
+        );
+        assert_eq!(session["view"]["private_role"], original_role);
+        assert_eq!(session["view"]["paused"], false);
+        assert_eq!(session["view"]["players"].as_array().unwrap().len(), 3);
+        assert_eq!(session["view"]["players"][1]["points"], 7);
+        assert!(session["view"].get("reconnect_requests").is_none());
+        let retry: Value = recovery(&client, &invite, body.clone())
+            .await
+            .json()
+            .await
+            .unwrap();
+        assert_eq!(retry["session"]["credentials"], session["credentials"]);
+        let denied = request(&client, &invite, "guest/resume", json!({"party_id":invite.native.party_id,"player_id":id,"controller":Uuid::new_v4().to_string()}), Some(&original), "").send().await.unwrap();
+        assert_eq!(denied.status(), StatusCode::UNAUTHORIZED);
+        let mut guessed = body.clone();
+        guessed["request_id"] = review["id"].clone();
+        assert_eq!(
+            recovery(&client, &invite, guessed).await.status(),
+            StatusCode::CONFLICT
+        );
+        {
+            let mut game = host.host.as_ref().unwrap().game.lock().await;
+            let ids: Vec<_> = game.players.iter().map(|p| p.id.clone()).collect();
+            for actor in ids {
+                game.apply(&actor, &command(1, "role_ready", Value::Null))
+                    .unwrap();
+            }
+            game.apply(&host.player_id, &command(1, "open_vote", Value::Null))
+                .unwrap();
+            game.apply(id, &command(1, "vote", json!(host.player_id)))
+                .unwrap();
+            game.connection(id, false);
+        }
+        let ballot_body = recovery_body(&invite, "Mia");
+        recovery(&client, &invite, ballot_body.clone())
+            .await
+            .error_for_status()
+            .unwrap();
+        let ballot_review = host.snapshot().await.unwrap()["reconnect_requests"][0]["id"].clone();
+        host.send(command(1, "approve_reconnect", ballot_review))
+            .await
+            .unwrap();
+        let ballot: Value = recovery(&client, &invite, ballot_body)
+            .await
+            .json()
+            .await
+            .unwrap();
+        assert_eq!(ballot["session"]["view"]["my_vote"], host.player_id);
+        assert_eq!(ballot["session"]["view"]["vote_count"], 1);
+        assert_eq!(ballot["session"]["view"]["players"][1]["points"], 7);
+        assert_eq!(
+            recovery(&client, &invite, body).await.status(),
+            StatusCode::FORBIDDEN
+        );
+    }
+    #[tokio::test]
+    async fn recovery_requires_disconnection_host_approval_and_a_live_place() {
+        let host = host().await;
+        let invite = SharedInvitation::parse(&host.invitation()).unwrap();
+        let client = Client::new();
+        let controller = Uuid::new_v4().to_string();
+        let player = joined(&client, &invite, "Élodie", &controller).await;
+        let id = player["credentials"]["player_id"].as_str().unwrap();
+        for name in ["ÉLODIE", "Alex", "Nobody"] {
+            assert_eq!(
+                recovery(&client, &invite, recovery_body(&invite, name))
+                    .await
+                    .status(),
+                StatusCode::CONFLICT
+            );
+        }
+        let mut invalid = recovery_body(&invite, "élodie");
+        invalid["admission"] = json!(Uuid::new_v4().to_string());
+        assert_eq!(
+            recovery(&client, &invite, invalid).await.status(),
+            StatusCode::UNAUTHORIZED
+        );
+        host.host
+            .as_ref()
+            .unwrap()
+            .game
+            .lock()
+            .await
+            .connection(id, false);
+        let body = recovery_body(&invite, " élODIE ");
+        recovery(&client, &invite, body.clone())
+            .await
+            .error_for_status()
+            .unwrap();
+        let review = host.snapshot().await.unwrap()["reconnect_requests"][0]["id"].clone();
+        for kind in ["approve_reconnect", "reject_reconnect"] {
+            let denied = request(
+                &client,
+                &invite,
+                "guest/action",
+                serde_json::to_value(command(0, kind, review.clone())).unwrap(),
+                Some(&player),
+                &controller,
+            )
+            .send()
+            .await
+            .unwrap();
+            assert_eq!(denied.status(), StatusCode::FORBIDDEN);
+        }
+        host.send(command(0, "reject_reconnect", review))
+            .await
+            .unwrap();
+        assert_eq!(
+            recovery(&client, &invite, body).await.status(),
+            StatusCode::FORBIDDEN
+        );
+        host.host
+            .as_ref()
+            .unwrap()
+            .game
+            .lock()
+            .await
+            .connection(id, false);
+        let expired = recovery_body(&invite, "élodie");
+        recovery(&client, &invite, expired.clone())
+            .await
+            .error_for_status()
+            .unwrap();
+        let review = host.snapshot().await.unwrap()["reconnect_requests"][0]["id"].clone();
+        web(host.host.as_ref().unwrap())
+            .sessions
+            .lock()
+            .await
+            .recoveries
+            .get_mut(expired["request_id"].as_str().unwrap())
+            .unwrap()
+            .created = Instant::now() - RECOVERY_TTL;
+        assert!(host
+            .send(command(0, "approve_reconnect", review))
+            .await
+            .is_err());
+        assert!(host.snapshot().await.unwrap()["reconnect_requests"]
+            .as_array()
+            .unwrap()
+            .is_empty());
+        let removed = recovery_body(&invite, "Élodie");
+        recovery(&client, &invite, removed.clone())
+            .await
+            .error_for_status()
+            .unwrap();
+        let review = host.snapshot().await.unwrap()["reconnect_requests"][0]["id"].clone();
+        host.send(command(0, "remove", json!(id))).await.unwrap();
+        assert!(host
+            .send(command(0, "approve_reconnect", review))
+            .await
+            .is_err());
+        assert_eq!(
+            recovery(&client, &invite, removed).await.status(),
+            StatusCode::CONFLICT
+        );
+        host.send(command(0, "end", Value::Null)).await.unwrap();
+        assert_eq!(
+            recovery(&client, &invite, recovery_body(&invite, "Mia"))
+                .await
+                .status(),
+            StatusCode::GONE
+        );
+    }
     #[tokio::test]
     async fn web_assets_and_shared_qr_preserve_native_tls_and_origin_guards() {
         let host = host().await;
@@ -729,7 +1178,16 @@ mod tests {
         .await
         .unwrap();
         assert_eq!(stale.status(), StatusCode::CONFLICT);
-        for kind in ["start", "end", "topics", "remove", "open_vote", "abandon"] {
+        for kind in [
+            "start",
+            "begin_round",
+            "draw_topic",
+            "end",
+            "topics",
+            "remove",
+            "open_vote",
+            "abandon",
+        ] {
             let denied = request(
                 &client,
                 &invite,
@@ -798,6 +1256,26 @@ mod tests {
             web_action(&client, &invite, p, c, command(0, "ready", json!(true))).await;
         }
         host.send(command(0, "start", Value::Null)).await.unwrap();
+        host.send(command(1, "topic_vote", json!(["food"])))
+            .await
+            .unwrap();
+        native
+            .send(command(1, "topic_vote", json!(["food"])))
+            .await
+            .unwrap();
+        for (p, c) in browsers.iter().zip(&controllers) {
+            web_action(
+                &client,
+                &invite,
+                p,
+                c,
+                command(1, "topic_vote", json!(["food"])),
+            )
+            .await;
+        }
+        host.send(command(1, "begin_round", Value::Null))
+            .await
+            .unwrap();
         let game = host.host.as_ref().unwrap().game.lock().await;
         let imposter = game.round.imposter.clone();
         let word = game.round.word.clone();
@@ -864,10 +1342,24 @@ mod tests {
         for p in result["players"].as_array().unwrap() {
             assert_eq!(p["points"], if p["id"] == imposter { 0 } else { 1 });
         }
-        host.send(command(round, "punish", Value::Null))
+        host.send(command(round, "open_reports", Value::Null))
             .await
             .unwrap();
+        host.send(command(round, "report", json!([])))
+            .await
+            .unwrap();
+        native
+            .send(command(round, "report", json!([host.player_id])))
+            .await
+            .unwrap();
+        for (p, c) in browsers.iter().zip(&controllers) {
+            let report = command(round, "report", json!([host.player_id]));
+            web_action(&client, &invite, p, c, report.clone()).await;
+            web_action(&client, &invite, p, c, report).await;
+        }
         let view = host.snapshot().await.unwrap();
+        assert_eq!(view["phase"], "punishment");
+        assert_eq!(view["result"]["report_penalty"], 0);
         let current = view["punishment"]["player_id"].as_str().unwrap();
         let choose = command(round, "choice", json!("dare"));
         let done = command(round, "done", Value::Null);

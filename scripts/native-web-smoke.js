@@ -57,7 +57,16 @@ async function smokeInstalledHost(page) {
     );
     guests.push({ page: p, context, id: s.credentials.player_id });
   }
-  const started = await call("host-action", { kind: "start" });
+  await call("host-action", { kind: "start" });
+  await call("host-action", { kind: "topic_vote", value: ["food"] });
+  await call("native-action", { kind: "topic_vote", value: ["food"] });
+  for (const g of guests) {
+    await g.page.getByRole("button", { name: "Food", exact: true }).click();
+    await g.page
+      .getByRole("button", { name: "Lock my vote", exact: true })
+      .click();
+  }
+  const started = await call("host-action", { kind: "begin_round" });
   const native = await call("native-state");
   let imposter = started.private_role.imposter
     ? info.host
@@ -111,6 +120,7 @@ async function smokeInstalledHost(page) {
       p.points === (p.id === imposter ? 0 : 1),
       "Installed host score mismatch",
     );
+  await call("host-action", { kind: "open_reports" });
   const punishment = await call("host-action", { kind: "punish" });
   const loser = punishment.punishment.player_id;
   if (loser === info.host || loser === info.native) {

@@ -172,11 +172,183 @@ export function Confetti() {
 }
 
 export function TopicArt({ name }: { name: string }) {
+  if (name.startsWith("vote-")) {
+    const type = name.slice(5);
+    const props = {
+      viewBox: "0 0 80 80",
+      className: `topic-art topic-art-voting topic-art-${type}`,
+      "aria-hidden": true as const,
+    };
+    if (type === "cup")
+      return (
+        <svg {...props}>
+          <g fill="none" stroke="#d79b7e" strokeWidth="3" strokeLinecap="round">
+            <path d="M25 22c-8-6 8-11 2-18M40 22c-8-6 8-11 2-18M55 22c-8-6 8-11 2-18" />
+          </g>
+          <path d="M15 29h43v33q0 11-21 11T15 62Z" fill="#f1ecda" />
+          <path
+            d="M58 35h6q16 0 10 17-4 8-16 7"
+            fill="none"
+            stroke="#f1ecda"
+            strokeWidth="7"
+          />
+        </svg>
+      );
+    if (type === "pizza-card")
+      return (
+        <svg {...props}>
+          <path
+            d="M6 75Q2 78 4 71L20 12Q20 4 29 5Q65 4 79 29Q82 35 75 39L9 76Z"
+            fill="#e9b45b"
+          />
+          <path
+            d="M20 12Q19 4 29 5Q64 4 79 29Q82 35 75 39Q57 17 20 19Z"
+            fill="#cd9467"
+          />
+          <g fill="#cf795f">
+            <circle cx="22" cy="43" r="9" />
+            <circle cx="48" cy="33" r="9" />
+            <circle cx="34" cy="52" r="8" />
+          </g>
+          <g fill="#4b5241">
+            <ellipse
+              cx="29"
+              cy="24"
+              rx="2"
+              ry="3"
+              transform="rotate(25 29 24)"
+            />
+            <ellipse
+              cx="48"
+              cy="48"
+              rx="2"
+              ry="3"
+              transform="rotate(25 48 48)"
+            />
+            <ellipse
+              cx="14"
+              cy="63"
+              rx="2"
+              ry="3"
+              transform="rotate(25 14 63)"
+            />
+          </g>
+        </svg>
+      );
+    if (type === "pizza")
+      return (
+        <svg {...props}>
+          <path d="M9 72 34 7q28 6 40 42Z" fill="#e9b45b" />
+          <path d="M34 7q28 6 40 42l-8 4Q55 27 30 16Z" fill="#cd9467" />
+          <g fill="#cf795f">
+            <circle cx="39" cy="30" r="8" />
+            <circle cx="29" cy="49" r="7" />
+            <circle cx="54" cy="47" r="7" />
+          </g>
+          <g className="pizza-olive" fill="#4b5241">
+            <ellipse
+              cx="31"
+              cy="29"
+              rx="2"
+              ry="3"
+              transform="rotate(25 31 29)"
+            />
+            <ellipse
+              cx="47"
+              cy="48"
+              rx="2"
+              ry="3"
+              transform="rotate(25 47 48)"
+            />
+            <ellipse
+              cx="22"
+              cy="59"
+              rx="2"
+              ry="3"
+              transform="rotate(25 22 59)"
+            />
+          </g>
+        </svg>
+      );
+    if (type === "paw")
+      return (
+        <svg {...props} fill="#bd8a65">
+          <ellipse
+            cx="16"
+            cy="31"
+            rx="8"
+            ry="12"
+            transform="rotate(-20 16 31)"
+          />
+          <ellipse
+            cx="32"
+            cy="19"
+            rx="8"
+            ry="12"
+            transform="rotate(-8 32 19)"
+          />
+          <ellipse
+            cx="50"
+            cy="20"
+            rx="8"
+            ry="12"
+            transform="rotate(13 50 20)"
+          />
+          <ellipse
+            cx="65"
+            cy="34"
+            rx="8"
+            ry="12"
+            transform="rotate(25 65 34)"
+          />
+          <path d="M18 63c-6-8 5-17 11-23 6-8 16-9 23 0 5 6 18 17 13 25-5 10-17 2-23 2-9-1-18 6-24-4Z" />
+        </svg>
+      );
+    if (type === "film")
+      return (
+        <svg {...props}>
+          <rect x="11" y="32" width="59" height="39" rx="4" fill="#a8b9a2" />
+          <path d="m10 26 55-15 4 12-55 15Z" fill="#a8b9a2" />
+          <path
+            d="m17 24 8-2 11 10-9 2Zm22-6 9-2 10 10-9 2ZM15 35h11l8 11H23Zm23 0h11l8 11H46Zm23 0h9v11Z"
+            fill="#f1ecda"
+          />
+        </svg>
+      );
+    if (type === "music")
+      return (
+        <svg {...props} fill="#a8b9a2">
+          <path d="M30 20 69 10v43h-6V24l-27 7v31h-6Z" />
+          <ellipse
+            cx="22"
+            cy="64"
+            rx="13"
+            ry="9"
+            transform="rotate(-25 22 64)"
+          />
+          <ellipse
+            cx="56"
+            cy="55"
+            rx="13"
+            ry="9"
+            transform="rotate(-25 56 55)"
+          />
+        </svg>
+      );
+    return <TopicArt name={type} />;
+  }
   const common = {
     viewBox: "0 0 80 80",
     className: `topic-art topic-art-${name}`,
     "aria-hidden": true as const,
   };
+  if (name === "nature")
+    return (
+      <svg {...common} fill="#a2bca5">
+        <path d="M20 70 55 12l3 2-35 58Z" />
+        <path d="M38 43C15 41 12 24 15 10c19 7 28 17 23 33ZM40 38C39 19 54 8 69 7c-1 19-9 30-29 31ZM30 61C9 63 6 49 7 39c18 2 27 8 23 22ZM34 55c7-19 23-20 36-15-8 16-20 22-36 15Z" />
+      </svg>
+    );
   if (name === "cup")
     return (
       <svg {...common}>

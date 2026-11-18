@@ -1,5 +1,6 @@
 import type { CSSProperties } from "react";
 const paths: Record<string, string> = {
+  edit: "m15 4 5 5M4 16 16 4a3 3 0 0 1 4 4L8 20l-5 1 1-5Z",
   back: "m14 5-7 7 7 7M7 12h14",
   chevron: "m9 5 7 7-7 7",
   check: "m5 12 4 4L19 6",

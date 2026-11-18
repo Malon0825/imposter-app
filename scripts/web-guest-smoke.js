@@ -1,5 +1,5 @@
 async function smokeBrowserGuests(page) {
-  const base = "http://127.0.0.1:1428";
+  const base = new URL(page.url()).origin;
   const assert = (value, message) => {
     if (!value) throw Error(message);
   };
@@ -185,6 +185,15 @@ async function smokeBrowserGuests(page) {
       "Join retry or reload created an extra player",
     );
     await act(host, "start");
+    await act(host, "topic_vote", ["food"]);
+    await act(native, "topic_vote", ["food"]);
+    for (const g of guests) {
+      await g.page.getByRole("button", { name: "Food", exact: true }).click();
+      await g.page
+        .getByRole("button", { name: "Lock my vote", exact: true })
+        .click();
+    }
+    await act(host, "begin_round");
     const views = [
       await bridge("state", { session_id: host.session_id }),
       await bridge("state", { session_id: native.session_id }),
@@ -270,7 +279,14 @@ async function smokeBrowserGuests(page) {
     );
     for (const p of result.players)
       assert(p.points === (p.id === imposter ? 0 : 1), "Incorrect score");
-    await act(host, "punish");
+    await act(host, "open_reports");
+    await act(host, "report", []);
+    await act(native, "report", []);
+    for (const g of guests) {
+      await g.page
+        .getByRole("button", { name: "Skip reporting", exact: true })
+        .click();
+    }
     let state = await bridge("state", { session_id: host.session_id });
     const loser = state.punishment.player_id;
     const actor = [host, native].find((s) => s.credentials.player_id === loser);

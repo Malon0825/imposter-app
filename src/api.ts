@@ -1,5 +1,10 @@
 import { invoke, isTauri } from "@tauri-apps/api/core";
-import type { Credentials, DeviceStatus, SessionData } from "./types";
+import type {
+  Credentials,
+  DeviceStatus,
+  RecoveryData,
+  SessionData,
+} from "./types";
 import { parseInvitation } from "./invitation";
 import { requestId, storage } from "./storage";
 
@@ -14,6 +19,7 @@ const sessionStore = storage(
   native || webGuest ? "localStorage" : "sessionStorage",
 );
 const pendingJoinKey = "imposter.web.join.v1";
+const pendingRecoveryKey = "imposter.web.recovery.v1";
 export const persistentResume = () => sessionStore.available();
 export class ApiError extends Error {
   constructor(
@@ -180,6 +186,51 @@ async function browserApi<T>(
   }
   if (method === "resume")
     return (await resumeBrowser(body as unknown as Credentials)) as T;
+  if (method === "recover") {
+    const invitation = String(body.invitation),
+      player = String(body.player).trim();
+    const parsed = browserInvite(invitation);
+    let attempt: { party: string; player: string; id: string } | null = null;
+    try {
+      const saved = JSON.parse(
+        sessionStore.getItem(pendingRecoveryKey) || "null",
+      );
+      if (
+        saved?.party === parsed.native.party_id &&
+        saved.player === player &&
+        typeof saved.id === "string" &&
+        /^[a-f0-9-]{36}$/i.test(saved.id)
+      )
+        attempt = saved;
+    } catch {
+      /* A missing recovery proof starts a fresh, host-reviewed request. */
+    }
+    attempt ||= { party: parsed.native.party_id, player, id: requestId() };
+    sessionStore.setItem(pendingRecoveryKey, JSON.stringify(attempt));
+    try {
+      const result = await post<RecoveryData>(
+        "/guest/recover",
+        {
+          party_id: parsed.native.party_id,
+          admission: parsed.browser!.admission,
+          name: player,
+          request_id: attempt.id,
+          controller: controllerId(),
+        },
+        browserHeaders(),
+      );
+      if (result.session) {
+        claimed = true;
+        saveSession(result.session);
+        sessionStore.removeItem(pendingRecoveryKey);
+      }
+      return result as T;
+    } catch (error) {
+      if (error instanceof ApiError && error.code === "recovery_rejected")
+        sessionStore.removeItem(pendingRecoveryKey);
+      throw error;
+    }
+  }
   if (method === "close") {
     active = null;
     claimed = false;
@@ -251,6 +302,15 @@ export function storedSession(): Omit<SessionData, "view"> | null {
   try {
     const saved = JSON.parse(sessionStore.getItem(key) || "null");
     if (
+      !saved ||
+      typeof saved.session_id !== "string" ||
+      typeof saved.credentials?.invitation !== "string" ||
+      typeof saved.credentials.token !== "string" ||
+      typeof saved.credentials.player_id !== "string" ||
+      typeof saved.credentials.is_host !== "boolean"
+    )
+      return null;
+    if (
       webGuest &&
       location.hash.startsWith("#invite=") &&
       saved &&
@@ -266,6 +326,7 @@ export function storedSession(): Omit<SessionData, "view"> | null {
 export function clearSession() {
   sessionStore.removeItem(key);
   sessionStore.removeItem(pendingJoinKey);
+  sessionStore.removeItem(pendingRecoveryKey);
   active = null;
   claimed = false;
 }

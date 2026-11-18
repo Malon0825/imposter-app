@@ -396,6 +396,9 @@ impl Session {
     }
     pub async fn snapshot(&self) -> GameResult<Value> {
         if let Some(host) = &self.host {
+            if host.web.is_some() {
+                return Ok(web::host_view(host, &self.player_id).await);
+            }
             let g = host.game.lock().await;
             Ok(g.view(&self.player_id))
         } else {
@@ -411,9 +414,16 @@ impl Session {
     }
     pub async fn send(&self, action: Action) -> GameResult<Value> {
         if let Some(host) = &self.host {
+            if host.web.is_some()
+                && ["approve_reconnect", "reject_reconnect"].contains(&action.kind.as_str())
+            {
+                web::decide_recovery(host, &action).await?;
+                return self.snapshot().await;
+            }
             let mut g = host.game.lock().await;
             g.apply(&self.player_id, &action)?;
-            Ok(g.view(&self.player_id))
+            drop(g);
+            self.snapshot().await
         } else {
             response(
                 self.client
@@ -519,6 +529,25 @@ mod tests {
             id: Uuid::new_v4().to_string(),
             round_id: 0,
             kind: "start".into(),
+            value: Value::Null,
+        })
+        .await
+        .unwrap();
+        for session in [&host, &a, &b] {
+            session
+                .send(Action {
+                    id: Uuid::new_v4().to_string(),
+                    round_id: 1,
+                    kind: "topic_vote".into(),
+                    value: json!(["food"]),
+                })
+                .await
+                .unwrap();
+        }
+        host.send(Action {
+            id: Uuid::new_v4().to_string(),
+            round_id: 1,
+            kind: "begin_round".into(),
             value: Value::Null,
         })
         .await

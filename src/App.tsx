@@ -25,6 +25,7 @@ import type {
   Credentials,
   DeviceStatus,
   Player,
+  RecoveryData,
   SessionData,
   Topic,
   View,
@@ -57,6 +58,8 @@ import {
 
 type Page =
   | "web_join"
+  | "recover"
+  | "secret"
   | "home"
   | "create"
   | "host_setup"
@@ -65,6 +68,7 @@ type Page =
   | "wifi"
   | "identity"
   | "topics"
+  | "session_setup"
   | "help"
   | null;
 const errorText = (error: unknown) => {
@@ -84,6 +88,22 @@ const initials = (name: string) => {
           .join("")
   ).toUpperCase();
 };
+const signed = (value: number) =>
+  value < 0 ? `−${Math.abs(value)}` : `+${value}`;
+function SessionProgress({ score, target }: { score: number; target: number }) {
+  return (
+    <div className="session-progress">
+      <p className="muted compact">
+        {score} / {target} · Session target
+      </p>
+      <progress
+        aria-label="Progress toward session target"
+        value={Math.min(score, target)}
+        max={target}
+      />
+    </div>
+  );
+}
 function Avatar({
   player,
   large = false,
@@ -151,23 +171,28 @@ function Header({
   title,
   back,
   right,
+  notice,
 }: {
   title?: string;
   back?: () => void;
   right?: ReactNode;
+  notice?: ReactNode;
 }) {
   return (
-    <header className="appbar">
-      {back ? (
-        <button className="icon-button" onClick={back} aria-label="Go back">
-          <Icon name="back" />
-        </button>
-      ) : (
-        <span className="bar-spacer" />
-      )}
-      <span title={title}>{title}</span>
-      <span className="bar-right">{right}</span>
-    </header>
+    <>
+      <header className="appbar">
+        {back ? (
+          <button className="icon-button" onClick={back} aria-label="Go back">
+            <Icon name="back" />
+          </button>
+        ) : (
+          <span className="bar-spacer" />
+        )}
+        <span title={title}>{title}</span>
+        <span className="bar-right">{right}</span>
+      </header>
+      {notice}
+    </>
   );
 }
 function ConnectionArt({ broken = false }: { broken?: boolean }) {
@@ -183,6 +208,424 @@ function CoffeeCup() {
       <Rays className="cup-rays" />
       <img src="/art/ceramic-cup.png" alt="" draggable={false} />
     </div>
+  );
+}
+
+function TopicVoting({
+  view,
+  busy,
+  send,
+  leave,
+  remove,
+  notice,
+}: {
+  view: View;
+  busy: boolean;
+  send: (kind: string, value?: unknown) => void;
+  leave: () => void;
+  remove: (player: Player) => void;
+  notice: ReactNode;
+}) {
+  const vote = view.topic_vote!;
+  const reduced = useReducedMotion();
+  const draftKey = `imposter.topic-draft.${view.id}.${view.my_id}.${view.round_id}`;
+  const [selected, setSelected] = useState<string[]>(() => {
+    try {
+      const saved: unknown = JSON.parse(preferences.getItem(draftKey) || "[]");
+      return Array.isArray(saved)
+        ? saved.filter(
+            (id): id is string =>
+              typeof id === "string" && vote.available_topics.includes(id),
+          )
+        : [];
+    } catch {
+      return [];
+    }
+  });
+  const [search, setSearch] = useState("");
+  const [searching, setSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+  const submitted = vote.my_topics !== null;
+  useEffect(() => {
+    if (submitted) preferences.removeItem(draftKey);
+  }, [submitted, draftKey]);
+  const toggle = (id: string) => {
+    if (busy || submitted) return;
+    setSelected((old) => {
+      const next = old.includes(id)
+        ? old.filter((t) => t !== id)
+        : [...old, id];
+      preferences.setItem(draftKey, JSON.stringify(next));
+      return next;
+    });
+  };
+  const names = (ids: string[]) =>
+    ids
+      .map((id) => view.catalog.find((t) => t.id === id)?.name || id)
+      .join(" + ");
+  const pending = view.players.filter(
+    (p) => vote.player_ids.includes(p.id) && !vote.submitted_ids.includes(p.id),
+  );
+  const controls = pending.filter((p) => p.id !== view.my_id);
+  const waiting = (text: string) => <p className="muted center">{text}</p>;
+  const pendingList = () => (
+    <details className="topic-pending">
+      <summary>
+        Waiting for {pending.map((p) => p.name).join(", ") || "everyone"}
+      </summary>
+      {controls.map((p) => (
+        <div className="topic-pending-row" key={p.id}>
+          <span>
+            {p.name}
+            {!p.connected ? " · Reconnecting" : " · Not voted"}
+          </span>
+          {view.is_host && (
+            <button
+              className="inline-link"
+              disabled={busy}
+              onClick={() => remove(p)}
+            >
+              Remove {p.name}
+            </button>
+          )}
+        </div>
+      ))}
+    </details>
+  );
+  if (view.phase === "topic_voting") {
+    const featured = [
+      "everyday",
+      "food",
+      "animals",
+      "nature",
+      "movies",
+      "music",
+    ];
+    const topics = view.catalog
+      .filter((t) => vote.available_topics.includes(t.id))
+      .sort((a, b) => {
+        const order = (id: string) =>
+          featured.includes(id) ? featured.indexOf(id) : 6;
+        return order(a.id) - order(b.id);
+      })
+      .filter((t) => t.name.toLowerCase().includes(search.toLowerCase()));
+    return (
+      <>
+        <Header
+          title={`Round ${view.round_id} · Topic vote`}
+          back={leave}
+          notice={notice}
+          right={
+            !submitted && (
+              <button
+                className="icon-button"
+                aria-label={searching ? "Close topic search" : "Search topics"}
+                onClick={() => {
+                  setSearching(!searching);
+                  setSearch("");
+                }}
+              >
+                <Icon name={searching ? "x" : "search"} size={21} />
+              </button>
+            )
+          }
+        />
+        {submitted ? (
+          <>
+            <div className="center-stage topic-locked">
+              <LockedVoteArt />
+              <h1>Your topics are locked</h1>
+              <p className="muted">You chose {names(vote.my_topics!)}.</p>
+              <p>Results appear when everyone votes.</p>
+            </div>
+            <div className="topic-vote-progress" role="status">
+              <ProgressDots
+                linked
+                count={vote.player_ids.length}
+                filled={vote.submitted_ids.length}
+              />
+              <p className="muted">
+                {vote.submitted_ids.length} of {vote.player_ids.length} players
+                voted
+              </p>
+            </div>
+            {pendingList()}
+            <div className="actions">
+              <Button disabled>Waiting for everyone</Button>
+            </div>
+          </>
+        ) : (
+          <>
+            <h1>Choose the mood</h1>
+            <p className="muted topic-ballot-copy">
+              Pick one or more. Each gets 1 vote.
+            </p>
+            <ExpandSection open={searching}>
+              <input
+                className="search-input"
+                aria-label="Search topics"
+                placeholder="Find a topic…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </ExpandSection>
+            <div className="topic-scroll">
+              <div className="topic-grid">
+                {topics.map((t) => (
+                  <motion.button
+                    key={t.id}
+                    disabled={busy}
+                    whileTap={reduced ? undefined : { scale: 0.975 }}
+                    transition={MOTION.press}
+                    className={`topic-tile ${selected.includes(t.id) ? "selected" : ""}`}
+                    aria-pressed={selected.includes(t.id)}
+                    onClick={() => toggle(t.id)}
+                  >
+                    {t.opt_in && <small className="opt-in">Opt-in</small>}
+                    {selected.includes(t.id) && (
+                      <span className="topic-check">
+                        <SelectionCheck>
+                          <CheckStroke size={16} />
+                        </SelectionCheck>
+                      </span>
+                    )}
+                    <TopicArt
+                      name={
+                        "vote-" +
+                        (t.id === "nature"
+                          ? "nature"
+                          : t.id === "health"
+                            ? "education"
+                            : t.icon)
+                      }
+                    />
+                    <strong>{t.name}</strong>
+                  </motion.button>
+                ))}
+              </div>
+              {!topics.length && (
+                <p className="muted center">No topics match your search.</p>
+              )}
+            </div>
+            <div className="topic-vote-progress" role="status">
+              <ProgressDots
+                linked
+                count={vote.player_ids.length}
+                filled={vote.submitted_ids.length}
+              />
+              <p className="muted">
+                {vote.submitted_ids.length} of {vote.player_ids.length} players
+                voted
+              </p>
+            </div>
+            <div className="sticky-actions">
+              <p className="muted center">
+                {selected.length} topic{selected.length === 1 ? "" : "s"}{" "}
+                selected
+              </p>
+              <Button
+                disabled={busy || !selected.length}
+                onClick={() => send("topic_vote", selected)}
+              >
+                Lock my vote
+              </Button>
+              <p className="muted center topic-footer-note">
+                Results appear when everyone votes.
+              </p>
+            </div>
+          </>
+        )}
+      </>
+    );
+  }
+  const counts = vote.counts || {};
+  const leaders = [...vote.leaders].sort(
+    (a, b) =>
+      view.catalog.findIndex((t) => t.id === a) -
+      view.catalog.findIndex((t) => t.id === b),
+  );
+  const leaderNames = leaders.map(
+    (id) => view.catalog.find((t) => t.id === id)?.name || id,
+  );
+  const leaderText =
+    leaderNames.length < 2
+      ? leaderNames[0]
+      : `${leaderNames.slice(0, -1).join(", ")} and ${leaderNames.at(-1)}`;
+  const chosen = view.catalog.find((t) => t.id === vote.selected_topic);
+  const tied = vote.leaders.length > 1;
+  const chance = Number.isInteger(100 / vote.leaders.length)
+    ? `${100 / vote.leaders.length}%`
+    : `1 in ${vote.leaders.length}`;
+  const countLabel = (id: string) =>
+    `${counts[id] || 0} vote${counts[id] === 1 ? "" : "s"}`;
+  const result = view.phase === "topic_results" || showResults;
+  return (
+    <>
+      <Header
+        title={`Round ${view.round_id} · ${result ? "Topic result" : "Topic chosen"}`}
+        back={showResults ? () => setShowResults(false) : leave}
+        notice={notice}
+      />
+      {result ? (
+        <>
+          <h1>{tied ? "It’s a tie." : "The votes are in."}</h1>
+          <p className="muted topic-result-copy">
+            {tied
+              ? `${leaderText} lead with ${counts[leaders[0]]} votes each.`
+              : `${leaderText} received the most votes.`}
+          </p>
+          <div className="topic-result-list">
+            <div className="topic-leaders">
+              {leaders.map((id) => {
+                const t = view.catalog.find((t) => t.id === id)!;
+                return (
+                  <div className="topic-leader" key={id}>
+                    <TopicArt
+                      name={
+                        "vote-" +
+                        (t.id === "nature"
+                          ? "nature"
+                          : t.id === "health"
+                            ? "education"
+                            : t.icon)
+                      }
+                    />
+                    <div>
+                      <strong>{t.name}</strong>
+                      <span>{countLabel(id)}</span>
+                    </div>
+                    <div className="topic-chance">
+                      <strong>{chance}</strong>
+                      <span>chance</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            {Object.keys(counts).some((id) => !vote.leaders.includes(id)) && (
+              <>
+                <p className="muted topic-also-title">Also voted</p>
+                <div className="topic-also">
+                  {Object.keys(counts)
+                    .filter((id) => !vote.leaders.includes(id))
+                    .sort((a, b) => counts[b] - counts[a] || a.localeCompare(b))
+                    .map((id) => (
+                      <div key={id}>
+                        <strong>{names([id])}</strong>
+                        <span>{countLabel(id)}</span>
+                      </div>
+                    ))}
+                </div>
+              </>
+            )}
+          </div>
+          <p className="muted center">
+            {vote.submitted_ids.length} of {vote.player_ids.length} players
+            voted
+          </p>
+          <p className="muted center compact">
+            {tied
+              ? "Only tied leaders enter the draw."
+              : "The highest-voted topic wins."}
+          </p>
+          <div className="actions">
+            {showResults ? (
+              <Button onClick={() => setShowResults(false)}>
+                Back to topic
+              </Button>
+            ) : view.is_host ? (
+              <Button disabled={busy} onClick={() => send("draw_topic")}>
+                Draw topic
+              </Button>
+            ) : (
+              waiting("Waiting for the host to draw the topic.")
+            )}
+            <p className="muted center compact">
+              {tied
+                ? "Equal chance. One draw."
+                : "One vote per selected topic."}
+            </p>
+          </div>
+        </>
+      ) : chosen ? (
+        <>
+          <div className="topic-chosen-heading">
+            <h1>{chosen.name} it is.</h1>
+            <p className="muted">The topic for this round.</p>
+          </div>
+          <motion.div
+            className="chosen-topic-card"
+            initial={reduced ? false : { opacity: 0, y: 8, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{
+              duration: reduced ? 0 : MOTION.roleReveal,
+              ease: MOTION.easeOut,
+            }}
+          >
+            <span className="topic-chosen-seal">
+              <SelectionCheck>
+                <CheckStroke size={30} />
+              </SelectionCheck>
+            </span>
+            <TopicArt
+              name={
+                "vote-" +
+                (chosen.id === "nature"
+                  ? "nature"
+                  : chosen.id === "health"
+                    ? "education"
+                    : chosen.icon === "pizza"
+                      ? "pizza-card"
+                      : chosen.icon)
+              }
+            />
+            <h2>{chosen.name}</h2>
+            <p>
+              {countLabel(chosen.id)} ·{" "}
+              {tied
+                ? vote.leaders.length === 2
+                  ? "Won the 50/50 draw"
+                  : `Chosen from ${vote.leaders.length} tied topics`
+                : "Top vote"}
+            </p>
+          </motion.div>
+          <div className="topic-next-copy">
+            <h2>Everyone plays this topic.</h2>
+            <p className="muted">Your private card comes next.</p>
+          </div>
+          <div className="actions">
+            <Button kind="text" onClick={() => setShowResults(true)}>
+              View votes
+            </Button>
+            {view.is_host ? (
+              <Button
+                disabled={
+                  busy || view.players.some((p) => !p.left && !p.connected)
+                }
+                onClick={() => send("begin_round")}
+              >
+                Continue to roles
+              </Button>
+            ) : (
+              waiting("Waiting for the host to continue to roles.")
+            )}
+            {view.is_host &&
+              view.players
+                .filter((p) => !p.left && !p.connected && p.id !== view.my_id)
+                .map((p) => (
+                  <button
+                    key={p.id}
+                    className="inline-link"
+                    disabled={busy}
+                    onClick={() => remove(p)}
+                  >
+                    Remove {p.name}
+                  </button>
+                ))}
+          </div>
+        </>
+      ) : null}
+    </>
   );
 }
 
@@ -218,7 +661,36 @@ export default function App() {
   const [showTopicSearch, setShowTopicSearch] = useState(false);
   const [editWifi, setEditWifi] = useState(false);
   const [vote, setVote] = useState("");
-  const [revealed, setRevealed] = useState(false);
+  const [bet, setBet] = useState(0);
+  const [targetScore, setTargetScore] = useState(15);
+  const [clueEditor, setClueEditor] = useState<{
+    round: number;
+    turn: number;
+    text: string;
+    existing: boolean;
+  } | null>(null);
+  useEffect(() => {
+    if (!clueEditor || !window.visualViewport) return;
+    const viewport = window.visualViewport;
+    const update = () =>
+      document.documentElement.style.setProperty(
+        "--clue-keyboard-inset",
+        `${Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop)}px`,
+      );
+    viewport.addEventListener("resize", update);
+    viewport.addEventListener("scroll", update);
+    update();
+    return () => {
+      viewport.removeEventListener("resize", update);
+      viewport.removeEventListener("scroll", update);
+      document.documentElement.style.removeProperty("--clue-keyboard-inset");
+    };
+  }, [!!clueEditor]);
+  const [reportTargets, setReportTargets] = useState<string[]>([]);
+  const [revealRequested, setRevealed] = useState(false);
+  const revealRound = useRef<number | null>(null);
+  const revealed = revealRequested && revealRound.current === view?.round_id;
+  const reviewRound = useRef<number | null>(null);
   const [qr, setQr] = useState("");
   const [showQr, setShowQr] = useState(false);
   const [scanning, setScanning] = useState(false);
@@ -239,6 +711,21 @@ export default function App() {
   const [checkingHost, setCheckingHost] = useState(false);
   const [sessionBlocked, setSessionBlocked] = useState("");
   const [canResume] = useState(() => !webGuest || persistentResume());
+  const [recovery, setRecovery] = useState<{
+    name: string;
+    code: string;
+  } | null>(null);
+  const reconnectRequest =
+    view?.is_host &&
+    view.phase !== "ended" &&
+    !showQr &&
+    !confirm &&
+    !clueEditor
+      ? view.reconnect_requests?.[0]
+      : undefined;
+  useEffect(() => {
+    if (view?.is_host && view.reconnect_requests?.length) setShowQr(false);
+  }, [view?.reconnect_requests?.[0]?.id]);
 
   const accept = useCallback((v: View) => {
     if (current.current?.id === v.id && current.current.revision > v.revision)
@@ -256,6 +743,9 @@ export default function App() {
       setPage(null);
       setDisconnected(false);
       setSessionBlocked("");
+      setRecovery(null);
+      setRevealed(false);
+      setError("");
     },
     [accept],
   );
@@ -273,16 +763,21 @@ export default function App() {
       setBusy(false);
     }
   };
-  const act = async (kind: string, value: unknown = null) => {
+  const act = async (
+    kind: string,
+    value: unknown = null,
+    expectedRound?: number,
+  ) => {
     if (!current.current) return;
-    const key = JSON.stringify([current.current.round_id, kind, value]);
+    const roundId = expectedRound ?? current.current.round_id;
+    const key = JSON.stringify([roundId, kind, value]);
     if (actionAttempt.current?.key !== key)
       actionAttempt.current = { key, id: requestId() };
     const v = await api<View>("action", {
       session_id: sessionId,
       action: {
         id: actionAttempt.current.id,
-        round_id: current.current.round_id,
+        round_id: roundId,
         kind,
         value,
       },
@@ -292,6 +787,18 @@ export default function App() {
   };
   const send = (kind: string, value: unknown = null) =>
     execute(() => act(kind, value));
+  useEffect(() => {
+    if (
+      clueEditor &&
+      (view?.phase !== "discussion" ||
+        view.round_id !== clueEditor.round ||
+        disconnected)
+    ) {
+      setClueEditor(null);
+      if (view?.phase === "voting" || view?.phase === "runoff")
+        setNotice("Voting has started. Clues are now read-only.");
+    }
+  }, [view?.phase, view?.round_id, disconnected, clueEditor?.round]);
   const refreshDevice = useCallback(async () => {
     try {
       const s = await device("status");
@@ -328,7 +835,13 @@ export default function App() {
         if (mounted) adopt(s);
       } catch (e) {
         if (mounted) {
-          if (!webGuest || !(e instanceof ApiError) || e.code !== "unreachable")
+          if (
+            saved.credentials.is_host ||
+            (e instanceof ApiError &&
+              ["no_player", "invitation_expired", "party_closed"].includes(
+                e.code,
+              ))
+          )
             clearSession();
           setError(errorText(e));
         }
@@ -363,6 +876,44 @@ export default function App() {
       active = false;
     };
   }, [booting, page, sessionId, invitation]);
+
+  useEffect(() => {
+    if (!webGuest || page !== "recover" || !recovery) return;
+    let active = true,
+      inFlight = false;
+    const check = async () => {
+      if (inFlight || document.hidden) return;
+      inFlight = true;
+      try {
+        const result = await api<RecoveryData>("recover", {
+          invitation,
+          player: recovery.name,
+        });
+        if (active && result.session) adopt(result.session);
+        else if (active && result.code && result.code !== recovery.code)
+          setRecovery({ name: recovery.name, code: result.code });
+      } catch (e) {
+        if (active) {
+          if (
+            e instanceof ApiError &&
+            e.code !== "unreachable" &&
+            e.code !== "rate_limit"
+          )
+            setRecovery(null);
+          setError(errorText(e));
+        }
+      } finally {
+        inFlight = false;
+      }
+    };
+    const timer = window.setInterval(check, 2000);
+    window.addEventListener("focus", check);
+    return () => {
+      active = false;
+      clearInterval(timer);
+      window.removeEventListener("focus", check);
+    };
+  }, [page, recovery, invitation, adopt]);
 
   useEffect(() => {
     if (!native) return;
@@ -467,8 +1018,22 @@ export default function App() {
   useEffect(() => {
     setRevealed(false);
     setVote("");
+    setBet(0);
+    setReportTargets([]);
     setError("");
   }, [view?.round_id, view?.phase]);
+  useEffect(() => {
+    if (
+      page === "secret" &&
+      (!view?.private_role ||
+        disconnected ||
+        view.round_id !== reviewRound.current)
+    ) {
+      document.documentElement.setAttribute("data-private-concealed", "");
+      setRevealed(false);
+      setPage(null);
+    }
+  }, [page, view?.round_id, !!view?.private_role, disconnected]);
   useEffect(() => {
     const hide = () => {
       document.documentElement.toggleAttribute(
@@ -526,6 +1091,10 @@ export default function App() {
         setShowQr(false);
         return;
       }
+      if (clueEditor) {
+        setClueEditor(null);
+        return;
+      }
       if (scanning) {
         void stopScan();
         return;
@@ -543,6 +1112,8 @@ export default function App() {
           wifi: "scan",
           identity: "wifi",
           topics: null,
+          session_setup: null,
+          secret: null,
         };
         nav(parent[page] ?? (view ? null : "home"));
         return;
@@ -568,13 +1139,19 @@ export default function App() {
     [],
   );
   useEffect(() => {
-    if (!confirm && !showQr) return;
+    if (!confirm && !showQr && !reconnectRequest && !clueEditor) return;
+    document.documentElement.setAttribute("data-private-concealed", "");
+    setRevealed(false);
     const previous = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const timer = window.setTimeout(
       () =>
-        document.querySelector<HTMLElement>(".bottom-sheet button")?.focus(),
+        document
+          .querySelector<HTMLElement>(
+            clueEditor ? ".clue-editor input" : ".bottom-sheet button",
+          )
+          ?.focus(),
       60,
     );
     const keys = (e: KeyboardEvent) => {
@@ -582,6 +1159,8 @@ export default function App() {
         if (pending.current) return;
         setConfirm(null);
         setShowQr(false);
+        setClueEditor(null);
+        if (reconnectRequest) send("reject_reconnect", reconnectRequest.id);
         return;
       }
       if (e.key !== "Tab") return;
@@ -607,12 +1186,14 @@ export default function App() {
       document.body.style.overflow = previousOverflow;
       previous?.focus();
     };
-  }, [confirm, showQr]);
+  }, [confirm, showQr, reconnectRequest?.id, clueEditor?.turn]);
 
   const nav = (p: Page, explicitDirection?: number) => {
     const depth: Record<string, number> = {
       home: 0,
       web_join: 0,
+      recover: 1,
+      secret: 1,
       create: 1,
       host_setup: 2,
       scan: 1,
@@ -620,6 +1201,7 @@ export default function App() {
       wifi: 3,
       identity: 4,
       topics: 1,
+      session_setup: 1,
       help: 10,
     };
     setDirection(
@@ -644,6 +1226,15 @@ export default function App() {
     person(id)?.name || "Player";
   const me = person(view?.my_id);
   const activePlayers = view?.players.filter((p) => !p.left) || [];
+  const disconnectedPlayers = activePlayers.filter((p) => !p.connected);
+  const connectionPaused =
+    !!view?.paused && !!view.pause_reason?.includes("disconnected");
+  const showPauseScreen = !!view?.paused && !connectionPaused;
+  const reviewingCard =
+    page === "secret" &&
+    !!view?.private_role &&
+    view.round_id === reviewRound.current &&
+    !disconnected;
   const close = async () => {
     if (sessionId) await api("close", { session_id: sessionId });
     clearSession();
@@ -676,6 +1267,17 @@ export default function App() {
         }),
     });
   };
+  const askAbandon = () =>
+    setConfirm({
+      title: "Abandon this round?",
+      body: "No points will be awarded. Earlier scores stay the same.",
+      label: "Return to lobby",
+      action: () =>
+        execute(async () => {
+          await act("abandon");
+          setConfirm(null);
+        }),
+    });
   const create = async (useBackground: boolean) => {
     if (useBackground) {
       const s = await device("startHosting");
@@ -772,7 +1374,44 @@ export default function App() {
     }
   };
 
-  function playersList() {
+  const editClue = (turn: number) => {
+    if (!view || view.phase !== "discussion") return;
+    const entry = view.clues?.find(
+      (c) => c.player_id === view.my_id && c.turn === turn,
+    );
+    setClueEditor({
+      round: view.round_id,
+      turn,
+      text: entry?.text || "",
+      existing: !!entry,
+    });
+  };
+  const clueHistory = (playerId: string, editable = false) => (
+    <span className="clue-history">
+      {(view?.clues || [])
+        .filter((c) => c.player_id === playerId)
+        .sort((a, b) => a.turn - b.turn)
+        .map((c) =>
+          editable ? (
+            <button
+              key={c.turn}
+              className="clue-entry clue-edit"
+              aria-label={`Edit my clue for turn ${c.turn}`}
+              disabled={busy || view?.paused}
+              onClick={() => editClue(c.turn)}
+            >
+              Turn {c.turn}: {c.text}
+              <Icon name="edit" size={15} />
+            </button>
+          ) : (
+            <span key={c.turn} className="clue-entry">
+              Turn {c.turn}: {c.text}
+            </span>
+          ),
+        )}
+    </span>
+  );
+  function playersList(showClues = false) {
     return (
       <div className="players-list">
         {activePlayers.map((p, i) => (
@@ -786,32 +1425,56 @@ export default function App() {
           >
             <Avatar player={p} mine={p.id === view?.host_id} />
             <div className="player-details">
-              <strong>{p.name}</strong>
-              <span>
-                {p.id === view?.my_id && p.id !== view?.host_id && !p.ready ? (
-                  "You"
-                ) : (
-                  <>
-                    {p.id === view?.my_id ? "You · " : ""}
-                    {p.id === view?.host_id
-                      ? "Host"
-                      : !p.connected
-                        ? "Reconnecting"
-                        : p.ready
-                          ? "Ready"
-                          : "Not ready yet"}
-                  </>
+              <strong>
+                {p.name}
+                {showClues && p.id === view?.my_id ? " · You" : ""}
+                {!p.connected && (
+                  <span className="player-connection-label">Disconnected</span>
                 )}
-              </span>
+              </strong>
+              {!showClues && (
+                <span>
+                  {p.id === view?.my_id &&
+                  p.id !== view?.host_id &&
+                  !p.ready ? (
+                    "You"
+                  ) : (
+                    <>
+                      {p.id === view?.my_id ? "You · " : ""}
+                      {p.id === view?.host_id
+                        ? "Host"
+                        : !p.connected
+                          ? "Waiting to reconnect"
+                          : p.ready
+                            ? "Ready"
+                            : "Not ready yet"}
+                    </>
+                  )}
+                </span>
+              )}
+              {showClues && clueHistory(p.id, p.id === view?.my_id)}
+              {showClues &&
+                p.id === view?.my_id &&
+                !view.clues?.some(
+                  (c) => c.player_id === p.id && c.turn === view.clue_turn,
+                ) && (
+                  <button
+                    className="inline-link add-clue"
+                    disabled={busy || view.paused}
+                    onClick={() => editClue(view.clue_turn || 1)}
+                  >
+                    Add clue for turn {view.clue_turn || 1}
+                  </button>
+                )}
             </div>
             {p.id === view?.host_id ? (
               <Icon name="crown" className="lime" />
+            ) : !p.connected ? (
+              <span className="connection-dot offline" />
             ) : view?.phase === "lobby" && p.ready ? (
               <span className="ready-mark">
                 <Icon name="check" size={17} />
               </span>
-            ) : !p.connected ? (
-              <span className="connection-dot offline" />
             ) : null}
             {view?.is_host && p.id !== view.my_id && view.phase === "lobby" && (
               <button
@@ -841,6 +1504,70 @@ export default function App() {
   const footer = (children: ReactNode) => (
     <div className="actions">{children}</div>
   );
+  const invitationButton = view?.is_host ? (
+    <button
+      className="icon-button"
+      aria-label="Show invitation QR code"
+      onClick={() => setShowQr(true)}
+    >
+      <Icon name="qr" />
+    </button>
+  ) : undefined;
+  const roundHeaderActions = (
+    <div className="party-header-actions">
+      {view?.private_role && (view.phase !== "roles" || view.role_ready) && (
+        <button
+          className="icon-button"
+          aria-label="Check my card"
+          title="Check my card"
+          onClick={() => {
+            reviewRound.current = view.round_id;
+            setRevealed(false);
+            nav("secret");
+          }}
+        >
+          <Icon name="eye" />
+        </button>
+      )}
+      {invitationButton || (
+        <button className="icon-button" onClick={help} aria-label="How to play">
+          <Icon name="info" size={21} />
+        </button>
+      )}
+    </div>
+  );
+  const connectionStatus =
+    !disconnected &&
+    view?.phase !== "ended" &&
+    disconnectedPlayers.length > 0 ? (
+      <aside
+        className="player-connection-notice"
+        aria-label="Player connection status"
+      >
+        <ul role="status" aria-atomic="true">
+          {disconnectedPlayers.map((p) => (
+            <li key={p.id}>
+              <strong>{p.name}</strong>
+              <span>Disconnected</span>
+            </li>
+          ))}
+        </ul>
+        {connectionPaused && (
+          <div className="connection-wait">
+            <span>Waiting to continue.</span>
+            {view?.is_host && (
+              <button
+                className="inline-link"
+                disabled={busy}
+                onClick={askAbandon}
+              >
+                Abandon round
+              </button>
+            )}
+          </div>
+        )}
+      </aside>
+    ) : null;
   const reconnect = () => (
     <>
       <div className="center-stage reconnecting-content">
@@ -883,6 +1610,18 @@ export default function App() {
           >
             Check connection
           </Button>
+          {webGuest && sessionBlocked && credentials && (
+            <Button
+              disabled={busy}
+              onClick={() =>
+                execute(async () =>
+                  adopt(await api<SessionData>("resume", { ...credentials })),
+                )
+              }
+            >
+              Reconnect this tab
+            </Button>
+          )}
           <Button
             kind="text"
             onClick={() =>
@@ -967,13 +1706,13 @@ export default function App() {
             {details?.phase === "ended"
               ? "This party has ended. Ask the host for a new invitation."
               : details?.phase && details.phase !== "lobby"
-                ? "A round is in progress. New players can join when the host returns to the lobby."
-                : "Play here in your browser. No app or account needed."}
+                ? "A round is in progress. Returning players can reconnect below. New players join in the lobby."
+                : "Closed your browser? Reconnect below to keep your place and score."}
           </p>
           {!canResume && (
             <p className="compact terra">
-              Site storage is unavailable. Keep this tab open to retain your
-              place.
+              Site storage is unavailable. If you close this tab, scan the QR
+              again and ask the host to approve your reconnect.
             </p>
           )}
           <p className="muted compact web-privacy">
@@ -996,6 +1735,15 @@ export default function App() {
                   }
                 >
                   Reconnect my player
+                </Button>
+              )}
+              {parsed && details?.phase !== "ended" && (
+                <Button
+                  kind="text"
+                  disabled={busy || checkingHost}
+                  onClick={() => nav("recover")}
+                >
+                  {saved ? "Recover with host approval" : "Reconnect my player"}
                 </Button>
               )}
               {android && parsed?.browser && !saved && (
@@ -1035,6 +1783,70 @@ export default function App() {
         </>
       );
     }
+    if (webGuest && page === "recover")
+      return (
+        <>
+          <Header title="Reconnect" back={() => nav("web_join")} />
+          <div className="center-stage">
+            <ConnectionArt />
+            <h1>
+              {recovery ? "Check with your host." : "Your place is waiting."}
+            </h1>
+            {recovery ? (
+              <div role="status">
+                <p>Ask the host to approve {recovery.name} with this code:</p>
+                <strong className="recovery-code">{recovery.code}</strong>
+                <p className="muted">
+                  Keep this page open. Your role, vote and score return after
+                  approval.
+                </p>
+              </div>
+            ) : (
+              <>
+                <p className="muted">
+                  Use the name you joined with. The host will confirm it’s you
+                  before restoring your player.
+                </p>
+                <label className="recovery-name">
+                  Your name
+                  <input
+                    autoComplete="nickname"
+                    maxLength={28}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </label>
+                <p className="muted compact">
+                  Close your old tab and wait about 10 seconds before requesting
+                  a reconnect.
+                </p>
+              </>
+            )}
+          </div>
+          {footer(
+            recovery ? (
+              <p className="muted center">Waiting for host approval…</p>
+            ) : (
+              <Button
+                disabled={busy || !name.trim()}
+                onClick={() =>
+                  execute(async () => {
+                    const result = await api<RecoveryData>("recover", {
+                      invitation,
+                      player: name.trim(),
+                    });
+                    if (result.session) adopt(result.session);
+                    else if (result.code)
+                      setRecovery({ name: name.trim(), code: result.code });
+                  })
+                }
+              >
+                Request reconnect
+              </Button>
+            ),
+          )}
+        </>
+      );
     if (page === "help")
       return (
         <>
@@ -1056,6 +1868,22 @@ export default function App() {
                 "Talk, joke, and find the odd one out.",
               ],
               ["Vote in secret", "Everyone votes at the same time."],
+              [
+                "Back your read",
+                "Civilians can optionally bet up to 3 of their own points. Correct: gain the bet plus +1. Wrong: lose the bet. Your balance stays at 0 or above.",
+              ],
+              [
+                "Build a streak",
+                "Every third consecutive correct civilian read earns +1. Imposter rounds keep your streak. An imposter earns +2 for escaping, plus +1 if nobody originally voted for them.",
+              ],
+              [
+                "Race to the target",
+                "The host chooses 10–30 points. Highest final score wins when someone reaches the target; tied leaders share the win. A new session resets everyone to 0.",
+              ],
+              [
+                "Report or skip",
+                "After each round, report rule-breaking or skip. A majority deducts up to 1 point after the following round, with a minimum balance of 0. Reports clear when a session ends.",
+              ],
               [
                 "Drink or Dare. Check rankings.",
                 "Keep playing to find a new word.",
@@ -1495,6 +2323,88 @@ export default function App() {
           </form>
         </>
       );
+    if (page === "session_setup" && view?.is_host && view.phase === "lobby")
+      return (
+        <>
+          <Header
+            title="Session setup"
+            back={() => nav(null, -1)}
+            notice={connectionStatus}
+          />
+          <h1>Pick a finish line.</h1>
+          <p className="muted">First to the target ends this session.</p>
+          <div className="session-emblem" aria-hidden="true">
+            <Icon name="crown" size={46} />
+            <Icon name="eye" size={88} />
+          </div>
+          <h2>Target score</h2>
+          <div
+            className="target-options"
+            role="group"
+            aria-label="Session target score"
+          >
+            {[10, 15, 20, 25, 30].map((target) => (
+              <motion.button
+                key={target}
+                className={targetScore === target ? "selected" : ""}
+                aria-pressed={targetScore === target}
+                aria-label={`${target} points`}
+                whileTap={reduced ? undefined : { scale: 0.975 }}
+                transition={MOTION.press}
+                disabled={busy || view.score_session.started}
+                onClick={() => setTargetScore(target)}
+              >
+                {target}
+                {targetScore === target && (
+                  <SelectionCheck>
+                    <CheckStroke size={20} />
+                  </SelectionCheck>
+                )}
+              </motion.button>
+            ))}
+          </div>
+          <p className="muted center compact">points</p>
+          <div className="session-rules">
+            <p>
+              <Icon name="trophy" /> Fresh scores every session.
+            </p>
+            <p>
+              <Icon name="eye" /> Optional bets use your own points.
+            </p>
+          </div>
+          <p className="center">
+            {activePlayers.filter((p) => p.connected).length} player
+            {activePlayers.filter((p) => p.connected).length === 1
+              ? ""
+              : "s"}{" "}
+            connected
+          </p>
+          <div className="session-avatars" aria-hidden="true">
+            {activePlayers.map((p) => (
+              <Avatar key={p.id} player={p} mine={p.id === view.host_id} />
+            ))}
+          </div>
+          {footer(
+            <>
+              <Button
+                disabled={busy || view.score_session.started}
+                onClick={() =>
+                  execute(async () => {
+                    await act("session_target", targetScore, view.round_id);
+                    nav(null, -1);
+                  })
+                }
+              >
+                Save target
+              </Button>
+              <p className="muted center compact">
+                Session {view.score_session.number} · Locks when the first round
+                starts.
+              </p>
+            </>,
+          )}
+        </>
+      );
     if (page === "topics" && view)
       return (
         <>
@@ -1515,8 +2425,11 @@ export default function App() {
               </button>
             }
           />
-          <h1>Choose the mood</h1>
-          <p className="muted">Pick one or more topics</p>
+          <h1>Available topics</h1>
+          <p className="muted">
+            Choose which topics everyone can vote for. Opt-in packs are clearly
+            marked.
+          </p>
           <ExpandSection open={showTopicSearch}>
             <input
               className="search-input"
@@ -1598,10 +2511,13 @@ export default function App() {
       );
     if (!view) return null;
     if (disconnected) return reconnect();
-    if (view.paused)
+    if (showPauseScreen && !reviewingCard)
       return (
         <>
-          <Header title={`Round ${view.round_id} · Paused`} />
+          <Header
+            title={`Round ${view.round_id} · Paused`}
+            right={roundHeaderActions}
+          />
           <div className="center-stage">
             <ConnectionArt
               broken={!!view.pause_reason?.includes("disconnect")}
@@ -1609,6 +2525,12 @@ export default function App() {
             <h1>A little pause.</h1>
             <p className="muted">{view.pause_reason}</p>
             <p>Your guesses and roles stay private.</p>
+            {view.is_host && (
+              <p className="muted compact">
+                Returning players can scan the QR to reconnect with their
+                original role and score.
+              </p>
+            )}
           </div>
           {footer(
             view.is_host ? (
@@ -1619,21 +2541,7 @@ export default function App() {
                 >
                   Resume round
                 </Button>
-                <Button
-                  kind="outline"
-                  onClick={() =>
-                    setConfirm({
-                      title: "Abandon this round?",
-                      body: "No points will be awarded. Earlier scores stay the same.",
-                      label: "Return to lobby",
-                      action: () =>
-                        execute(async () => {
-                          await act("abandon");
-                          setConfirm(null);
-                        }),
-                    })
-                  }
-                >
+                <Button kind="outline" onClick={askAbandon}>
                   Abandon round
                 </Button>
               </>
@@ -1643,10 +2551,37 @@ export default function App() {
           )}
         </>
       );
+    if (
+      ["topic_voting", "topic_results", "topic_chosen"].includes(view.phase) &&
+      view.topic_vote
+    )
+      return (
+        <TopicVoting
+          key={`${view.id}-${view.round_id}`}
+          view={view}
+          busy={busy}
+          send={send}
+          leave={view.is_host ? askAbandon : askLeave}
+          notice={connectionStatus}
+          remove={(p) =>
+            setConfirm({
+              title: `Remove ${p.name}?`,
+              body: "Their ballot will be removed if voting is still open. A finalized topic draw stays the same.",
+              label: "Remove player",
+              action: () =>
+                execute(async () => {
+                  await act("remove", p.id);
+                  setConfirm(null);
+                }),
+            })
+          }
+        />
+      );
     if (view.phase === "lobby")
       return (
         <>
           <Header
+            notice={connectionStatus}
             right={
               <button
                 className="icon-button"
@@ -1690,6 +2625,23 @@ export default function App() {
               </button>
             )}
           </div>
+          <button
+            className="session-target-summary"
+            disabled={busy || !view.is_host || view.score_session.started}
+            onClick={() => {
+              setTargetScore(view.score_session.target);
+              nav("session_setup");
+            }}
+          >
+            <Icon name="trophy" size={22} />
+            <span>
+              Session {view.score_session.number} · First to{" "}
+              {view.score_session.target}
+            </span>
+            {view.is_host && !view.score_session.started && (
+              <Icon name="edit" size={20} />
+            )}
+          </button>
           {playersList()}
           {activePlayers.length < 3 && (
             <p className="muted compact lobby-tip">
@@ -1708,11 +2660,10 @@ export default function App() {
             >
               <Icon name="tag" />
               <span>
-                <strong>Topics</strong>
+                <strong>Topic voting</strong>
                 <small>
-                  {view.topics
-                    .map((id) => view.catalog.find((t) => t.id === id)?.name)
-                    .join(" + ")}
+                  {view.topics.length} topics available · Everyone votes before
+                  each round
                 </small>
               </span>
               {view.is_host && <Icon name="chevron" size={20} />}
@@ -1728,7 +2679,7 @@ export default function App() {
                     nav("topics");
                   }}
                 >
-                  Choose topics
+                  Topic settings
                 </Button>
                 <Button
                   disabled={
@@ -1738,7 +2689,7 @@ export default function App() {
                   }
                   onClick={() => send("start")}
                 >
-                  Start round
+                  Vote for topic
                 </Button>
               </>
             ) : (
@@ -1765,23 +2716,16 @@ export default function App() {
           )}
         </>
       );
-    if (view.phase === "roles")
+    if (view.phase === "roles" || reviewingCard)
       return (
         <>
           <Header
-            back={askLeave}
+            notice={connectionStatus}
+            back={reviewingCard ? () => nav(null, -1) : askLeave}
             title={`Round ${view.round_id}${revealed ? ` · ${me?.name}` : ""}`}
-            right={
-              <button
-                className="icon-button"
-                onClick={help}
-                aria-label="How to play"
-              >
-                <Icon name="info" size={21} />
-              </button>
-            }
+            right={reviewingCard ? invitationButton : roundHeaderActions}
           />
-          {view.role_ready ? (
+          {view.role_ready && !reviewingCard ? (
             <>
               <div className="center-stage">
                 <Cards />
@@ -1835,7 +2779,7 @@ export default function App() {
                           : "Your secret word"}
                       </p>
                       <strong
-                        className={`secret-word ${(view.private_role?.clue.length || 0) > 14 ? "long-word" : (view.private_role?.clue.length || 0) > 8 ? "medium-word" : ""}`}
+                        className={`secret-word ${(view.private_role?.clue.length || 0) > 14 ? "long-word" : (view.private_role?.clue.length || 0) > 5 ? "medium-word" : ""}`}
                       >
                         {view.private_role?.clue}
                       </strong>
@@ -1854,23 +2798,32 @@ export default function App() {
               {footer(
                 <Button
                   disabled={busy}
-                  onClick={() =>
-                    revealed
-                      ? execute(async () => {
-                          setRevealed(false);
-                          await act("role_ready");
-                        })
-                      : (() => {
-                          if (!document.hidden) {
-                            document.documentElement.removeAttribute(
-                              "data-private-concealed",
-                            );
-                            setRevealed(true);
-                          }
-                        })()
-                  }
+                  onClick={() => {
+                    if (!revealed) {
+                      if (!document.hidden) {
+                        document.documentElement.removeAttribute(
+                          "data-private-concealed",
+                        );
+                        revealRound.current = view.round_id;
+                        setRevealed(true);
+                      }
+                    } else if (reviewingCard) {
+                      nav(null, -1);
+                    } else {
+                      void execute(async () => {
+                        setRevealed(false);
+                        if (!current.current?.paused) await act("role_ready");
+                      });
+                    }
+                  }}
                 >
-                  {revealed ? "Hide & ready" : "Reveal my role"}
+                  {revealed
+                    ? reviewingCard
+                      ? "Hide & return"
+                      : view.paused
+                        ? "Hide my role"
+                        : "Hide & ready"
+                    : "Reveal my role"}
                 </Button>,
               )}
             </>
@@ -1881,42 +2834,44 @@ export default function App() {
       return (
         <>
           <Header
+            notice={connectionStatus}
             back={askLeave}
-            title={`Round ${view.round_id}`}
-            right={
-              <button
-                className="icon-button"
-                onClick={help}
-                aria-label="How to play"
-              >
-                <Icon name="info" size={21} />
-              </button>
-            }
+            title={`Round ${view.round_id} · Turn ${view.clue_turn || 1}`}
+            right={roundHeaderActions}
           />
-          <h1>
-            Who sounds
-            <br />
-            suspicious?
-          </h1>
-          <p className="muted">
-            Take turns giving clues.
-            <br />
-            Discuss together.
-          </p>
-          <Cards className="discussion-art" />
-          <p className="starting-name">
-            {playerName(view.starting_id)} starts.
-          </p>
-          {playersList()}
+          <div className="clue-discussion-heading">
+            <h1>
+              Who sounds
+              <br />
+              suspicious?
+            </h1>
+            <Cards className="discussion-art" />
+          </div>
+          <p className="muted">Need more clues? Keep talking.</p>
+          <div className="clue-board-heading">
+            <h2>Clues by turn</h2>
+            <p className="muted compact">Optional · clears next round.</p>
+          </div>
+          {playersList(true)}
           {footer(
             view.is_host ? (
               <>
-                <Button disabled={busy} onClick={() => send("open_vote")}>
+                <Button
+                  kind="outline"
+                  disabled={busy || view.paused}
+                  onClick={() => send("next_clue_turn", view.clue_turn)}
+                >
+                  Another clue turn
+                </Button>
+                <Button
+                  disabled={busy || view.paused}
+                  onClick={() => send("open_vote")}
+                >
                   Open voting
                 </Button>
                 <Button
                   kind="text"
-                  disabled={busy}
+                  disabled={busy || view.paused}
                   onClick={() => send("pause")}
                 >
                   Pause round
@@ -1940,6 +2895,8 @@ export default function App() {
           <Header
             back={askLeave}
             title={`Round ${view.round_id} · ${runoff ? "Runoff" : "Vote"}`}
+            right={roundHeaderActions}
+            notice={connectionStatus}
           />
           {view.my_vote ? (
             <>
@@ -1953,12 +2910,36 @@ export default function App() {
                 <p className="muted vote-progress">
                   {view.vote_count} of {activePlayers.length} votes received.
                 </p>
+                {view.betting.my_stake !== null && (
+                  <p className="muted compact">
+                    {runoff ? "Original bet: " : "Confidence bet: "}
+                    {view.betting.my_stake
+                      ? `${view.betting.my_stake} point${view.betting.my_stake === 1 ? "" : "s"}`
+                      : "No bet"}
+                  </p>
+                )}
                 <ProgressDots
                   count={activePlayers.length}
                   filled={view.vote_count}
                   linked
                 />
               </div>
+
+              {!!view.clues?.length && (
+                <div className="locked-clue-board">
+                  <h2>Clues this round</h2>
+                  {activePlayers
+                    .filter((p) =>
+                      view.clues?.some((c) => c.player_id === p.id),
+                    )
+                    .map((p) => (
+                      <div key={p.id}>
+                        <strong>{p.name}</strong>
+                        {clueHistory(p.id)}
+                      </div>
+                    ))}
+                </div>
+              )}
               {footer(
                 <>
                   <p className="center locked-wait">
@@ -1980,6 +2961,11 @@ export default function App() {
                   ? `${view.candidates.length <= 3 ? new Intl.ListFormat("en").format(view.candidates.map(playerName)) : "The top suspects"} tied. Choose again.`
                   : "Your vote stays private."}
               </p>
+              {!!view.clues?.length && (
+                <p className="muted compact clue-readonly">
+                  Clues from all turns · read-only
+                </p>
+              )}
               <div className="ballot-list">
                 {choices.map((p) => (
                   <motion.button
@@ -1996,10 +2982,18 @@ export default function App() {
                     aria-pressed={vote === p.id}
                   >
                     <Avatar player={p} mine={p.id === view.host_id} />
-                    <strong>
-                      {p.name}
-                      {p.id === view.my_id ? " · You" : ""}
-                    </strong>
+                    <span className="ballot-player">
+                      <strong>
+                        {p.name}
+                        {p.id === view.my_id ? " · You" : ""}
+                        {!p.connected && (
+                          <span className="player-connection-label">
+                            Disconnected
+                          </span>
+                        )}
+                      </strong>
+                      {clueHistory(p.id)}
+                    </span>
                     <span className="radio-mark">
                       {vote === p.id && (
                         <SelectionCheck>
@@ -2010,18 +3004,123 @@ export default function App() {
                   </motion.button>
                 ))}
               </div>
+              {!runoff && view.betting.eligible && (
+                <section
+                  className="confidence-bet"
+                  aria-labelledby="bet-heading"
+                >
+                  <div className="bet-heading">
+                    <h2 id="bet-heading">Confidence bet</h2>
+                    <span className="muted">Optional</span>
+                  </div>
+                  <p className="muted compact">
+                    Your balance: {me?.points ?? 0} points
+                  </p>
+                  <div
+                    className="bet-options"
+                    role="group"
+                    aria-label="Confidence bet"
+                  >
+                    {[0, 1, 2, 3].map((stake) => (
+                      <motion.button
+                        key={stake}
+                        className={bet === stake ? "selected" : ""}
+                        aria-pressed={bet === stake}
+                        aria-label={
+                          stake === 0
+                            ? "No bet"
+                            : `Bet ${stake} point${stake === 1 ? "" : "s"}`
+                        }
+                        aria-describedby="bet-outcome"
+                        disabled={
+                          busy || view.paused || stake > view.betting.max_stake
+                        }
+                        onClick={() => setBet(stake)}
+                        whileTap={reduced ? undefined : { scale: 0.975 }}
+                        transition={MOTION.press}
+                      >
+                        {stake === 0 ? "No bet" : stake}
+                        {stake > view.betting.max_stake && (
+                          <Icon name="lock" size={14} />
+                        )}
+                      </motion.button>
+                    ))}
+                  </div>
+                  <p
+                    id="bet-outcome"
+                    className="muted compact"
+                    aria-live="polite"
+                  >
+                    {bet > 0
+                      ? `Correct: +${bet} · Wrong: −${bet}`
+                      : "No points at risk."}{" "}
+                    A correct vote also earns +1.
+                  </p>
+                  {view.betting.max_stake === 0 && (
+                    <p className="muted compact">
+                      Earn points before placing a bet.
+                    </p>
+                  )}
+                  {view.betting.reading_streak > 0 && (
+                    <p className="muted compact">
+                      Reading streak: {view.betting.reading_streak} ·{" "}
+                      {view.betting.reading_streak % 3 === 2
+                        ? "Next correct read earns +1 extra."
+                        : "Every third correct read earns +1 extra."}
+                    </p>
+                  )}
+                </section>
+              )}
+              {runoff &&
+                activePlayers.some(
+                  (p) =>
+                    !choices.includes(p) &&
+                    view.clues?.some((c) => c.player_id === p.id),
+                ) && (
+                  <div className="locked-clue-board">
+                    <h2>Other players’ clues</h2>
+                    {activePlayers
+                      .filter(
+                        (p) =>
+                          !choices.includes(p) &&
+                          view.clues?.some((c) => c.player_id === p.id),
+                      )
+                      .map((p) => (
+                        <div key={p.id}>
+                          <strong>{p.name}</strong>
+                          {clueHistory(p.id)}
+                        </div>
+                      ))}
+                  </div>
+                )}
               {runoff && (
                 <p className="muted runoff-note">
-                  Your original guess still decides your +1.
+                  Your original guess still decides your points, bet, and
+                  reading streak. No extra bet in runoff.
                 </p>
               )}
               {footer(
                 <>
                   <Button
-                    disabled={busy || !vote}
-                    onClick={() => send("vote", vote)}
+                    disabled={busy || view.paused || !vote}
+                    onClick={() =>
+                      execute(() =>
+                        act(
+                          "vote",
+                          runoff
+                            ? vote
+                            : {
+                                player_id: vote,
+                                stake: view.betting.eligible ? bet : 0,
+                              },
+                          view.round_id,
+                        ),
+                      )
+                    }
                   >
-                    Confirm vote
+                    {!runoff && view.betting.eligible && bet > 0
+                      ? `Lock vote · Bet ${bet}`
+                      : "Confirm vote"}
                   </Button>
                   {runoff && (
                     <p className="muted center compact">
@@ -2037,10 +3136,17 @@ export default function App() {
     }
     if (view.phase === "results" && view.result) {
       const r = view.result;
-      const win = r.earned > 0;
+      const score = r.score;
+      const win = score.base > 0;
+      const net = score.after - score.before;
       return (
         <>
-          <Header back={askLeave} title={`Round ${view.round_id}`} />
+          <Header
+            notice={connectionStatus}
+            back={askLeave}
+            title={`Round ${view.round_id} · Results`}
+            right={invitationButton}
+          />
           <motion.div
             className="result-content"
             initial={reduced ? false : { opacity: 0, y: 20 }}
@@ -2053,19 +3159,25 @@ export default function App() {
             <h1>
               {r.was_imposter
                 ? r.escaped
-                  ? "You fooled them."
+                  ? score.bluff
+                    ? "Perfect bluff."
+                    : "You fooled them."
                   : "You were caught."
                 : win
-                  ? "You guessed right!"
-                  : "You guessed wrong"}
+                  ? "You read them right."
+                  : "Wrong suspect."}
             </h1>
-            <div className={`round-points ${win ? "lime" : "terra"}`}>
-              +{r.earned} points
+            <div className={`round-points ${net > 0 ? "lime" : "terra"}`}>
+              {signed(net)} {Math.abs(net) === 1 ? "point" : "points"}
             </div>
             <p>
               {r.was_imposter ? (
                 r.escaped ? (
-                  "You escaped the group vote."
+                  score.bluff ? (
+                    "Nobody voted for you on the original ballot."
+                  ) : (
+                    "You escaped the group vote."
+                  )
                 ) : (
                   "The room found its imposter."
                 )
@@ -2079,6 +3191,68 @@ export default function App() {
                 </>
               )}
             </p>
+            <dl className="score-breakdown">
+              <div>
+                <dt>{r.was_imposter ? "Escaped the vote" : "Correct vote"}</dt>
+                <dd>{signed(score.base)}</dd>
+              </div>
+              {!r.was_imposter && (
+                <div>
+                  <dt>Confidence bet</dt>
+                  <dd className={score.bet < 0 ? "terra" : ""}>
+                    {signed(score.bet)}
+                  </dd>
+                </div>
+              )}
+              {!!score.streak && (
+                <div>
+                  <dt>Reading streak</dt>
+                  <dd>+{score.streak}</dd>
+                </div>
+              )}
+              {!!score.bluff && (
+                <div>
+                  <dt>Perfect-bluff bonus</dt>
+                  <dd>+{score.bluff}</dd>
+                </div>
+              )}
+              {r.report_round !== null && (
+                <div>
+                  <dt>Reports · Round {r.report_round}</dt>
+                  <dd className="terra">
+                    {score.penalty ? `−${score.penalty}` : "0 · at zero"}
+                  </dd>
+                </div>
+              )}
+            </dl>
+            {!r.was_imposter && (
+              <p className="muted compact reading-streak">
+                {win ? (
+                  <>
+                    {view.betting.reading_streak} correct read
+                    {view.betting.reading_streak === 1 ? "" : "s"} in a row.
+                    {score.streak
+                      ? " +1 streak bonus!"
+                      : " Every third earns +1 extra."}
+                  </>
+                ) : (
+                  "Reading streak reset."
+                )}
+              </p>
+            )}
+            <div className="personal-score">
+              <span>Your score</span>
+              <strong>
+                <span className="muted">{score.before}</span> →{" "}
+                <span className={net < 0 ? "terra" : "lime"}>
+                  {score.after}
+                </span>
+              </strong>
+            </div>
+            <SessionProgress
+              score={score.after}
+              target={view.score_session.target}
+            />
             <div className="result-pair">
               <div>
                 <small>Imposter:</small>
@@ -2104,19 +3278,165 @@ export default function App() {
                   ? "escaped the group vote."
                   : "was caught by the group."}
               </p>
-              {r.escaped && <strong className="terra">+2 points</strong>}
+              {r.escaped && (
+                <strong className="lime">
+                  +{2 + r.imposter_bonus} points
+                  {r.imposter_bonus ? " · Perfect bluff" : ""}
+                </strong>
+              )}
             </div>
+            {view.score_session.complete && (
+              <p className="muted compact center">
+                Session target reached. Final standings follow reports and Drink
+                or Dare.
+              </p>
+            )}
           </motion.div>
           {footer(
             view.is_host ? (
-              <Button disabled={busy} onClick={() => send("punish")}>
-                Drink or Dare
+              <Button disabled={busy} onClick={() => send("open_reports")}>
+                Continue to reports
               </Button>
             ) : (
               <p className="muted center">
-                Waiting for {playerName(view.host_id)} to start Drink or Dare.
+                Waiting for {playerName(view.host_id)} to continue to reports.
               </p>
             ),
+          )}
+        </>
+      );
+    }
+    if (view.phase === "reporting" && view.reporting) {
+      const reporting = view.reporting;
+      const submitted = reporting.my_reports !== null;
+      const choices = reporting.player_ids
+        .filter((id) => id !== view.my_id)
+        .map(person)
+        .filter((p): p is Player => !!p);
+      return (
+        <>
+          <Header
+            notice={connectionStatus}
+            back={askLeave}
+            title={`Round ${view.round_id}`}
+            right={invitationButton}
+          />
+          {submitted ? (
+            <>
+              <div className="report-waiting">
+                <span className="report-seal">
+                  <CheckStroke size={32} />
+                </span>
+                <h1>
+                  {reporting.my_reports!.length
+                    ? "Reports submitted."
+                    : "You skipped reporting."}
+                </h1>
+                <p className="muted">
+                  {reporting.my_reports!.length
+                    ? "Your selections stay private."
+                    : "That counts as no reports for anyone."}
+                </p>
+                <p className="muted report-progress" role="status">
+                  {reporting.submitted_count} of {reporting.total} players
+                  finished
+                </p>
+                <ProgressDots
+                  count={reporting.total}
+                  filled={reporting.submitted_count}
+                />
+              </div>
+              {footer(
+                view.is_host ? (
+                  <>
+                    <Button disabled={busy} onClick={() => send("punish")}>
+                      Continue to Drink or Dare
+                    </Button>
+                    <p className="muted center compact">
+                      Anyone who hasn’t submitted counts as no reports.
+                    </p>
+                  </>
+                ) : (
+                  <p className="muted center">
+                    Waiting for the others or the host to continue.
+                  </p>
+                ),
+              )}
+            </>
+          ) : (
+            <>
+              <p className="report-eyebrow">Optional · End of round</p>
+              <h1>Anyone break the rules?</h1>
+              <p className="muted report-intro">
+                Select one or more players, or skip if everyone played fair.
+              </p>
+              <p className="report-rule">
+                <Icon name="lock" size={18} />
+                Private reports. {reporting.majority} of {reporting.total}{" "}
+                {view.score_session.complete
+                  ? "needed. Reports clear with the next session."
+                  : "needed for −1 point after the next round. Scores stay at 0 or above."}
+              </p>
+              <div
+                className="ballot-list report-list"
+                role="group"
+                aria-label="Players to report"
+              >
+                {choices.map((p) => {
+                  const selected = reportTargets.includes(p.id);
+                  return (
+                    <motion.button
+                      key={p.id}
+                      role="checkbox"
+                      aria-checked={selected}
+                      aria-label={p.name}
+                      className={`ballot-row report-row ${selected ? "selected" : ""}`}
+                      disabled={busy}
+                      whileTap={reduced ? undefined : { scale: 0.985 }}
+                      transition={MOTION.press}
+                      onClick={() =>
+                        setReportTargets((old) =>
+                          old.includes(p.id)
+                            ? old.filter((id) => id !== p.id)
+                            : [...old, p.id],
+                        )
+                      }
+                    >
+                      <Avatar player={p} mine={p.id === view.host_id} />
+                      <strong>{p.name}</strong>
+                      <span className="radio-mark report-mark">
+                        {selected && (
+                          <SelectionCheck>
+                            <CheckStroke size={18} />
+                          </SelectionCheck>
+                        )}
+                      </span>
+                    </motion.button>
+                  );
+                })}
+              </div>
+              {footer(
+                <>
+                  <Button
+                    disabled={busy || reportTargets.length === 0}
+                    onClick={() => send("report", reportTargets)}
+                  >
+                    Submit reports
+                    {reportTargets.length ? ` · ${reportTargets.length}` : ""}
+                  </Button>
+                  <Button
+                    kind="outline"
+                    disabled={busy}
+                    onClick={() => send("report", [])}
+                  >
+                    Skip reporting
+                  </Button>
+                  <p className="muted center compact">
+                    Skipping means no reports.
+                  </p>
+                </>,
+              )}
+            </>
           )}
         </>
       );
@@ -2127,7 +3447,12 @@ export default function App() {
       const recipient = person(p.player_id);
       return (
         <>
-          <Header back={askLeave} title="Drink or Dare" />
+          <Header
+            back={askLeave}
+            title="Drink or Dare"
+            right={invitationButton}
+            notice={connectionStatus}
+          />
           <p className="muted center punishment-counter">
             Turn {p.turn} of {p.total}
           </p>
@@ -2287,27 +3612,64 @@ export default function App() {
         </>
       );
     }
-    if (view.phase === "rankings" || view.phase === "ended") {
+    if (["rankings", "session_complete", "ended"].includes(view.phase)) {
       const ended = view.phase === "ended";
+      const complete = view.phase === "session_complete";
+      const final = ended || complete;
       const sorted = [...view.players].sort(
         (a, b) => b.points - a.points || a.name.localeCompare(b.name),
       );
-      const winner = sorted.filter((p) => p.points === sorted[0]?.points);
+      const winners = complete
+        ? sorted.filter((p) => view.score_session.winner_ids.includes(p.id))
+        : sorted.filter((p) => p.points === sorted[0]?.points);
       return (
         <>
-          {ended && <Confetti />}
+          {final && <Confetti />}
+          {!ended && (
+            <Header
+              title={
+                complete
+                  ? `Session ${view.score_session.number} complete`
+                  : "Party"
+              }
+              right={invitationButton}
+              notice={connectionStatus}
+            />
+          )}
+          {complete && (
+            <div className="session-victory" aria-hidden="true">
+              <Icon name="trophy" size={76} />
+            </div>
+          )}
           <div className="rankings-heading">
-            <h1>{ended ? "That’s a wrap." : "The standings"}</h1>
-            {!ended && <Icon name="trophy" size={52} className="lime" />}
+            <h1>
+              {complete
+                ? winners.length === 1
+                  ? `${winners[0].name} wins!`
+                  : "A shared victory!"
+                : ended
+                  ? "That’s a wrap."
+                  : "The standings"}
+            </h1>
+            {!final && <Icon name="trophy" size={52} className="lime" />}
           </div>
           <p className="muted">
-            {ended
-              ? `${view.name} · Final rankings`
-              : `After round ${view.round_id}`}
+            {complete
+              ? `Target reached · ${view.score_session.target} points`
+              : ended
+                ? `${view.name} · Final rankings`
+                : `Session ${view.score_session.number} · First to ${view.score_session.target}`}
           </p>
+          {!final && (
+            <SessionProgress
+              score={sorted[0]?.points ?? 0}
+              target={view.score_session.target}
+            />
+          )}
           <div className="standings">
-            {sorted.map((p, i) => {
+            {sorted.map((p) => {
               const rank = sorted.findIndex((x) => x.points === p.points) + 1;
+              const winning = final && winners.some((w) => w.id === p.id);
               return (
                 <motion.div
                   layout={!reduced}
@@ -2315,38 +3677,33 @@ export default function App() {
                   className="rank-row"
                   key={p.id}
                 >
-                  <span className={`rank ${i === 0 ? "lime" : ""}`}>
-                    {ended && i === 0 ? <Icon name="crown" /> : rank}
+                  <span className={`rank ${rank === 1 ? "lime" : ""}`}>
+                    {winning ? <Icon name="crown" /> : rank}
                   </span>
                   <Avatar player={p} mine={p.id === view.host_id} />
                   <div className="player-details">
-                    <strong>{p.name}</strong>
-                    {!ended && (
-                      <span>
-                        {p.id === view.my_id
-                          ? "You" + (view.is_host ? " · Host" : "")
-                          : p.left
-                            ? "Left party"
-                            : !view.result
-                              ? "Thanks for playing"
-                              : p.id === view.result.imposter_id
-                                ? view.result.escaped
-                                  ? "Escaped as imposter"
-                                  : "Caught as imposter"
-                                : p.earned === 2
-                                  ? "Escaped as imposter"
-                                  : p.earned === 1
-                                    ? "Guessed correctly"
-                                    : "Guessed wrong"}
-                      </span>
-                    )}
+                    <strong className={winning ? "lime" : ""}>{p.name}</strong>
+                    <span>
+                      {p.left
+                        ? "Left party"
+                        : !p.connected
+                          ? "Disconnected"
+                          : p.id === view.my_id
+                            ? `You${view.is_host ? " · Host" : ""}`
+                            : p.id === view.host_id
+                              ? "Host"
+                              : ""}
+                    </span>
                   </div>
                   <div className="score">
                     <ScoreValue
                       value={p.points}
-                      from={ended ? p.points : Math.max(0, p.points - p.earned)}
+                      from={
+                        final
+                          ? p.points
+                          : p.points - p.earned + p.report_penalty
+                      }
                     />
-                    {!ended && <small>+{p.earned} this round</small>}
                   </div>
                 </motion.div>
               );
@@ -2354,10 +3711,17 @@ export default function App() {
           </div>
           {ended && (
             <h2 className="center party-winner">
-              {winner.length === 1
-                ? `${winner[0].name} wins the party!`
+              {winners.length === 1
+                ? `${winners[0].name} wins the party!`
                 : "A shared victory!"}
             </h2>
+          )}
+          {complete && (
+            <p className="muted center session-restart-note">
+              Next session: everyone starts at 0.
+              <br />
+              Players stay connected.
+            </p>
           )}
           {footer(
             ended ? (
@@ -2366,16 +3730,20 @@ export default function App() {
               </Button>
             ) : view.is_host ? (
               <>
-                <Button disabled={busy} onClick={() => send("next")}>
-                  Next round
+                <Button
+                  disabled={busy}
+                  onClick={() => send(complete ? "new_session" : "next")}
+                >
+                  {complete ? "Start next session" : "Next round"}
                 </Button>
-                <Button kind="outline" onClick={askLeave}>
+                <Button kind="outline" disabled={busy} onClick={askLeave}>
                   End party
                 </Button>
               </>
             ) : (
               <p className="muted center">
-                Waiting for {playerName(view.host_id)} to choose the next round.
+                Waiting for {playerName(view.host_id)} to{" "}
+                {complete ? "start the next session" : "choose the next round"}.
               </p>
             ),
           )}
@@ -2391,9 +3759,9 @@ export default function App() {
         ? "home"
         : disconnected
           ? "reconnect"
-          : view.paused
+          : showPauseScreen
             ? "paused"
-            : `${view.phase}-${view.phase === "punishment" ? `${view.punishment?.turn}-${view.punishment?.choice}` : ""}-${view.phase === "voting" || view.phase === "runoff" ? !!view.my_vote : ""}`);
+            : `${view.phase}-${view.phase === "punishment" ? `${view.punishment?.turn}-${view.punishment?.choice}` : ""}-${view.phase === "reporting" ? view.reporting?.my_reports !== null : view.phase === "voting" || view.phase === "runoff" ? !!view.my_vote : ""}`);
   const motionKind: ScreenMotion = page
     ? "page"
     : view?.phase === "punishment"
@@ -2406,7 +3774,7 @@ export default function App() {
       <AnimatePresence mode="wait" initial={false} custom={direction}>
         <ScreenTransition
           key={screenKey}
-          className={`screen screen-${disconnected && !page ? "reconnecting" : page || view?.phase || "home"}`}
+          className={`screen screen-${reviewingCard ? "roles" : disconnected && !page ? "reconnecting" : page || view?.phase || "home"}`}
           direction={direction}
           kind={motionKind}
         >
@@ -2452,6 +3820,129 @@ export default function App() {
         </div>
       )}
       <AnimatePresence>
+        {clueEditor && (
+          <MotionSheet
+            key="clue-editor"
+            labelledBy="clue-editor-title"
+            className="clue-editor"
+            busy={busy}
+            onDismiss={() => {
+              if (!busy) setClueEditor(null);
+            }}
+          >
+            <button
+              className="sheet-close icon-button"
+              aria-label="Close clue editor"
+              disabled={busy}
+              onClick={() => setClueEditor(null)}
+            >
+              <Icon name="x" />
+            </button>
+            <h2 id="clue-editor-title">Your clue · Turn {clueEditor.turn}</h2>
+            <p className="muted">A word or short phrase you said aloud.</p>
+            {(view?.clues || [])
+              .filter(
+                (c) => c.player_id === view?.my_id && c.turn < clueEditor.turn,
+              )
+              .map((c) => (
+                <p key={c.turn} className="compact">
+                  Turn {c.turn}: {c.text}
+                </p>
+              ))}
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                void execute(async () => {
+                  await act(
+                    "clue",
+                    { turn: clueEditor.turn, text: clueEditor.text },
+                    clueEditor.round,
+                  );
+                  setClueEditor(null);
+                });
+              }}
+            >
+              <label className="sr-only" htmlFor="clue-text">
+                Your clue
+              </label>
+              <input
+                id="clue-text"
+                autoComplete="off"
+                maxLength={120}
+                value={clueEditor.text}
+                onChange={(e) =>
+                  setClueEditor({ ...clueEditor, text: e.target.value })
+                }
+                placeholder="A word or short phrase"
+                disabled={busy}
+              />
+              <p className="muted compact">
+                {[...clueEditor.text.trim()].length > 60
+                  ? "Keep your clue to 60 characters."
+                  : "Visible to everyone this round."}
+              </p>
+              <Button
+                type="submit"
+                disabled={
+                  busy ||
+                  !!view?.paused ||
+                  !clueEditor.text.trim() ||
+                  [...clueEditor.text.trim()].length > 60
+                }
+              >
+                Save clue
+              </Button>
+            </form>
+            {clueEditor.existing && (
+              <Button
+                kind="text"
+                disabled={busy || !!view?.paused}
+                onClick={() =>
+                  execute(async () => {
+                    await act(
+                      "clue",
+                      { turn: clueEditor.turn, text: "" },
+                      clueEditor.round,
+                    );
+                    setClueEditor(null);
+                  })
+                }
+              >
+                Remove this clue
+              </Button>
+            )}
+          </MotionSheet>
+        )}
+        {reconnectRequest && (
+          <MotionSheet
+            key="recovery-approval"
+            labelledBy="recovery-title"
+            busy={busy}
+            onDismiss={() => {
+              if (!busy) send("reject_reconnect", reconnectRequest.id);
+            }}
+          >
+            <h2 id="recovery-title">Reconnect {reconnectRequest.name}?</h2>
+            <p className="muted">
+              Confirm this player is with you and their screen shows this code
+              before approving.
+            </p>
+            <strong className="recovery-code">{reconnectRequest.code}</strong>
+            <Button
+              disabled={busy}
+              onClick={() => send("approve_reconnect", reconnectRequest.id)}
+            >
+              Approve reconnect
+            </Button>
+            <Button
+              kind="text"
+              disabled={busy}
+              onClick={() => send("reject_reconnect", reconnectRequest.id)}
+            >
+              Decline reconnect
+            </Button>
+          </MotionSheet>
+        )}
         {showQr && (
           <MotionSheet
             key="invitation"
@@ -2475,7 +3966,9 @@ export default function App() {
             />
             <p className="compact muted qr-guidance">
               Use your phone’s Camera to play in your default browser. Have
-              Imposter? Use Join party → Scan invitation in the app.
+              Imposter? Use Join party → Scan invitation in the app. Returning?
+              Scan again to restore your player. If your saved place is missing,
+              choose Reconnect my player.
             </p>
             <input
               className="invitation-link"

@@ -120,9 +120,13 @@ async fn main() {
             party_core::network::load_web_assets(std::path::Path::new("dist"))
                 .expect("Run npm run build before starting the development host"),
         )));
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:3142")
+    let port = std::env::var("IMPOSTER_DEV_PORT")
+        .unwrap_or_else(|_| "3142".into())
+        .parse::<u16>()
+        .expect("IMPOSTER_DEV_PORT is a valid port");
+    let listener = tokio::net::TcpListener::bind((std::net::Ipv4Addr::LOCALHOST, port))
         .await
         .expect("Port 3142 available");
-    println!("Rust game bridge listening on http://127.0.0.1:3142 (loopback only)");
+    println!("Rust game bridge listening on http://127.0.0.1:{port} (loopback only)");
     axum::serve(listener, app).await.unwrap();
 }

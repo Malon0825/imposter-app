@@ -1,5 +1,5 @@
 async function checkBrowserCapacity(page) {
-  const base = "http://127.0.0.1:1428";
+  const base = new URL(page.url()).origin;
   const call = async (method, body = {}) => {
     const r = await page.request.post(`${base}/api/${method}`, {
       headers: { "X-Imposter-Dev": "1" },
@@ -68,6 +68,14 @@ async function checkBrowserCapacity(page) {
   let state = await call("state", { session_id: host.session_id });
   assert(state.players.length === 12, "Capacity was not enforced");
   await act("start");
+  await act("topic_vote", ["food"]);
+  for (const g of guests) {
+    await g.page.getByRole("button", { name: "Food", exact: true }).click();
+    await g.page
+      .getByRole("button", { name: "Lock my vote", exact: true })
+      .click();
+  }
+  await act("begin_round");
   for (const g of guests) {
     await g.page
       .getByRole("button", { name: "Reveal my role", exact: true })

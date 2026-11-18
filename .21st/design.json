@@ -3,13 +3,19 @@
   "project": {
     "name": "imposter-party",
     "productType": null,
-    "stack": ["react", "vite"]
+    "stack": [
+      "react",
+      "vite"
+    ]
   },
   "sources": {
     "tokens": [],
     "components": [],
     "assets": [],
-    "instructions": ["DESIGN.md", "PRODUCT.md"]
+    "instructions": [
+      "DESIGN.md",
+      "PRODUCT.md"
+    ]
   },
   "design": {
     "colorMode": "dark",
@@ -41,8 +47,20 @@
   },
   "decisions": [
     {
+      "decision": "User approved session-scoring-v1 for end-to-end implementation: session target selection, optional private bets on the existing ballot, personal vote/bet/streak/bluff score breakdown, session standings, final standings and explicit fresh-session reset. Reuse existing palette, buttons, avatars, selection springs, score animation and restrained final confetti. Target settings save into the existing lobby readiness flow.",
+      "source": "design/session-scoring-v1/README.md"
+    },
+    {
+      "decision": "User approved clue-board-v2: optional clue history by player and clue turn, host-controlled further turns or immediate voting, one-field editor, all-turn history read-only in voting/runoff. Preserve existing charcoal/ivory/sage/lime tokens, avatars, roster dividers, ballot rows, and motion sheet.",
+      "source": "design/clue-board-v2/README.md"
+    },
+    {
       "decision": "User approved all six proposal-v1 image boards; preserve screen interiors and the documented motion.",
       "source": "design/proposal-v1/README.md"
+    },
+    {
+      "decision": "User approved topic-voting-v1: multi-select approval ballots before every round, hidden tallies until all submit, uniform tied-leader draw, public chosen-topic card. Reuse the existing tile/check/progress components and palette.",
+      "source": "design/topic-voting-v1/README.md"
     }
   ],
   "evidence": [

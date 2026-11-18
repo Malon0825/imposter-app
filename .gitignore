@@ -149,6 +149,8 @@ vite.config.ts.timestamp-*
 .turbo
 
 # Imposter app and local build material
+__pycache__/
+*.py[cod]
 node_modules/
 dist/
 target/
