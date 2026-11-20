@@ -24,7 +24,22 @@ export interface Credentials {
   player_id: string;
   is_host: boolean;
 }
+export type RoundRule = "classic" | "act_it" | "sound_only";
+
+export interface PerformedClue {
+  player_id: string;
+  turn: number;
+}
+
 export interface View {
+  round_rule?: RoundRule | null;
+  random_rules?: boolean | null;
+  rule_change_pending?: boolean;
+  performed?: PerformedClue[];
+  deck_status?: {
+    played: number;
+    reason: "incompatible" | "played" | "recent" | "hints" | null;
+  } | null;
   reconnect_requests?: { id: string; name: string; code: string }[];
   id: string;
   name: string;
@@ -65,7 +80,7 @@ export interface View {
     selected_topic: string | null;
   } | null;
   players: Player[];
-  private_role: { imposter: boolean; clue: string } | null;
+  private_role: { imposter: boolean; clue: string; definition?: string } | null;
   role_ready: boolean;
   ready_count: number;
   starting_id: string | null;
@@ -75,6 +90,7 @@ export interface View {
   result: {
     imposter_id: string;
     word: string;
+    definition?: string;
     accused_id: string | null;
     escaped: boolean;
     my_vote: string | null;

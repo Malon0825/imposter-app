@@ -1,6 +1,6 @@
 # Random round rules and persistent word deduction — implementation plan
 
-Status: **Proposed implementation plan; feature implementation has not started.**
+Status: **Implementation plan and acceptance criteria.** The original baseline in section 2 describes the app before this feature.
 
 Prepared 2026-11-17 from the current code, the nine feature mockups, the reviewed 581-word catalog, and the reported experience of repeated words and similar clues. The reported experience is the product requirement; it has not been reproduced in a new physical-device playtest during planning.
 

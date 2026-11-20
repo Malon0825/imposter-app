@@ -31,6 +31,8 @@ async function sessionScoringSmoke(page) {
     const v = await call("action", {
       session_id: session.session_id,
       action: { id: crypto.randomUUID(), round_id: round, kind, value },
+    }).catch((error) => {
+      throw Error(`${kind} in round ${round}: ${error.message}`);
     });
     round = v.round_id;
     return v;
@@ -103,7 +105,8 @@ async function sessionScoringSmoke(page) {
     await waitPhase(page, "reporting");
     await act(host, "punish");
     v = await state();
-    while (v.phase === "punishment") v = await act(host, "skip");
+    while (v.phase === "punishment")
+      v = await act(host, "skip", v.punishment.turn);
     await waitPhase(page, v.phase);
     return v;
   };
@@ -115,9 +118,14 @@ async function sessionScoringSmoke(page) {
     await page
       .getByRole("button", { name: "Vote for topic", exact: true })
       .click();
-    round = (await state()).round_id;
-    for (const s of natives) await act(s, "topic_vote", ["food"]);
-    await guest.getByRole("button", { name: "Food", exact: true }).click();
+    await waitPhase(page, "topic_voting");
+    v = await state();
+    round = v.round_id;
+    const topicId = v.topic_vote.available_topics[0];
+    assert(topicId, "No topic is available for the scoring round");
+    const topic = v.catalog.find((entry) => entry.id === topicId);
+    for (const s of natives) await act(s, "topic_vote", [topicId]);
+    await guest.getByRole("button", { name: topic.name, exact: true }).click();
     await guest
       .getByRole("button", { name: "Lock my vote", exact: true })
       .click();

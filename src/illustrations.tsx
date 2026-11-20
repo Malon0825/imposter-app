@@ -179,6 +179,34 @@ export function TopicArt({ name }: { name: string }) {
       className: `topic-art topic-art-voting topic-art-${type}`,
       "aria-hidden": true as const,
     };
+    if (type === "suitcase") {
+      return (
+        <svg {...props}>
+          <path
+            d="M28 22v-6a7 7 0 0 1 7-7h10a7 7 0 0 1 7 7v6"
+            fill="none"
+            stroke="var(--ink)"
+            strokeWidth="5"
+          />
+          <rect x="5" y="21" width="70" height="45" rx="10" fill="var(--ink)" />
+          <path d="M19 21h7v45h-7zm36 0h7v45h-7z" fill="var(--muted)" />
+          <path d="m53 19 5 6 7 2 3 17-13 3-4-16 3-5-4-5Z" fill="#b9785b" />
+        </svg>
+      );
+    }
+    if (type === "football") {
+      return (
+        <svg {...props}>
+          <circle cx="40" cy="40" r="34" fill="var(--ink)" />
+          <path
+            d="m40 26 14 10-5 16H31l-5-16zM31 7h18l5 7-14 12-14-12Zm39 17 4 14-5 13-15-15ZM61 67l-14 7H33l-12-7 10-15h18ZM9 24l17 12-15 15-5-13Z"
+            fill="var(--muted)"
+            stroke="#778b76"
+            strokeLinejoin="round"
+          />
+        </svg>
+      );
+    }
     if (type === "cup")
       return (
         <svg {...props}>

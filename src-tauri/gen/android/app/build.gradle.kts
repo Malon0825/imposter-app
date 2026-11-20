@@ -13,12 +13,14 @@ val tauriProperties = Properties().apply {
         propFile.inputStream().use { load(it) }
     }
 }
+val imposterPreview = providers.gradleProperty("imposterPreview").orNull == "true"
 
 android {
     compileSdk = 36
     namespace = "com.imposter.party"
     defaultConfig {
         manifestPlaceholders["usesCleartextTraffic"] = "false"
+        manifestPlaceholders["imposterAppLabel"] = "@string/app_name"
         applicationId = "com.imposter.party"
         minSdk = 26
         targetSdk = 36
@@ -39,6 +41,10 @@ android {
             }
         }
         getByName("release") {
+            if (imposterPreview) {
+                applicationIdSuffix = ".preview"
+                manifestPlaceholders["imposterAppLabel"] = "Imposter Preview"
+            }
             optimization {
                enable = true
             }

@@ -58,9 +58,20 @@ async fn game_create(
         return Err("Connect to the shared router's Wi-Fi before hosting.".into());
     }
     let address = status["ip"].as_str().map(str::to_string);
-    let session =
-        Session::create_with_web(&name, &player, &wifi, address, sessions.web_assets.clone())
-            .await?;
+    let history = app
+        .path()
+        .app_local_data_dir()
+        .map_err(|_| "Could not open local word deck storage.")?
+        .join("word-deck.sqlite3");
+    let session = Session::create_with_history(
+        &name,
+        &player,
+        &wifi,
+        address,
+        sessions.web_assets.clone(),
+        Some(history),
+    )
+    .await?;
     let credentials = session.credentials();
     let view = session.snapshot().await?;
     let id = sessions.insert(session).await;

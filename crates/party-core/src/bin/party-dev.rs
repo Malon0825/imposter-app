@@ -46,12 +46,13 @@ async fn call(
 ) -> Result<Json<Value>, Error> {
     let v = match method.as_str() {
         "create" => {
-            let session = Session::create_with_web(
+            let session = Session::create_with_history(
                 &b.name,
                 &b.player,
                 &b.wifi,
                 Some("127.0.0.1".into()),
                 s.web_assets.clone(),
+                s.history_path.clone(),
             )
             .await
             .map_err(err)?;
@@ -112,14 +113,16 @@ async fn guard(req: Request, next: Next) -> Response {
 }
 #[tokio::main]
 async fn main() {
+    let mut sessions = Sessions::with_web_assets(
+        party_core::network::load_web_assets(std::path::Path::new("dist"))
+            .expect("Run npm run build before starting the development host"),
+    );
+    sessions.history_path = std::env::var_os("IMPOSTER_DEV_HISTORY").map(Into::into);
     let app = Router::new()
         .route("/api/{method}", post(call))
         .layer(axum::extract::DefaultBodyLimit::max(16 * 1024))
         .layer(middleware::from_fn(guard))
-        .with_state(Arc::new(Sessions::with_web_assets(
-            party_core::network::load_web_assets(std::path::Path::new("dist"))
-                .expect("Run npm run build before starting the development host"),
-        )));
+        .with_state(Arc::new(sessions));
     let port = std::env::var("IMPOSTER_DEV_PORT")
         .unwrap_or_else(|_| "3142".into())
         .parse::<u16>()

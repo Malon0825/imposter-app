@@ -31,6 +31,8 @@ import type {
   View,
 } from "./types";
 import { Icon } from "./icons";
+import { ROUND_RULES, RuleArt, RuleIndicator, RuleReveal } from "./round-rules";
+import { RoleClue, RoleMeaning } from "./role-meaning";
 import {
   MOTION,
   useDelayedBusy,
@@ -51,7 +53,6 @@ import {
   Confetti,
   ConnectionIllustration,
   DareArrow,
-  PawStamp,
   Rays,
   TopicArt,
 } from "./illustrations";
@@ -218,6 +219,8 @@ function TopicVoting({
   leave,
   remove,
   notice,
+  settings,
+  invitation,
 }: {
   view: View;
   busy: boolean;
@@ -225,8 +228,12 @@ function TopicVoting({
   leave: () => void;
   remove: (player: Player) => void;
   notice: ReactNode;
+  settings: ReactNode;
+  invitation?: ReactNode;
 }) {
   const vote = view.topic_vote!;
+  const rule = view.round_rule;
+  const nonverbal = rule === "act_it" || rule === "sound_only";
   const reduced = useReducedMotion();
   const draftKey = `imposter.topic-draft.${view.id}.${view.my_id}.${view.round_id}`;
   const [selected, setSelected] = useState<string[]>(() => {
@@ -293,14 +300,10 @@ function TopicVoting({
     </details>
   );
   if (view.phase === "topic_voting") {
-    const featured = [
-      "everyday",
-      "food",
-      "animals",
-      "nature",
-      "movies",
-      "music",
-    ];
+    const featured =
+      rule === "sound_only"
+        ? ["animals", "music", "nature", "travel", "sports", "everyday"]
+        : ["everyday", "food", "animals", "nature", "movies", "music"];
     const topics = view.catalog
       .filter((t) => vote.available_topics.includes(t.id))
       .sort((a, b) => {
@@ -316,18 +319,24 @@ function TopicVoting({
           back={leave}
           notice={notice}
           right={
-            !submitted && (
-              <button
-                className="icon-button"
-                aria-label={searching ? "Close topic search" : "Search topics"}
-                onClick={() => {
-                  setSearching(!searching);
-                  setSearch("");
-                }}
-              >
-                <Icon name={searching ? "x" : "search"} size={21} />
-              </button>
-            )
+            <div className="party-header-actions">
+              {!submitted && (
+                <button
+                  className="icon-button"
+                  aria-label={
+                    searching ? "Close topic search" : "Search topics"
+                  }
+                  onClick={() => {
+                    setSearching(!searching);
+                    setSearch("");
+                  }}
+                >
+                  <Icon name={searching ? "x" : "search"} size={21} />
+                </button>
+              )}
+              {settings}
+              {invitation}
+            </div>
           }
         />
         {submitted ? (
@@ -335,6 +344,7 @@ function TopicVoting({
             <div className="center-stage topic-locked">
               <LockedVoteArt />
               <h1>Your topics are locked</h1>
+              {nonverbal && <RuleIndicator rule={rule} />}
               <p className="muted">You chose {names(vote.my_topics!)}.</p>
               <p>Results appear when everyone votes.</p>
             </div>
@@ -357,8 +367,13 @@ function TopicVoting({
         ) : (
           <>
             <h1>Choose the mood</h1>
+            {nonverbal && <RuleIndicator rule={rule} />}
             <p className="muted topic-ballot-copy">
-              Pick one or more. Each gets 1 vote.
+              {rule === "sound_only"
+                ? "Only topics with sound-ready words."
+                : rule === "act_it"
+                  ? "Only topics with words you can act out."
+                  : "Pick one or more. Each gets 1 vote."}
             </p>
             <ExpandSection open={searching}>
               <input
@@ -392,11 +407,15 @@ function TopicVoting({
                     <TopicArt
                       name={
                         "vote-" +
-                        (t.id === "nature"
-                          ? "nature"
-                          : t.id === "health"
-                            ? "education"
-                            : t.icon)
+                        (rule === "sound_only" && t.id === "travel"
+                          ? "suitcase"
+                          : rule === "sound_only" && t.id === "sports"
+                            ? "football"
+                            : t.id === "nature"
+                              ? "nature"
+                              : t.id === "health"
+                                ? "education"
+                                : t.icon)
                       }
                     />
                     <strong>{t.name}</strong>
@@ -465,7 +484,22 @@ function TopicVoting({
         title={`Round ${view.round_id} · ${result ? "Topic result" : "Topic chosen"}`}
         back={showResults ? () => setShowResults(false) : leave}
         notice={notice}
+        right={
+          invitation ? (
+            <div className="party-header-actions">
+              {settings}
+              {invitation}
+            </div>
+          ) : (
+            settings
+          )
+        }
       />
+      {nonverbal && (
+        <div className="topic-result-rule">
+          <RuleIndicator rule={rule} />
+        </div>
+      )}
       {result ? (
         <>
           <h1>{tied ? "It’s a tie." : "The votes are in."}</h1>
@@ -586,7 +620,9 @@ function TopicVoting({
                 ? vote.leaders.length === 2
                   ? "Won the 50/50 draw"
                   : `Chosen from ${vote.leaders.length} tied topics`
-                : "Top vote"}
+                : nonverbal
+                  ? "Most selected"
+                  : "Top vote"}
             </p>
           </motion.div>
           <div className="topic-next-copy">
@@ -608,6 +644,11 @@ function TopicVoting({
               </Button>
             ) : (
               waiting("Waiting for the host to continue to roles.")
+            )}
+            {nonverbal && (
+              <p className="muted center compact">
+                {ROUND_RULES[rule].name} stays for the whole round.
+              </p>
             )}
             {view.is_host &&
               view.players
@@ -693,6 +734,7 @@ export default function App() {
   const reviewRound = useRef<number | null>(null);
   const [qr, setQr] = useState("");
   const [showQr, setShowQr] = useState(false);
+  const [showRoundSettings, setShowRoundSettings] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [confirm, setConfirm] = useState<{
     title: string;
@@ -1091,6 +1133,10 @@ export default function App() {
         setShowQr(false);
         return;
       }
+      if (showRoundSettings) {
+        setShowRoundSettings(false);
+        return;
+      }
       if (clueEditor) {
         setClueEditor(null);
         return;
@@ -1139,7 +1185,14 @@ export default function App() {
     [],
   );
   useEffect(() => {
-    if (!confirm && !showQr && !reconnectRequest && !clueEditor) return;
+    if (
+      !confirm &&
+      !showQr &&
+      !reconnectRequest &&
+      !clueEditor &&
+      !showRoundSettings
+    )
+      return;
     document.documentElement.setAttribute("data-private-concealed", "");
     setRevealed(false);
     const previous = document.activeElement as HTMLElement | null;
@@ -1149,7 +1202,11 @@ export default function App() {
       () =>
         document
           .querySelector<HTMLElement>(
-            clueEditor ? ".clue-editor input" : ".bottom-sheet button",
+            clueEditor
+              ? ".clue-editor input"
+              : showRoundSettings
+                ? ".round-settings [role=switch]"
+                : ".bottom-sheet button",
           )
           ?.focus(),
       60,
@@ -1160,15 +1217,16 @@ export default function App() {
         setConfirm(null);
         setShowQr(false);
         setClueEditor(null);
+        setShowRoundSettings(false);
         if (reconnectRequest) send("reject_reconnect", reconnectRequest.id);
         return;
       }
       if (e.key !== "Tab") return;
       const nodes = [
         ...document.querySelectorAll<HTMLElement>(
-          ".bottom-sheet button:not(:disabled), .bottom-sheet input:not(:disabled), .bottom-sheet a[href]",
+          ".bottom-sheet button:not(:disabled), .bottom-sheet input:not(:disabled), .bottom-sheet a[href], .bottom-sheet summary",
         ),
-      ];
+      ].filter((node) => node.getClientRects().length > 0);
       const first = nodes[0],
         last = nodes.at(-1);
       if (e.shiftKey && document.activeElement === first) {
@@ -1186,7 +1244,13 @@ export default function App() {
       document.body.style.overflow = previousOverflow;
       previous?.focus();
     };
-  }, [confirm, showQr, reconnectRequest?.id, clueEditor?.turn]);
+  }, [
+    confirm,
+    showQr,
+    reconnectRequest?.id,
+    clueEditor?.turn,
+    showRoundSettings,
+  ]);
 
   const nav = (p: Page, explicitDirection?: number) => {
     const depth: Record<string, number> = {
@@ -1215,6 +1279,7 @@ export default function App() {
     setError("");
     setPage(webGuest && p === "home" ? "web_join" : p);
     setShowQr(false);
+    setShowRoundSettings(false);
   };
   const help = () => {
     setReturnPage(page);
@@ -1275,6 +1340,20 @@ export default function App() {
       action: () =>
         execute(async () => {
           await act("abandon");
+          setConfirm(null);
+        }),
+    });
+  const confirmRemovePlayer = (player: Player) =>
+    setConfirm({
+      title: `Remove ${player.name}?`,
+      body:
+        view?.phase === "lobby"
+          ? "They can scan the invitation to join again before a round starts."
+          : "They will leave this round. With fewer than three players, everyone returns to the lobby.",
+      label: "Remove player",
+      action: () =>
+        execute(async () => {
+          await act("remove", player.id);
           setConfirm(null);
         }),
     });
@@ -1388,6 +1467,26 @@ export default function App() {
   };
   const clueHistory = (playerId: string, editable = false) => (
     <span className="clue-history">
+      {(view?.performed || [])
+        .filter((entry) => entry.player_id === playerId)
+        .sort((a, b) => a.turn - b.turn)
+        .map(({ turn }) =>
+          editable ? (
+            <button
+              key={turn}
+              className="clue-entry clue-edit"
+              aria-label={`Unmark performed clue for turn ${turn}`}
+              disabled={busy || view?.paused}
+              onClick={() => send("performed", { turn, performed: false })}
+            >
+              Turn {turn}: Performed
+            </button>
+          ) : (
+            <span key={turn} className="clue-entry">
+              Turn {turn}: Performed
+            </span>
+          ),
+        )}
       {(view?.clues || [])
         .filter((c) => c.player_id === playerId)
         .sort((a, b) => a.turn - b.turn)
@@ -1454,6 +1553,28 @@ export default function App() {
               )}
               {showClues && clueHistory(p.id, p.id === view?.my_id)}
               {showClues &&
+                view &&
+                (view.round_rule === "act_it" ||
+                  view.round_rule === "sound_only") &&
+                p.id === view.my_id &&
+                !view.performed?.some(
+                  (c) => c.player_id === p.id && c.turn === view.clue_turn,
+                ) && (
+                  <button
+                    className="inline-link add-clue"
+                    disabled={busy || view.paused}
+                    onClick={() =>
+                      send("performed", {
+                        turn: view.clue_turn,
+                        performed: true,
+                      })
+                    }
+                  >
+                    Mark my turn performed
+                  </button>
+                )}
+              {showClues &&
+                (!view?.round_rule || view.round_rule === "classic") &&
                 p.id === view?.my_id &&
                 !view.clues?.some(
                   (c) => c.player_id === p.id && c.turn === view.clue_turn,
@@ -1480,18 +1601,7 @@ export default function App() {
               <button
                 className="player-manage"
                 aria-label={`Manage ${p.name}`}
-                onClick={() =>
-                  setConfirm({
-                    title: `Remove ${p.name}?`,
-                    body: "They can scan the invitation to join again before a round starts.",
-                    label: "Remove player",
-                    action: () =>
-                      execute(async () => {
-                        await act("remove", p.id);
-                        setConfirm(null);
-                      }),
-                  })
-                }
+                onClick={() => confirmRemovePlayer(p)}
               >
                 <span className="sr-only">Manage {p.name}</span>
               </button>
@@ -1504,6 +1614,30 @@ export default function App() {
   const footer = (children: ReactNode) => (
     <div className="actions">{children}</div>
   );
+  const openRoundSettings = () => {
+    setError("");
+    setRevealed(false);
+    setShowRoundSettings(true);
+  };
+  const settingsButton = view?.is_host ? (
+    <button
+      className="icon-button"
+      aria-label="Session settings"
+      onClick={openRoundSettings}
+    >
+      <Icon name="settings" />
+    </button>
+  ) : undefined;
+  const nonverbal =
+    view?.round_rule === "act_it" || view?.round_rule === "sound_only";
+  const deckMessage =
+    view?.deck_status?.reason === "recent"
+      ? "The remaining words are too similar to recent clues."
+      : view?.deck_status?.reason === "hints"
+        ? "The remaining words need more possible answers for their imposter hints."
+        : view?.deck_status?.reason === "incompatible"
+          ? "Enable a topic with enough words for this rule."
+          : "The enabled topics have used all their fresh words.";
   const invitationButton = view?.is_host ? (
     <button
       className="icon-button"
@@ -1512,6 +1646,12 @@ export default function App() {
     >
       <Icon name="qr" />
     </button>
+  ) : undefined;
+  const hostHeaderActions = view?.is_host ? (
+    <div className="party-header-actions">
+      {settingsButton}
+      {invitationButton}
+    </div>
   ) : undefined;
   const roundHeaderActions = (
     <div className="party-header-actions">
@@ -1865,7 +2005,7 @@ export default function App() {
               ],
               [
                 "Give clues. Spot the imposter.",
-                "Talk, joke, and find the odd one out.",
+                "Classic uses spoken clues. Act It uses silent movements without spelling or mouthing words. Sound Only uses sounds you make yourself, with no words, lyrics, gestures, or recordings. Talk normally when you discuss suspicions.",
               ],
               ["Vote in secret", "Everyone votes at the same time."],
               [
@@ -2516,7 +2656,16 @@ export default function App() {
         <>
           <Header
             title={`Round ${view.round_id} · Paused`}
-            right={roundHeaderActions}
+            right={
+              view.is_host ? (
+                <div className="party-header-actions">
+                  {settingsButton}
+                  {roundHeaderActions}
+                </div>
+              ) : (
+                roundHeaderActions
+              )
+            }
           />
           <div className="center-stage">
             <ConnectionArt
@@ -2536,7 +2685,11 @@ export default function App() {
             view.is_host ? (
               <>
                 <Button
-                  disabled={busy || activePlayers.some((p) => !p.connected)}
+                  disabled={
+                    busy ||
+                    view.pause_reason?.startsWith("A player left.") ||
+                    activePlayers.some((p) => !p.connected)
+                  }
                   onClick={() => send("resume")}
                 >
                   Resume round
@@ -2551,6 +2704,49 @@ export default function App() {
           )}
         </>
       );
+    if (view.phase === "rule_reveal" && view.round_rule) {
+      const missing = activePlayers.filter((p) => !p.connected);
+      return (
+        <>
+          <Header
+            title={`Round ${view.round_id} · Round rule`}
+            back={view.is_host ? askAbandon : askLeave}
+            notice={connectionStatus}
+            right={hostHeaderActions}
+          />
+          <RuleReveal rule={view.round_rule} />
+          {footer(
+            view.is_host ? (
+              <>
+                {missing.map((player) => (
+                  <button
+                    className="inline-link"
+                    key={player.id}
+                    disabled={busy}
+                    onClick={() => confirmRemovePlayer(player)}
+                  >
+                    Remove {player.name}
+                  </button>
+                ))}
+                <Button
+                  disabled={busy || missing.length > 0}
+                  onClick={() => send("open_topics")}
+                >
+                  Vote for topic
+                </Button>
+                <p className="center muted compact">
+                  {ROUND_RULES[view.round_rule].next}
+                </p>
+              </>
+            ) : (
+              <p className="center muted">
+                Waiting for the host to open topic voting.
+              </p>
+            ),
+          )}
+        </>
+      );
+    }
     if (
       ["topic_voting", "topic_results", "topic_chosen"].includes(view.phase) &&
       view.topic_vote
@@ -2563,18 +2759,13 @@ export default function App() {
           send={send}
           leave={view.is_host ? askAbandon : askLeave}
           notice={connectionStatus}
-          remove={(p) =>
-            setConfirm({
-              title: `Remove ${p.name}?`,
-              body: "Their ballot will be removed if voting is still open. A finalized topic draw stays the same.",
-              label: "Remove player",
-              action: () =>
-                execute(async () => {
-                  await act("remove", p.id);
-                  setConfirm(null);
-                }),
-            })
+          settings={settingsButton}
+          invitation={
+            activePlayers.some((p) => !p.connected)
+              ? invitationButton
+              : undefined
           }
+          remove={confirmRemovePlayer}
         />
       );
     if (view.phase === "lobby")
@@ -2583,13 +2774,16 @@ export default function App() {
           <Header
             notice={connectionStatus}
             right={
-              <button
-                className="icon-button"
-                onClick={askLeave}
-                aria-label={view.is_host ? "End party" : "Leave party"}
-              >
-                <Icon name="logout" />
-              </button>
+              <div className="party-header-actions">
+                {settingsButton}
+                <button
+                  className="icon-button"
+                  onClick={askLeave}
+                  aria-label={view.is_host ? "End party" : "Leave party"}
+                >
+                  <Icon name="logout" />
+                </button>
+              </div>
             }
           />
           <div className="lobby-heading">
@@ -2616,12 +2810,12 @@ export default function App() {
             </div>
             {view.is_host && qr && (
               <button
-                className="mini-qr"
+                className="lobby-invitation inline-link"
                 aria-label="Show invitation QR code"
                 onClick={() => setShowQr(true)}
               >
-                <img src={qr} alt="Party invitation QR code" />
-                <small>Scan to join</small>
+                <Icon name="qr" size={21} />
+                Show invitation
               </button>
             )}
           </div>
@@ -2642,6 +2836,23 @@ export default function App() {
               <Icon name="edit" size={20} />
             )}
           </button>
+          {view.is_host && (
+            <button className="round-rules-summary" onClick={openRoundSettings}>
+              <Icon name="shuffle" />
+              <span>
+                <strong>Random round rules</strong>
+                <small>
+                  {view.random_rules
+                    ? "Classic, Act It, or Sound Only"
+                    : "Classic every round"}
+                </small>
+              </span>
+              <b className={view.random_rules ? "round-rules-on" : "muted"}>
+                {view.random_rules ? "On" : "Off"}
+              </b>
+              <Icon name="chevron" size={18} />
+            </button>
+          )}
           {playersList()}
           {activePlayers.length < 3 && (
             <p className="muted compact lobby-tip">
@@ -2679,18 +2890,36 @@ export default function App() {
                     nav("topics");
                   }}
                 >
-                  Topic settings
+                  {view.deck_status?.reason
+                    ? "Enable more topics"
+                    : "Topic settings"}
                 </Button>
-                <Button
-                  disabled={
-                    busy ||
-                    activePlayers.length < 3 ||
-                    activePlayers.some((p) => !p.ready || !p.connected)
-                  }
-                  onClick={() => send("start")}
-                >
-                  Vote for topic
-                </Button>
+                {view.deck_status?.reason ? (
+                  <>
+                    <p className="muted center" role="status">
+                      {deckMessage}
+                    </p>
+                    <Button onClick={openRoundSettings}>
+                      Word deck settings
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    disabled={
+                      busy ||
+                      activePlayers.length < 3 ||
+                      activePlayers.some((p) => !p.ready || !p.connected)
+                    }
+                    onClick={() => send("start")}
+                  >
+                    {view.random_rules ? "Reveal round rule" : "Vote for topic"}
+                  </Button>
+                )}
+                {view.random_rules && !view.deck_status?.reason && (
+                  <p className="center muted compact">
+                    The rule comes before topic voting.
+                  </p>
+                )}
               </>
             ) : (
               <>
@@ -2723,8 +2952,17 @@ export default function App() {
             notice={connectionStatus}
             back={reviewingCard ? () => nav(null, -1) : askLeave}
             title={`Round ${view.round_id}${revealed ? ` · ${me?.name}` : ""}`}
-            right={reviewingCard ? invitationButton : roundHeaderActions}
+            right={
+              reviewingCard
+                ? invitationButton
+                : view.is_host && !view.role_ready
+                  ? hostHeaderActions
+                  : roundHeaderActions
+            }
           />
+          {nonverbal && view.round_rule && (
+            <RuleIndicator rule={view.round_rule} />
+          )}
           {view.role_ready && !reviewingCard ? (
             <>
               <div className="center-stage">
@@ -2771,20 +3009,19 @@ export default function App() {
                   <Icon name="lock" size={34} />
                 </div>
                 <div className="role-back" aria-hidden={!revealed}>
-                  {revealed && (
-                    <>
-                      <p>
-                        {view.private_role?.imposter
-                          ? "Your starting hint"
-                          : "Your secret word"}
-                      </p>
-                      <strong
-                        className={`secret-word ${(view.private_role?.clue.length || 0) > 14 ? "long-word" : (view.private_role?.clue.length || 0) > 5 ? "medium-word" : ""}`}
-                      >
-                        {view.private_role?.clue}
-                      </strong>
-                      <PawStamp />
-                    </>
+                  {revealed && view.private_role && (
+                    !view.private_role.imposter && view.private_role.definition ? (
+                      <RoleMeaning
+                        key={view.round_id}
+                        word={view.private_role.clue}
+                        definition={view.private_role.definition}
+                      />
+                    ) : (
+                      <RoleClue
+                        clue={view.private_role.clue}
+                        imposter={view.private_role.imposter}
+                      />
+                    )
                   )}
                 </div>
               </motion.div>
@@ -2847,10 +3084,25 @@ export default function App() {
             </h1>
             <Cards className="discussion-art" />
           </div>
-          <p className="muted">Need more clues? Keep talking.</p>
+          {nonverbal && view.round_rule ? (
+            <div className="clue-rule">
+              <h2 className="lime">{ROUND_RULES[view.round_rule].name}</h2>
+              <p className="muted">
+                {view.round_rule === "sound_only"
+                  ? "Sounds for clues. Talking for discussion."
+                  : "Silent actions for clues. Talking for discussion."}
+              </p>
+            </div>
+          ) : (
+            <p className="muted">Need more clues? Keep talking.</p>
+          )}
           <div className="clue-board-heading">
             <h2>Clues by turn</h2>
-            <p className="muted compact">Optional · clears next round.</p>
+            <p className="muted compact">
+              {nonverbal
+                ? "Marking a turn is optional."
+                : "Optional · clears next round."}
+            </p>
           </div>
           {playersList(true)}
           {footer(
@@ -2869,13 +3121,18 @@ export default function App() {
                 >
                   Open voting
                 </Button>
-                <Button
-                  kind="text"
-                  disabled={busy || view.paused}
-                  onClick={() => send("pause")}
-                >
-                  Pause round
-                </Button>
+                <div className="round-secondary-actions">
+                  <Button
+                    kind="text"
+                    disabled={busy || view.paused}
+                    onClick={() => send("pause")}
+                  >
+                    Pause round
+                  </Button>
+                  <Button kind="text" onClick={openRoundSettings}>
+                    Session settings
+                  </Button>
+                </div>
               </>
             ) : (
               <p className="muted center">
@@ -2895,7 +3152,16 @@ export default function App() {
           <Header
             back={askLeave}
             title={`Round ${view.round_id} · ${runoff ? "Runoff" : "Vote"}`}
-            right={roundHeaderActions}
+            right={
+              view.is_host ? (
+                <div className="party-header-actions">
+                  {settingsButton}
+                  {roundHeaderActions}
+                </div>
+              ) : (
+                roundHeaderActions
+              )
+            }
             notice={connectionStatus}
           />
           {view.my_vote ? (
@@ -3145,7 +3411,7 @@ export default function App() {
             notice={connectionStatus}
             back={askLeave}
             title={`Round ${view.round_id} · Results`}
-            right={invitationButton}
+            right={hostHeaderActions}
           />
           <motion.div
             className="result-content"
@@ -3266,6 +3532,12 @@ export default function App() {
                 <strong>{r.word}</strong>
               </div>
             </div>
+            {r.definition && (
+              <details className="result-definition" key={view.round_id}>
+                <summary>Word meaning</summary>
+                <p>{r.definition}</p>
+              </details>
+            )}
             <div className="result-summary">
               {!r.accused_id && (
                 <p className="resolution-detail">
@@ -3319,7 +3591,7 @@ export default function App() {
             notice={connectionStatus}
             back={askLeave}
             title={`Round ${view.round_id}`}
-            right={invitationButton}
+            right={hostHeaderActions}
           />
           {submitted ? (
             <>
@@ -3445,12 +3717,27 @@ export default function App() {
       const p = view.punishment;
       const mine = p.player_id === view.my_id;
       const recipient = person(p.player_id);
+      const skip = () => execute(() => act("skip", p.turn, view.round_id));
+      const giverMissing = !person(p.giver_id)?.connected;
+      const replaceGiver = view.is_host &&
+        recipient?.connected &&
+        giverMissing && (
+          <Button
+            kind="outline"
+            disabled={busy}
+            onClick={() =>
+              execute(() => act("reassign", p.turn, view.round_id))
+            }
+          >
+            Choose another dare giver
+          </Button>
+        );
       return (
         <>
           <Header
             back={askLeave}
             title="Drink or Dare"
-            right={invitationButton}
+            right={hostHeaderActions}
             notice={connectionStatus}
           />
           <p className="muted center punishment-counter">
@@ -3494,11 +3781,7 @@ export default function App() {
                       <Icon name="cards" size={34} />
                       Dare
                     </Button>
-                    <Button
-                      kind="text"
-                      disabled={busy}
-                      onClick={() => send("skip")}
-                    >
+                    <Button kind="text" disabled={busy} onClick={skip}>
                       Skip
                     </Button>
                   </>
@@ -3508,7 +3791,7 @@ export default function App() {
                       Waiting for {recipient?.name} to choose.
                     </p>
                     {view.is_host && !recipient?.connected && (
-                      <Button kind="text" onClick={() => send("skip")}>
+                      <Button kind="text" disabled={busy} onClick={skip}>
                         Skip disconnected player
                       </Button>
                     )}
@@ -3520,9 +3803,11 @@ export default function App() {
             <>
               <h1 className="center dare-title">
                 <span>
-                  {playerName(p.giver_id)} gives {recipient?.name}
+                  {giverMissing
+                    ? "Waiting for the dare giver"
+                    : `${playerName(p.giver_id)} gives ${recipient?.name}`}
                 </span>
-                <span> a dare.</span>
+                {!giverMissing && <span> a dare.</span>}
               </h1>
               <div className="dare-pair">
                 <div>
@@ -3535,22 +3820,21 @@ export default function App() {
                   <span>{mine ? "Your turn" : "Their turn"}</span>
                 </div>
               </div>
-              <p className="center">
-                {playerName(p.giver_id)} makes it up.
-                <br />
-                The room takes it from here.
-              </p>
+              {!giverMissing && (
+                <p className="center">
+                  {playerName(p.giver_id)} makes it up.
+                  <br />
+                  The room takes it from here.
+                </p>
+              )}
               {footer(
                 mine ? (
                   <>
+                    {replaceGiver}
                     <Button disabled={busy} onClick={() => send("done")}>
                       Done
                     </Button>
-                    <Button
-                      kind="text"
-                      disabled={busy}
-                      onClick={() => send("skip")}
-                    >
+                    <Button kind="text" disabled={busy} onClick={skip}>
                       Skip
                     </Button>
                   </>
@@ -3560,16 +3844,10 @@ export default function App() {
                       Waiting for {recipient?.name} to finish.
                     </p>
                     {view.is_host &&
-                      (!recipient?.connected ||
-                        !person(p.giver_id)?.connected) && (
+                      (!recipient?.connected || giverMissing) && (
                         <>
-                          <Button
-                            kind="outline"
-                            onClick={() => send("reassign")}
-                          >
-                            Choose another dare giver
-                          </Button>
-                          <Button kind="text" onClick={() => send("skip")}>
+                          {replaceGiver}
+                          <Button kind="text" disabled={busy} onClick={skip}>
                             Skip this turn
                           </Button>
                         </>
@@ -3590,7 +3868,7 @@ export default function App() {
                     <Button disabled={busy} onClick={() => send("done")}>
                       Done
                     </Button>
-                    <Button kind="text" onClick={() => send("skip")}>
+                    <Button kind="text" disabled={busy} onClick={skip}>
                       Skip
                     </Button>
                   </>
@@ -3600,7 +3878,7 @@ export default function App() {
                       Waiting for {recipient?.name} to finish.
                     </p>
                     {view.is_host && !recipient?.connected && (
-                      <Button kind="text" onClick={() => send("skip")}>
+                      <Button kind="text" disabled={busy} onClick={skip}>
                         Skip this turn
                       </Button>
                     )}
@@ -3632,7 +3910,7 @@ export default function App() {
                   ? `Session ${view.score_session.number} complete`
                   : "Party"
               }
-              right={invitationButton}
+              right={hostHeaderActions}
               notice={connectionStatus}
             />
           )}
@@ -3820,6 +4098,145 @@ export default function App() {
         </div>
       )}
       <AnimatePresence>
+        {showRoundSettings && view?.is_host && view.phase !== "ended" && (
+          <MotionSheet
+            key="round-settings"
+            labelledBy="round-settings-title"
+            className="round-settings"
+            busy={busy}
+            onDismiss={() => setShowRoundSettings(false)}
+          >
+            <button
+              className="sheet-close icon-button"
+              aria-label="Close session settings"
+              disabled={busy}
+              onClick={() => setShowRoundSettings(false)}
+            >
+              <Icon name="x" />
+            </button>
+            <h2 id="round-settings-title">Session settings</h2>
+            <div className="round-settings-toggle">
+              <strong>Random round rules</strong>
+              <span className="muted" aria-hidden="true">
+                {view.random_rules ? "On" : "Off"}
+              </span>
+              <button
+                className="rule-switch"
+                role="switch"
+                aria-label="Random round rules"
+                aria-checked={!!view.random_rules}
+                disabled={busy}
+                onClick={() => send("random_rules", !view.random_rules)}
+              />
+            </div>
+            <p className="muted">
+              {view.random_rules
+                ? "A surprise rule before every topic vote."
+                : "Upcoming rounds use Classic."}
+            </p>
+            {view.round_rule && view.rule_change_pending ? (
+              <>
+                <div className="round-settings-current">
+                  <b>CURRENT ROUND</b>
+                  <RuleArt rule={view.round_rule} />
+                  <h3>{ROUND_RULES[view.round_rule].name}</h3>
+                  <p>This round keeps its rule.</p>
+                </div>
+                <div className="round-settings-line">
+                  <b>Round {view.round_id}</b>
+                  <b>{ROUND_RULES[view.round_rule].name}</b>
+                </div>
+                <div className="round-settings-line">
+                  <b>Next round</b>
+                  <b className="lime">
+                    {view.random_rules ? "Random rule" : "Classic"}
+                  </b>
+                </div>
+                <p className="muted" role="status">
+                  Random rules are {view.random_rules ? "on" : "off"} from next
+                  round.
+                </p>
+                <p className="muted">Players, scores, and connections stay.</p>
+              </>
+            ) : (
+              <>
+                <h3 className="round-settings-draw-title">
+                  {view.random_rules ? "In the draw" : "Available round rules"}
+                </h3>
+                <ul className="round-settings-rules">
+                  {(["classic", "act_it", "sound_only"] as const).map(
+                    (rule) => (
+                      <li key={rule}>
+                        <RuleArt rule={rule} />
+                        <span>
+                          <strong>{ROUND_RULES[rule].name}</strong>
+                          <small>
+                            {rule === "act_it"
+                              ? "Silent actions. No sounds."
+                              : rule === "sound_only"
+                                ? "Make sounds. No words."
+                                : ROUND_RULES[rule].short}
+                          </small>
+                        </span>
+                      </li>
+                    ),
+                  )}
+                </ul>
+                <p className="muted">Topics match the drawn rule.</p>
+                <p className="muted">Changes apply to the next rule draw.</p>
+              </>
+            )}
+            {view.deck_status && (
+              <details
+                className="round-settings-deck"
+                open={view.deck_status.reason ? true : undefined}
+              >
+                <summary>
+                  <strong>Word deck</strong>
+                  <span className="muted">
+                    {view.deck_status.played} played
+                  </span>
+                </summary>
+                {view.deck_status.reason && (
+                  <p className="muted">{deckMessage}</p>
+                )}
+                <p className="muted">
+                  Played words stay out across parties hosted on this device.
+                </p>
+                <Button
+                  kind="outline"
+                  disabled={busy || view.deck_status.played === 0}
+                  onClick={() => {
+                    setShowRoundSettings(false);
+                    setConfirm({
+                      title: "Start fresh word deck?",
+                      body: "Older played words can return. Your players and scores carry over.",
+                      label: "Start fresh word deck",
+                      action: () =>
+                        execute(async () => {
+                          await act("fresh_word_deck");
+                          setConfirm(null);
+                        }),
+                    });
+                  }}
+                >
+                  Start fresh word deck
+                </Button>
+              </details>
+            )}
+            {error && (
+              <p role="alert" className="terra">
+                {error}
+              </p>
+            )}
+            <Button disabled={busy} onClick={() => setShowRoundSettings(false)}>
+              Done
+            </Button>
+            {view.random_rules && !view.rule_change_pending && (
+              <p className="muted center compact">Your session keeps going.</p>
+            )}
+          </MotionSheet>
+        )}
         {clueEditor && (
           <MotionSheet
             key="clue-editor"

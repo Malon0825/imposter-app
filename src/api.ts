@@ -88,7 +88,10 @@ function browserHeaders(
   credentials?: Credentials,
   withController = false,
 ): Record<string, string> {
-  const headers: Record<string, string> = { "X-Imposter-Client": "web-v1" };
+  const headers: Record<string, string> = {
+    "X-Imposter-Client": "web-v1",
+    "X-Imposter-Gameplay": "round-rules-v1",
+  };
   if (credentials) {
     headers.Authorization = `Bearer ${credentials.token}`;
     headers["X-Imposter-Party"] = browserInvite(

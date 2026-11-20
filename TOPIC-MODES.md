@@ -16,7 +16,7 @@ There are no required props, other participants, contact, recordings, words, lyr
 
 Sound Only accepts familiar fictional sounds in Movies. Space & science does not invent sounds for silent vacuum phenomena. Abstract, clinical and relationship topics are withheld where ten useful clues cannot be supported without changing the topic or repeating the same generic noises.
 
-Repeat history is shared across modes. A compatible word is not reused until that topic/mode subset is exhausted; only that subset resets. Topic filtering still respects the host's enabled packs and the four opt-in topics.
+Played words and equivalent concepts stay deducted across modes and parties on the same host device until the host starts a fresh word deck. Recent clue families can temporarily reduce these static pools. The host's enabled packs and the four opt-in settings still control topic availability.
 
 ## Coverage
 
@@ -26,7 +26,7 @@ Repeat history is shared across modes. A compatible word is not reused until tha
 
 **581 distinct catalog entries.** The 2026-11-17 review preserved the original 552 entries and Classic hints, and added 29 words: Everyday +7, Nature +6, Travel +6, Technology +5, Hobbies +5.
 
-**Current app status:** the active game still uses Classic. Mode filtering, mode hints and safe selection helpers are prepared for the reviewed random-rule feature; the new screens and session toggle are not activated by this content change.
+The live ballot uses the remaining fresh candidates with viable hints. These counts describe the starting catalog.
 
 ## Everyday
 

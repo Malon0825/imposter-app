@@ -245,6 +245,13 @@ async fn guard(State(state): State<HostState>, request: Request, next: Next) -> 
             "Open the party link in your browser.",
         );
     }
+    if request.method() == Method::POST && host.check_client(request.headers()).is_err() {
+        return error(
+            StatusCode::CONFLICT,
+            "gameplay_update",
+            "Reload this page to get the host's current game screens.",
+        );
+    }
     if let Some(peer) = request.extensions().get::<ConnectInfo<SocketAddr>>() {
         let mut rates = web(&host).rates.lock().await;
         if rates.len() > 128 {
@@ -480,8 +487,6 @@ async fn recover(State(state): State<HostState>, Json(body): Json<Recover>) -> R
                 player.controller = body.controller;
                 game.connection(&id, true);
                 let result = credentials(&host, &token, player, game.view(&id));
-                drop(game);
-                drop(sessions);
                 host.seen.lock().await.insert(id, Instant::now());
                 return Json(json!({"status":"approved","session":result})).into_response();
             }
@@ -551,8 +556,6 @@ async fn browser_join(State(state): State<HostState>, Json(body): Json<BrowserJo
         let id = player.player_id.clone();
         game.connection(&id, true);
         let result = credentials(&host, &token, player, game.view(&id));
-        drop(game);
-        drop(sessions);
         host.seen.lock().await.insert(id, Instant::now());
         return Json(result).into_response();
     }
@@ -573,8 +576,6 @@ async fn browser_join(State(state): State<HostState>, Json(body): Json<BrowserJo
         .joins
         .insert(body.request_id, (body.name, token.clone()));
     sessions.players.insert(token, browser_player);
-    drop(game);
-    drop(sessions);
     host.seen.lock().await.insert(player.id, Instant::now());
     Json(result).into_response()
 }
@@ -627,8 +628,6 @@ async fn resume(
     game.connection(&player.player_id, true);
     let id = player.player_id.clone();
     let result = credentials(&host, token, player, game.view(&id));
-    drop(game);
-    drop(sessions);
     host.seen.lock().await.insert(id, Instant::now());
     Json(result).into_response()
 }
@@ -683,12 +682,14 @@ async fn browser_request(state: HostState, headers: HeaderMap, action: Option<Ac
         );
     }
     game.connection(&id, true);
+    host.seen.lock().await.insert(id.clone(), Instant::now());
     if let Some(action) = action {
         if ![
             "ready",
             "topic_vote",
             "role_ready",
             "clue",
+            "performed",
             "vote",
             "report",
             "choice",
@@ -712,9 +713,6 @@ async fn browser_request(state: HostState, headers: HeaderMap, action: Option<Ac
         }
     }
     let result = game.view(&id);
-    drop(game);
-    drop(sessions);
-    host.seen.lock().await.insert(id, Instant::now());
     Json(result).into_response()
 }
 async fn browser_state(State(state): State<HostState>, headers: HeaderMap) -> Response {

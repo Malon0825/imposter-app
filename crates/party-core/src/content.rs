@@ -1,6 +1,5 @@
-use rand::{seq::SliceRandom, Rng};
 use serde::{Deserialize, Serialize};
-use std::collections::{BTreeMap, HashSet};
+use std::collections::BTreeMap;
 
 pub const MIN_MODE_WORDS: usize = 10;
 
@@ -18,8 +17,10 @@ impl GameMode {
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct Word {
+    pub word_id: String,
     pub word: String,
     pub hint: String,
+    pub definition: String,
     pub modes: Vec<GameMode>,
     pub mode_hints: BTreeMap<GameMode, String>,
 }
@@ -69,36 +70,6 @@ impl Topic {
             .filter(|word| word.hint_for_mode(mode).is_some())
             .collect()
     }
-
-    /// Record a dealt word globally across modes. On exhaustion, reset only
-    /// this topic's eligible subset, preserving other words' repeat history.
-    pub fn draw_word(
-        &self,
-        mode: GameMode,
-        used: &mut HashSet<String>,
-        rng: &mut impl Rng,
-    ) -> Result<&Word, &'static str> {
-        let eligible = self.words_for_mode(mode);
-        if eligible.is_empty() {
-            return Err("This topic needs at least 10 reviewed words for this mode.");
-        }
-        let mut fresh: Vec<_> = eligible
-            .iter()
-            .copied()
-            .filter(|word| !used.contains(&word.word))
-            .collect();
-        if fresh.is_empty() {
-            for word in &eligible {
-                used.remove(&word.word);
-            }
-            fresh = eligible;
-        }
-        let word = *fresh
-            .choose(rng)
-            .ok_or("This topic has no eligible words.")?;
-        used.insert(word.word.clone());
-        Ok(word)
-    }
 }
 
 /// Respect the host's enabled pack IDs, including the existing opt-in boundary.
@@ -116,17 +87,23 @@ pub fn modes_for_topics(enabled_ids: &[String]) -> Vec<GameMode> {
         .collect()
 }
 pub fn topics() -> Vec<Topic> {
-    serde_json::from_str(include_str!("../content/topics.json"))
-        .expect("bundled content is validated at build/test time")
+    bundled_topics().to_vec()
+}
+
+pub(crate) fn bundled_topics() -> &'static [Topic] {
+    static TOPICS: std::sync::OnceLock<Vec<Topic>> = std::sync::OnceLock::new();
+    TOPICS.get_or_init(|| {
+        serde_json::from_str(include_str!("../content/topics.json"))
+            .expect("bundled content is validated at build/test time")
+    })
 }
 pub fn catalog() -> serde_json::Value {
-    serde_json::Value::Array(topics().iter().map(|t| serde_json::json!({"id":t.id,"name":t.name,"icon":t.icon,"description":t.description,"opt_in":t.opt_in,"count":t.words.len()})).collect())
+    serde_json::Value::Array(bundled_topics().iter().map(|t| serde_json::json!({"id":t.id,"name":t.name,"icon":t.icon,"description":t.description,"opt_in":t.opt_in,"count":t.words.len()})).collect())
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand::{rngs::StdRng, SeedableRng};
 
     fn pack(id: &str) -> Topic {
         topics().into_iter().find(|topic| topic.id == id).unwrap()
@@ -162,22 +139,6 @@ mod tests {
     }
 
     #[test]
-    fn undersized_pools_fail_without_changing_repeat_history() {
-        let mut used = HashSet::from(["Wallet".to_string(), "Rocket".to_string()]);
-        let before = used.clone();
-        let mut rng = StdRng::seed_from_u64(51);
-        for (id, mode) in [
-            ("food", GameMode::SoundOnly),
-            ("space", GameMode::SoundOnly),
-            ("puberty", GameMode::ActIt),
-            ("health", GameMode::ActIt),
-        ] {
-            assert!(pack(id).draw_word(mode, &mut used, &mut rng).is_err());
-            assert_eq!(used, before);
-        }
-    }
-
-    #[test]
     fn ten_word_threshold_is_exact_and_missing_hints_fail_closed() {
         let original = pack("everyday");
         let candidates: Vec<_> = original
@@ -197,51 +158,6 @@ mod tests {
             .mode_hints
             .insert(GameMode::SoundOnly, " ".into());
         assert!(!topic.supports_mode(GameMode::SoundOnly));
-    }
-
-    #[test]
-    fn exhausted_sound_pool_never_falls_back_to_silent_words_or_resets_other_history() {
-        let topic = pack("everyday");
-        let eligible: HashSet<_> = topic
-            .words_for_mode(GameMode::SoundOnly)
-            .into_iter()
-            .map(|word| word.word.clone())
-            .collect();
-        let mut used: HashSet<_> = topic.words.iter().map(|word| word.word.clone()).collect();
-        used.insert("Pizza".into());
-        let preserved: HashSet<_> = used.difference(&eligible).cloned().collect();
-        let mut rng = StdRng::seed_from_u64(52);
-        let mut dealt = HashSet::new();
-        for _ in 0..eligible.len() {
-            let word = topic
-                .draw_word(GameMode::SoundOnly, &mut used, &mut rng)
-                .unwrap();
-            assert!(dealt.insert(word.word.clone()), "repeat before exhaustion");
-            assert!(eligible.contains(&word.word));
-            assert!(preserved.is_subset(&used));
-        }
-        assert_eq!(dealt, eligible);
-        let word = topic
-            .draw_word(GameMode::SoundOnly, &mut used, &mut rng)
-            .unwrap();
-        assert!(eligible.contains(&word.word));
-        assert!(preserved.is_subset(&used));
-        assert_eq!(used.len(), preserved.len() + 1);
-    }
-
-    #[test]
-    fn switching_modes_keeps_a_word_used_until_the_compatible_pool_is_exhausted() {
-        let topic = pack("everyday");
-        let mut used = HashSet::from(["Key".to_string(), "Wallet".to_string()]);
-        let mut rng = StdRng::seed_from_u64(53);
-        for _ in 0..topic.mode_word_count(GameMode::SoundOnly) - 1 {
-            let word = topic
-                .draw_word(GameMode::SoundOnly, &mut used, &mut rng)
-                .unwrap();
-            assert_ne!(word.word, "Key");
-            assert!(used.contains("Wallet"));
-        }
-        assert_eq!(used.len(), topic.mode_word_count(GameMode::SoundOnly) + 1);
     }
 
     #[test]

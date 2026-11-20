@@ -1087,6 +1087,72 @@ strong {
   color: #899c74;
   margin-top: 31px;
 }
+.role-meaning,
+.role-meaning-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+.role-meaning-panel {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  touch-action: pan-y;
+  user-select: none;
+}
+.role-meaning-face .paw-stamp {
+  height: min(35%, 115px);
+  width: 140px;
+}
+.role-meaning-face .paw-stamp > svg:last-child {
+  height: 100%;
+  width: auto;
+  max-width: 100%;
+}
+.role-definition {
+  font-size: clamp(18px, 5.6vw, 24px);
+  font-weight: 650;
+  line-height: 1.3;
+  max-width: 30ch;
+  margin: auto 0;
+  overflow-wrap: anywhere;
+}
+.role-meaning-toggle {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  min-height: 44px;
+  padding: 0 12px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.role-meaning-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+  border-radius: 6px;
+}
+.result-definition {
+  color: var(--muted);
+  text-align: center;
+}
+.result-definition summary {
+  cursor: pointer;
+  display: list-item;
+  list-style-position: inside;
+  padding: 12px 8px;
+  min-height: 44px;
+  font-weight: 650;
+}
+.result-definition p {
+  margin: 0 auto 10px;
+  max-width: 32ch;
+  line-height: 1.4;
+}
 .role-reminder {
   font-size: 19px;
   margin-top: 23px;
@@ -3577,3 +3643,99 @@ strong .player-connection-label {
     height: 64px;
   }
 }
+.round-rules-summary {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  gap: 14px;
+  width: 100%;
+  padding: 13px 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  background: transparent;
+}
+.round-rules-summary span { flex: 1; min-width: 0; }
+.round-rules-summary strong, .round-rules-summary small { display: block; }
+.round-rules-summary strong { font-size: 18px; }
+.round-rules-summary small { color: var(--muted); font-size: 14px; }
+.round-rules-summary > svg:first-child { color: var(--muted); flex: none; }
+.round-rules-on { color: var(--bg); background: var(--lime); border-radius: 999px; padding: 4px 12px; }
+.lobby-invitation { display: flex; gap: 6px; align-items: center; min-height: 44px; color: var(--muted); font-size: 14px; }
+.lobby-invitation svg { flex: none; }
+.lobby-heading:has(.lobby-invitation) { align-items: end; }
+.rule-reveal-heading, .rule-reveal-explanation { text-align: center; }
+.rule-reveal-heading { margin: clamp(8px, 3vh, 24px) 0 14px; }
+.rule-reveal-heading h1 { font-size: clamp(28px, 8vw, 36px); }
+.rule-reveal-heading p, .rule-reveal-explanation p { margin: 5px 0 0; }
+.round-rule-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-height: clamp(204px, 39dvh, 330px);
+  padding: 16px;
+  border-radius: 19px;
+  background: var(--ink);
+  color: var(--bg);
+}
+.round-rule-card > b, .round-settings-current > b { font-size: 16px; letter-spacing: .045em; }
+.rule-art { display: block; width: min(68%, 205px); height: clamp(105px, 20dvh, 171px); flex-shrink: 0; }
+.round-rule-card h2 { font-size: clamp(32px, 11vw, 46px); line-height: 1; margin: 7px 0; }
+.round-rule-card p { margin: 3px 0 0; }
+.rule-reveal-explanation { margin: 14px 0 7px; }
+.rule-reveal-explanation h2 { font-size: clamp(20px, 5.6vw, 26px); margin: 0; }
+.round-rule-indicator { display: flex; gap: 8px; align-items: center; margin: 6px 0; color: var(--muted); font-weight: 700; }
+.round-rule-indicator svg { color: var(--lime); flex: none; }
+.screen-topic_voting:has(.round-rule-indicator) { --vote-tile-height: 116px; }
+.screen-topic_voting:has(.round-rule-indicator) .topic-art,
+.screen-topic_voting:has(.round-rule-indicator) .topic-art svg { width: 63px; height: 63px; }
+.screen-topic_voting:has(.round-rule-indicator) .topic-scroll { margin-top: 12px; }
+.topic-result-rule .round-rule-indicator { justify-content: center; }
+.screen-lobby:has(.round-rules-summary) .player-row { min-height: 74px; padding-block: 10px; }
+.screen-lobby:has(.round-rules-summary) .avatar { width: 51px; height: 51px; }
+.screen-rule_reveal .actions { padding-top: 8px; }
+.clue-rule { margin: 0 0 8px; padding: 0 0 10px; border-bottom: 1px solid var(--line); }
+.clue-rule h2 { margin: 0; font-size: 26px; }
+.clue-rule p { margin: 3px 0 0; }
+.round-secondary-actions { display: flex; gap: 8px; justify-content: space-around; }
+.round-secondary-actions .button { width: auto; color: var(--muted); font-size: 15px; text-decoration: underline; text-underline-offset: 4px; padding-inline: 4px; }
+.bottom-sheet.round-settings {
+  position: relative;
+  max-height: min(90dvh, 760px);
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding-top: 16px;
+}
+.round-settings h2 { margin: 24px 36px 14px 0; font-size: clamp(24px, 7vw, 31px); }
+.round-settings-toggle { display: flex; gap: 9px; align-items: center; }
+.round-settings-toggle strong { flex: 1; font-size: clamp(15px, 5vw, 21px); }
+.round-settings-toggle span { font-size: 14px; }
+.rule-switch { position: relative; flex: 0 0 48px; height: 48px; padding: 0; border: 0; border-radius: 12px; background: transparent; }
+.rule-switch::before { content: ""; position: absolute; inset: 10px 0; border-radius: 999px; background: color-mix(in srgb, var(--muted) 45%, var(--surface)); }
+.rule-switch::after { content: ""; position: absolute; top: 14px; left: 4px; width: 20px; height: 20px; border-radius: 50%; background: var(--ink); transition: transform .16s var(--ease); }
+.rule-switch[aria-checked="true"]::before { background: var(--lime); }
+.rule-switch[aria-checked="true"]::after { transform: translateX(20px); }
+.round-settings-draw-title { margin: 14px 0 0; padding-top: 13px; border-top: 1px solid var(--line); }
+.round-settings-rules { list-style: none; padding: 0; margin: 3px 0 12px; }
+.round-settings-rules li { display: flex; align-items: center; gap: 13px; min-height: 56px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.round-settings-rules .rule-art { width: 48px; height: 38px; }
+.round-settings-rules strong, .round-settings-rules small { display: block; }
+.round-settings-rules small { color: var(--muted); font-size: 14px; }
+.round-settings-current { background: var(--ink); color: var(--bg); border-radius: 16px; padding: 13px; text-align: center; }
+.round-settings-current .rule-art { margin: auto; height: clamp(80px, 15vh, 122px); }
+.round-settings-current h3 { font-size: 29px; margin: 0; }
+.round-settings-current p { margin: 3px 0; }
+.round-settings-line { display: flex; justify-content: space-between; gap: 8px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.round-settings-deck { margin: 12px 0; border-block: 1px solid var(--line); }
+.round-settings-deck summary { cursor: pointer; padding: 9px 0; }
+.round-settings-deck summary span { float: right; }
+.round-settings-deck .button { margin-bottom: 10px; }
+.round-settings > .button:last-of-type { margin-top: 8px; }
+@media (max-height: 760px) {
+  .screen-topic_voting:has(.round-rule-indicator) { --vote-tile-height: 94px; }
+  .screen-lobby:has(.round-rules-summary) .player-row { min-height: 64px; padding-block: 6px; }
+}
+@media (prefers-reduced-motion: reduce) { .rule-switch::after { transition: none; } }

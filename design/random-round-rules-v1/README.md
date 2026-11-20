@@ -1,10 +1,10 @@
 # Random round rules — mockups v1
 
-Status: **Proposed, awaiting user review.** Created 2026-11-17 with the built-in image-generation tool. These are visual mockups; the feature has not been implemented.
+These nine reference screens were created on 2026-11-17 with the built-in image-generation tool. The app now implements the rule reveal, filtered topic vote, clue turns, and session settings as live screens.
 
 The screen interiors extend the approved system in [DESIGN.md](../../DESIGN.md): charcoal, warm ivory, sage, lime, DM Sans-style rounded typography, flat dividers, circular initials, paper-cut illustrations and large bottom actions. Device frames are presentation only.
 
-The [end-to-end implementation plan](IMPLEMENTATION-PLAN.md) covers the rule-first flow, session toggle, reviewed content, persistent word/concept deductions, recent clue-family spacing, safe imposter hints, storage, transport, UI and verification. Its explicit fresh-deck policy supersedes the temporary selector's automatic word-pool refill; the new policy is planned, not implemented.
+The [end-to-end implementation plan](IMPLEMENTATION-PLAN.md) records the design and acceptance criteria. The [implementation record](IMPLEMENTATION.md) describes the delivered flow and verification.
 
 ## Flow and review order
 

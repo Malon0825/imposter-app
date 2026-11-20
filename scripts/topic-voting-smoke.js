@@ -315,7 +315,8 @@ async function topicVotingSmoke(page) {
       await g.page
         .getByRole("button", { name: "Skip reporting", exact: true })
         .click();
-    await act(host, "skip");
+    const punishment = await call("state", { session_id: host.session_id });
+    await act(host, "skip", punishment.punishment.turn);
     await act(host, "next");
     for (const s of natives) await act(s, "ready", true);
     for (const g of guests)

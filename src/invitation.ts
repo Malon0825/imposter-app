@@ -131,5 +131,6 @@ export function parseInvitation(input: string): ParsedInvitation {
 export function androidAppLink(invitation: string): string {
   const parsed = parseInvitation(invitation);
   const payload = parsed.nativeLink.slice("imposter://join/".length);
-  return `intent://join/${payload}#Intent;scheme=imposter;package=com.imposter.party;S.browser_fallback_url=${encodeURIComponent(parsed.text)};end`;
+  const appPackage = import.meta.env.VITE_IMPOSTER_ANDROID_PACKAGE || "com.imposter.party";
+  return `intent://join/${payload}#Intent;scheme=imposter;package=${appPackage};S.browser_fallback_url=${encodeURIComponent(parsed.text)};end`;
 }

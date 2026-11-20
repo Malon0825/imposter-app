@@ -55,6 +55,8 @@ Choose a single primary topic for each entry. Related concepts may have differen
 
 Civilians receive the secret word. The imposter receives an explicit role label and one authored starting hint, never the secret word. Hints remain mandatory and private. Guessing the word does not itself end the round or award points.
 
+Every catalog entry also has a short, plain-language definition for the sense used in its topic. Keep it to one printable line under 161 characters. Civilians can read it on their private card, and all players can read it on Results after voting resolves.
+
 A useful hint gives the imposter a direction for contributing a clue while leaving several believable answers. Merely being related to the target is insufficient. We review the cue from the imposter's side first, including the conservative case where only its own topic is selected.
 
 ### Research basis and editorial decisions
@@ -113,9 +115,9 @@ For Act It, accept a short solo physical clue without speaking, spelling, mouthi
 
 Each accepted word has a concrete example and each excluded word has a reason in the mode review. Existing hints were reconsidered after filtering: a playable nonverbal hint must retain 3–6 reviewed candidate answers inside that mode's actual word pool. Some words therefore have a different private hint for acting or sound. Small unavailable subsets retain Classic hints only as editorial references; those hints are not approved for dealing in the unavailable mode.
 
-Use `Topic::supports_mode`, `Topic::words_for_mode`, `Topic::draw_word`, `topics_for_mode` and `modes_for_topics` for the upcoming rule flow. The draw rejects undersized topics and never falls back to incompatible words. Shared word history survives switching modes; exhaustion clears only the eligible subset. The host's enabled topic IDs continue to control access, including opt-in packs.
+Each canonical entry carries a stable `word_id`. Keep it when updating display text or hints. The [diversity review](crates/party-core/content/diversity-review.json) records closely related words, mode-specific performances, and equivalent concepts with overlapping clues. It also names the approved fallback hints. Maintain explicit aliases when migrating a published ID.
 
-The active game currently calls the shared selector with Classic. This content change prepares the mode data and guards; the proposed rule-reveal screens and session toggle still await implementation. It does not update an already distributed APK.
+The selector filters the host's enabled topics against those groups and the local word deck. It then checks each hint again against the remaining selectable concepts. Use the initial ten-word threshold to qualify a topic for a rule. A depleted pool can still play while it has a viable hint, and a fresh deck starts only through the host's explicit action.
 
 ## Review and playtesting
 

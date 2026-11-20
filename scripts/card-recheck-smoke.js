@@ -49,6 +49,32 @@ async function checkPrivateCardRecall(page) {
   const close = async (p) => {
     await p.getByRole("button", { name: "Hide & return", exact: true }).click();
   };
+  const swipe = async (p, left) => {
+    const bounds = await p.locator(".role-meaning-panel").boundingBox();
+    const start = bounds.x + bounds.width * (left ? 0.8 : 0.2);
+    const end = bounds.x + bounds.width * (left ? 0.2 : 0.8);
+    const y = bounds.y + bounds.height * 0.5;
+    if (p.context().browser().browserType().name() === "chromium") {
+      const cdp = await p.context().newCDPSession(p);
+      try {
+        await cdp.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [{ x: start, y }] });
+        for (let step = 1; step <= 5; step++) {
+          await cdp.send("Input.dispatchTouchEvent", {
+            type: "touchMove",
+            touchPoints: [{ x: start + (end - start) * step / 5, y }],
+          });
+        }
+        await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      } finally {
+        await cdp.detach();
+      }
+    } else {
+      await p.mouse.move(start, y);
+      await p.mouse.down();
+      await p.mouse.move(end, y, { steps: 5 });
+      await p.mouse.up();
+    }
+  };
   try {
     watch(page);
     await page.setViewportSize({ width: 393, height: 852 });
@@ -81,6 +107,8 @@ async function checkPrivateCardRecall(page) {
             width: name === "Mia" ? 360 : 393,
             height: name === "Mia" ? 740 : 852,
           },
+          hasTouch: true,
+          reducedMotion: name === "Mia" ? "reduce" : "no-preference",
         });
       contexts.push(context);
       const p = await context.newPage();
@@ -161,6 +189,24 @@ async function checkPrivateCardRecall(page) {
       await p.screenshot({
         path: `output/playwright/card-recheck-${player.imposter ? "imposter" : "civilian"}-mobile.png`,
       });
+      if (player.imposter) {
+        assert(await p.locator(".role-meaning-toggle").count() === 0, "Imposter has a meaning control");
+      } else {
+        const toggle = p.getByRole("button", { name: "Swipe for meaning", exact: true });
+        await toggle.focus();
+        await toggle.press("Enter");
+        const definition = p.locator(".role-definition");
+        await definition.waitFor();
+        player.definition = await definition.innerText();
+        await p.getByRole("button", { name: "Back to word", exact: true }).click();
+        await swipe(p, true);
+        await definition.waitFor();
+        await swipe(p, false);
+        await p.locator(".secret-word").waitFor();
+        await toggle.click();
+        await definition.waitFor();
+        await p.screenshot({ path: "output/playwright/card-word-meaning-mobile.png" });
+      }
       await p.evaluate(() => window.dispatchEvent(new Event("pagehide")));
       assert(
         (await p
@@ -169,6 +215,7 @@ async function checkPrivateCardRecall(page) {
         "Backgrounding left the clue visible",
       );
       await reveal(p);
+      assert(await p.locator(".role-definition").count() === 0, "Reopening the private card did not reset it to the word");
       await close(p);
       await p
         .getByRole("heading", { name: "Who sounds suspicious?", exact: true })
@@ -281,6 +328,14 @@ async function checkPrivateCardRecall(page) {
         .count()) === 0,
       "Card recall remained available after results",
     );
+    const expectedDefinition = players.find((p) => !p.imposter).definition;
+    for (const player of players) {
+      await player.page.getByText("Word meaning", { exact: true }).click();
+      assert(
+        (await player.page.locator(".result-definition p").innerText()) === expectedDefinition,
+        "Results did not show the same definition to every player",
+      );
+    }
     for (const player of players.slice(1)) {
       const saved = await player.page.evaluate(() =>
         JSON.parse(localStorage.getItem("imposter.web.session.v1")),
@@ -304,6 +359,9 @@ async function checkPrivateCardRecall(page) {
         "selected and locked votes preserved",
         "automatic exit at results",
         "no stored private cards",
+        "swipe both directions and keyboard access",
+        "private definition resets on concealment",
+        "word meaning revealed to everyone in results",
       ],
     };
   } finally {

@@ -1,16 +1,20 @@
-param([switch]$Release)
+param([switch]$Release, [switch]$Preview)
 $ErrorActionPreference = 'Stop'
+if ($Release -and $Preview) { throw 'Choose either a release or preview build.' }
 . "$PSScriptRoot/env.ps1"
 $imposterRoot = Split-Path -Parent $PSScriptRoot
+$imposterReleaseBuild = $Release -or $Preview
+$imposterAndroidPackage = $env:VITE_IMPOSTER_ANDROID_PACKAGE
 Push-Location $imposterRoot
 try {
     $env:TAURI_ANDROID_PROJECT_PATH = Join-Path $imposterRoot 'src-tauri\gen\android'
     $env:WRY_ANDROID_PACKAGE = 'com.imposter.party'
     $env:TAURI_ANDROID_PACKAGE_UNESCAPED = 'com.imposter.party'
     $env:WRY_ANDROID_LIBRARY = 'imposter_app_lib'
+    $env:VITE_IMPOSTER_ANDROID_PACKAGE = if ($Preview) { 'com.imposter.party.preview' } else { 'com.imposter.party' }
     npm.cmd run build
     if ($LASTEXITCODE -ne 0) { throw 'Frontend build failed.' }
-    $imposterProfile = if ($Release) { 'release' } else { 'debug' }
+    $imposterProfile = if ($imposterReleaseBuild) { 'release' } else { 'debug' }
     $imposterTargets = @(
         @{ Rust = 'aarch64-linux-android'; Abi = 'arm64-v8a'; Clang = 'aarch64-linux-android26-clang.cmd' },
         @{ Rust = 'x86_64-linux-android'; Abi = 'x86_64'; Clang = 'x86_64-linux-android26-clang.cmd' }
@@ -22,7 +26,7 @@ try {
         Set-Item -Path ("Env:CC_" + $imposterEnvSuffix) -Value $imposterLinker
         Set-Item -Path ("Env:AR_" + $imposterEnvSuffix) -Value "$env:NDK_HOME\toolchains\llvm\prebuilt\windows-x86_64\bin\llvm-ar.exe"
         $imposterBuildArgs = @('build','-p','imposter-app','--lib','--target',$imposterTarget.Rust,'--features','tauri/custom-protocol')
-        if ($Release) { $imposterBuildArgs += '--release' }
+        if ($imposterReleaseBuild) { $imposterBuildArgs += '--release' }
         & cargo @imposterBuildArgs
         if ($LASTEXITCODE -ne 0) { throw "Native build failed for $($imposterTarget.Rust)." }
         # A normal copy avoids requiring Windows developer-mode symbolic links.
@@ -38,17 +42,22 @@ try {
     $imposterVersion = [version]$imposterPackage.version
     $imposterVersionCode = $imposterVersion.Major * 1000000 + $imposterVersion.Minor * 1000 + $imposterVersion.Build
     Set-Content -LiteralPath src-tauri/gen/android/app/tauri.properties -Value @("tauri.android.versionName=$($imposterPackage.version)","tauri.android.versionCode=$imposterVersionCode")
-    $imposterVariant = if ($Release) { 'Release' } else { 'Debug' }
+    $imposterVariant = if ($imposterReleaseBuild) { 'Release' } else { 'Debug' }
+    $imposterGradleArgs = @('-p', 'src-tauri/gen/android', ':app:clean', "assembleUniversal$imposterVariant", '-x', "rustBuildUniversal$imposterVariant", '-PabiList=arm64-v8a,x86_64', '-ParchList=arm64,x86_64', '-PtargetList=aarch64,x86_64')
+    if ($Preview) { $imposterGradleArgs += '-PimposterPreview=true' }
     # Clean the package so incremental APK archives don't retain space from old
     # unstripped development libraries. Rust's compilation cache stays intact.
-    & ./src-tauri/gen/android/gradlew.bat -p src-tauri/gen/android ':app:clean' "assembleUniversal$imposterVariant" -x "rustBuildUniversal$imposterVariant" '-PabiList=arm64-v8a,x86_64' '-ParchList=arm64,x86_64' '-PtargetList=aarch64,x86_64'
+    & ./src-tauri/gen/android/gradlew.bat @imposterGradleArgs
     if ($LASTEXITCODE -ne 0) { throw 'Android packaging failed.' }
     New-Item -ItemType Directory -Path releases -Force | Out-Null
-    if ($Release) {
-        & "$PSScriptRoot/sign-android.ps1" -UnsignedApk (Join-Path $imposterRoot 'src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk') -Version $imposterPackage.version
+    if ($imposterReleaseBuild) {
+        & "$PSScriptRoot/sign-android.ps1" -UnsignedApk (Join-Path $imposterRoot 'src-tauri/gen/android/app/build/outputs/apk/universal/release/app-universal-release-unsigned.apk') -Version $imposterPackage.version -Preview:$Preview
     } else {
         $imposterApk = "releases/imposter-$($imposterPackage.version)-android-debug.apk"
         Copy-Item -LiteralPath src-tauri/gen/android/app/build/outputs/apk/universal/debug/app-universal-debug.apk -Destination $imposterApk
         Write-Output "Ready: $imposterApk"
     }
-} finally { Pop-Location }
+} finally {
+    $env:VITE_IMPOSTER_ANDROID_PACKAGE = $imposterAndroidPackage
+    Pop-Location
+}

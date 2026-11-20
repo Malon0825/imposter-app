@@ -24,8 +24,9 @@ fn deal(g: &mut Game) {
         p.ready = true;
     }
     act(g, &host, "start", Value::Null).unwrap();
+    let topic = g.round.topic_pool.first().unwrap().clone();
     for id in g.round.roster.clone() {
-        act(g, &id, "topic_vote", json!(["food"])).unwrap();
+        act(g, &id, "topic_vote", json!([topic])).unwrap();
     }
     act(g, &host, "begin_round", Value::Null).unwrap();
     for id in g.round.roster.clone() {
@@ -58,7 +59,8 @@ fn finish(g: &mut Game) {
     act(g, &host, "open_reports", Value::Null).unwrap();
     act(g, &host, "punish", Value::Null).unwrap();
     while g.phase == "punishment" {
-        act(g, &host, "skip", Value::Null).unwrap();
+        let turn = g.round.turn + 1;
+        act(g, &host, "skip", json!(turn)).unwrap();
     }
 }
 fn next(g: &mut Game) {
@@ -331,7 +333,7 @@ fn shared_win_and_restart_clear_session_state_preserving_connections_and_fairnes
     g.players[2].points = 14;
     let tokens: Vec<_> = g.players.iter().map(|p| p.token.clone()).collect();
     let history = g.imposter_turns.clone();
-    let used = g.used.clone();
+    let used = g.deck.clone();
     caught(&mut g, 0);
     assert_eq!(g.session_winners.len(), 2);
     finish(&mut g);
@@ -357,7 +359,7 @@ fn shared_win_and_restart_clear_session_state_preserving_connections_and_fairnes
     assert!(g.reading_streaks.is_empty() && g.pending_reports.is_empty());
     assert!(g.round.stakes.is_empty() && g.round.scores.is_empty() && !g.round.committed);
     assert_eq!(g.imposter_turns, history);
-    assert_eq!(g.used, used);
+    assert_eq!(g.deck, used);
     assert_eq!(
         g.players
             .iter()

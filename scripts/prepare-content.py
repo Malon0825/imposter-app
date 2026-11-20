@@ -15,6 +15,8 @@ CATALOG = ROOT / "crates/party-core/content/topics.json"
 REVIEW = ROOT / "crates/party-core/content/hint-review.json"
 MODE_REVIEW = ROOT / "crates/party-core/content/mode-review.json"
 MODE_REPORT = ROOT / "TOPIC-MODES.md"
+DIVERSITY = ROOT / "crates/party-core/content/diversity-review.json"
+SELECTION_INDEX = ROOT / "crates/party-core/content/selection-index.json"
 MIN_WORDS = 20
 MIN_MODE_WORDS = 10
 MODES = ("classic", "act_it", "sound_only")
@@ -80,6 +82,16 @@ def validate(packs):
             if not normalized or normalized in words:
                 raise ValueError(f"Empty or duplicate word: {word!r}")
             words.add(normalized)
+            definition = pair.get("definition")
+            if (
+                not isinstance(definition, str)
+                or definition != definition.strip()
+                or not 16 <= len(definition) <= 160
+                or not definition.isprintable()
+                or not definition.endswith(".")
+                or canonical(definition) in {normalized, canonical(hint)}
+            ):
+                raise ValueError(f"Use a short, plain-language definition for {word!r}.")
             validate_hint(word, hint)
             modes = pair.get("modes")
             if (
@@ -213,7 +225,7 @@ def mode_report(packs, review):
         "Small unavailable pools retain their Classic hints for editorial reference; those hints are not approved for dealing in that mode. Selection must use the gated topic selector. Clue examples and candidate alternatives never go to players.", "",
         "There are no required props, other participants, contact, recordings, words, lyrics, spelling, or mouthed answers in nonverbal clue examples. Physical performances can be small seated gestures. Sound examples describe mouth-made imitations, not playing actual instruments or devices. Speech remains available during discussion.", "",
         "Sound Only accepts familiar fictional sounds in Movies. Space & science does not invent sounds for silent vacuum phenomena. Abstract, clinical and relationship topics are withheld where ten useful clues cannot be supported without changing the topic or repeating the same generic noises.", "",
-        "Repeat history is shared across modes. A compatible word is not reused until that topic/mode subset is exhausted; only that subset resets. Topic filtering still respects the host's enabled packs and the four opt-in topics.", "",
+        "Played words and equivalent concepts stay deducted across modes and parties on the same host device until the host starts a fresh word deck. Recent clue families can temporarily reduce these static pools. The host's enabled packs and the four opt-in settings still control topic availability.", "",
         "## Coverage", "",
     ]
     for mode in MODES:
@@ -221,7 +233,7 @@ def mode_report(packs, review):
         count = sum(sum(mode in pair['modes'] for pair in topic['words']) for topic in playable)
         lines.append(f"- **{labels[mode]}:** {len(playable)} playable topics; {count} words across those playable pools.")
     lines += ["", f"**{sum(len(topic['words']) for topic in packs)} distinct catalog entries.** The 2026-11-17 review preserved the original 552 entries and Classic hints, and added 29 words: Everyday +7, Nature +6, Travel +6, Technology +5, Hobbies +5.", "",
-              "**Current app status:** the active game still uses Classic. Mode filtering, mode hints and safe selection helpers are prepared for the reviewed random-rule feature; the new screens and session toggle are not activated by this content change.", ""]
+              "The live ballot uses the remaining fresh candidates with viable hints. These counts describe the starting catalog.", ""]
     for topic in packs:
         lines += [f"## {topic['name']}", ""]
         if topic['opt_in']:
@@ -245,6 +257,58 @@ def mode_report(packs, review):
     return "\n".join(lines).rstrip() + "\n"
 
 
+def selection_index(packs, classic, nonverbal, diversity):
+    words = {pair["word"]: pair for topic in packs for pair in topic["words"]}
+    ids = [pair.get("word_id", "") for pair in words.values()]
+    if len(set(ids)) != len(ids) or any(not re.fullmatch(r"[a-z0-9-]+/[a-z0-9-]+", id) for id in ids):
+        raise ValueError("Every word needs a unique stable word_id.")
+    if diversity["revision"] < 1 or not all(old not in ids and new in ids for old, new in diversity["aliases"].items()):
+        raise ValueError("Invalid catalog revision or word ID alias.")
+    metadata = {name: {"concept": pair["word_id"], "semantic": [], "performance": {}, "hints": {}} for name, pair in words.items()}
+    equivalents = set()
+    for category in ("concepts", "semantic", *MODES):
+        for group, names in diversity[category].items():
+            if len(set(names)) != len(names) or len(names) < 2 or not set(names) <= words.keys():
+                raise ValueError(f"Unknown or duplicate words in {category}/{group}: {names}")
+            for name in names:
+                if category == "concepts":
+                    if name in equivalents:
+                        raise ValueError(f"Conflicting equivalent concept: {name}")
+                    equivalents.add(name)
+                    metadata[name]["concept"] = "equivalent/" + group
+                elif category == "semantic":
+                    metadata[name]["semantic"].append(group)
+                elif category in words[name]["modes"]:
+                    metadata[name]["performance"].setdefault(category, []).append(group)
+    for topic, classic_review, mode_review in zip(packs, classic["topics"], nonverbal["topics"], strict=True):
+        if not topic["id"] == classic_review["id"] == mode_review["id"]:
+            raise ValueError("Topic reviews must follow the canonical order.")
+        for mode in MODES:
+            source = classic_review["associations"] if mode == "classic" else mode_review["associations"][mode]
+            associations = {row["hint"]: row["plausible_words"] for row in source}
+            for pair in topic["words"]:
+                name = pair["word"]
+                if not associations or mode not in pair["modes"]:
+                    continue
+                primary = pair["hint"] if mode == "classic" else pair["mode_hints"][mode]
+                options = [primary, *diversity["fallback_hints"][mode].get(name, [])]
+                hints = []
+                for hint in dict.fromkeys(options):
+                    if name not in associations.get(hint, []):
+                        raise ValueError(f"Unreviewed {mode} hint for {name}: {hint}")
+                    validate_hint(name, hint)
+                    hints.append({"text": hint, "candidates": [words[target]["word_id"] for target in associations[hint]]})
+                metadata[name]["hints"][mode] = hints
+    for mode, options in diversity["fallback_hints"].items():
+        if mode not in MODES or any(name not in metadata or mode not in metadata[name]["hints"] for name in options):
+            raise ValueError(f"Unavailable fallback hint in {mode}.")
+    return json.dumps({
+        "revision": diversity["revision"],
+        "aliases": diversity["aliases"],
+        "words": {words[name]["word_id"]: details for name, details in metadata.items()},
+    }, ensure_ascii=False, separators=(",", ":")) + "\n"
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     actions = parser.add_mutually_exclusive_group()
@@ -259,6 +323,12 @@ def main():
     validate_review(packs, review)
     mode_review = json.loads(MODE_REVIEW.read_text(encoding="utf-8"))
     validate_mode_review(packs, mode_review)
+    index = selection_index(packs, review, mode_review, json.loads(DIVERSITY.read_text(encoding="utf-8")))
+    if args.check:
+        if not SELECTION_INDEX.exists() or SELECTION_INDEX.read_text(encoding="utf-8") != index:
+            raise ValueError("selection-index.json is stale; run --write-mode-report.")
+    else:
+        SELECTION_INDEX.write_text(index, encoding="utf-8")
     report = mode_report(packs, mode_review)
     if args.check and (not MODE_REPORT.exists() or MODE_REPORT.read_text(encoding="utf-8") != report):
         raise ValueError("TOPIC-MODES.md is stale; run --write-mode-report.")

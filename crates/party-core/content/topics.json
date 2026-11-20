@@ -15,7 +15,9 @@
         ],
         "mode_hints": {
           "act_it": "Pocket"
-        }
+        },
+        "word_id": "everyday/wallet",
+        "definition": "A small folding case for carrying money and cards."
       },
       {
         "word": "Umbrella",
@@ -26,7 +28,9 @@
         ],
         "mode_hints": {
           "act_it": "Weather"
-        }
+        },
+        "word_id": "everyday/umbrella",
+        "definition": "A folding cover held overhead to protect you from rain or sun."
       },
       {
         "word": "Mirror",
@@ -37,7 +41,9 @@
         ],
         "mode_hints": {
           "act_it": "Bathroom"
-        }
+        },
+        "word_id": "everyday/mirror",
+        "definition": "A smooth surface that shows your reflection."
       },
       {
         "word": "Pillow",
@@ -48,7 +54,9 @@
         ],
         "mode_hints": {
           "act_it": "Soft"
-        }
+        },
+        "word_id": "everyday/pillow",
+        "definition": "A soft cushion that supports your head while you rest."
       },
       {
         "word": "Toothbrush",
@@ -61,7 +69,9 @@
         "mode_hints": {
           "act_it": "Routine",
           "sound_only": "Routine"
-        }
+        },
+        "word_id": "everyday/toothbrush",
+        "definition": "A small brush used to clean your teeth."
       },
       {
         "word": "Scissors",
@@ -74,7 +84,9 @@
         "mode_hints": {
           "act_it": "Craft",
           "sound_only": "Craft"
-        }
+        },
+        "word_id": "everyday/scissors",
+        "definition": "A tool with two blades that close together to cut."
       },
       {
         "word": "Key",
@@ -87,7 +99,9 @@
         "mode_hints": {
           "act_it": "Pocket",
           "sound_only": "Metal"
-        }
+        },
+        "word_id": "everyday/key",
+        "definition": "A small shaped object that locks or unlocks something."
       },
       {
         "word": "Candle",
@@ -98,7 +112,9 @@
         ],
         "mode_hints": {
           "act_it": "Evening"
-        }
+        },
+        "word_id": "everyday/candle",
+        "definition": "A stick of wax with a wick that burns to give light."
       },
       {
         "word": "Backpack",
@@ -109,7 +125,9 @@
         ],
         "mode_hints": {
           "act_it": "Outdoors"
-        }
+        },
+        "word_id": "everyday/backpack",
+        "definition": "A bag carried on your back with two shoulder straps."
       },
       {
         "word": "Remote control",
@@ -120,7 +138,9 @@
         ],
         "mode_hints": {
           "act_it": "Couch"
-        }
+        },
+        "word_id": "everyday/remote-control",
+        "definition": "A handheld device used to operate things like a TV from a distance."
       },
       {
         "word": "Towel",
@@ -131,7 +151,9 @@
         ],
         "mode_hints": {
           "act_it": "Bathroom"
-        }
+        },
+        "word_id": "everyday/towel",
+        "definition": "A piece of absorbent cloth used to dry yourself or a surface."
       },
       {
         "word": "Comb",
@@ -142,7 +164,9 @@
         ],
         "mode_hints": {
           "act_it": "Routine"
-        }
+        },
+        "word_id": "everyday/comb",
+        "definition": "A tool with a row of teeth used to tidy or untangle hair."
       },
       {
         "word": "Soap",
@@ -153,7 +177,9 @@
         ],
         "mode_hints": {
           "act_it": "Bathroom"
-        }
+        },
+        "word_id": "everyday/soap",
+        "definition": "A substance used with water to wash away dirt and oil."
       },
       {
         "word": "Clock",
@@ -166,7 +192,9 @@
         "mode_hints": {
           "act_it": "Bedside",
           "sound_only": "Routine"
-        }
+        },
+        "word_id": "everyday/clock",
+        "definition": "A device that shows the current time."
       },
       {
         "word": "Notebook",
@@ -179,7 +207,9 @@
         "mode_hints": {
           "act_it": "Desk",
           "sound_only": "Desk"
-        }
+        },
+        "word_id": "everyday/notebook",
+        "definition": "A book of blank or lined pages for writing in."
       },
       {
         "word": "Pen",
@@ -192,7 +222,9 @@
         "mode_hints": {
           "act_it": "Pocket",
           "sound_only": "Craft"
-        }
+        },
+        "word_id": "everyday/pen",
+        "definition": "A handheld tool that writes with ink."
       },
       {
         "word": "Water bottle",
@@ -205,7 +237,9 @@
         "mode_hints": {
           "act_it": "Outdoors",
           "sound_only": "Liquid"
-        }
+        },
+        "word_id": "everyday/water-bottle",
+        "definition": "A container for carrying drinking water."
       },
       {
         "word": "Mug",
@@ -218,7 +252,9 @@
         "mode_hints": {
           "act_it": "Morning",
           "sound_only": "Morning"
-        }
+        },
+        "word_id": "everyday/mug",
+        "definition": "A sturdy drinking cup with a handle."
       },
       {
         "word": "Blanket",
@@ -229,7 +265,9 @@
         ],
         "mode_hints": {
           "act_it": "Soft"
-        }
+        },
+        "word_id": "everyday/blanket",
+        "definition": "A large, soft covering that helps keep you warm."
       },
       {
         "word": "Lamp",
@@ -240,7 +278,9 @@
         ],
         "mode_hints": {
           "act_it": "Bedside"
-        }
+        },
+        "word_id": "everyday/lamp",
+        "definition": "A device that gives light, often placed on a table or floor."
       },
       {
         "word": "Charger",
@@ -251,7 +291,9 @@
         ],
         "mode_hints": {
           "act_it": "Bedside"
-        }
+        },
+        "word_id": "everyday/charger",
+        "definition": "A device that supplies electricity to refill a battery."
       },
       {
         "word": "Tape",
@@ -264,7 +306,9 @@
         "mode_hints": {
           "act_it": "Craft",
           "sound_only": "Craft"
-        }
+        },
+        "word_id": "everyday/tape",
+        "definition": "A sticky strip used to attach, seal, or repair things."
       },
       {
         "word": "Sunglasses",
@@ -275,7 +319,9 @@
         ],
         "mode_hints": {
           "act_it": "Weather"
-        }
+        },
+        "word_id": "everyday/sunglasses",
+        "definition": "Glasses with dark lenses that protect your eyes from bright light."
       },
       {
         "word": "Basket",
@@ -286,7 +332,9 @@
         ],
         "mode_hints": {
           "act_it": "Picnic"
-        }
+        },
+        "word_id": "everyday/basket",
+        "definition": "An open container, often woven, for carrying or storing things."
       },
       {
         "word": "Doorbell",
@@ -299,7 +347,9 @@
         "mode_hints": {
           "act_it": "Entrance",
           "sound_only": "Doorway"
-        }
+        },
+        "word_id": "everyday/doorbell",
+        "definition": "A button by an entrance that makes a sound when pressed."
       },
       {
         "word": "Vacuum cleaner",
@@ -312,7 +362,9 @@
         "mode_hints": {
           "act_it": "Cleaning",
           "sound_only": "Motor"
-        }
+        },
+        "word_id": "everyday/vacuum-cleaner",
+        "definition": "A machine that sucks dust and dirt from floors and other surfaces."
       },
       {
         "word": "Hair dryer",
@@ -325,7 +377,9 @@
         "mode_hints": {
           "act_it": "Routine",
           "sound_only": "Routine"
-        }
+        },
+        "word_id": "everyday/hair-dryer",
+        "definition": "A handheld device that blows warm air to dry wet hair."
       },
       {
         "word": "Kettle",
@@ -338,7 +392,9 @@
         "mode_hints": {
           "act_it": "Morning",
           "sound_only": "Morning"
-        }
+        },
+        "word_id": "everyday/kettle",
+        "definition": "A container used to boil water, usually with a lid and spout."
       },
       {
         "word": "Stapler",
@@ -351,7 +407,9 @@
         "mode_hints": {
           "act_it": "Desk",
           "sound_only": "Desk"
-        }
+        },
+        "word_id": "everyday/stapler",
+        "definition": "A tool that fastens papers together with small metal clips."
       },
       {
         "word": "Wind chime",
@@ -364,7 +422,9 @@
         "mode_hints": {
           "act_it": "Weather",
           "sound_only": "Metal"
-        }
+        },
+        "word_id": "everyday/wind-chime",
+        "definition": "Hanging pieces that strike one another and make sounds in a breeze."
       },
       {
         "word": "Electric shaver",
@@ -377,7 +437,9 @@
         "mode_hints": {
           "act_it": "Routine",
           "sound_only": "Routine"
-        }
+        },
+        "word_id": "everyday/electric-shaver",
+        "definition": "A powered tool with moving blades used to trim or remove hair."
       }
     ]
   },
@@ -397,7 +459,9 @@
         ],
         "mode_hints": {
           "act_it": "Oven"
-        }
+        },
+        "word_id": "food/pizza",
+        "definition": "A flat round base baked with toppings such as sauce and cheese."
       },
       {
         "word": "Sushi",
@@ -408,7 +472,9 @@
         ],
         "mode_hints": {
           "act_it": "Rice"
-        }
+        },
+        "word_id": "food/sushi",
+        "definition": "A Japanese dish made with vinegared rice and ingredients such as fish or vegetables."
       },
       {
         "word": "Dumpling",
@@ -419,7 +485,9 @@
         ],
         "mode_hints": {
           "act_it": "Steam"
-        }
+        },
+        "word_id": "food/dumpling",
+        "definition": "A small piece of cooked dough, often wrapped around a filling."
       },
       {
         "word": "Taco",
@@ -430,7 +498,9 @@
         ],
         "mode_hints": {
           "act_it": "Filling"
-        }
+        },
+        "word_id": "food/taco",
+        "definition": "A folded tortilla filled with ingredients such as meat, beans, or vegetables."
       },
       {
         "word": "Curry",
@@ -441,7 +511,9 @@
         ],
         "mode_hints": {
           "act_it": "Spice"
-        }
+        },
+        "word_id": "food/curry",
+        "definition": "A dish of meat or vegetables cooked with spices, often in a sauce."
       },
       {
         "word": "Noodles",
@@ -454,7 +526,9 @@
         "mode_hints": {
           "act_it": "Bowl",
           "sound_only": "Bowl"
-        }
+        },
+        "word_id": "food/noodles",
+        "definition": "Long, thin pieces of dough cooked in water and served in various dishes."
       },
       {
         "word": "Ice cream",
@@ -465,7 +539,9 @@
         ],
         "mode_hints": {
           "act_it": "Chilled"
-        }
+        },
+        "word_id": "food/ice-cream",
+        "definition": "A sweet, frozen dessert often made with milk or cream."
       },
       {
         "word": "Popcorn",
@@ -478,7 +554,9 @@
         "mode_hints": {
           "act_it": "Snack",
           "sound_only": "Snack"
-        }
+        },
+        "word_id": "food/popcorn",
+        "definition": "Corn kernels that puff and burst when heated."
       },
       {
         "word": "Coffee",
@@ -491,7 +569,9 @@
         "mode_hints": {
           "act_it": "Morning",
           "sound_only": "Morning"
-        }
+        },
+        "word_id": "food/coffee",
+        "definition": "A drink brewed from roasted, ground beans."
       },
       {
         "word": "Bubble tea",
@@ -504,7 +584,9 @@
         "mode_hints": {
           "act_it": "Straw",
           "sound_only": "Straw"
-        }
+        },
+        "word_id": "food/bubble-tea",
+        "definition": "A tea-based drink often served with chewy tapioca pearls."
       },
       {
         "word": "Burger",
@@ -515,7 +597,9 @@
         ],
         "mode_hints": {
           "act_it": "Layers"
-        }
+        },
+        "word_id": "food/burger",
+        "definition": "A patty served in a split bun, often with toppings."
       },
       {
         "word": "Sandwich",
@@ -526,7 +610,9 @@
         ],
         "mode_hints": {
           "act_it": "Lunch"
-        }
+        },
+        "word_id": "food/sandwich",
+        "definition": "A filling served between slices of bread."
       },
       {
         "word": "Pancakes",
@@ -537,7 +623,9 @@
         ],
         "mode_hints": {
           "act_it": "Breakfast"
-        }
+        },
+        "word_id": "food/pancakes",
+        "definition": "Flat, round cakes made by cooking batter on a hot pan."
       },
       {
         "word": "Waffle",
@@ -548,7 +636,9 @@
         ],
         "mode_hints": {
           "act_it": "Breakfast"
-        }
+        },
+        "word_id": "food/waffle",
+        "definition": "A crisp batter cake cooked in a patterned iron."
       },
       {
         "word": "Salad",
@@ -559,7 +649,9 @@
         ],
         "mode_hints": {
           "act_it": "Fresh"
-        }
+        },
+        "word_id": "food/salad",
+        "definition": "A dish of mixed ingredients, often vegetables with dressing."
       },
       {
         "word": "Soup",
@@ -572,7 +664,9 @@
         "mode_hints": {
           "act_it": "Warmth",
           "sound_only": "Warmth"
-        }
+        },
+        "word_id": "food/soup",
+        "definition": "A liquid dish usually made by cooking ingredients in water or stock."
       },
       {
         "word": "Pasta",
@@ -583,7 +677,9 @@
         ],
         "mode_hints": {
           "act_it": "Sauce"
-        }
+        },
+        "word_id": "food/pasta",
+        "definition": "A food made from dough shaped into forms such as tubes, strands, or sheets."
       },
       {
         "word": "Fried rice",
@@ -594,7 +690,9 @@
         ],
         "mode_hints": {
           "act_it": "Pan"
-        }
+        },
+        "word_id": "food/fried-rice",
+        "definition": "Cooked rice stir-fried with ingredients such as vegetables, eggs, or meat."
       },
       {
         "word": "Croissant",
@@ -605,7 +703,9 @@
         ],
         "mode_hints": {
           "act_it": "Bakery"
-        }
+        },
+        "word_id": "food/croissant",
+        "definition": "A flaky, buttery pastry often shaped like a crescent."
       },
       {
         "word": "Chocolate",
@@ -616,7 +716,9 @@
         ],
         "mode_hints": {
           "act_it": "Sweet"
-        }
+        },
+        "word_id": "food/chocolate",
+        "definition": "A food made from cacao, often sweetened and eaten as a treat."
       },
       {
         "word": "Cheese",
@@ -627,7 +729,9 @@
         ],
         "mode_hints": {
           "act_it": "Dairy"
-        }
+        },
+        "word_id": "food/cheese",
+        "definition": "A food made by separating and processing the solid parts of milk."
       },
       {
         "word": "Lemonade",
@@ -638,7 +742,9 @@
         ],
         "mode_hints": {
           "act_it": "Chilled"
-        }
+        },
+        "word_id": "food/lemonade",
+        "definition": "A drink made with lemon juice, water, and usually sugar."
       },
       {
         "word": "Smoothie",
@@ -651,7 +757,9 @@
         "mode_hints": {
           "act_it": "Straw",
           "sound_only": "Straw"
-        }
+        },
+        "word_id": "food/smoothie",
+        "definition": "A thick drink made by blending fruit or other ingredients."
       },
       {
         "word": "Cake",
@@ -662,7 +770,9 @@
         ],
         "mode_hints": {
           "act_it": "Celebration"
-        }
+        },
+        "word_id": "food/cake",
+        "definition": "A sweet baked dessert often made with flour, sugar, and eggs."
       }
     ]
   },
@@ -682,7 +792,9 @@
         ],
         "mode_hints": {
           "act_it": "Reef"
-        }
+        },
+        "word_id": "animals/octopus",
+        "definition": "A sea animal with a soft body and eight arms lined with suckers."
       },
       {
         "word": "Penguin",
@@ -695,7 +807,9 @@
         "mode_hints": {
           "act_it": "Colony",
           "sound_only": "Ocean"
-        }
+        },
+        "word_id": "animals/penguin",
+        "definition": "A flightless seabird that swims with flipper-like wings."
       },
       {
         "word": "Butterfly",
@@ -706,7 +820,9 @@
         ],
         "mode_hints": {
           "act_it": "Garden"
-        }
+        },
+        "word_id": "animals/butterfly",
+        "definition": "An insect with broad, often colorful wings and a slender body."
       },
       {
         "word": "Elephant",
@@ -719,7 +835,9 @@
         "mode_hints": {
           "act_it": "Herd",
           "sound_only": "Herd"
-        }
+        },
+        "word_id": "animals/elephant",
+        "definition": "A large land mammal with a trunk and wide ears."
       },
       {
         "word": "Dolphin",
@@ -732,7 +850,9 @@
         "mode_hints": {
           "act_it": "Playful",
           "sound_only": "Playful"
-        }
+        },
+        "word_id": "animals/dolphin",
+        "definition": "An intelligent sea mammal with a curved body that breathes air."
       },
       {
         "word": "Owl",
@@ -745,7 +865,9 @@
         "mode_hints": {
           "act_it": "Night",
           "sound_only": "Night"
-        }
+        },
+        "word_id": "animals/owl",
+        "definition": "A bird of prey with large forward-facing eyes, often active at night."
       },
       {
         "word": "Dog",
@@ -758,7 +880,9 @@
         "mode_hints": {
           "act_it": "Paws",
           "sound_only": "Paws"
-        }
+        },
+        "word_id": "animals/dog",
+        "definition": "A domesticated mammal that barks and is often kept as a pet."
       },
       {
         "word": "Cat",
@@ -771,7 +895,9 @@
         "mode_hints": {
           "act_it": "Paws",
           "sound_only": "Paws"
-        }
+        },
+        "word_id": "animals/cat",
+        "definition": "A small domesticated mammal that meows and can retract its claws."
       },
       {
         "word": "Lion",
@@ -784,7 +910,9 @@
         "mode_hints": {
           "act_it": "Grassland",
           "sound_only": "Grassland"
-        }
+        },
+        "word_id": "animals/lion",
+        "definition": "A large wild cat whose males often have a mane."
       },
       {
         "word": "Tiger",
@@ -797,7 +925,9 @@
         "mode_hints": {
           "act_it": "Stripes",
           "sound_only": "Stripes"
-        }
+        },
+        "word_id": "animals/tiger",
+        "definition": "A large wild cat with dark stripes on an orange coat."
       },
       {
         "word": "Bear",
@@ -810,7 +940,9 @@
         "mode_hints": {
           "act_it": "Woodland",
           "sound_only": "Woodland"
-        }
+        },
+        "word_id": "animals/bear",
+        "definition": "A large, heavy mammal with thick fur and powerful paws."
       },
       {
         "word": "Giraffe",
@@ -821,7 +953,9 @@
         ],
         "mode_hints": {
           "act_it": "Grassland"
-        }
+        },
+        "word_id": "animals/giraffe",
+        "definition": "A tall African mammal with a very long neck and a patterned coat."
       },
       {
         "word": "Zebra",
@@ -834,7 +968,9 @@
         "mode_hints": {
           "act_it": "Herd",
           "sound_only": "Herd"
-        }
+        },
+        "word_id": "animals/zebra",
+        "definition": "An African animal related to horses with black and white stripes."
       },
       {
         "word": "Kangaroo",
@@ -845,7 +981,9 @@
         ],
         "mode_hints": {
           "act_it": "Grassland"
-        }
+        },
+        "word_id": "animals/kangaroo",
+        "definition": "An Australian mammal that hops and carries its young in a pouch."
       },
       {
         "word": "Rabbit",
@@ -856,7 +994,9 @@
         ],
         "mode_hints": {
           "act_it": "Garden"
-        }
+        },
+        "word_id": "animals/rabbit",
+        "definition": "A small mammal with long ears and strong hind legs for hopping."
       },
       {
         "word": "Fox",
@@ -869,7 +1009,9 @@
         "mode_hints": {
           "act_it": "Night",
           "sound_only": "Night"
-        }
+        },
+        "word_id": "animals/fox",
+        "definition": "A wild mammal related to dogs, often with a pointed snout and bushy tail."
       },
       {
         "word": "Horse",
@@ -882,7 +1024,9 @@
         "mode_hints": {
           "act_it": "Herd",
           "sound_only": "Herd"
-        }
+        },
+        "word_id": "animals/horse",
+        "definition": "A large hoofed animal often kept for riding or pulling loads."
       },
       {
         "word": "Duck",
@@ -895,7 +1039,9 @@
         "mode_hints": {
           "act_it": "Pond",
           "sound_only": "Water"
-        }
+        },
+        "word_id": "animals/duck",
+        "definition": "A waterbird with a broad bill and webbed feet."
       },
       {
         "word": "Turtle",
@@ -906,7 +1052,9 @@
         ],
         "mode_hints": {
           "act_it": "Pond"
-        }
+        },
+        "word_id": "animals/turtle",
+        "definition": "A reptile with a hard shell that protects much of its body."
       },
       {
         "word": "Frog",
@@ -919,7 +1067,9 @@
         "mode_hints": {
           "act_it": "Pond",
           "sound_only": "Water"
-        }
+        },
+        "word_id": "animals/frog",
+        "definition": "An amphibian with strong hind legs that often lives near water."
       },
       {
         "word": "Bee",
@@ -932,7 +1082,9 @@
         "mode_hints": {
           "act_it": "Colony",
           "sound_only": "Stripes"
-        }
+        },
+        "word_id": "animals/bee",
+        "definition": "An insect that collects nectar and pollen, with some kinds making honey."
       },
       {
         "word": "Shark",
@@ -943,7 +1095,9 @@
         ],
         "mode_hints": {
           "act_it": "Ocean"
-        }
+        },
+        "word_id": "animals/shark",
+        "definition": "A fish with a skeleton made of cartilage, found mostly in the sea."
       },
       {
         "word": "Whale",
@@ -956,7 +1110,9 @@
         "mode_hints": {
           "act_it": "Ocean",
           "sound_only": "Ocean"
-        }
+        },
+        "word_id": "animals/whale",
+        "definition": "A large marine mammal that breathes through a blowhole."
       },
       {
         "word": "Crocodile",
@@ -967,7 +1123,9 @@
         ],
         "mode_hints": {
           "act_it": "River"
-        }
+        },
+        "word_id": "animals/crocodile",
+        "definition": "A large reptile with a long snout and strong jaws that lives near water."
       }
     ]
   },
@@ -987,7 +1145,9 @@
         ],
         "mode_hints": {
           "act_it": "Heat"
-        }
+        },
+        "word_id": "nature/cactus",
+        "definition": "A plant that stores water in thick stems and often has spines."
       },
       {
         "word": "Mushroom",
@@ -998,7 +1158,9 @@
         ],
         "mode_hints": {
           "act_it": "Woodland"
-        }
+        },
+        "word_id": "nature/mushroom",
+        "definition": "The fleshy part of certain fungi that appears above the ground."
       },
       {
         "word": "Waterfall",
@@ -1011,7 +1173,9 @@
         "mode_hints": {
           "act_it": "Spray",
           "sound_only": "Spray"
-        }
+        },
+        "word_id": "nature/waterfall",
+        "definition": "Water that drops from a height, such as over a cliff."
       },
       {
         "word": "Volcano",
@@ -1024,7 +1188,9 @@
         "mode_hints": {
           "act_it": "Heat",
           "sound_only": "Force"
-        }
+        },
+        "word_id": "nature/volcano",
+        "definition": "An opening in Earth's crust where molten rock, gas, or ash can escape."
       },
       {
         "word": "Rose",
@@ -1035,7 +1201,9 @@
         ],
         "mode_hints": {
           "act_it": "Garden"
-        }
+        },
+        "word_id": "nature/rose",
+        "definition": "A flowering plant with often fragrant blooms and prickly stems."
       },
       {
         "word": "Sunflower",
@@ -1046,7 +1214,9 @@
         ],
         "mode_hints": {
           "act_it": "Garden"
-        }
+        },
+        "word_id": "nature/sunflower",
+        "definition": "A tall plant with a large, usually yellow flower head that produces seeds."
       },
       {
         "word": "Fern",
@@ -1054,7 +1224,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "nature/fern",
+        "definition": "A plant with divided leaves that reproduces by spores instead of seeds."
       },
       {
         "word": "Bamboo",
@@ -1065,7 +1237,9 @@
         ],
         "mode_hints": {
           "act_it": "Grove"
-        }
+        },
+        "word_id": "nature/bamboo",
+        "definition": "A tall type of grass with hard, hollow stems."
       },
       {
         "word": "Oak tree",
@@ -1076,7 +1250,9 @@
         ],
         "mode_hints": {
           "act_it": "Woodland"
-        }
+        },
+        "word_id": "nature/oak-tree",
+        "definition": "A tree that produces acorns and often has lobed leaves."
       },
       {
         "word": "Palm tree",
@@ -1087,7 +1263,9 @@
         ],
         "mode_hints": {
           "act_it": "Coast"
-        }
+        },
+        "word_id": "nature/palm-tree",
+        "definition": "A tree or tree-like plant with large leaves grouped at the top."
       },
       {
         "word": "Moss",
@@ -1095,7 +1273,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "nature/moss",
+        "definition": "A small plant that forms soft green mats in damp places."
       },
       {
         "word": "Seaweed",
@@ -1103,7 +1283,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "nature/seaweed",
+        "definition": "A general name for large algae that grow in the sea."
       },
       {
         "word": "Forest",
@@ -1116,7 +1298,9 @@
         "mode_hints": {
           "act_it": "Woodland",
           "sound_only": "Trail"
-        }
+        },
+        "word_id": "nature/forest",
+        "definition": "A large area covered mainly by trees."
       },
       {
         "word": "Desert",
@@ -1127,7 +1311,9 @@
         ],
         "mode_hints": {
           "act_it": "Heat"
-        }
+        },
+        "word_id": "nature/desert",
+        "definition": "A very dry region that receives little rain or snow."
       },
       {
         "word": "Mountain",
@@ -1138,7 +1324,9 @@
         ],
         "mode_hints": {
           "act_it": "Trail"
-        }
+        },
+        "word_id": "nature/mountain",
+        "definition": "A natural rise of land that is much higher than its surroundings."
       },
       {
         "word": "River",
@@ -1151,7 +1339,9 @@
         "mode_hints": {
           "act_it": "Current",
           "sound_only": "Current"
-        }
+        },
+        "word_id": "nature/river",
+        "definition": "A natural flow of water that usually runs toward another body of water."
       },
       {
         "word": "Lake",
@@ -1164,7 +1354,9 @@
         "mode_hints": {
           "act_it": "Shore",
           "sound_only": "Shore"
-        }
+        },
+        "word_id": "nature/lake",
+        "definition": "A large body of water surrounded by land."
       },
       {
         "word": "Ocean",
@@ -1177,7 +1369,9 @@
         "mode_hints": {
           "act_it": "Current",
           "sound_only": "Current"
-        }
+        },
+        "word_id": "nature/ocean",
+        "definition": "A vast body of salt water that covers part of Earth."
       },
       {
         "word": "Beach",
@@ -1190,7 +1384,9 @@
         "mode_hints": {
           "act_it": "Shore",
           "sound_only": "Shore"
-        }
+        },
+        "word_id": "nature/beach",
+        "definition": "A shore covered with sand, pebbles, or similar loose material."
       },
       {
         "word": "Island",
@@ -1201,7 +1397,9 @@
         ],
         "mode_hints": {
           "act_it": "Coast"
-        }
+        },
+        "word_id": "nature/island",
+        "definition": "An area of land entirely surrounded by water."
       },
       {
         "word": "Glacier",
@@ -1212,7 +1410,9 @@
         ],
         "mode_hints": {
           "act_it": "Cold"
-        }
+        },
+        "word_id": "nature/glacier",
+        "definition": "A large mass of land ice that moves slowly under its own weight."
       },
       {
         "word": "Iceberg",
@@ -1223,7 +1423,9 @@
         ],
         "mode_hints": {
           "act_it": "Cold"
-        }
+        },
+        "word_id": "nature/iceberg",
+        "definition": "A large piece of ice that has broken away from land ice and floats in water."
       },
       {
         "word": "Cave",
@@ -1236,7 +1438,9 @@
         "mode_hints": {
           "act_it": "Shelter",
           "sound_only": "Trail"
-        }
+        },
+        "word_id": "nature/cave",
+        "definition": "A natural hollow in rock large enough to enter."
       },
       {
         "word": "Rainbow",
@@ -1247,7 +1451,9 @@
         ],
         "mode_hints": {
           "act_it": "Color"
-        }
+        },
+        "word_id": "nature/rainbow",
+        "definition": "A colored arc formed when sunlight passes through water droplets."
       },
       {
         "word": "Rain",
@@ -1260,7 +1466,9 @@
         "mode_hints": {
           "act_it": "Weather",
           "sound_only": "Weather"
-        }
+        },
+        "word_id": "nature/rain",
+        "definition": "Drops of water that fall from clouds."
       },
       {
         "word": "Thunder",
@@ -1273,7 +1481,9 @@
         "mode_hints": {
           "act_it": "Weather",
           "sound_only": "Weather"
-        }
+        },
+        "word_id": "nature/thunder",
+        "definition": "The sound produced when lightning heats the air around it."
       },
       {
         "word": "Wind",
@@ -1286,7 +1496,9 @@
         "mode_hints": {
           "act_it": "Weather",
           "sound_only": "Weather"
-        }
+        },
+        "word_id": "nature/wind",
+        "definition": "Air moving across an area."
       },
       {
         "word": "Hail",
@@ -1299,7 +1511,9 @@
         "mode_hints": {
           "act_it": "Weather",
           "sound_only": "Weather"
-        }
+        },
+        "word_id": "nature/hail",
+        "definition": "Pellets or lumps of ice that fall from storm clouds."
       },
       {
         "word": "Geyser",
@@ -1312,7 +1526,9 @@
         "mode_hints": {
           "act_it": "Spray",
           "sound_only": "Spray"
-        }
+        },
+        "word_id": "nature/geyser",
+        "definition": "A hot spring that periodically shoots water and steam into the air."
       },
       {
         "word": "Avalanche",
@@ -1325,7 +1541,9 @@
         "mode_hints": {
           "act_it": "Slope",
           "sound_only": "Force"
-        }
+        },
+        "word_id": "nature/avalanche",
+        "definition": "A mass of snow and ice that suddenly slides down a slope."
       }
     ]
   },
@@ -1345,7 +1563,9 @@
         ],
         "mode_hints": {
           "act_it": "Shelves"
-        }
+        },
+        "word_id": "places/library",
+        "definition": "A place where people can read, borrow, or use books and other materials."
       },
       {
         "word": "Supermarket",
@@ -1358,7 +1578,9 @@
         "mode_hints": {
           "act_it": "Shelves",
           "sound_only": "Counter"
-        }
+        },
+        "word_id": "places/supermarket",
+        "definition": "A large store that sells groceries and household goods."
       },
       {
         "word": "Hospital",
@@ -1371,7 +1593,9 @@
         "mode_hints": {
           "act_it": "Care",
           "sound_only": "Uniform"
-        }
+        },
+        "word_id": "places/hospital",
+        "definition": "A facility where people receive medical treatment and care."
       },
       {
         "word": "Cinema",
@@ -1382,7 +1606,9 @@
         ],
         "mode_hints": {
           "act_it": "Tickets"
-        }
+        },
+        "word_id": "places/cinema",
+        "definition": "A venue where audiences watch films on a large screen."
       },
       {
         "word": "Bakery",
@@ -1393,7 +1619,9 @@
         ],
         "mode_hints": {
           "act_it": "Morning"
-        }
+        },
+        "word_id": "places/bakery",
+        "definition": "A shop or workplace that makes or sells bread and pastries."
       },
       {
         "word": "Airport",
@@ -1406,7 +1634,9 @@
         "mode_hints": {
           "act_it": "Arrivals",
           "sound_only": "Crowd"
-        }
+        },
+        "word_id": "places/airport",
+        "definition": "A place where aircraft take off and land and passengers board."
       },
       {
         "word": "Museum",
@@ -1417,7 +1647,9 @@
         ],
         "mode_hints": {
           "act_it": "Displays"
-        }
+        },
+        "word_id": "places/museum",
+        "definition": "A place that collects and displays objects of cultural, scientific, or historical interest."
       },
       {
         "word": "Playground",
@@ -1430,7 +1662,9 @@
         "mode_hints": {
           "act_it": "Outdoors",
           "sound_only": "Outdoors"
-        }
+        },
+        "word_id": "places/playground",
+        "definition": "An outdoor area with equipment for children to play on."
       },
       {
         "word": "Salon",
@@ -1443,7 +1677,9 @@
         "mode_hints": {
           "act_it": "Reception",
           "sound_only": "Motor"
-        }
+        },
+        "word_id": "places/salon",
+        "definition": "A business that offers haircuts, styling, or other beauty services."
       },
       {
         "word": "Fire station",
@@ -1456,7 +1692,9 @@
         "mode_hints": {
           "act_it": "Uniform",
           "sound_only": "Uniform"
-        }
+        },
+        "word_id": "places/fire-station",
+        "definition": "A building where emergency crews keep their vehicles and equipment."
       },
       {
         "word": "School",
@@ -1469,7 +1707,9 @@
         "mode_hints": {
           "act_it": "Learning",
           "sound_only": "Uniform"
-        }
+        },
+        "word_id": "places/school",
+        "definition": "A place where students go to learn."
       },
       {
         "word": "Park",
@@ -1482,7 +1722,9 @@
         "mode_hints": {
           "act_it": "Outdoors",
           "sound_only": "Outdoors"
-        }
+        },
+        "word_id": "places/park",
+        "definition": "A public area set aside for recreation or enjoying nature."
       },
       {
         "word": "Restaurant",
@@ -1495,7 +1737,9 @@
         "mode_hints": {
           "act_it": "Menu",
           "sound_only": "Counter"
-        }
+        },
+        "word_id": "places/restaurant",
+        "definition": "A business that prepares and serves meals to customers."
       },
       {
         "word": "Cafe",
@@ -1508,7 +1752,9 @@
         "mode_hints": {
           "act_it": "Menu",
           "sound_only": "Counter"
-        }
+        },
+        "word_id": "places/cafe",
+        "definition": "A small place that serves coffee, other drinks, and light food."
       },
       {
         "word": "Bank",
@@ -1519,7 +1765,9 @@
         ],
         "mode_hints": {
           "act_it": "Counter"
-        }
+        },
+        "word_id": "places/bank",
+        "definition": "A business that holds money and provides services such as loans."
       },
       {
         "word": "Post office",
@@ -1530,7 +1778,9 @@
         ],
         "mode_hints": {
           "act_it": "Counter"
-        }
+        },
+        "word_id": "places/post-office",
+        "definition": "A place to send letters and parcels and buy stamps."
       },
       {
         "word": "Pharmacy",
@@ -1541,7 +1791,9 @@
         ],
         "mode_hints": {
           "act_it": "Shelves"
-        }
+        },
+        "word_id": "places/pharmacy",
+        "definition": "A place where medicines are prepared, dispensed, or sold."
       },
       {
         "word": "Police station",
@@ -1554,7 +1806,9 @@
         "mode_hints": {
           "act_it": "Uniform",
           "sound_only": "Uniform"
-        }
+        },
+        "word_id": "places/police-station",
+        "definition": "A building where officers work and the public can report incidents."
       },
       {
         "word": "Train station",
@@ -1567,7 +1821,9 @@
         "mode_hints": {
           "act_it": "Arrivals",
           "sound_only": "Motor"
-        }
+        },
+        "word_id": "places/train-station",
+        "definition": "A place where passengers get on and off trains."
       },
       {
         "word": "Hotel",
@@ -1578,7 +1834,9 @@
         ],
         "mode_hints": {
           "act_it": "Reception"
-        }
+        },
+        "word_id": "places/hotel",
+        "definition": "A business that rents rooms to guests for short stays."
       },
       {
         "word": "Gym",
@@ -1591,7 +1849,9 @@
         "mode_hints": {
           "act_it": "Training",
           "sound_only": "Training"
-        }
+        },
+        "word_id": "places/gym",
+        "definition": "A place with equipment or space for exercise and training."
       },
       {
         "word": "Stadium",
@@ -1604,7 +1864,9 @@
         "mode_hints": {
           "act_it": "Crowd",
           "sound_only": "Crowd"
-        }
+        },
+        "word_id": "places/stadium",
+        "definition": "A large venue with seating around a field or other performance area."
       },
       {
         "word": "Zoo",
@@ -1617,7 +1879,9 @@
         "mode_hints": {
           "act_it": "Visitors",
           "sound_only": "Tickets"
-        }
+        },
+        "word_id": "places/zoo",
+        "definition": "A place that keeps animals for people to see and learn about."
       },
       {
         "word": "Theater",
@@ -1630,7 +1894,9 @@
         "mode_hints": {
           "act_it": "Tickets",
           "sound_only": "Tickets"
-        }
+        },
+        "word_id": "places/theater",
+        "definition": "A venue for live performances such as plays or musicals."
       }
     ]
   },
@@ -1652,7 +1918,9 @@
         "mode_hints": {
           "act_it": "Heat",
           "sound_only": "Uniform"
-        }
+        },
+        "word_id": "jobs/chef",
+        "definition": "A professional cook, often responsible for leading a kitchen."
       },
       {
         "word": "Firefighter",
@@ -1665,7 +1933,9 @@
         "mode_hints": {
           "act_it": "Emergency",
           "sound_only": "Uniform"
-        }
+        },
+        "word_id": "jobs/firefighter",
+        "definition": "A person trained to put out fires and help during emergencies."
       },
       {
         "word": "Pilot",
@@ -1678,7 +1948,9 @@
         "mode_hints": {
           "act_it": "Uniform",
           "sound_only": "Uniform"
-        }
+        },
+        "word_id": "jobs/pilot",
+        "definition": "A person trained to control and fly an aircraft."
       },
       {
         "word": "Teacher",
@@ -1691,7 +1963,9 @@
         "mode_hints": {
           "act_it": "Notes",
           "sound_only": "Audience"
-        }
+        },
+        "word_id": "jobs/teacher",
+        "definition": "A person who helps students learn a subject or skill."
       },
       {
         "word": "Detective",
@@ -1702,7 +1976,9 @@
         ],
         "mode_hints": {
           "act_it": "Evidence"
-        }
+        },
+        "word_id": "jobs/detective",
+        "definition": "A person who investigates crimes or gathers evidence to solve cases."
       },
       {
         "word": "Farmer",
@@ -1715,7 +1991,9 @@
         "mode_hints": {
           "act_it": "Outdoors",
           "sound_only": "Outdoors"
-        }
+        },
+        "word_id": "jobs/farmer",
+        "definition": "A person who grows crops or raises animals for a living."
       },
       {
         "word": "Dentist",
@@ -1728,7 +2006,9 @@
         "mode_hints": {
           "act_it": "Appointment",
           "sound_only": "Tools"
-        }
+        },
+        "word_id": "jobs/dentist",
+        "definition": "A health professional who takes care of teeth and gums."
       },
       {
         "word": "Journalist",
@@ -1739,7 +2019,9 @@
         ],
         "mode_hints": {
           "act_it": "Deadline"
-        }
+        },
+        "word_id": "jobs/journalist",
+        "definition": "A person who gathers and reports information for news outlets."
       },
       {
         "word": "Architect",
@@ -1750,7 +2032,9 @@
         ],
         "mode_hints": {
           "act_it": "Plans"
-        }
+        },
+        "word_id": "jobs/architect",
+        "definition": "A professional who designs buildings and plans how they will be built."
       },
       {
         "word": "Magician",
@@ -1761,7 +2045,9 @@
         ],
         "mode_hints": {
           "act_it": "Audience"
-        }
+        },
+        "word_id": "jobs/magician",
+        "definition": "A performer who entertains people with tricks and illusions."
       },
       {
         "word": "Doctor",
@@ -1772,7 +2058,9 @@
         ],
         "mode_hints": {
           "act_it": "Appointment"
-        }
+        },
+        "word_id": "jobs/doctor",
+        "definition": "A medical professional who diagnoses and treats illness or injury."
       },
       {
         "word": "Nurse",
@@ -1783,7 +2071,9 @@
         ],
         "mode_hints": {
           "act_it": "Care"
-        }
+        },
+        "word_id": "jobs/nurse",
+        "definition": "A health professional who provides and coordinates care for patients."
       },
       {
         "word": "Plumber",
@@ -1796,7 +2086,9 @@
         "mode_hints": {
           "act_it": "Repairs",
           "sound_only": "Repairs"
-        }
+        },
+        "word_id": "jobs/plumber",
+        "definition": "A person who installs or repairs pipes and fixtures that carry water or waste."
       },
       {
         "word": "Electrician",
@@ -1807,7 +2099,9 @@
         ],
         "mode_hints": {
           "act_it": "Repairs"
-        }
+        },
+        "word_id": "jobs/electrician",
+        "definition": "A person who installs and repairs wiring and electrical equipment."
       },
       {
         "word": "Carpenter",
@@ -1820,7 +2114,9 @@
         "mode_hints": {
           "act_it": "Tools",
           "sound_only": "Tools"
-        }
+        },
+        "word_id": "jobs/carpenter",
+        "definition": "A person who builds and repairs structures or objects made of wood."
       },
       {
         "word": "Mechanic",
@@ -1833,7 +2129,9 @@
         "mode_hints": {
           "act_it": "Tools",
           "sound_only": "Tools"
-        }
+        },
+        "word_id": "jobs/mechanic",
+        "definition": "A person who maintains and repairs machines, often vehicles."
       },
       {
         "word": "Scientist",
@@ -1844,7 +2142,9 @@
         ],
         "mode_hints": {
           "act_it": "Research"
-        }
+        },
+        "word_id": "jobs/scientist",
+        "definition": "A person who studies the world through observation and experiments."
       },
       {
         "word": "Programmer",
@@ -1855,7 +2155,9 @@
         ],
         "mode_hints": {
           "act_it": "Logic"
-        }
+        },
+        "word_id": "jobs/programmer",
+        "definition": "A person who writes and maintains instructions that computers run."
       },
       {
         "word": "Librarian",
@@ -1866,7 +2168,9 @@
         ],
         "mode_hints": {
           "act_it": "Research"
-        }
+        },
+        "word_id": "jobs/librarian",
+        "definition": "A person who organizes reading and research materials and helps people find them."
       },
       {
         "word": "Baker",
@@ -1877,7 +2181,9 @@
         ],
         "mode_hints": {
           "act_it": "Morning"
-        }
+        },
+        "word_id": "jobs/baker",
+        "definition": "A person who makes bread, cakes, or pastries for a living."
       },
       {
         "word": "Photographer",
@@ -1890,7 +2196,9 @@
         "mode_hints": {
           "act_it": "Lighting",
           "sound_only": "Outdoors"
-        }
+        },
+        "word_id": "jobs/photographer",
+        "definition": "A person who takes pictures with a camera."
       },
       {
         "word": "Musician",
@@ -1903,7 +2211,9 @@
         "mode_hints": {
           "act_it": "Audience",
           "sound_only": "Audience"
-        }
+        },
+        "word_id": "jobs/musician",
+        "definition": "A person who plays, performs, or creates music."
       },
       {
         "word": "Accountant",
@@ -1914,7 +2224,9 @@
         ],
         "mode_hints": {
           "act_it": "Numbers"
-        }
+        },
+        "word_id": "jobs/accountant",
+        "definition": "A professional who prepares or checks financial records."
       },
       {
         "word": "Coach",
@@ -1927,7 +2239,9 @@
         "mode_hints": {
           "act_it": "Team",
           "sound_only": "Team"
-        }
+        },
+        "word_id": "jobs/coach",
+        "definition": "A person who trains and guides players or a team."
       }
     ]
   },
@@ -1947,7 +2261,9 @@
         ],
         "mode_hints": {
           "act_it": "Abroad"
-        }
+        },
+        "word_id": "travel/passport",
+        "definition": "An official document that identifies you and your nationality when traveling abroad."
       },
       {
         "word": "Suitcase",
@@ -1960,7 +2276,9 @@
         "mode_hints": {
           "act_it": "Packing",
           "sound_only": "Packing"
-        }
+        },
+        "word_id": "travel/suitcase",
+        "definition": "A case with a handle, often with wheels, used to carry clothes when traveling."
       },
       {
         "word": "Boarding pass",
@@ -1971,7 +2289,9 @@
         ],
         "mode_hints": {
           "act_it": "Departure"
-        }
+        },
+        "word_id": "travel/boarding-pass",
+        "definition": "A printed or digital document that lets you board a specific flight."
       },
       {
         "word": "Campsite",
@@ -1984,7 +2304,9 @@
         "mode_hints": {
           "act_it": "Outdoors",
           "sound_only": "Packing"
-        }
+        },
+        "word_id": "travel/campsite",
+        "definition": "A place where people can pitch tents or stay outdoors overnight."
       },
       {
         "word": "Souvenir",
@@ -1995,7 +2317,9 @@
         ],
         "mode_hints": {
           "act_it": "Market"
-        }
+        },
+        "word_id": "travel/souvenir",
+        "definition": "An object kept as a reminder of a place or experience."
       },
       {
         "word": "Sunscreen",
@@ -2006,7 +2330,9 @@
         ],
         "mode_hints": {
           "act_it": "Outdoors"
-        }
+        },
+        "word_id": "travel/sunscreen",
+        "definition": "A product applied to the skin to help protect it from ultraviolet light."
       },
       {
         "word": "Hostel",
@@ -2017,7 +2343,9 @@
         ],
         "mode_hints": {
           "act_it": "Overnight"
-        }
+        },
+        "word_id": "travel/hostel",
+        "definition": "A budget place to stay that often has shared rooms."
       },
       {
         "word": "Road trip",
@@ -2030,7 +2358,9 @@
         "mode_hints": {
           "act_it": "Route",
           "sound_only": "Route"
-        }
+        },
+        "word_id": "travel/road-trip",
+        "definition": "A journey taken by car or another road vehicle, often with several stops."
       },
       {
         "word": "Jet lag",
@@ -2043,7 +2373,9 @@
         "mode_hints": {
           "act_it": "Fatigue",
           "sound_only": "Rest"
-        }
+        },
+        "word_id": "travel/jet-lag",
+        "definition": "Tiredness and disrupted sleep after crossing time zones quickly."
       },
       {
         "word": "Cruise",
@@ -2056,7 +2388,9 @@
         "mode_hints": {
           "act_it": "Coast",
           "sound_only": "Coast"
-        }
+        },
+        "word_id": "travel/cruise",
+        "definition": "A vacation spent on a ship that usually stops at several destinations."
       },
       {
         "word": "Visa",
@@ -2064,7 +2398,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "travel/visa",
+        "definition": "Official permission to enter, stay in, or pass through a country."
       },
       {
         "word": "Itinerary",
@@ -2075,7 +2411,9 @@
         ],
         "mode_hints": {
           "act_it": "Schedule"
-        }
+        },
+        "word_id": "travel/itinerary",
+        "definition": "A plan that lists the places, times, and activities for a journey."
       },
       {
         "word": "Map",
@@ -2086,7 +2424,9 @@
         ],
         "mode_hints": {
           "act_it": "Direction"
-        }
+        },
+        "word_id": "travel/map",
+        "definition": "A drawing or digital view that shows the location of places and routes."
       },
       {
         "word": "Compass",
@@ -2097,7 +2437,9 @@
         ],
         "mode_hints": {
           "act_it": "Direction"
-        }
+        },
+        "word_id": "travel/compass",
+        "definition": "A tool that helps you find directions, often using a needle that points north."
       },
       {
         "word": "Hotel reservation",
@@ -2105,7 +2447,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "travel/hotel-reservation",
+        "definition": "An arrangement to have a room held for particular dates."
       },
       {
         "word": "Layover",
@@ -2116,7 +2460,9 @@
         ],
         "mode_hints": {
           "act_it": "Waiting"
-        }
+        },
+        "word_id": "travel/layover",
+        "definition": "A waiting period between parts of a journey, often between flights."
       },
       {
         "word": "Tour guide",
@@ -2127,7 +2473,9 @@
         ],
         "mode_hints": {
           "act_it": "Local"
-        }
+        },
+        "word_id": "travel/tour-guide",
+        "definition": "A person who leads visitors and explains the places they see."
       },
       {
         "word": "Backpacking",
@@ -2138,7 +2486,9 @@
         ],
         "mode_hints": {
           "act_it": "Outdoors"
-        }
+        },
+        "word_id": "travel/backpacking",
+        "definition": "Traveling with your belongings in a pack, often on foot or on a budget."
       },
       {
         "word": "Sightseeing",
@@ -2149,7 +2499,9 @@
         ],
         "mode_hints": {
           "act_it": "Landmarks"
-        }
+        },
+        "word_id": "travel/sightseeing",
+        "definition": "Visiting interesting places as a traveler."
       },
       {
         "word": "Currency exchange",
@@ -2160,7 +2512,9 @@
         ],
         "mode_hints": {
           "act_it": "Abroad"
-        }
+        },
+        "word_id": "travel/currency-exchange",
+        "definition": "A service or transaction that trades one country's money for another's."
       },
       {
         "word": "Travel insurance",
@@ -2168,7 +2522,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "travel/travel-insurance",
+        "definition": "Coverage that can help pay for certain costs if something goes wrong on a trip."
       },
       {
         "word": "Train ticket",
@@ -2179,7 +2535,9 @@
         ],
         "mode_hints": {
           "act_it": "Departure"
-        }
+        },
+        "word_id": "travel/train-ticket",
+        "definition": "Proof of payment or permission to ride a particular rail service."
       },
       {
         "word": "Ferry",
@@ -2192,7 +2550,9 @@
         "mode_hints": {
           "act_it": "Coast",
           "sound_only": "Coast"
-        }
+        },
+        "word_id": "travel/ferry",
+        "definition": "A boat that regularly carries people or vehicles across water."
       },
       {
         "word": "Rental car",
@@ -2205,7 +2565,9 @@
         "mode_hints": {
           "act_it": "Route",
           "sound_only": "Route"
-        }
+        },
+        "word_id": "travel/rental-car",
+        "definition": "A vehicle you pay to use for a limited period."
       },
       {
         "word": "Airplane",
@@ -2218,7 +2580,9 @@
         "mode_hints": {
           "act_it": "Journey",
           "sound_only": "Journey"
-        }
+        },
+        "word_id": "travel/airplane",
+        "definition": "A powered vehicle with fixed wings that flies through the air."
       },
       {
         "word": "Helicopter",
@@ -2231,7 +2595,9 @@
         "mode_hints": {
           "act_it": "Journey",
           "sound_only": "Journey"
-        }
+        },
+        "word_id": "travel/helicopter",
+        "definition": "An aircraft lifted by spinning blades that can take off vertically."
       },
       {
         "word": "Motorcycle",
@@ -2244,7 +2610,9 @@
         "mode_hints": {
           "act_it": "Journey",
           "sound_only": "Journey"
-        }
+        },
+        "word_id": "travel/motorcycle",
+        "definition": "A motor vehicle with two wheels and a seat you sit astride."
       },
       {
         "word": "Train",
@@ -2257,7 +2625,9 @@
         "mode_hints": {
           "act_it": "Journey",
           "sound_only": "Journey"
-        }
+        },
+        "word_id": "travel/train",
+        "definition": "A series of connected vehicles that runs along rails."
       },
       {
         "word": "Bus",
@@ -2270,7 +2640,9 @@
         "mode_hints": {
           "act_it": "Journey",
           "sound_only": "Journey"
-        }
+        },
+        "word_id": "travel/bus",
+        "definition": "A large road vehicle used to carry many passengers."
       },
       {
         "word": "Speedboat",
@@ -2283,7 +2655,9 @@
         "mode_hints": {
           "act_it": "Coast",
           "sound_only": "Coast"
-        }
+        },
+        "word_id": "travel/speedboat",
+        "definition": "A small powered boat built to travel quickly."
       }
     ]
   },
@@ -2303,7 +2677,9 @@
         ],
         "mode_hints": {
           "act_it": "Action"
-        }
+        },
+        "word_id": "movies/superhero",
+        "definition": "A fictional hero with unusual abilities or equipment who fights threats."
       },
       {
         "word": "Zombie",
@@ -2316,7 +2692,9 @@
         "mode_hints": {
           "act_it": "Makeup",
           "sound_only": "Shadows"
-        }
+        },
+        "word_id": "movies/zombie",
+        "definition": "In fiction, a dead person brought back to life as a walking creature."
       },
       {
         "word": "Vampire",
@@ -2329,7 +2707,9 @@
         "mode_hints": {
           "act_it": "Shadows",
           "sound_only": "Shadows"
-        }
+        },
+        "word_id": "movies/vampire",
+        "definition": "A fictional creature that survives by drinking blood."
       },
       {
         "word": "Time machine",
@@ -2342,7 +2722,9 @@
         "mode_hints": {
           "act_it": "Future",
           "sound_only": "Future"
-        }
+        },
+        "word_id": "movies/time-machine",
+        "definition": "A fictional device that lets people travel into the past or future."
       },
       {
         "word": "Plot twist",
@@ -2350,7 +2732,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "movies/plot-twist",
+        "definition": "An unexpected turn in a story that changes how you understand it."
       },
       {
         "word": "Villain",
@@ -2363,7 +2747,9 @@
         "mode_hints": {
           "act_it": "Action",
           "sound_only": "Shadows"
-        }
+        },
+        "word_id": "movies/villain",
+        "definition": "A character whose harmful actions oppose the main hero."
       },
       {
         "word": "Dragon",
@@ -2376,7 +2762,9 @@
         "mode_hints": {
           "act_it": "Creature",
           "sound_only": "Creature"
-        }
+        },
+        "word_id": "movies/dragon",
+        "definition": "A mythical reptile-like creature often shown breathing fire or flying."
       },
       {
         "word": "Haunted house",
@@ -2389,7 +2777,9 @@
         "mode_hints": {
           "act_it": "Shadows",
           "sound_only": "Shadows"
-        }
+        },
+        "word_id": "movies/haunted-house",
+        "definition": "A building believed or imagined to be occupied by ghosts."
       },
       {
         "word": "Spaceship",
@@ -2402,7 +2792,9 @@
         "mode_hints": {
           "act_it": "Future",
           "sound_only": "Future"
-        }
+        },
+        "word_id": "movies/spaceship",
+        "definition": "A vehicle designed to carry people or cargo through outer space."
       },
       {
         "word": "Detective story",
@@ -2410,7 +2802,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "movies/detective-story",
+        "definition": "A tale that focuses on investigating a mystery or crime."
       },
       {
         "word": "Stunt double",
@@ -2421,7 +2815,9 @@
         ],
         "mode_hints": {
           "act_it": "Action"
-        }
+        },
+        "word_id": "movies/stunt-double",
+        "definition": "A performer who takes an actor's place for dangerous or demanding moves."
       },
       {
         "word": "Director",
@@ -2432,7 +2828,9 @@
         ],
         "mode_hints": {
           "act_it": "Crew"
-        }
+        },
+        "word_id": "movies/director",
+        "definition": "The person who leads the creative work and guides performances during filming."
       },
       {
         "word": "Screenplay",
@@ -2443,7 +2841,9 @@
         ],
         "mode_hints": {
           "act_it": "Dialogue"
-        }
+        },
+        "word_id": "movies/screenplay",
+        "definition": "The written script for a film, including dialogue and action."
       },
       {
         "word": "Sequel",
@@ -2451,7 +2851,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "movies/sequel",
+        "definition": "A story or film that continues one released earlier."
       },
       {
         "word": "Trailer",
@@ -2459,7 +2861,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "movies/trailer",
+        "definition": "A short preview edited to promote a film or show."
       },
       {
         "word": "Animation",
@@ -2470,7 +2874,9 @@
         ],
         "mode_hints": {
           "act_it": "Studio"
-        }
+        },
+        "word_id": "movies/animation",
+        "definition": "A way of creating moving images from drawings, models, or computer graphics."
       },
       {
         "word": "Special effects",
@@ -2481,7 +2887,9 @@
         ],
         "mode_hints": {
           "act_it": "Illusion"
-        }
+        },
+        "word_id": "movies/special-effects",
+        "definition": "Techniques used to create sights or events that are hard to film directly."
       },
       {
         "word": "Soundtrack",
@@ -2494,7 +2902,9 @@
         "mode_hints": {
           "act_it": "Atmosphere",
           "sound_only": "Mood"
-        }
+        },
+        "word_id": "movies/soundtrack",
+        "definition": "The music heard in a film or the recording of that music."
       },
       {
         "word": "Alien",
@@ -2507,7 +2917,9 @@
         "mode_hints": {
           "act_it": "Future",
           "sound_only": "Future"
-        }
+        },
+        "word_id": "movies/alien",
+        "definition": "A being imagined as coming from another planet."
       },
       {
         "word": "Documentary",
@@ -2515,7 +2927,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "movies/documentary",
+        "definition": "A nonfiction film or program that presents real people, events, or issues."
       },
       {
         "word": "Comedy",
@@ -2528,7 +2942,9 @@
         "mode_hints": {
           "act_it": "Dialogue",
           "sound_only": "Mood"
-        }
+        },
+        "word_id": "movies/comedy",
+        "definition": "A film or performance intended to make the audience laugh."
       },
       {
         "word": "Cliffhanger",
@@ -2536,7 +2952,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "movies/cliffhanger",
+        "definition": "An ending that leaves an important event unresolved and the audience in suspense."
       },
       {
         "word": "Premiere",
@@ -2544,7 +2962,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "movies/premiere",
+        "definition": "The first public showing of a film or performance."
       },
       {
         "word": "Film set",
@@ -2555,7 +2975,9 @@
         ],
         "mode_hints": {
           "act_it": "Crew"
-        }
+        },
+        "word_id": "movies/film-set",
+        "definition": "The place or built scenery where a movie scene is recorded."
       }
     ]
   },
@@ -2577,7 +2999,9 @@
         "mode_hints": {
           "act_it": "Preparation",
           "sound_only": "Preparation"
-        }
+        },
+        "word_id": "music/karaoke",
+        "definition": "Singing along to a recorded backing track, often with lyrics on a screen."
       },
       {
         "word": "Guitar",
@@ -2590,7 +3014,9 @@
         "mode_hints": {
           "act_it": "Strings",
           "sound_only": "Strings"
-        }
+        },
+        "word_id": "music/guitar",
+        "definition": "A stringed instrument usually played by strumming or picking."
       },
       {
         "word": "Drums",
@@ -2603,7 +3029,9 @@
         "mode_hints": {
           "act_it": "Beat",
           "sound_only": "Beat"
-        }
+        },
+        "word_id": "music/drums",
+        "definition": "Percussion instruments with surfaces you strike to make a sound."
       },
       {
         "word": "Microphone",
@@ -2614,7 +3042,9 @@
         ],
         "mode_hints": {
           "act_it": "Stage"
-        }
+        },
+        "word_id": "music/microphone",
+        "definition": "A device that picks up sound so it can be amplified or recorded."
       },
       {
         "word": "Concert",
@@ -2627,7 +3057,9 @@
         "mode_hints": {
           "act_it": "Crowd",
           "sound_only": "Crowd"
-        }
+        },
+        "word_id": "music/concert",
+        "definition": "A live performance of music for an audience."
       },
       {
         "word": "Choir",
@@ -2640,7 +3072,9 @@
         "mode_hints": {
           "act_it": "Harmony",
           "sound_only": "Harmony"
-        }
+        },
+        "word_id": "music/choir",
+        "definition": "A group of people who sing together."
       },
       {
         "word": "Orchestra",
@@ -2653,7 +3087,9 @@
         "mode_hints": {
           "act_it": "Harmony",
           "sound_only": "Harmony"
-        }
+        },
+        "word_id": "music/orchestra",
+        "definition": "A large group of musicians playing instruments together, often led by a conductor."
       },
       {
         "word": "DJ",
@@ -2666,7 +3102,9 @@
         "mode_hints": {
           "act_it": "Dance",
           "sound_only": "Dance"
-        }
+        },
+        "word_id": "music/dj",
+        "definition": "A person who selects and plays recorded music for listeners or dancers."
       },
       {
         "word": "Duet",
@@ -2679,7 +3117,9 @@
         "mode_hints": {
           "act_it": "Harmony",
           "sound_only": "Harmony"
-        }
+        },
+        "word_id": "music/duet",
+        "definition": "A piece of music performed by two singers or players."
       },
       {
         "word": "Lullaby",
@@ -2692,7 +3132,9 @@
         "mode_hints": {
           "act_it": "Gentle",
           "sound_only": "Gentle"
-        }
+        },
+        "word_id": "music/lullaby",
+        "definition": "A gentle song used to help a child fall asleep."
       },
       {
         "word": "Piano",
@@ -2705,7 +3147,9 @@
         "mode_hints": {
           "act_it": "Classical",
           "sound_only": "Classical"
-        }
+        },
+        "word_id": "music/piano",
+        "definition": "A keyboard instrument whose keys typically make hammers strike strings."
       },
       {
         "word": "Violin",
@@ -2718,7 +3162,9 @@
         "mode_hints": {
           "act_it": "Strings",
           "sound_only": "Strings"
-        }
+        },
+        "word_id": "music/violin",
+        "definition": "A small four-stringed instrument played under the chin, usually with a bow."
       },
       {
         "word": "Flute",
@@ -2731,7 +3177,9 @@
         "mode_hints": {
           "act_it": "Breath",
           "sound_only": "Breath"
-        }
+        },
+        "word_id": "music/flute",
+        "definition": "A wind instrument played by blowing air across an opening or mouthpiece."
       },
       {
         "word": "Trumpet",
@@ -2744,7 +3192,9 @@
         "mode_hints": {
           "act_it": "Breath",
           "sound_only": "Breath"
-        }
+        },
+        "word_id": "music/trumpet",
+        "definition": "A brass instrument with a flared bell and usually three valves."
       },
       {
         "word": "Saxophone",
@@ -2757,7 +3207,9 @@
         "mode_hints": {
           "act_it": "Jazz",
           "sound_only": "Jazz"
-        }
+        },
+        "word_id": "music/saxophone",
+        "definition": "A curved wind instrument with keys and a single reed used to make sound."
       },
       {
         "word": "Tambourine",
@@ -2770,7 +3222,9 @@
         "mode_hints": {
           "act_it": "Beat",
           "sound_only": "Beat"
-        }
+        },
+        "word_id": "music/tambourine",
+        "definition": "A handheld ring with metal jingles that sounds when shaken or struck."
       },
       {
         "word": "Harp",
@@ -2783,7 +3237,9 @@
         "mode_hints": {
           "act_it": "Strings",
           "sound_only": "Strings"
-        }
+        },
+        "word_id": "music/harp",
+        "definition": "An instrument with many strings stretched across a frame and played by plucking."
       },
       {
         "word": "Song",
@@ -2794,7 +3250,9 @@
         ],
         "mode_hints": {
           "sound_only": "Humming"
-        }
+        },
+        "word_id": "music/song",
+        "definition": "A piece of music made to be sung."
       },
       {
         "word": "Chorus",
@@ -2802,7 +3260,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "music/chorus",
+        "definition": "The part of a song that repeats, often with the same lyrics."
       },
       {
         "word": "Verse",
@@ -2810,7 +3270,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "music/verse",
+        "definition": "A section of a song whose words usually change when it comes around again."
       },
       {
         "word": "Melody",
@@ -2821,7 +3283,9 @@
         ],
         "mode_hints": {
           "sound_only": "Humming"
-        }
+        },
+        "word_id": "music/melody",
+        "definition": "A sequence of notes that makes up the tune."
       },
       {
         "word": "Rhythm",
@@ -2834,7 +3298,9 @@
         "mode_hints": {
           "act_it": "Movement",
           "sound_only": "Movement"
-        }
+        },
+        "word_id": "music/rhythm",
+        "definition": "The pattern of beats and timing in music."
       },
       {
         "word": "Album",
@@ -2842,7 +3308,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "music/album",
+        "definition": "A collection of recorded tracks released together."
       },
       {
         "word": "Rehearsal",
@@ -2853,7 +3321,9 @@
         ],
         "mode_hints": {
           "act_it": "Preparation"
-        }
+        },
+        "word_id": "music/rehearsal",
+        "definition": "A practice session before a performance."
       }
     ]
   },
@@ -2875,7 +3345,9 @@
         "mode_hints": {
           "act_it": "Court",
           "sound_only": "Impact"
-        }
+        },
+        "word_id": "sports/basketball",
+        "definition": "A team sport in which players score by throwing a ball through a raised hoop."
       },
       {
         "word": "Football (soccer)",
@@ -2886,7 +3358,9 @@
         ],
         "mode_hints": {
           "act_it": "Team"
-        }
+        },
+        "word_id": "sports/football-soccer",
+        "definition": "A team sport in which players mostly use their feet to send a ball into a goal."
       },
       {
         "word": "Badminton",
@@ -2897,7 +3371,9 @@
         ],
         "mode_hints": {
           "act_it": "Court"
-        }
+        },
+        "word_id": "sports/badminton",
+        "definition": "A racket sport in which players hit a feathered or plastic shuttlecock over a net."
       },
       {
         "word": "Swimming",
@@ -2910,7 +3386,9 @@
         "mode_hints": {
           "act_it": "Lanes",
           "sound_only": "Lanes"
-        }
+        },
+        "word_id": "sports/swimming",
+        "definition": "Moving through water using your arms, legs, or both."
       },
       {
         "word": "Bowling",
@@ -2923,7 +3401,9 @@
         "mode_hints": {
           "act_it": "Lanes",
           "sound_only": "Lanes"
-        }
+        },
+        "word_id": "sports/bowling",
+        "definition": "A game in which players roll a heavy ball down a lane to knock over pins."
       },
       {
         "word": "Boxing",
@@ -2936,7 +3416,9 @@
         "mode_hints": {
           "act_it": "Contact",
           "sound_only": "Contact"
-        }
+        },
+        "word_id": "sports/boxing",
+        "definition": "A combat sport in which two competitors punch while wearing gloves."
       },
       {
         "word": "Surfing",
@@ -2949,7 +3431,9 @@
         "mode_hints": {
           "act_it": "Balance",
           "sound_only": "Balance"
-        }
+        },
+        "word_id": "sports/surfing",
+        "definition": "Riding a breaking wave while standing or lying on a board."
       },
       {
         "word": "Skateboarding",
@@ -2962,7 +3446,9 @@
         "mode_hints": {
           "act_it": "Balance",
           "sound_only": "Balance"
-        }
+        },
+        "word_id": "sports/skateboarding",
+        "definition": "Riding or doing tricks on a short board with four wheels."
       },
       {
         "word": "Volleyball",
@@ -2973,7 +3459,9 @@
         ],
         "mode_hints": {
           "act_it": "Team"
-        }
+        },
+        "word_id": "sports/volleyball",
+        "definition": "A team sport in which players hit a ball over a high net without catching it."
       },
       {
         "word": "Tennis",
@@ -2986,7 +3474,9 @@
         "mode_hints": {
           "act_it": "Court",
           "sound_only": "Spin"
-        }
+        },
+        "word_id": "sports/tennis",
+        "definition": "A racket sport in which players hit a ball between opposite sides of a netted court."
       },
       {
         "word": "Table tennis",
@@ -2999,7 +3489,9 @@
         "mode_hints": {
           "act_it": "Spin",
           "sound_only": "Spin"
-        }
+        },
+        "word_id": "sports/table-tennis",
+        "definition": "A game played across a table by hitting a light ball over a small net with paddles."
       },
       {
         "word": "Baseball",
@@ -3012,7 +3504,9 @@
         "mode_hints": {
           "act_it": "Swing",
           "sound_only": "Impact"
-        }
+        },
+        "word_id": "sports/baseball",
+        "definition": "A bat-and-ball sport in which players score by running around four bases."
       },
       {
         "word": "Cricket",
@@ -3023,7 +3517,9 @@
         ],
         "mode_hints": {
           "act_it": "Swing"
-        }
+        },
+        "word_id": "sports/cricket",
+        "definition": "A bat-and-ball sport in which teams score runs and try to get batters out at wickets."
       },
       {
         "word": "Golf",
@@ -3034,7 +3530,9 @@
         ],
         "mode_hints": {
           "act_it": "Precision"
-        }
+        },
+        "word_id": "sports/golf",
+        "definition": "A sport in which players use clubs to get a ball into holes in as few shots as possible."
       },
       {
         "word": "Rugby",
@@ -3045,7 +3543,9 @@
         ],
         "mode_hints": {
           "act_it": "Team"
-        }
+        },
+        "word_id": "sports/rugby",
+        "definition": "A team sport in which players carry or kick an oval ball and can tackle opponents."
       },
       {
         "word": "Cycling",
@@ -3058,7 +3558,9 @@
         "mode_hints": {
           "act_it": "Endurance",
           "sound_only": "Endurance"
-        }
+        },
+        "word_id": "sports/cycling",
+        "definition": "Riding a bicycle for exercise, transport, or competition."
       },
       {
         "word": "Running",
@@ -3071,7 +3573,9 @@
         "mode_hints": {
           "act_it": "Endurance",
           "sound_only": "Endurance"
-        }
+        },
+        "word_id": "sports/running",
+        "definition": "Moving quickly on foot with a brief moment when neither foot touches the ground."
       },
       {
         "word": "Gymnastics",
@@ -3082,7 +3586,9 @@
         ],
         "mode_hints": {
           "act_it": "Balance"
-        }
+        },
+        "word_id": "sports/gymnastics",
+        "definition": "A sport involving controlled movements that show strength, balance, or flexibility."
       },
       {
         "word": "Skiing",
@@ -3095,7 +3601,9 @@
         "mode_hints": {
           "act_it": "Winter",
           "sound_only": "Winter"
-        }
+        },
+        "word_id": "sports/skiing",
+        "definition": "Gliding over snow using two long, narrow pieces of equipment attached to your boots."
       },
       {
         "word": "Snowboarding",
@@ -3106,7 +3614,9 @@
         ],
         "mode_hints": {
           "act_it": "Winter"
-        }
+        },
+        "word_id": "sports/snowboarding",
+        "definition": "Sliding down snow on a single wide board attached to your boots."
       },
       {
         "word": "Ice skating",
@@ -3119,7 +3629,9 @@
         "mode_hints": {
           "act_it": "Winter",
           "sound_only": "Winter"
-        }
+        },
+        "word_id": "sports/ice-skating",
+        "definition": "Gliding across a frozen surface on boots fitted with blades."
       },
       {
         "word": "Hockey",
@@ -3132,7 +3644,9 @@
         "mode_hints": {
           "act_it": "Team",
           "sound_only": "Contact"
-        }
+        },
+        "word_id": "sports/hockey",
+        "definition": "A team sport in which players use curved sticks to send a puck or ball into a goal."
       },
       {
         "word": "Archery",
@@ -3145,7 +3659,9 @@
         "mode_hints": {
           "act_it": "Precision",
           "sound_only": "Precision"
-        }
+        },
+        "word_id": "sports/archery",
+        "definition": "The sport or skill of shooting arrows with a bow."
       },
       {
         "word": "Wrestling",
@@ -3158,7 +3674,9 @@
         "mode_hints": {
           "act_it": "Contact",
           "sound_only": "Contact"
-        }
+        },
+        "word_id": "sports/wrestling",
+        "definition": "A combat sport in which competitors grapple and try to control or pin each other."
       }
     ]
   },
@@ -3178,7 +3696,9 @@
         ],
         "mode_hints": {
           "act_it": "Lives"
-        }
+        },
+        "word_id": "gaming/respawn",
+        "definition": "Reappearing in a game after your character has been defeated."
       },
       {
         "word": "Boss fight",
@@ -3189,7 +3709,9 @@
         ],
         "mode_hints": {
           "act_it": "Pattern"
-        }
+        },
+        "word_id": "gaming/boss-fight",
+        "definition": "A battle against an especially powerful enemy, often at the end of a stage."
       },
       {
         "word": "Loot",
@@ -3200,7 +3722,9 @@
         ],
         "mode_hints": {
           "act_it": "Reward"
-        }
+        },
+        "word_id": "gaming/loot",
+        "definition": "Items or rewards you collect from enemies, containers, or completed tasks."
       },
       {
         "word": "Checkpoint",
@@ -3211,7 +3735,9 @@
         ],
         "mode_hints": {
           "act_it": "Progress"
-        }
+        },
+        "word_id": "gaming/checkpoint",
+        "definition": "A point in a game where progress is saved so you can restart nearby."
       },
       {
         "word": "Avatar",
@@ -3219,7 +3745,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "gaming/avatar",
+        "definition": "A character or image that represents a player in a game."
       },
       {
         "word": "Speedrun",
@@ -3230,7 +3758,9 @@
         ],
         "mode_hints": {
           "act_it": "Timing"
-        }
+        },
+        "word_id": "gaming/speedrun",
+        "definition": "An attempt to finish a game or a section in the shortest possible time."
       },
       {
         "word": "Power-up",
@@ -3241,7 +3771,9 @@
         ],
         "mode_hints": {
           "act_it": "Energy"
-        }
+        },
+        "word_id": "gaming/power-up",
+        "definition": "An item or effect that improves a character's abilities, often for a short time."
       },
       {
         "word": "Controller",
@@ -3252,7 +3784,9 @@
         ],
         "mode_hints": {
           "act_it": "Couch"
-        }
+        },
+        "word_id": "gaming/controller",
+        "definition": "A handheld device with buttons or sticks used to operate a game."
       },
       {
         "word": "Open world",
@@ -3263,7 +3797,9 @@
         ],
         "mode_hints": {
           "act_it": "Exploration"
-        }
+        },
+        "word_id": "gaming/open-world",
+        "definition": "A game setting that players can explore freely across a large area."
       },
       {
         "word": "Side quest",
@@ -3274,7 +3810,9 @@
         ],
         "mode_hints": {
           "act_it": "Reward"
-        }
+        },
+        "word_id": "gaming/side-quest",
+        "definition": "An optional task outside a game's main story or objective."
       },
       {
         "word": "Multiplayer",
@@ -3285,7 +3823,9 @@
         ],
         "mode_hints": {
           "act_it": "Friends"
-        }
+        },
+        "word_id": "gaming/multiplayer",
+        "definition": "A game or mode that lets more than one person play together or against each other."
       },
       {
         "word": "Co-op",
@@ -3296,7 +3836,9 @@
         ],
         "mode_hints": {
           "act_it": "Friends"
-        }
+        },
+        "word_id": "gaming/co-op",
+        "definition": "A game mode in which players work together toward a shared goal."
       },
       {
         "word": "Inventory",
@@ -3307,7 +3849,9 @@
         ],
         "mode_hints": {
           "act_it": "Storage"
-        }
+        },
+        "word_id": "gaming/inventory",
+        "definition": "The list or storage space for items a player is carrying."
       },
       {
         "word": "Crafting",
@@ -3318,7 +3862,9 @@
         ],
         "mode_hints": {
           "act_it": "Materials"
-        }
+        },
+        "word_id": "gaming/crafting",
+        "definition": "Creating new items in a game by combining materials or parts."
       },
       {
         "word": "Achievement",
@@ -3329,7 +3875,9 @@
         ],
         "mode_hints": {
           "act_it": "Completion"
-        }
+        },
+        "word_id": "gaming/achievement",
+        "definition": "An award or record earned for completing a specific challenge."
       },
       {
         "word": "Leaderboard",
@@ -3340,7 +3888,9 @@
         ],
         "mode_hints": {
           "act_it": "Competition"
-        }
+        },
+        "word_id": "gaming/leaderboard",
+        "definition": "A ranked list of players or teams based on their scores or performance."
       },
       {
         "word": "Tutorial",
@@ -3351,7 +3901,9 @@
         ],
         "mode_hints": {
           "act_it": "Practice"
-        }
+        },
+        "word_id": "gaming/tutorial",
+        "definition": "A lesson within a game that teaches you how to play or use a feature."
       },
       {
         "word": "Puzzle",
@@ -3362,7 +3914,9 @@
         ],
         "mode_hints": {
           "act_it": "Pattern"
-        }
+        },
+        "word_id": "gaming/puzzle",
+        "definition": "A challenge that you solve by using logic, clues, or patterns."
       },
       {
         "word": "Health bar",
@@ -3373,7 +3927,9 @@
         ],
         "mode_hints": {
           "act_it": "Survival"
-        }
+        },
+        "word_id": "gaming/health-bar",
+        "definition": "An on-screen meter that shows how much damage a character can still take."
       },
       {
         "word": "Mana",
@@ -3384,7 +3940,9 @@
         ],
         "mode_hints": {
           "act_it": "Resource"
-        }
+        },
+        "word_id": "gaming/mana",
+        "definition": "A supply of magical energy used to cast spells or use abilities in some games."
       },
       {
         "word": "Cooldown",
@@ -3395,7 +3953,9 @@
         ],
         "mode_hints": {
           "act_it": "Timing"
-        }
+        },
+        "word_id": "gaming/cooldown",
+        "definition": "The wait after using an ability before you can use it again."
       },
       {
         "word": "Stealth",
@@ -3406,7 +3966,9 @@
         ],
         "mode_hints": {
           "act_it": "Enemies"
-        }
+        },
+        "word_id": "gaming/stealth",
+        "definition": "Moving or acting without being detected by enemies."
       },
       {
         "word": "Battle royale",
@@ -3417,7 +3979,9 @@
         ],
         "mode_hints": {
           "act_it": "Survival"
-        }
+        },
+        "word_id": "gaming/battle-royale",
+        "definition": "A game format in which many players compete until one person or team remains."
       },
       {
         "word": "Character class",
@@ -3425,7 +3989,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "gaming/character-class",
+        "definition": "A role that determines a character's abilities or style of play."
       }
     ]
   },
@@ -3445,7 +4011,9 @@
         ],
         "mode_hints": {
           "act_it": "Sharing"
-        }
+        },
+        "word_id": "technology/meme",
+        "definition": "An idea, joke, image, or video that people copy and share, often with variations."
       },
       {
         "word": "Emoji",
@@ -3456,7 +4024,9 @@
         ],
         "mode_hints": {
           "act_it": "Expression"
-        }
+        },
+        "word_id": "technology/emoji",
+        "definition": "A small digital picture used to express an idea, feeling, or reaction in a message."
       },
       {
         "word": "Password",
@@ -3467,7 +4037,9 @@
         ],
         "mode_hints": {
           "act_it": "Security"
-        }
+        },
+        "word_id": "technology/password",
+        "definition": "A secret string of characters used to verify access to an account or device."
       },
       {
         "word": "Wi-Fi",
@@ -3475,7 +4047,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "technology/wi-fi",
+        "definition": "A way for devices to connect to a local network wirelessly."
       },
       {
         "word": "Screenshot",
@@ -3486,7 +4060,9 @@
         ],
         "mode_hints": {
           "act_it": "Sharing"
-        }
+        },
+        "word_id": "technology/screenshot",
+        "definition": "An image that captures what is displayed on a device's screen."
       },
       {
         "word": "Livestream",
@@ -3497,7 +4073,9 @@
         ],
         "mode_hints": {
           "act_it": "Audience"
-        }
+        },
+        "word_id": "technology/livestream",
+        "definition": "Video or audio broadcast over the internet as it happens."
       },
       {
         "word": "Group chat",
@@ -3510,7 +4088,9 @@
         "mode_hints": {
           "act_it": "Notifications",
           "sound_only": "Incoming"
-        }
+        },
+        "word_id": "technology/group-chat",
+        "definition": "A digital conversation with several people in the same message thread."
       },
       {
         "word": "Spam",
@@ -3521,7 +4101,9 @@
         ],
         "mode_hints": {
           "act_it": "Messages"
-        }
+        },
+        "word_id": "technology/spam",
+        "definition": "Unwanted messages sent in bulk, often to advertise something."
       },
       {
         "word": "Chatbot",
@@ -3529,7 +4111,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "technology/chatbot",
+        "definition": "A computer program designed to carry on a conversation with people."
       },
       {
         "word": "Power bank",
@@ -3540,7 +4124,9 @@
         ],
         "mode_hints": {
           "act_it": "Battery"
-        }
+        },
+        "word_id": "technology/power-bank",
+        "definition": "A portable battery used to recharge other devices."
       },
       {
         "word": "Smartphone",
@@ -3553,7 +4139,9 @@
         "mode_hints": {
           "act_it": "Portable",
           "sound_only": "Wireless"
-        }
+        },
+        "word_id": "technology/smartphone",
+        "definition": "A mobile phone that can run apps and access the internet."
       },
       {
         "word": "Laptop",
@@ -3564,7 +4152,9 @@
         ],
         "mode_hints": {
           "act_it": "Portable"
-        }
+        },
+        "word_id": "technology/laptop",
+        "definition": "A portable computer with a screen and keyboard that fold together."
       },
       {
         "word": "Tablet",
@@ -3575,7 +4165,9 @@
         ],
         "mode_hints": {
           "act_it": "Screen"
-        }
+        },
+        "word_id": "technology/tablet",
+        "definition": "A portable computer with a flat touchscreen as its main control."
       },
       {
         "word": "Keyboard",
@@ -3588,7 +4180,9 @@
         "mode_hints": {
           "act_it": "Input",
           "sound_only": "Desktop"
-        }
+        },
+        "word_id": "technology/keyboard",
+        "definition": "A set of keys used for typing and entering commands."
       },
       {
         "word": "Mouse",
@@ -3601,7 +4195,9 @@
         "mode_hints": {
           "act_it": "Desktop",
           "sound_only": "Desktop"
-        }
+        },
+        "word_id": "technology/mouse",
+        "definition": "A small handheld device that moves a pointer around a computer screen."
       },
       {
         "word": "Printer",
@@ -3614,7 +4210,9 @@
         "mode_hints": {
           "act_it": "Office",
           "sound_only": "Office"
-        }
+        },
+        "word_id": "technology/printer",
+        "definition": "A machine that produces text or images on paper or another material."
       },
       {
         "word": "Headphones",
@@ -3627,7 +4225,9 @@
         "mode_hints": {
           "act_it": "Audio",
           "sound_only": "Audio"
-        }
+        },
+        "word_id": "technology/headphones",
+        "definition": "A pair of small speakers worn over or in the ears."
       },
       {
         "word": "Bluetooth",
@@ -3638,7 +4238,9 @@
         ],
         "mode_hints": {
           "act_it": "Pairing"
-        }
+        },
+        "word_id": "technology/bluetooth",
+        "definition": "A wireless technology used to connect devices across short distances."
       },
       {
         "word": "Cloud storage",
@@ -3649,7 +4251,9 @@
         ],
         "mode_hints": {
           "act_it": "Backup"
-        }
+        },
+        "word_id": "technology/cloud-storage",
+        "definition": "Keeping files on remote servers so you can reach them over a network."
       },
       {
         "word": "Search engine",
@@ -3660,7 +4264,9 @@
         ],
         "mode_hints": {
           "act_it": "Research"
-        }
+        },
+        "word_id": "technology/search-engine",
+        "definition": "An online service that finds webpages or other information matching your query."
       },
       {
         "word": "QR code",
@@ -3671,7 +4277,9 @@
         ],
         "mode_hints": {
           "act_it": "Camera"
-        }
+        },
+        "word_id": "technology/qr-code",
+        "definition": "A square pattern of small blocks that a camera can read as encoded information."
       },
       {
         "word": "Video call",
@@ -3684,7 +4292,9 @@
         "mode_hints": {
           "act_it": "Camera",
           "sound_only": "Audio"
-        }
+        },
+        "word_id": "technology/video-call",
+        "definition": "A conversation in which people can see and hear each other through connected devices."
       },
       {
         "word": "Web browser",
@@ -3695,7 +4305,9 @@
         ],
         "mode_hints": {
           "act_it": "Research"
-        }
+        },
+        "word_id": "technology/web-browser",
+        "definition": "An app used to open and navigate websites."
       },
       {
         "word": "Software update",
@@ -3706,7 +4318,9 @@
         ],
         "mode_hints": {
           "act_it": "Restart"
-        }
+        },
+        "word_id": "technology/software-update",
+        "definition": "A newer version of an app or system that adds changes, fixes, or improvements."
       },
       {
         "word": "Scanner",
@@ -3719,7 +4333,9 @@
         "mode_hints": {
           "act_it": "Office",
           "sound_only": "Office"
-        }
+        },
+        "word_id": "technology/scanner",
+        "definition": "A device that reads an image, document, or code and converts it to digital data."
       },
       {
         "word": "Computer fan",
@@ -3732,7 +4348,9 @@
         "mode_hints": {
           "act_it": "Desktop",
           "sound_only": "Desktop"
-        }
+        },
+        "word_id": "technology/computer-fan",
+        "definition": "A spinning device that moves air to cool the parts inside a computer."
       },
       {
         "word": "Walkie-talkie",
@@ -3745,7 +4363,9 @@
         "mode_hints": {
           "act_it": "Wireless",
           "sound_only": "Wireless"
-        }
+        },
+        "word_id": "technology/walkie-talkie",
+        "definition": "A handheld two-way radio used to talk to someone nearby."
       },
       {
         "word": "Ringtone",
@@ -3758,7 +4378,9 @@
         "mode_hints": {
           "act_it": "Incoming",
           "sound_only": "Incoming"
-        }
+        },
+        "word_id": "technology/ringtone",
+        "definition": "The sound a phone makes to announce an incoming call."
       },
       {
         "word": "Error alert",
@@ -3771,7 +4393,9 @@
         "mode_hints": {
           "act_it": "Interruption",
           "sound_only": "Interruption"
-        }
+        },
+        "word_id": "technology/error-alert",
+        "definition": "A message or sound that tells you something went wrong."
       }
     ]
   },
@@ -3793,7 +4417,9 @@
         "mode_hints": {
           "act_it": "Morning",
           "sound_only": "Morning"
-        }
+        },
+        "word_id": "chaos/oversleeping",
+        "definition": "Sleeping past the time you meant to wake up."
       },
       {
         "word": "Wrong group chat",
@@ -3804,7 +4430,9 @@
         ],
         "mode_hints": {
           "act_it": "Embarrassment"
-        }
+        },
+        "word_id": "chaos/wrong-group-chat",
+        "definition": "Sending a message to a different set of people than you intended."
       },
       {
         "word": "Dead phone battery",
@@ -3817,7 +4445,9 @@
         "mode_hints": {
           "act_it": "Warning",
           "sound_only": "Warning"
-        }
+        },
+        "word_id": "chaos/dead-phone-battery",
+        "definition": "Having too little charge left for your mobile phone to work."
       },
       {
         "word": "Lost luggage",
@@ -3828,7 +4458,9 @@
         ],
         "mode_hints": {
           "act_it": "Arrival"
-        }
+        },
+        "word_id": "chaos/lost-luggage",
+        "definition": "Bags that go missing while you are traveling, often after a flight."
       },
       {
         "word": "Awkward silence",
@@ -3839,7 +4471,9 @@
         ],
         "mode_hints": {
           "act_it": "Conversation"
-        }
+        },
+        "word_id": "chaos/awkward-silence",
+        "definition": "A pause in conversation that makes the people present feel uncomfortable."
       },
       {
         "word": "Missed bus",
@@ -3852,7 +4486,9 @@
         "mode_hints": {
           "act_it": "Hurry",
           "sound_only": "Morning"
-        }
+        },
+        "word_id": "chaos/missed-bus",
+        "definition": "Arriving too late to board the road vehicle you planned to catch."
       },
       {
         "word": "Spilled coffee",
@@ -3865,7 +4501,9 @@
         "mode_hints": {
           "act_it": "Cleanup",
           "sound_only": "Cleanup"
-        }
+        },
+        "word_id": "chaos/spilled-coffee",
+        "definition": "Accidentally knocking over or sloshing a cup of brewed coffee."
       },
       {
         "word": "Forgotten birthday",
@@ -3876,7 +4514,9 @@
         ],
         "mode_hints": {
           "act_it": "Apology"
-        }
+        },
+        "word_id": "chaos/forgotten-birthday",
+        "definition": "Failing to remember the date someone was born or to mark it in time."
       },
       {
         "word": "Burnt toast",
@@ -3889,7 +4529,9 @@
         "mode_hints": {
           "act_it": "Kitchen",
           "sound_only": "Kitchen"
-        }
+        },
+        "word_id": "chaos/burnt-toast",
+        "definition": "Bread heated so long that it becomes charred."
       },
       {
         "word": "Wardrobe malfunction",
@@ -3900,7 +4542,9 @@
         ],
         "mode_hints": {
           "act_it": "Embarrassment"
-        }
+        },
+        "word_id": "chaos/wardrobe-malfunction",
+        "definition": "An unexpected clothing mishap, such as something tearing or coming undone."
       },
       {
         "word": "Locked out",
@@ -3911,7 +4555,9 @@
         ],
         "mode_hints": {
           "act_it": "Door"
-        }
+        },
+        "word_id": "chaos/locked-out",
+        "definition": "Being unable to get inside because you do not have a way to open the lock."
       },
       {
         "word": "Flat tire",
@@ -3924,7 +4570,9 @@
         "mode_hints": {
           "act_it": "Delay",
           "sound_only": "Delay"
-        }
+        },
+        "word_id": "chaos/flat-tire",
+        "definition": "A wheel's rubber covering losing the air it needs to work properly."
       },
       {
         "word": "Traffic jam",
@@ -3937,7 +4585,9 @@
         "mode_hints": {
           "act_it": "Delay",
           "sound_only": "Delay"
-        }
+        },
+        "word_id": "chaos/traffic-jam",
+        "definition": "Lots of road vehicles packed together and moving slowly or barely at all."
       },
       {
         "word": "Broken umbrella",
@@ -3948,7 +4598,9 @@
         ],
         "mode_hints": {
           "act_it": "Rain"
-        }
+        },
+        "word_id": "chaos/broken-umbrella",
+        "definition": "A handheld rain cover that no longer works, such as one with snapped ribs."
       },
       {
         "word": "Power outage",
@@ -3959,7 +4611,9 @@
         ],
         "mode_hints": {
           "act_it": "Interruption"
-        }
+        },
+        "word_id": "chaos/power-outage",
+        "definition": "An interruption in the electricity supply to a building or area."
       },
       {
         "word": "Clogged sink",
@@ -3972,7 +4626,9 @@
         "mode_hints": {
           "act_it": "Cleanup",
           "sound_only": "Cleanup"
-        }
+        },
+        "word_id": "chaos/clogged-sink",
+        "definition": "A basin whose drain is blocked so water cannot flow out properly."
       },
       {
         "word": "Leaking roof",
@@ -3985,7 +4641,9 @@
         "mode_hints": {
           "act_it": "Rain",
           "sound_only": "Cleanup"
-        }
+        },
+        "word_id": "chaos/leaking-roof",
+        "definition": "Water getting through the top of a building when it should stay outside."
       },
       {
         "word": "Wrong delivery",
@@ -3996,7 +4654,9 @@
         ],
         "mode_hints": {
           "act_it": "Door"
-        }
+        },
+        "word_id": "chaos/wrong-delivery",
+        "definition": "Receiving a package or order that was intended for someone else or has the wrong items."
       },
       {
         "word": "Lost keys",
@@ -4007,7 +4667,9 @@
         ],
         "mode_hints": {
           "act_it": "Search"
-        }
+        },
+        "word_id": "chaos/lost-keys",
+        "definition": "Being unable to find the small objects you use to open locks."
       },
       {
         "word": "Printer jam",
@@ -4020,7 +4682,9 @@
         "mode_hints": {
           "act_it": "Delay",
           "sound_only": "Delay"
-        }
+        },
+        "word_id": "chaos/printer-jam",
+        "definition": "Paper getting trapped inside a machine while it is trying to print."
       },
       {
         "word": "Food stuck in teeth",
@@ -4031,7 +4695,9 @@
         ],
         "mode_hints": {
           "act_it": "Embarrassment"
-        }
+        },
+        "word_id": "chaos/food-stuck-in-teeth",
+        "definition": "A piece of something you ate getting wedged between your teeth."
       },
       {
         "word": "Accidental reply-all",
@@ -4042,7 +4708,9 @@
         ],
         "mode_hints": {
           "act_it": "Embarrassment"
-        }
+        },
+        "word_id": "chaos/accidental-reply-all",
+        "definition": "Sending an email response to everyone on the original message by mistake."
       },
       {
         "word": "Phone ringing in a meeting",
@@ -4055,7 +4723,9 @@
         "mode_hints": {
           "act_it": "Interruption",
           "sound_only": "Interruption"
-        }
+        },
+        "word_id": "chaos/phone-ringing-in-a-meeting",
+        "definition": "An incoming call sounding out loud while people are gathered for a discussion."
       },
       {
         "word": "Stuck zipper",
@@ -4068,7 +4738,9 @@
         "mode_hints": {
           "act_it": "Clothing",
           "sound_only": "Resistance"
-        }
+        },
+        "word_id": "chaos/stuck-zipper",
+        "definition": "A clothing or bag fastener that will not slide open or closed."
       }
     ]
   },
@@ -4088,7 +4760,9 @@
         ],
         "mode_hints": {
           "act_it": "Seasons"
-        }
+        },
+        "word_id": "hobbies/gardening",
+        "definition": "Growing and caring for plants, often in a yard, pots, or beds."
       },
       {
         "word": "Knitting",
@@ -4101,7 +4775,9 @@
         "mode_hints": {
           "act_it": "Loops",
           "sound_only": "Patience"
-        }
+        },
+        "word_id": "hobbies/knitting",
+        "definition": "Making fabric by looping yarn with needles."
       },
       {
         "word": "Photography",
@@ -4114,7 +4790,9 @@
         "mode_hints": {
           "act_it": "Light",
           "sound_only": "Outdoors"
-        }
+        },
+        "word_id": "hobbies/photography",
+        "definition": "Taking and creating images with a camera."
       },
       {
         "word": "Pottery",
@@ -4125,7 +4803,9 @@
         ],
         "mode_hints": {
           "act_it": "Studio"
-        }
+        },
+        "word_id": "hobbies/pottery",
+        "definition": "Shaping clay into objects and firing it to make them hard."
       },
       {
         "word": "Origami",
@@ -4136,7 +4816,9 @@
         ],
         "mode_hints": {
           "act_it": "Paper"
-        }
+        },
+        "word_id": "hobbies/origami",
+        "definition": "The art of folding paper into figures or shapes."
       },
       {
         "word": "Baking",
@@ -4147,7 +4829,9 @@
         ],
         "mode_hints": {
           "act_it": "Mixture"
-        }
+        },
+        "word_id": "hobbies/baking",
+        "definition": "Cooking food in an oven, often to make bread, cakes, or pastries."
       },
       {
         "word": "Painting",
@@ -4158,7 +4842,9 @@
         ],
         "mode_hints": {
           "act_it": "Color"
-        }
+        },
+        "word_id": "hobbies/painting",
+        "definition": "Making a picture or decorating a surface by applying colored pigment."
       },
       {
         "word": "Birdwatching",
@@ -4171,7 +4857,9 @@
         "mode_hints": {
           "act_it": "Outdoors",
           "sound_only": "Outdoors"
-        }
+        },
+        "word_id": "hobbies/birdwatching",
+        "definition": "Watching and identifying wild birds as a pastime."
       },
       {
         "word": "Journaling",
@@ -4182,7 +4870,9 @@
         ],
         "mode_hints": {
           "act_it": "Pages"
-        }
+        },
+        "word_id": "hobbies/journaling",
+        "definition": "Regularly writing down events, thoughts, or feelings for yourself."
       },
       {
         "word": "Magic trick",
@@ -4193,7 +4883,9 @@
         ],
         "mode_hints": {
           "act_it": "Practice"
-        }
+        },
+        "word_id": "hobbies/magic-trick",
+        "definition": "A performance that uses skill or misdirection to make something seem impossible."
       },
       {
         "word": "Reading",
@@ -4204,7 +4896,9 @@
         ],
         "mode_hints": {
           "act_it": "Pages"
-        }
+        },
+        "word_id": "hobbies/reading",
+        "definition": "Looking at written or printed words to understand what they say."
       },
       {
         "word": "Sewing",
@@ -4217,7 +4911,9 @@
         "mode_hints": {
           "act_it": "Fabric",
           "sound_only": "Workshop"
-        }
+        },
+        "word_id": "hobbies/sewing",
+        "definition": "Joining or repairing fabric with a needle and thread."
       },
       {
         "word": "Embroidery",
@@ -4228,7 +4924,9 @@
         ],
         "mode_hints": {
           "act_it": "Fabric"
-        }
+        },
+        "word_id": "hobbies/embroidery",
+        "definition": "Decorating fabric with patterns stitched in thread."
       },
       {
         "word": "Woodworking",
@@ -4241,7 +4939,9 @@
         "mode_hints": {
           "act_it": "Workshop",
           "sound_only": "Workshop"
-        }
+        },
+        "word_id": "hobbies/woodworking",
+        "definition": "Making or repairing things by cutting, shaping, and joining wood."
       },
       {
         "word": "Candle making",
@@ -4252,7 +4952,9 @@
         ],
         "mode_hints": {
           "act_it": "Scent"
-        }
+        },
+        "word_id": "hobbies/candle-making",
+        "definition": "Creating objects that give light by pouring or shaping wax around a wick."
       },
       {
         "word": "Calligraphy",
@@ -4263,7 +4965,9 @@
         ],
         "mode_hints": {
           "act_it": "Ink"
-        }
+        },
+        "word_id": "hobbies/calligraphy",
+        "definition": "The art of forming decorative letters by hand."
       },
       {
         "word": "Scrapbooking",
@@ -4274,7 +4978,9 @@
         ],
         "mode_hints": {
           "act_it": "Keepsakes"
-        }
+        },
+        "word_id": "hobbies/scrapbooking",
+        "definition": "Collecting and arranging photos, clippings, and keepsakes in a book."
       },
       {
         "word": "Jigsaw puzzles",
@@ -4285,7 +4991,9 @@
         ],
         "mode_hints": {
           "act_it": "Patience"
-        }
+        },
+        "word_id": "hobbies/jigsaw-puzzles",
+        "definition": "Pictures cut into irregular pieces that you fit together again."
       },
       {
         "word": "Model building",
@@ -4296,7 +5004,9 @@
         ],
         "mode_hints": {
           "act_it": "Pieces"
-        }
+        },
+        "word_id": "hobbies/model-building",
+        "definition": "Constructing small representations of objects such as vehicles or buildings."
       },
       {
         "word": "Stargazing",
@@ -4307,7 +5017,9 @@
         ],
         "mode_hints": {
           "act_it": "Outdoors"
-        }
+        },
+        "word_id": "hobbies/stargazing",
+        "definition": "Watching stars, planets, or other objects in the night sky."
       },
       {
         "word": "Fishing",
@@ -4320,7 +5032,9 @@
         "mode_hints": {
           "act_it": "Patience",
           "sound_only": "Patience"
-        }
+        },
+        "word_id": "hobbies/fishing",
+        "definition": "Trying to catch fish, often with a rod, line, and hook."
       },
       {
         "word": "Hiking",
@@ -4333,7 +5047,9 @@
         "mode_hints": {
           "act_it": "Trail",
           "sound_only": "Trail"
-        }
+        },
+        "word_id": "hobbies/hiking",
+        "definition": "Taking a long walk outdoors, often along a trail."
       },
       {
         "word": "Dancing",
@@ -4344,7 +5060,9 @@
         ],
         "mode_hints": {
           "act_it": "Expression"
-        }
+        },
+        "word_id": "hobbies/dancing",
+        "definition": "Moving your body in a pattern or rhythm, often to music."
       },
       {
         "word": "Chess",
@@ -4355,7 +5073,9 @@
         ],
         "mode_hints": {
           "act_it": "Planning"
-        }
+        },
+        "word_id": "hobbies/chess",
+        "definition": "A strategy board game in which players try to trap the opposing king."
       },
       {
         "word": "Beatboxing",
@@ -4368,7 +5088,9 @@
         "mode_hints": {
           "act_it": "Performance",
           "sound_only": "Rhythm"
-        }
+        },
+        "word_id": "hobbies/beatboxing",
+        "definition": "Making drum-like beats and other musical sounds with your mouth and voice."
       },
       {
         "word": "Tap dancing",
@@ -4381,7 +5103,9 @@
         "mode_hints": {
           "act_it": "Performance",
           "sound_only": "Rhythm"
-        }
+        },
+        "word_id": "hobbies/tap-dancing",
+        "definition": "A style of dance that makes rhythms with metal plates attached to the shoes."
       },
       {
         "word": "Metal detecting",
@@ -4394,7 +5118,9 @@
         "mode_hints": {
           "act_it": "Searching",
           "sound_only": "Searching"
-        }
+        },
+        "word_id": "hobbies/metal-detecting",
+        "definition": "Searching for buried or hidden metal objects with an electronic device."
       },
       {
         "word": "Billiards",
@@ -4407,7 +5133,9 @@
         "mode_hints": {
           "act_it": "Tabletop",
           "sound_only": "Wood"
-        }
+        },
+        "word_id": "hobbies/billiards",
+        "definition": "A family of table games in which players strike balls with a long cue."
       },
       {
         "word": "Dominoes",
@@ -4420,7 +5148,9 @@
         "mode_hints": {
           "act_it": "Tabletop",
           "sound_only": "Wood"
-        }
+        },
+        "word_id": "hobbies/dominoes",
+        "definition": "A game played with rectangular tiles marked with dots that players match up."
       }
     ]
   },
@@ -4442,7 +5172,9 @@
         "mode_hints": {
           "act_it": "Milestone",
           "sound_only": "Milestone"
-        }
+        },
+        "word_id": "celebrations/birthday-cake",
+        "definition": "A sweet dessert served on someone's birthday, often decorated with lit candles."
       },
       {
         "word": "Fireworks",
@@ -4455,7 +5187,9 @@
         "mode_hints": {
           "act_it": "Evening",
           "sound_only": "Lights"
-        }
+        },
+        "word_id": "celebrations/fireworks",
+        "definition": "Devices that burst into bright lights or loud sounds for a display."
       },
       {
         "word": "Wedding",
@@ -4468,7 +5202,9 @@
         "mode_hints": {
           "act_it": "Guests",
           "sound_only": "Milestone"
-        }
+        },
+        "word_id": "celebrations/wedding",
+        "definition": "A ceremony where two people get married."
       },
       {
         "word": "Graduation",
@@ -4481,7 +5217,9 @@
         "mode_hints": {
           "act_it": "Milestone",
           "sound_only": "Milestone"
-        }
+        },
+        "word_id": "celebrations/graduation",
+        "definition": "A ceremony marking the completion of a course of study."
       },
       {
         "word": "Costume party",
@@ -4492,7 +5230,9 @@
         ],
         "mode_hints": {
           "act_it": "Disguise"
-        }
+        },
+        "word_id": "celebrations/costume-party",
+        "definition": "A gathering where people dress up as characters, creatures, or other themes."
       },
       {
         "word": "Lantern",
@@ -4503,7 +5243,9 @@
         ],
         "mode_hints": {
           "act_it": "Glow"
-        }
+        },
+        "word_id": "celebrations/lantern",
+        "definition": "A portable light with a cover that protects or contains the light source."
       },
       {
         "word": "Parade",
@@ -4516,7 +5258,9 @@
         "mode_hints": {
           "act_it": "Street",
           "sound_only": "Street"
-        }
+        },
+        "word_id": "celebrations/parade",
+        "definition": "An organized public procession with people, performers, or decorated vehicles."
       },
       {
         "word": "Gift wrapping",
@@ -4527,7 +5271,9 @@
         ],
         "mode_hints": {
           "act_it": "Surprise"
-        }
+        },
+        "word_id": "celebrations/gift-wrapping",
+        "definition": "Covering a present with paper or another decorative material."
       },
       {
         "word": "New Year's countdown",
@@ -4538,7 +5284,9 @@
         ],
         "mode_hints": {
           "act_it": "Cheers"
-        }
+        },
+        "word_id": "celebrations/new-year-s-countdown",
+        "definition": "Calling out the last seconds before midnight as one year changes to the next."
       },
       {
         "word": "Family reunion",
@@ -4549,7 +5297,9 @@
         ],
         "mode_hints": {
           "act_it": "Stories"
-        }
+        },
+        "word_id": "celebrations/family-reunion",
+        "definition": "A gathering where relatives come together, often after time apart."
       },
       {
         "word": "Confetti",
@@ -4562,7 +5312,9 @@
         "mode_hints": {
           "act_it": "Color",
           "sound_only": "Party"
-        }
+        },
+        "word_id": "celebrations/confetti",
+        "definition": "Small pieces of colored paper thrown in the air during a celebration."
       },
       {
         "word": "Balloons",
@@ -4575,7 +5327,9 @@
         "mode_hints": {
           "act_it": "Decoration",
           "sound_only": "Party"
-        }
+        },
+        "word_id": "celebrations/balloons",
+        "definition": "Stretchy bags filled with air or gas and used for decoration or play."
       },
       {
         "word": "Invitation",
@@ -4586,7 +5340,9 @@
         ],
         "mode_hints": {
           "act_it": "Guests"
-        }
+        },
+        "word_id": "celebrations/invitation",
+        "definition": "A request asking someone to attend an event, often in written or digital form."
       },
       {
         "word": "Party hat",
@@ -4597,7 +5353,9 @@
         ],
         "mode_hints": {
           "act_it": "Decoration"
-        }
+        },
+        "word_id": "celebrations/party-hat",
+        "definition": "A festive headpiece, often a colorful paper cone."
       },
       {
         "word": "Piñata",
@@ -4610,7 +5368,9 @@
         "mode_hints": {
           "act_it": "Surprise",
           "sound_only": "Party"
-        }
+        },
+        "word_id": "celebrations/pinata",
+        "definition": "A decorated container filled with treats or prizes that a player breaks open."
       },
       {
         "word": "Banquet",
@@ -4621,7 +5381,9 @@
         ],
         "mode_hints": {
           "act_it": "Table"
-        }
+        },
+        "word_id": "celebrations/banquet",
+        "definition": "A large formal meal held for a group, often to celebrate an occasion."
       },
       {
         "word": "Toast",
@@ -4634,7 +5396,9 @@
         "mode_hints": {
           "act_it": "Cheers",
           "sound_only": "Cheers"
-        }
+        },
+        "word_id": "celebrations/toast",
+        "definition": "A short speech of praise or goodwill followed by raising or sipping a drink."
       },
       {
         "word": "Ribbon",
@@ -4645,7 +5409,9 @@
         ],
         "mode_hints": {
           "act_it": "Ceremony"
-        }
+        },
+        "word_id": "celebrations/ribbon",
+        "definition": "A narrow strip of material used to tie, trim, or decorate something."
       },
       {
         "word": "Christmas",
@@ -4658,7 +5424,9 @@
         "mode_hints": {
           "act_it": "Gifts",
           "sound_only": "Gifts"
-        }
+        },
+        "word_id": "celebrations/christmas",
+        "definition": "A Christian holiday marking the birth of Jesus, also celebrated in many secular traditions."
       },
       {
         "word": "Lunar New Year",
@@ -4671,7 +5439,9 @@
         "mode_hints": {
           "act_it": "Family",
           "sound_only": "Gifts"
-        }
+        },
+        "word_id": "celebrations/lunar-new-year",
+        "definition": "The start of a year in a lunisolar calendar, celebrated in several cultures."
       },
       {
         "word": "Diwali",
@@ -4684,7 +5454,9 @@
         "mode_hints": {
           "act_it": "Lights",
           "sound_only": "Lights"
-        }
+        },
+        "word_id": "celebrations/diwali",
+        "definition": "A festival of lights celebrated by Hindus, Jains, Sikhs, and some Buddhists."
       },
       {
         "word": "Eid",
@@ -4695,7 +5467,9 @@
         ],
         "mode_hints": {
           "act_it": "Feast"
-        }
+        },
+        "word_id": "celebrations/eid",
+        "definition": "One of two major Muslim holidays, marking the end of Ramadan or a time of pilgrimage and sacrifice."
       },
       {
         "word": "Halloween",
@@ -4706,7 +5480,9 @@
         ],
         "mode_hints": {
           "act_it": "Disguise"
-        }
+        },
+        "word_id": "celebrations/halloween",
+        "definition": "An October 31 celebration often marked by costumes and trick-or-treating."
       },
       {
         "word": "Carnival",
@@ -4719,7 +5495,9 @@
         "mode_hints": {
           "act_it": "Street",
           "sound_only": "Street"
-        }
+        },
+        "word_id": "celebrations/carnival",
+        "definition": "A public festival often featuring costumes, music, dancing, and street parades."
       }
     ]
   },
@@ -4739,7 +5517,9 @@
         ],
         "mode_hints": {
           "act_it": "Light"
-        }
+        },
+        "word_id": "space/sun",
+        "definition": "The star at the center of our solar system, which gives Earth light and heat."
       },
       {
         "word": "Moon",
@@ -4750,7 +5530,9 @@
         ],
         "mode_hints": {
           "act_it": "Orbit"
-        }
+        },
+        "word_id": "space/moon",
+        "definition": "Earth's natural satellite, whose sunlit portion appears to change shape over the month."
       },
       {
         "word": "Mars",
@@ -4758,7 +5540,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "space/mars",
+        "definition": "The fourth planet from the Sun, known for its reddish surface."
       },
       {
         "word": "Saturn",
@@ -4769,7 +5553,9 @@
         ],
         "mode_hints": {
           "act_it": "Orbit"
-        }
+        },
+        "word_id": "space/saturn",
+        "definition": "A giant planet known for its broad, bright rings."
       },
       {
         "word": "Comet",
@@ -4780,7 +5566,9 @@
         ],
         "mode_hints": {
           "act_it": "Trail"
-        }
+        },
+        "word_id": "space/comet",
+        "definition": "An icy object that can grow a glowing tail when it passes near the Sun."
       },
       {
         "word": "Asteroid",
@@ -4788,7 +5576,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "space/asteroid",
+        "definition": "A small rocky or metallic object that travels around the Sun."
       },
       {
         "word": "Astronaut",
@@ -4799,7 +5589,9 @@
         ],
         "mode_hints": {
           "act_it": "Mission"
-        }
+        },
+        "word_id": "space/astronaut",
+        "definition": "A person trained to travel and work in space."
       },
       {
         "word": "Rocket",
@@ -4812,7 +5604,9 @@
         "mode_hints": {
           "act_it": "Countdown",
           "sound_only": "Countdown"
-        }
+        },
+        "word_id": "space/rocket",
+        "definition": "A vehicle or engine that moves by forcing gas out at high speed."
       },
       {
         "word": "Telescope",
@@ -4823,7 +5617,9 @@
         ],
         "mode_hints": {
           "act_it": "Observation"
-        }
+        },
+        "word_id": "space/telescope",
+        "definition": "An instrument that gathers light or other signals to let us observe distant objects."
       },
       {
         "word": "Gravity",
@@ -4834,7 +5630,9 @@
         ],
         "mode_hints": {
           "act_it": "Motion"
-        }
+        },
+        "word_id": "space/gravity",
+        "definition": "The attraction that pulls objects with mass toward one another."
       },
       {
         "word": "Galaxy",
@@ -4842,7 +5640,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "space/galaxy",
+        "definition": "A vast collection of stars, gas, and dust held together by gravity."
       },
       {
         "word": "Black hole",
@@ -4853,7 +5653,9 @@
         ],
         "mode_hints": {
           "act_it": "Gravity"
-        }
+        },
+        "word_id": "space/black-hole",
+        "definition": "A region of space where gravity is so strong that even light cannot escape from within its boundary."
       },
       {
         "word": "Satellite",
@@ -4864,7 +5666,9 @@
         ],
         "mode_hints": {
           "act_it": "Signal"
-        }
+        },
+        "word_id": "space/satellite",
+        "definition": "A natural or human-made object that travels around a planet or another larger body."
       },
       {
         "word": "Space station",
@@ -4875,7 +5679,9 @@
         ],
         "mode_hints": {
           "act_it": "Crew"
-        }
+        },
+        "word_id": "space/space-station",
+        "definition": "A large spacecraft that stays in orbit and has room for people to live and work."
       },
       {
         "word": "Meteor",
@@ -4886,7 +5692,9 @@
         ],
         "mode_hints": {
           "act_it": "Trail"
-        }
+        },
+        "word_id": "space/meteor",
+        "definition": "A streak of light caused by an object entering a planet's atmosphere."
       },
       {
         "word": "Eclipse",
@@ -4897,7 +5705,9 @@
         ],
         "mode_hints": {
           "act_it": "Shadow"
-        }
+        },
+        "word_id": "space/eclipse",
+        "definition": "An event in which one body in space blocks light from reaching another or from reaching an observer."
       },
       {
         "word": "Constellation",
@@ -4908,7 +5718,9 @@
         ],
         "mode_hints": {
           "act_it": "Sky"
-        }
+        },
+        "word_id": "space/constellation",
+        "definition": "A named pattern or region of stars as seen from Earth."
       },
       {
         "word": "Nebula",
@@ -4916,7 +5728,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "space/nebula",
+        "definition": "A large cloud of gas and dust in space."
       },
       {
         "word": "Supernova",
@@ -4927,7 +5741,9 @@
         ],
         "mode_hints": {
           "act_it": "Energy"
-        }
+        },
+        "word_id": "space/supernova",
+        "definition": "An extremely bright stellar explosion that can occur when a star dies."
       },
       {
         "word": "Rover",
@@ -4938,7 +5754,9 @@
         ],
         "mode_hints": {
           "act_it": "Exploration"
-        }
+        },
+        "word_id": "space/rover",
+        "definition": "A vehicle that travels across the surface of another planet or moon."
       },
       {
         "word": "Light-year",
@@ -4946,7 +5764,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "space/light-year",
+        "definition": "The distance light travels in one year."
       },
       {
         "word": "Orbit",
@@ -4957,7 +5777,9 @@
         ],
         "mode_hints": {
           "act_it": "Motion"
-        }
+        },
+        "word_id": "space/orbit",
+        "definition": "The curved path that one object follows around another because of gravity."
       },
       {
         "word": "Space vacuum",
@@ -4965,7 +5787,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "space/space-vacuum",
+        "definition": "The near-empty condition of outer space, where very few particles are present."
       },
       {
         "word": "Solar panel",
@@ -4976,7 +5800,9 @@
         ],
         "mode_hints": {
           "act_it": "Energy"
-        }
+        },
+        "word_id": "space/solar-panel",
+        "definition": "A flat device that converts sunlight into electricity."
       }
     ]
   },
@@ -4996,7 +5822,9 @@
         ],
         "mode_hints": {
           "act_it": "Comparison"
-        }
+        },
+        "word_id": "emotions/jealousy",
+        "definition": "An uneasy feeling about losing someone's attention or wanting what someone else has."
       },
       {
         "word": "Excitement",
@@ -5009,7 +5837,9 @@
         "mode_hints": {
           "act_it": "Heartbeat",
           "sound_only": "Discovery"
-        }
+        },
+        "word_id": "emotions/excitement",
+        "definition": "An energized feeling when you are eager about something happening."
       },
       {
         "word": "Embarrassment",
@@ -5020,7 +5850,9 @@
         ],
         "mode_hints": {
           "act_it": "Attention"
-        }
+        },
+        "word_id": "emotions/embarrassment",
+        "definition": "An uncomfortable feeling of being exposed or looking foolish in front of others."
       },
       {
         "word": "Relief",
@@ -5033,7 +5865,9 @@
         "mode_hints": {
           "act_it": "Exhale",
           "sound_only": "Exhale"
-        }
+        },
+        "word_id": "emotions/relief",
+        "definition": "The easing of worry, pain, or tension when something improves."
       },
       {
         "word": "Curiosity",
@@ -5044,7 +5878,9 @@
         ],
         "mode_hints": {
           "act_it": "Discovery"
-        }
+        },
+        "word_id": "emotions/curiosity",
+        "definition": "A strong desire to find out, learn, or understand something."
       },
       {
         "word": "Frustration",
@@ -5057,7 +5893,9 @@
         "mode_hints": {
           "act_it": "Obstacle",
           "sound_only": "Obstacle"
-        }
+        },
+        "word_id": "emotions/frustration",
+        "definition": "The upset feeling that comes when something keeps you from reaching a goal."
       },
       {
         "word": "Pride",
@@ -5068,7 +5906,9 @@
         ],
         "mode_hints": {
           "act_it": "Achievement"
-        }
+        },
+        "word_id": "emotions/pride",
+        "definition": "A sense of satisfaction in something you or someone you care about has done."
       },
       {
         "word": "Loneliness",
@@ -5079,7 +5919,9 @@
         ],
         "mode_hints": {
           "act_it": "Distance"
-        }
+        },
+        "word_id": "emotions/loneliness",
+        "definition": "The painful feeling of wanting more connection or companionship."
       },
       {
         "word": "Gratitude",
@@ -5090,7 +5932,9 @@
         ],
         "mode_hints": {
           "act_it": "Kindness"
-        }
+        },
+        "word_id": "emotions/gratitude",
+        "definition": "A feeling of appreciation for kindness or something good you received."
       },
       {
         "word": "Surprise",
@@ -5103,7 +5947,9 @@
         "mode_hints": {
           "act_it": "News",
           "sound_only": "News"
-        }
+        },
+        "word_id": "emotions/surprise",
+        "definition": "The feeling that comes when something happens that you did not expect."
       },
       {
         "word": "Happiness",
@@ -5116,7 +5962,9 @@
         "mode_hints": {
           "act_it": "Smile",
           "sound_only": "Energy"
-        }
+        },
+        "word_id": "emotions/happiness",
+        "definition": "A feeling of joy, pleasure, or well-being."
       },
       {
         "word": "Sadness",
@@ -5129,7 +5977,9 @@
         "mode_hints": {
           "act_it": "Tears",
           "sound_only": "Tears"
-        }
+        },
+        "word_id": "emotions/sadness",
+        "definition": "An unhappy feeling often connected to loss, hurt, or disappointment."
       },
       {
         "word": "Anger",
@@ -5142,7 +5992,9 @@
         "mode_hints": {
           "act_it": "Heat",
           "sound_only": "Obstacle"
-        }
+        },
+        "word_id": "emotions/anger",
+        "definition": "A strong feeling of displeasure, often when something seems unfair or threatening."
       },
       {
         "word": "Fear",
@@ -5155,7 +6007,9 @@
         "mode_hints": {
           "act_it": "Heartbeat",
           "sound_only": "News"
-        }
+        },
+        "word_id": "emotions/fear",
+        "definition": "A feeling of alarm or worry about possible danger."
       },
       {
         "word": "Disgust",
@@ -5168,7 +6022,9 @@
         "mode_hints": {
           "act_it": "Recoil",
           "sound_only": "Recoil"
-        }
+        },
+        "word_id": "emotions/disgust",
+        "definition": "A strong feeling that something is offensive, sickening, or hard to tolerate."
       },
       {
         "word": "Boredom",
@@ -5181,7 +6037,9 @@
         "mode_hints": {
           "act_it": "Waiting",
           "sound_only": "Waiting"
-        }
+        },
+        "word_id": "emotions/boredom",
+        "definition": "A restless or flat feeling when nothing seems interesting or engaging."
       },
       {
         "word": "Hope",
@@ -5192,7 +6050,9 @@
         ],
         "mode_hints": {
           "act_it": "Future"
-        }
+        },
+        "word_id": "emotions/hope",
+        "definition": "A feeling that something you want may happen or improve."
       },
       {
         "word": "Guilt",
@@ -5203,7 +6063,9 @@
         ],
         "mode_hints": {
           "act_it": "Apology"
-        }
+        },
+        "word_id": "emotions/guilt",
+        "definition": "An uneasy feeling that you did something wrong or caused harm."
       },
       {
         "word": "Shame",
@@ -5214,7 +6076,9 @@
         ],
         "mode_hints": {
           "act_it": "Exposure"
-        }
+        },
+        "word_id": "emotions/shame",
+        "definition": "A painful feeling of being exposed, judged, or unworthy."
       },
       {
         "word": "Disappointment",
@@ -5227,7 +6091,9 @@
         "mode_hints": {
           "act_it": "Expectations",
           "sound_only": "Expectations"
-        }
+        },
+        "word_id": "emotions/disappointment",
+        "definition": "Sadness or frustration when something falls short of what you expected."
       },
       {
         "word": "Affection",
@@ -5238,7 +6104,9 @@
         ],
         "mode_hints": {
           "act_it": "Warmth"
-        }
+        },
+        "word_id": "emotions/affection",
+        "definition": "A warm feeling of fondness or care toward someone or something."
       },
       {
         "word": "Awe",
@@ -5251,7 +6119,9 @@
         "mode_hints": {
           "act_it": "Vastness",
           "sound_only": "Discovery"
-        }
+        },
+        "word_id": "emotions/awe",
+        "definition": "A feeling of wonder in the presence of something impressive or vast."
       },
       {
         "word": "Contentment",
@@ -5264,7 +6134,9 @@
         "mode_hints": {
           "act_it": "Quiet",
           "sound_only": "Quiet"
-        }
+        },
+        "word_id": "emotions/contentment",
+        "definition": "A calm feeling of being satisfied with how things are."
       },
       {
         "word": "Nostalgia",
@@ -5275,7 +6147,9 @@
         ],
         "mode_hints": {
           "act_it": "Keepsake"
-        }
+        },
+        "word_id": "emotions/nostalgia",
+        "definition": "A bittersweet feeling of missing or longing for a time in the past."
       }
     ]
   },
@@ -5295,7 +6169,9 @@
         ],
         "mode_hints": {
           "act_it": "Boredom"
-        }
+        },
+        "word_id": "memory/daydreaming",
+        "definition": "Letting your thoughts drift into imaginary situations while awake."
       },
       {
         "word": "Déjà vu",
@@ -5303,7 +6179,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "memory/deja-vu",
+        "definition": "The feeling that a new experience has happened to you before."
       },
       {
         "word": "Distraction",
@@ -5314,7 +6192,9 @@
         ],
         "mode_hints": {
           "act_it": "Noise"
-        }
+        },
+        "word_id": "memory/distraction",
+        "definition": "Something that draws your attention away from what you meant to focus on."
       },
       {
         "word": "Habit",
@@ -5325,7 +6205,9 @@
         ],
         "mode_hints": {
           "act_it": "Routine"
-        }
+        },
+        "word_id": "memory/habit",
+        "definition": "An action or pattern you repeat often, sometimes without thinking."
       },
       {
         "word": "Motivation",
@@ -5336,7 +6218,9 @@
         ],
         "mode_hints": {
           "act_it": "Goals"
-        }
+        },
+        "word_id": "memory/motivation",
+        "definition": "The reason or drive that gets you to start or keep doing something."
       },
       {
         "word": "Attention",
@@ -5347,7 +6231,9 @@
         ],
         "mode_hints": {
           "act_it": "Noise"
-        }
+        },
+        "word_id": "memory/attention",
+        "definition": "Directing your mental focus toward something."
       },
       {
         "word": "Memory",
@@ -5358,7 +6244,9 @@
         ],
         "mode_hints": {
           "act_it": "Photos"
-        }
+        },
+        "word_id": "memory/memory",
+        "definition": "The ability to store and recall information or experiences."
       },
       {
         "word": "Imagination",
@@ -5369,7 +6257,9 @@
         ],
         "mode_hints": {
           "act_it": "Scenes"
-        }
+        },
+        "word_id": "memory/imagination",
+        "definition": "The ability to form ideas or pictures in your mind beyond what is in front of you."
       },
       {
         "word": "Learning",
@@ -5380,7 +6270,9 @@
         ],
         "mode_hints": {
           "act_it": "Practice"
-        }
+        },
+        "word_id": "memory/learning",
+        "definition": "Gaining knowledge or skills through experience, practice, or study."
       },
       {
         "word": "Confirmation bias",
@@ -5388,7 +6280,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "memory/confirmation-bias",
+        "definition": "The tendency to favor information that fits what you already believe."
       },
       {
         "word": "Perception",
@@ -5396,7 +6290,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "memory/perception",
+        "definition": "How your mind notices and makes sense of what you sense or experience."
       },
       {
         "word": "Reasoning",
@@ -5404,7 +6300,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "memory/reasoning",
+        "definition": "Thinking through information to reach a conclusion."
       },
       {
         "word": "Decision-making",
@@ -5415,7 +6313,9 @@
         ],
         "mode_hints": {
           "act_it": "Options"
-        }
+        },
+        "word_id": "memory/decision-making",
+        "definition": "Choosing what to do after considering two or more options."
       },
       {
         "word": "Problem-solving",
@@ -5426,7 +6326,9 @@
         ],
         "mode_hints": {
           "act_it": "Options"
-        }
+        },
+        "word_id": "memory/problem-solving",
+        "definition": "Finding a way to overcome a difficulty or answer a question."
       },
       {
         "word": "Recognition",
@@ -5437,7 +6339,9 @@
         ],
         "mode_hints": {
           "act_it": "Photos"
-        }
+        },
+        "word_id": "memory/recognition",
+        "definition": "Knowing that you have seen, heard, or experienced something before."
       },
       {
         "word": "Tip-of-the-tongue",
@@ -5448,7 +6352,9 @@
         ],
         "mode_hints": {
           "act_it": "Names"
-        }
+        },
+        "word_id": "memory/tip-of-the-tongue",
+        "definition": "The feeling that you know a word or name but cannot recall it at that moment."
       },
       {
         "word": "Multitasking",
@@ -5459,7 +6365,9 @@
         ],
         "mode_hints": {
           "act_it": "Interruptions"
-        }
+        },
+        "word_id": "memory/multitasking",
+        "definition": "Trying to handle more than one task at the same time or by switching quickly between them."
       },
       {
         "word": "Forgetfulness",
@@ -5470,7 +6378,9 @@
         ],
         "mode_hints": {
           "act_it": "Reminders"
-        }
+        },
+        "word_id": "memory/forgetfulness",
+        "definition": "A tendency to fail to recall information or things you meant to do."
       },
       {
         "word": "Dreaming",
@@ -5481,7 +6391,9 @@
         ],
         "mode_hints": {
           "act_it": "Scenes"
-        }
+        },
+        "word_id": "memory/dreaming",
+        "definition": "Experiencing images, thoughts, or events in your mind while asleep."
       },
       {
         "word": "Conditioning",
@@ -5489,7 +6401,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "memory/conditioning",
+        "definition": "Learning an association or behavior through repeated cues or consequences."
       },
       {
         "word": "Procrastination",
@@ -5500,7 +6414,9 @@
         ],
         "mode_hints": {
           "act_it": "Deadline"
-        }
+        },
+        "word_id": "memory/procrastination",
+        "definition": "Putting off a task even though delaying it may make things harder."
       },
       {
         "word": "Self-control",
@@ -5511,7 +6427,9 @@
         ],
         "mode_hints": {
           "act_it": "Temptation"
-        }
+        },
+        "word_id": "memory/self-control",
+        "definition": "The ability to manage your impulses, feelings, or actions."
       },
       {
         "word": "Mindfulness",
@@ -5522,7 +6440,9 @@
         ],
         "mode_hints": {
           "act_it": "Routine"
-        }
+        },
+        "word_id": "memory/mindfulness",
+        "definition": "Paying attention to the present moment with openness and without judgment."
       },
       {
         "word": "Mental rehearsal",
@@ -5533,7 +6453,9 @@
         ],
         "mode_hints": {
           "act_it": "Scenes"
-        }
+        },
+        "word_id": "memory/mental-rehearsal",
+        "definition": "Practicing a task in your imagination before actually doing it."
       }
     ]
   },
@@ -5553,7 +6475,9 @@
         ],
         "mode_hints": {
           "act_it": "Party"
-        }
+        },
+        "word_id": "social/peer-pressure",
+        "definition": "Influence from people your age or in your group that pushes you to act a certain way."
       },
       {
         "word": "First impression",
@@ -5564,7 +6488,9 @@
         ],
         "mode_hints": {
           "act_it": "Greetings"
-        }
+        },
+        "word_id": "social/first-impression",
+        "definition": "The initial idea or feeling you form about someone or something when you encounter it."
       },
       {
         "word": "Conformity",
@@ -5575,7 +6501,9 @@
         ],
         "mode_hints": {
           "act_it": "Belonging"
-        }
+        },
+        "word_id": "social/conformity",
+        "definition": "Changing your behavior or opinions to fit in with a group."
       },
       {
         "word": "Persuasion",
@@ -5586,7 +6514,9 @@
         ],
         "mode_hints": {
           "act_it": "Pitch"
-        }
+        },
+        "word_id": "social/persuasion",
+        "definition": "Trying to influence what someone believes or does through reasons or appeals."
       },
       {
         "word": "Cooperation",
@@ -5597,7 +6527,9 @@
         ],
         "mode_hints": {
           "act_it": "Shared"
-        }
+        },
+        "word_id": "social/cooperation",
+        "definition": "Working with other people to achieve something together."
       },
       {
         "word": "Competition",
@@ -5608,7 +6540,9 @@
         ],
         "mode_hints": {
           "act_it": "Winning"
-        }
+        },
+        "word_id": "social/competition",
+        "definition": "A situation where people or teams try to outperform one another."
       },
       {
         "word": "Empathy",
@@ -5619,7 +6553,9 @@
         ],
         "mode_hints": {
           "act_it": "Perspective"
-        }
+        },
+        "word_id": "social/empathy",
+        "definition": "Trying to understand or share what another person is feeling."
       },
       {
         "word": "Trust",
@@ -5630,7 +6566,9 @@
         ],
         "mode_hints": {
           "act_it": "Promises"
-        }
+        },
+        "word_id": "social/trust",
+        "definition": "Confidence that someone or something will act reliably or honestly."
       },
       {
         "word": "Stereotype",
@@ -5638,7 +6576,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "social/stereotype",
+        "definition": "A fixed, oversimplified belief about members of a group."
       },
       {
         "word": "Gossip",
@@ -5646,7 +6586,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "social/gossip",
+        "definition": "Informal talk about other people's private lives, often based on unverified information."
       },
       {
         "word": "Negotiation",
@@ -5657,7 +6599,9 @@
         ],
         "mode_hints": {
           "act_it": "Compromise"
-        }
+        },
+        "word_id": "social/negotiation",
+        "definition": "A discussion in which people try to reach an agreement."
       },
       {
         "word": "Leadership",
@@ -5668,7 +6612,9 @@
         ],
         "mode_hints": {
           "act_it": "Direction"
-        }
+        },
+        "word_id": "social/leadership",
+        "definition": "The act of guiding a group toward a goal or helping it decide what to do."
       },
       {
         "word": "Teamwork",
@@ -5679,7 +6625,9 @@
         ],
         "mode_hints": {
           "act_it": "Roles"
-        }
+        },
+        "word_id": "social/teamwork",
+        "definition": "People combining their skills and effort to achieve a shared goal."
       },
       {
         "word": "Altruism",
@@ -5690,7 +6638,9 @@
         ],
         "mode_hints": {
           "act_it": "Sharing"
-        }
+        },
+        "word_id": "social/altruism",
+        "definition": "Helping others out of concern for them, even when you gain little or nothing."
       },
       {
         "word": "Reciprocity",
@@ -5701,7 +6651,9 @@
         ],
         "mode_hints": {
           "act_it": "Favors"
-        }
+        },
+        "word_id": "social/reciprocity",
+        "definition": "Returning a favor or responding to a similar action from someone else."
       },
       {
         "word": "Etiquette",
@@ -5712,7 +6664,9 @@
         ],
         "mode_hints": {
           "act_it": "Greetings"
-        }
+        },
+        "word_id": "social/etiquette",
+        "definition": "Accepted customs for polite behavior in a particular setting."
       },
       {
         "word": "Small talk",
@@ -5720,7 +6674,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "social/small-talk",
+        "definition": "Light conversation about ordinary topics, often with someone you do not know well."
       },
       {
         "word": "Apology",
@@ -5731,7 +6687,9 @@
         ],
         "mode_hints": {
           "act_it": "Repair"
-        }
+        },
+        "word_id": "social/apology",
+        "definition": "An expression of regret and responsibility for something you did."
       },
       {
         "word": "Compliment",
@@ -5742,7 +6700,9 @@
         ],
         "mode_hints": {
           "act_it": "Greetings"
-        }
+        },
+        "word_id": "social/compliment",
+        "definition": "A comment that expresses praise or approval."
       },
       {
         "word": "Exclusion",
@@ -5753,7 +6713,9 @@
         ],
         "mode_hints": {
           "act_it": "Party"
-        }
+        },
+        "word_id": "social/exclusion",
+        "definition": "Leaving someone or something out of a group, activity, or opportunity."
       },
       {
         "word": "Inclusion",
@@ -5764,7 +6726,9 @@
         ],
         "mode_hints": {
           "act_it": "Party"
-        }
+        },
+        "word_id": "social/inclusion",
+        "definition": "Making sure people are welcomed and can take part."
       },
       {
         "word": "Social norms",
@@ -5772,7 +6736,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "social/social-norms",
+        "definition": "Shared, often unwritten expectations about how people should behave."
       },
       {
         "word": "Reputation",
@@ -5780,7 +6746,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "social/reputation",
+        "definition": "What other people generally think about a person, group, or organization."
       },
       {
         "word": "Conflict",
@@ -5791,7 +6759,9 @@
         ],
         "mode_hints": {
           "act_it": "Tension"
-        }
+        },
+        "word_id": "social/conflict",
+        "definition": "A disagreement or struggle between people or competing interests."
       }
     ]
   },
@@ -5811,7 +6781,9 @@
         ],
         "mode_hints": {
           "act_it": "Butterflies"
-        }
+        },
+        "word_id": "dating/crush",
+        "definition": "A strong romantic attraction to someone, often kept to yourself."
       },
       {
         "word": "First date",
@@ -5822,7 +6794,9 @@
         ],
         "mode_hints": {
           "act_it": "Nerves"
-        }
+        },
+        "word_id": "dating/first-date",
+        "definition": "The first planned meeting between two people exploring a romantic connection."
       },
       {
         "word": "Flirting",
@@ -5833,7 +6807,9 @@
         ],
         "mode_hints": {
           "act_it": "Signals"
-        }
+        },
+        "word_id": "dating/flirting",
+        "definition": "Acting playfully to show or suggest romantic interest."
       },
       {
         "word": "Long-distance relationship",
@@ -5844,7 +6820,9 @@
         ],
         "mode_hints": {
           "act_it": "Messages"
-        }
+        },
+        "word_id": "dating/long-distance-relationship",
+        "definition": "A partnership in which the people live far apart."
       },
       {
         "word": "Breakup",
@@ -5855,7 +6833,9 @@
         ],
         "mode_hints": {
           "act_it": "Closure"
-        }
+        },
+        "word_id": "dating/breakup",
+        "definition": "The end of a romantic relationship."
       },
       {
         "word": "Anniversary",
@@ -5866,7 +6846,9 @@
         ],
         "mode_hints": {
           "act_it": "Calendar"
-        }
+        },
+        "word_id": "dating/anniversary",
+        "definition": "A date marking the completion of another year since an important event."
       },
       {
         "word": "Proposal",
@@ -5877,7 +6859,9 @@
         ],
         "mode_hints": {
           "act_it": "Commitment"
-        }
+        },
+        "word_id": "dating/proposal",
+        "definition": "A request to marry someone."
       },
       {
         "word": "Blind date",
@@ -5888,7 +6872,9 @@
         ],
         "mode_hints": {
           "act_it": "Introductions"
-        }
+        },
+        "word_id": "dating/blind-date",
+        "definition": "A romantic meeting between two people who have never met before."
       },
       {
         "word": "Love letter",
@@ -5899,7 +6885,9 @@
         ],
         "mode_hints": {
           "act_it": "Affection"
-        }
+        },
+        "word_id": "dating/love-letter",
+        "definition": "A written message expressing romantic affection."
       },
       {
         "word": "Matchmaking",
@@ -5910,7 +6898,9 @@
         ],
         "mode_hints": {
           "act_it": "Friends"
-        }
+        },
+        "word_id": "dating/matchmaking",
+        "definition": "Helping introduce people who might be a good romantic fit."
       },
       {
         "word": "Double date",
@@ -5921,7 +6911,9 @@
         ],
         "mode_hints": {
           "act_it": "Table"
-        }
+        },
+        "word_id": "dating/double-date",
+        "definition": "A social outing where two couples spend time together."
       },
       {
         "word": "Honeymoon",
@@ -5932,7 +6924,9 @@
         ],
         "mode_hints": {
           "act_it": "Travel"
-        }
+        },
+        "word_id": "dating/honeymoon",
+        "definition": "A vacation that a couple takes soon after getting married."
       },
       {
         "word": "Engagement",
@@ -5943,7 +6937,9 @@
         ],
         "mode_hints": {
           "act_it": "Commitment"
-        }
+        },
+        "word_id": "dating/engagement",
+        "definition": "An agreement between two people to get married."
       },
       {
         "word": "Holding hands",
@@ -5954,7 +6950,9 @@
         ],
         "mode_hints": {
           "act_it": "Affection"
-        }
+        },
+        "word_id": "dating/holding-hands",
+        "definition": "Clasping another person's hand, often as a sign of affection."
       },
       {
         "word": "Cuddling",
@@ -5965,7 +6963,9 @@
         ],
         "mode_hints": {
           "act_it": "Comfort"
-        }
+        },
+        "word_id": "dating/cuddling",
+        "definition": "Holding someone close for warmth, comfort, or affection."
       },
       {
         "word": "Pet name",
@@ -5973,7 +6973,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "dating/pet-name",
+        "definition": "An affectionate nickname used for someone close to you."
       },
       {
         "word": "Reconciliation",
@@ -5984,7 +6986,9 @@
         ],
         "mode_hints": {
           "act_it": "Apology"
-        }
+        },
+        "word_id": "dating/reconciliation",
+        "definition": "Restoring a relationship or becoming friendly again after a disagreement or separation."
       },
       {
         "word": "Commitment",
@@ -5992,7 +6996,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "dating/commitment",
+        "definition": "A decision to keep investing in and honoring a relationship."
       },
       {
         "word": "Compatibility",
@@ -6000,7 +7006,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "dating/compatibility",
+        "definition": "How well two people's needs, habits, or values fit together."
       },
       {
         "word": "Heartbreak",
@@ -6011,7 +7019,9 @@
         ],
         "mode_hints": {
           "act_it": "Healing"
-        }
+        },
+        "word_id": "dating/heartbreak",
+        "definition": "Deep emotional pain after losing love or experiencing romantic rejection."
       },
       {
         "word": "Dating app",
@@ -6022,7 +7032,9 @@
         ],
         "mode_hints": {
           "act_it": "Messages"
-        }
+        },
+        "word_id": "dating/dating-app",
+        "definition": "A phone or web service that helps people meet potential romantic partners."
       },
       {
         "word": "Meeting the parents",
@@ -6033,7 +7045,9 @@
         ],
         "mode_hints": {
           "act_it": "Nerves"
-        }
+        },
+        "word_id": "dating/meeting-the-parents",
+        "definition": "Being introduced to the mother, father, or caregivers of a romantic partner."
       },
       {
         "word": "Shared home",
@@ -6044,7 +7058,9 @@
         ],
         "mode_hints": {
           "act_it": "Routine"
-        }
+        },
+        "word_id": "dating/shared-home",
+        "definition": "A place where partners live together."
       },
       {
         "word": "Couples counseling",
@@ -6055,7 +7071,9 @@
         ],
         "mode_hints": {
           "act_it": "Comfort"
-        }
+        },
+        "word_id": "dating/couples-counseling",
+        "definition": "Sessions with a trained professional to work on a romantic relationship."
       }
     ]
   },
@@ -6072,7 +7090,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/puberty",
+        "definition": "The stage of development when the body matures toward adulthood and becomes capable of reproduction."
       },
       {
         "word": "Menstruation",
@@ -6080,7 +7100,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/menstruation",
+        "definition": "The shedding of the uterine lining, which leaves the body through the vagina as bleeding."
       },
       {
         "word": "Erection",
@@ -6088,7 +7110,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/erection",
+        "definition": "A change in which tissue in the penis or clitoris becomes firmer as it fills with blood."
       },
       {
         "word": "Ovulation",
@@ -6096,7 +7120,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/ovulation",
+        "definition": "The release of an egg from an ovary."
       },
       {
         "word": "Uterus",
@@ -6104,7 +7130,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/uterus",
+        "definition": "A muscular organ where a pregnancy can develop."
       },
       {
         "word": "Ovaries",
@@ -6112,7 +7140,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/ovaries",
+        "definition": "Two organs that contain eggs and make hormones such as estrogen and progesterone."
       },
       {
         "word": "Testes",
@@ -6120,7 +7150,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/testes",
+        "definition": "Two organs that make sperm and hormones such as testosterone."
       },
       {
         "word": "Sperm",
@@ -6128,7 +7160,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/sperm",
+        "definition": "Reproductive cells that can fertilize an egg."
       },
       {
         "word": "Breast development",
@@ -6136,7 +7170,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/breast-development",
+        "definition": "The growth of breast tissue, often beginning during puberty."
       },
       {
         "word": "Body hair",
@@ -6147,7 +7183,9 @@
         ],
         "mode_hints": {
           "act_it": "Growth"
-        }
+        },
+        "word_id": "puberty/body-hair",
+        "definition": "Hair that grows on parts of the body such as the arms, legs, underarms, or groin."
       },
       {
         "word": "Growth spurt",
@@ -6158,7 +7196,9 @@
         ],
         "mode_hints": {
           "act_it": "Adolescence"
-        }
+        },
+        "word_id": "puberty/growth-spurt",
+        "definition": "A period when the body gets taller or larger more quickly than usual."
       },
       {
         "word": "Voice change",
@@ -6171,7 +7211,9 @@
         "mode_hints": {
           "act_it": "Adolescence",
           "sound_only": "Adolescence"
-        }
+        },
+        "word_id": "puberty/voice-change",
+        "definition": "A shift in how high or low someone sounds, often as the voice box grows during puberty."
       },
       {
         "word": "Acne",
@@ -6182,7 +7224,9 @@
         ],
         "mode_hints": {
           "act_it": "Skin"
-        }
+        },
+        "word_id": "puberty/acne",
+        "definition": "A skin condition that causes pimples, blackheads, or other bumps when pores become clogged."
       },
       {
         "word": "Sweat",
@@ -6193,7 +7237,9 @@
         ],
         "mode_hints": {
           "act_it": "Hygiene"
-        }
+        },
+        "word_id": "puberty/sweat",
+        "definition": "Liquid released through the skin that helps cool the body."
       },
       {
         "word": "Body odor",
@@ -6204,7 +7250,9 @@
         ],
         "mode_hints": {
           "act_it": "Hygiene"
-        }
+        },
+        "word_id": "puberty/body-odor",
+        "definition": "The smell that can develop when skin bacteria break down sweat and other secretions."
       },
       {
         "word": "Hormones",
@@ -6212,7 +7260,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/hormones",
+        "definition": "Chemical messengers that help control processes such as growth, mood, and reproduction."
       },
       {
         "word": "Testosterone",
@@ -6220,7 +7270,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/testosterone",
+        "definition": "A hormone that helps regulate sexual development, muscle, and bone growth."
       },
       {
         "word": "Estrogen",
@@ -6228,7 +7280,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/estrogen",
+        "definition": "A group of hormones involved in sexual development, menstrual cycles, and bone health."
       },
       {
         "word": "Pituitary gland",
@@ -6236,7 +7290,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/pituitary-gland",
+        "definition": "A small gland at the base of the brain that releases hormones controlling growth and other glands."
       },
       {
         "word": "Vulva",
@@ -6244,7 +7300,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/vulva",
+        "definition": "The external genital area that includes the labia, clitoris, and vaginal opening."
       },
       {
         "word": "Penis",
@@ -6252,7 +7310,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/penis",
+        "definition": "An external genital organ through which urine and semen can leave the body."
       },
       {
         "word": "Scrotum",
@@ -6260,7 +7320,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/scrotum",
+        "definition": "The pouch of skin that contains and helps regulate the temperature of the testes."
       },
       {
         "word": "Vagina",
@@ -6268,7 +7330,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/vagina",
+        "definition": "The muscular canal connecting the outside of the body to the cervix."
       },
       {
         "word": "Fallopian tubes",
@@ -6276,7 +7340,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "puberty/fallopian-tubes",
+        "definition": "Two narrow passages through which an egg can travel from an ovary toward the uterus."
       }
     ]
   },
@@ -6293,7 +7359,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/condom",
+        "definition": "A thin barrier used during sex to reduce the chance of pregnancy or sexually transmitted infections."
       },
       {
         "word": "Contraception",
@@ -6301,7 +7369,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/contraception",
+        "definition": "Methods or devices used to prevent pregnancy."
       },
       {
         "word": "Lubricant",
@@ -6309,7 +7379,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/lubricant",
+        "definition": "A liquid or gel used to reduce friction between surfaces, including skin."
       },
       {
         "word": "Pregnancy test",
@@ -6320,7 +7392,9 @@
         ],
         "mode_hints": {
           "act_it": "Pharmacy"
-        }
+        },
+        "word_id": "health/pregnancy-test",
+        "definition": "A test that checks urine or blood for a hormone produced during pregnancy."
       },
       {
         "word": "IUD",
@@ -6328,7 +7402,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/iud",
+        "definition": "A small device placed inside the uterus by a health professional to prevent pregnancy."
       },
       {
         "word": "HPV vaccination",
@@ -6339,7 +7415,9 @@
         ],
         "mode_hints": {
           "act_it": "Prevention"
-        }
+        },
+        "word_id": "health/hpv-vaccination",
+        "definition": "A vaccine that protects against types of human papillomavirus that can cause cancers or genital warts."
       },
       {
         "word": "STI screening",
@@ -6347,7 +7425,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/sti-screening",
+        "definition": "Testing for sexually transmitted infections, including when a person has no symptoms."
       },
       {
         "word": "Fertility",
@@ -6355,7 +7435,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/fertility",
+        "definition": "The ability to contribute to or achieve a pregnancy."
       },
       {
         "word": "Prenatal care",
@@ -6363,7 +7445,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/prenatal-care",
+        "definition": "Health care and checkups during pregnancy before the baby is born."
       },
       {
         "word": "Menopause",
@@ -6371,7 +7455,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/menopause",
+        "definition": "The point when menstrual periods have stopped for 12 months in a row without another cause."
       },
       {
         "word": "Birth control pill",
@@ -6382,7 +7468,9 @@
         ],
         "mode_hints": {
           "act_it": "Schedule"
-        }
+        },
+        "word_id": "health/birth-control-pill",
+        "definition": "A medicine taken by mouth on a schedule to help prevent pregnancy."
       },
       {
         "word": "Contraceptive implant",
@@ -6390,7 +7478,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/contraceptive-implant",
+        "definition": "A small rod placed under the skin that releases a hormone to prevent pregnancy."
       },
       {
         "word": "Contraceptive patch",
@@ -6398,7 +7488,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/contraceptive-patch",
+        "definition": "An adhesive worn on the skin that releases hormones to prevent pregnancy."
       },
       {
         "word": "Emergency contraception",
@@ -6406,7 +7498,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/emergency-contraception",
+        "definition": "A method used after unprotected sex or contraceptive failure to reduce the chance of pregnancy."
       },
       {
         "word": "Dental dam",
@@ -6414,7 +7508,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/dental-dam",
+        "definition": "A thin sheet used as a barrier during oral sex to help reduce infection risk."
       },
       {
         "word": "Menstrual pad",
@@ -6422,7 +7518,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/menstrual-pad",
+        "definition": "An absorbent strip worn inside underwear to catch menstrual fluid."
       },
       {
         "word": "Tampon",
@@ -6430,7 +7528,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/tampon",
+        "definition": "A small absorbent product inserted into the vagina to absorb menstrual fluid."
       },
       {
         "word": "Menstrual cup",
@@ -6438,7 +7538,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/menstrual-cup",
+        "definition": "A flexible container worn inside the vagina that collects menstrual fluid."
       },
       {
         "word": "Period underwear",
@@ -6446,7 +7548,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/period-underwear",
+        "definition": "Underwear designed with layers that absorb menstrual fluid."
       },
       {
         "word": "Sexual health clinic",
@@ -6454,7 +7558,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/sexual-health-clinic",
+        "definition": "A health service that offers care such as infection testing, contraception, or advice."
       },
       {
         "word": "Cervical screening",
@@ -6462,7 +7568,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/cervical-screening",
+        "definition": "Checking for changes or infections linked to cancer of the cervix."
       },
       {
         "word": "Pregnancy",
@@ -6473,7 +7581,9 @@
         ],
         "mode_hints": {
           "act_it": "Checkups"
-        }
+        },
+        "word_id": "health/pregnancy",
+        "definition": "The condition that begins when a fertilized egg has begun to develop and implants, usually in the lining of the uterus."
       },
       {
         "word": "HIV",
@@ -6481,7 +7591,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/hiv",
+        "definition": "A virus that attacks the immune system and can lead to AIDS without treatment."
       },
       {
         "word": "Sexual health counseling",
@@ -6489,7 +7601,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "health/sexual-health-counseling",
+        "definition": "Talking with a trained professional about sexual well-being, concerns, or care options."
       }
     ]
   },
@@ -6509,7 +7623,9 @@
         ],
         "mode_hints": {
           "act_it": "Conversation"
-        }
+        },
+        "word_id": "consent/consent",
+        "definition": "A freely given agreement to a specific activity that a person can withdraw at any time."
       },
       {
         "word": "Boundaries",
@@ -6520,7 +7636,9 @@
         ],
         "mode_hints": {
           "act_it": "Comfort"
-        }
+        },
+        "word_id": "consent/boundaries",
+        "definition": "Limits people set about what they are comfortable with or willing to take part in."
       },
       {
         "word": "Privacy",
@@ -6531,7 +7649,9 @@
         ],
         "mode_hints": {
           "act_it": "Curtain"
-        }
+        },
+        "word_id": "consent/privacy",
+        "definition": "The ability to control who can access your personal information, space, or experiences."
       },
       {
         "word": "Refusal",
@@ -6542,7 +7662,9 @@
         ],
         "mode_hints": {
           "act_it": "Choice"
-        }
+        },
+        "word_id": "consent/refusal",
+        "definition": "An act of saying or showing that you do not agree or do not want to take part."
       },
       {
         "word": "Respect",
@@ -6553,7 +7675,9 @@
         ],
         "mode_hints": {
           "act_it": "Reassurance"
-        }
+        },
+        "word_id": "consent/respect",
+        "definition": "Treating someone as a person whose choices, feelings, and limits matter."
       },
       {
         "word": "Communication",
@@ -6561,7 +7685,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "consent/communication",
+        "definition": "Sharing and receiving information, thoughts, or feelings so others can understand you."
       },
       {
         "word": "Personal space",
@@ -6572,7 +7698,9 @@
         ],
         "mode_hints": {
           "act_it": "Distance"
-        }
+        },
+        "word_id": "consent/personal-space",
+        "definition": "The area around your body where you feel comfortable keeping some distance from others."
       },
       {
         "word": "Bodily autonomy",
@@ -6583,7 +7711,9 @@
         ],
         "mode_hints": {
           "act_it": "Decisions"
-        }
+        },
+        "word_id": "consent/bodily-autonomy",
+        "definition": "A person's right to decide what happens to their own body."
       },
       {
         "word": "Coercion",
@@ -6591,7 +7721,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "consent/coercion",
+        "definition": "Using pressure, threats, or force to get someone to do something they would not freely choose."
       },
       {
         "word": "Check-in",
@@ -6602,7 +7734,9 @@
         ],
         "mode_hints": {
           "act_it": "Reassurance"
-        }
+        },
+        "word_id": "consent/check-in",
+        "definition": "Briefly asking how someone feels or whether they are still comfortable continuing."
       },
       {
         "word": "Changing your mind",
@@ -6613,7 +7747,9 @@
         ],
         "mode_hints": {
           "act_it": "Uncertainty"
-        }
+        },
+        "word_id": "consent/changing-your-mind",
+        "definition": "Deciding differently after making an earlier choice or agreement."
       },
       {
         "word": "Active listening",
@@ -6624,7 +7760,9 @@
         ],
         "mode_hints": {
           "act_it": "Attention"
-        }
+        },
+        "word_id": "consent/active-listening",
+        "definition": "Paying close attention to what someone says and checking that you understood them."
       },
       {
         "word": "Confidentiality",
@@ -6635,7 +7773,9 @@
         ],
         "mode_hints": {
           "act_it": "Trust"
-        }
+        },
+        "word_id": "consent/confidentiality",
+        "definition": "Keeping information private when it has been shared in confidence."
       },
       {
         "word": "Assertiveness",
@@ -6646,7 +7786,9 @@
         ],
         "mode_hints": {
           "act_it": "Choice"
-        }
+        },
+        "word_id": "consent/assertiveness",
+        "definition": "Stating what you need, think, or want clearly while respecting others."
       },
       {
         "word": "Unwanted touch",
@@ -6657,7 +7799,9 @@
         ],
         "mode_hints": {
           "act_it": "Discomfort"
-        }
+        },
+        "word_id": "consent/unwanted-touch",
+        "definition": "Physical contact that the person receiving it does not want or agree to."
       },
       {
         "word": "Intoxication",
@@ -6665,7 +7809,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "consent/intoxication",
+        "definition": "A state in which alcohol or other drugs affect judgment, awareness, or movement."
       },
       {
         "word": "Power imbalance",
@@ -6673,7 +7819,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "consent/power-imbalance",
+        "definition": "A situation where one person has more authority or influence than another."
       },
       {
         "word": "Silence",
@@ -6684,7 +7832,9 @@
         ],
         "mode_hints": {
           "act_it": "Pause"
-        }
+        },
+        "word_id": "consent/silence",
+        "definition": "An absence of speech or response, which by itself does not show agreement."
       },
       {
         "word": "Hesitation",
@@ -6695,7 +7845,9 @@
         ],
         "mode_hints": {
           "act_it": "Uncertainty"
-        }
+        },
+        "word_id": "consent/hesitation",
+        "definition": "A pause or reluctance that can signal uncertainty or discomfort."
       },
       {
         "word": "Clarification",
@@ -6706,7 +7858,9 @@
         ],
         "mode_hints": {
           "act_it": "Questions"
-        }
+        },
+        "word_id": "consent/clarification",
+        "definition": "Asking for or giving more information to make something easier to understand."
       },
       {
         "word": "Image sharing",
@@ -6717,7 +7871,9 @@
         ],
         "mode_hints": {
           "act_it": "Camera"
-        }
+        },
+        "word_id": "consent/image-sharing",
+        "definition": "Sending, posting, or showing a photo or another picture to someone else."
       },
       {
         "word": "Bystander intervention",
@@ -6728,7 +7884,9 @@
         ],
         "mode_hints": {
           "act_it": "Support"
-        }
+        },
+        "word_id": "consent/bystander-intervention",
+        "definition": "Taking safe action when you witness a situation in which someone may be harmed."
       },
       {
         "word": "Accountability",
@@ -6736,7 +7894,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "consent/accountability",
+        "definition": "Taking responsibility for your actions and addressing their effects on others."
       },
       {
         "word": "Manipulation",
@@ -6744,7 +7904,9 @@
         "modes": [
           "classic"
         ],
-        "mode_hints": {}
+        "mode_hints": {},
+        "word_id": "consent/manipulation",
+        "definition": "Trying to control someone's choices unfairly or dishonestly for your own benefit."
       }
     ]
   }

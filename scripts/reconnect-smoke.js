@@ -43,6 +43,7 @@ async function checkReconnect(page) {
   try {
     await page.setViewportSize({ width: 393, height: 852 });
     await page.goto(base);
+    await page.getByRole("button", { name: "Host party", exact: true }).waitFor();
     await page.evaluate(
       (s) => sessionStorage.setItem("imposter.session.v1", JSON.stringify(s)),
       host,

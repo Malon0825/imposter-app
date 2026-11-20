@@ -1,4 +1,8 @@
-use crate::content;
+use crate::{
+    content::{self, GameMode},
+    history::Deck,
+    selection,
+};
 use rand::seq::SliceRandom;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
@@ -6,6 +10,7 @@ use std::collections::{BTreeMap, HashSet};
 use uuid::Uuid;
 
 pub type GameResult<T> = Result<T, String>;
+pub(crate) const NO_FRESH_TOPICS: &str = "No fresh topics are available with these round settings.";
 #[derive(Clone, Debug)]
 pub struct Player {
     pub id: String,
@@ -32,6 +37,13 @@ pub struct Round {
     pub id: u32,
     pub clue_turn: u32,
     pub clues: BTreeMap<String, BTreeMap<u32, String>>,
+    pub performed: BTreeMap<String, std::collections::BTreeSet<u32>>,
+    rule: Option<GameMode>,
+    random_at_start: bool,
+    eligible_targets: selection::Topics,
+    deck_revision: u64,
+    pub word_id: Option<String>,
+    pub(crate) retry_word_id: Option<String>,
     pub roster: Vec<String>,
     pub topic_voters: Vec<String>,
     pub topic_pool: Vec<String>,
@@ -41,6 +53,7 @@ pub struct Round {
     pub topic: Option<String>,
     pub imposter: String,
     pub word: String,
+    definition: String,
     pub hint: String,
     pub starting: String,
     pub acknowledged: HashSet<String>,
@@ -71,7 +84,7 @@ pub struct Game {
     pub round: Round,
     pub paused: bool,
     pub pause_reason: Option<String>,
-    pub used: HashSet<String>,
+    pub(crate) deck: Deck,
     pub session_number: u32,
     pub target_score: i32,
     pub session_started: bool,
@@ -126,7 +139,7 @@ impl Game {
             round: Round::default(),
             paused: false,
             pause_reason: None,
-            used: HashSet::new(),
+            deck: Deck::default(),
             session_number: 1,
             target_score: 15,
             session_started: false,
@@ -233,7 +246,9 @@ impl Game {
         }
         p.connected = connected;
         self.revision += 1;
-        if ["roles", "discussion", "voting", "runoff"].contains(&self.phase.as_str()) && !connected
+        if ["roles", "discussion", "voting", "runoff"].contains(&self.phase.as_str())
+            && !connected
+            && !self.paused
         {
             self.paused = true;
             self.pause_reason = Some("A player disconnected. Waiting for them to return.".into());
@@ -273,11 +288,37 @@ impl Game {
         if !self.active().iter().any(|p| p.id == actor) {
             return Err("You are not in this party.".into());
         }
-        if self.paused && !["resume", "abandon", "leave", "end"].contains(&action.kind.as_str()) {
+        if self.paused
+            && !["resume", "abandon", "leave", "end", "random_rules"]
+                .contains(&action.kind.as_str())
+        {
             return Err("The round is paused.".into());
         }
         let value = action.value.as_str().unwrap_or_default();
         match action.kind.as_str() {
+            "random_rules" => {
+                self.require_host(actor)?;
+                if self.phase == "ended" {
+                    return Err("The party has ended.".into());
+                }
+                let enabled = action
+                    .value
+                    .as_bool()
+                    .ok_or("Set random round rules on or off.")?;
+                if self.deck.random_rules != enabled {
+                    self.deck.random_rules = enabled;
+                    self.deck.revision += 1;
+                    // The preference is independent of the frozen word deck.
+                    if self.round.rule.is_some() {
+                        self.round.deck_revision = self.deck.revision;
+                    }
+                }
+            }
+            "fresh_word_deck" => {
+                self.require_host(actor)?;
+                self.require_phase(&["lobby"])?;
+                self.deck.renew()?;
+            }
             "session_target" => {
                 self.require_host(actor)?;
                 self.require_phase(&["lobby"])?;
@@ -348,7 +389,13 @@ impl Game {
             }
             "remove" => {
                 self.require_host(actor)?;
-                self.require_phase(&["lobby", "topic_voting", "topic_results", "topic_chosen"])?;
+                self.require_phase(&[
+                    "lobby",
+                    "rule_reveal",
+                    "topic_voting",
+                    "topic_results",
+                    "topic_chosen",
+                ])?;
                 if value == self.host {
                     return Err("End the party to leave as host.".into());
                 }
@@ -372,22 +419,50 @@ impl Game {
                     return Err("Wait until everyone is connected and ready.".into());
                 }
                 let roster: Vec<String> = players.iter().map(|p| p.id.clone()).collect();
-                if self.topics.is_empty() {
-                    return Err("Enable at least one topic first.".into());
-                }
+                let random = self.deck.random_rules;
+                let mut availability =
+                    selection::availability(&self.topics, &self.deck, random).modes;
+                let modes: Vec<_> = availability.keys().copied().collect();
+                let rule = *modes
+                    .choose(&mut rand::thread_rng())
+                    .ok_or(NO_FRESH_TOPICS)?;
+                let eligible_targets = availability.remove(&rule).expect("sampled a feasible rule");
                 self.round = Round {
-                    id: self.round.id + 1,
+                    id: self
+                        .round
+                        .id
+                        .checked_add(1)
+                        .ok_or("Create a new party to continue.")?,
                     topic_voters: roster.clone(),
                     roster,
-                    topic_pool: self.topics.clone(),
+                    topic_pool: eligible_targets.keys().cloned().collect(),
+                    eligible_targets,
+                    rule: Some(rule),
+                    random_at_start: random,
+                    deck_revision: self.deck.revision,
                     ..Default::default()
                 };
                 for p in &mut self.players {
                     p.earned = 0;
                 }
-                self.phase = "topic_voting".into();
+                self.phase = if random {
+                    "rule_reveal"
+                } else {
+                    "topic_voting"
+                }
+                .into();
                 self.session_started = true;
                 self.processed.clear();
+            }
+            "open_topics" => {
+                self.require_host(actor)?;
+                self.require_phase(&["rule_reveal"])?;
+                if self.active().iter().any(|p| !p.connected) {
+                    return Err(
+                        "Wait for everyone to reconnect or remove the missing player.".into(),
+                    );
+                }
+                self.phase = "topic_voting".into();
             }
             "topic_vote" => {
                 self.require_phase(&["topic_voting"])?;
@@ -422,24 +497,44 @@ impl Game {
                         "Wait until everyone is connected, or remove the missing player.".into(),
                     );
                 }
-                let topic = content::topics()
-                    .into_iter()
-                    .find(|t| Some(&t.id) == self.round.topic.as_ref())
+                if self.deck.revision != self.round.deck_revision {
+                    return Err(
+                        "Word deck changed. Return to the lobby and start a new round.".into(),
+                    );
+                }
+                let topic = self
+                    .round
+                    .topic
+                    .as_deref()
                     .ok_or("The round needs a chosen topic.")?;
+                let mode = self.round.rule.ok_or("The round needs a rule.")?;
                 let mut rng = rand::thread_rng();
-                // The current flow still uses Classic. The reviewed selector
-                // also provides fail-closed pools for the upcoming rule flow.
-                let mut next_used = self.used.clone();
-                let pair = topic.draw_word(content::GameMode::Classic, &mut next_used, &mut rng)?;
+                let candidate = self
+                    .round
+                    .eligible_targets
+                    .get(topic)
+                    .and_then(|targets| match &self.round.retry_word_id {
+                        Some(id) => targets
+                            .iter()
+                            .find(|candidate| &candidate.word.word_id == id),
+                        None => targets.choose(&mut rng),
+                    })
+                    .ok_or(NO_FRESH_TOPICS)?;
+                let deal =
+                    selection::deal(candidate, &self.deck, &self.id, self.round.id, topic, mode);
                 let imposter = self.choose_imposter(&mut rng)?;
                 let starting = self.round.roster.choose(&mut rng).unwrap().clone();
-                self.used = next_used;
+                self.round.word_id = Some(deal.word.clone());
+                self.round.word = candidate.word.word.clone();
+                self.round.definition = candidate.word.definition.clone();
+                self.round.hint = candidate.hint.into();
+                self.deck.deals.push(deal);
+                self.deck.revision += 1;
+                self.round.eligible_targets.clear();
                 // Charge the turn when cards are dealt, including abandoned
                 // rounds. Action deduplication prevents retry double-counting.
                 self.record_imposter(&imposter);
                 self.round.imposter = imposter;
-                self.round.word = pair.word.clone();
-                self.round.hint = pair.hint.clone();
                 self.round.starting = starting;
                 self.round.clue_turn = 1;
                 self.phase = "roles".into();
@@ -453,6 +548,11 @@ impl Game {
             }
             "clue" => {
                 self.require_phase(&["discussion"])?;
+                if self.round.rule != Some(GameMode::Classic) {
+                    return Err(
+                        "This rule uses in-person clues and optional performed markers.".into(),
+                    );
+                }
                 if !self.round.roster.iter().any(|id| id == actor) {
                     return Err("You did not play in this round.".into());
                 }
@@ -483,6 +583,32 @@ impl Game {
                         .entry(actor.into())
                         .or_default()
                         .insert(turn, text.into());
+                }
+            }
+            "performed" => {
+                self.require_phase(&["discussion"])?;
+                if !matches!(self.round.rule, Some(GameMode::ActIt | GameMode::SoundOnly)) {
+                    return Err("Performed markers are for Act It and Sound Only.".into());
+                }
+                if !self.round.roster.iter().any(|id| id == actor) {
+                    return Err("You did not play in this round.".into());
+                }
+                #[derive(Deserialize)]
+                #[serde(deny_unknown_fields)]
+                struct Marker {
+                    turn: u32,
+                    performed: bool,
+                }
+                let marker: Marker = serde_json::from_value(action.value.clone())
+                    .map_err(|_| "Mark or unmark one of your clue turns.")?;
+                if marker.turn == 0 || marker.turn > self.round.clue_turn {
+                    return Err("Choose a clue turn from this round.".into());
+                }
+                let turns = self.round.performed.entry(actor.into()).or_default();
+                if marker.performed {
+                    turns.insert(marker.turn);
+                } else {
+                    turns.remove(&marker.turn);
                 }
             }
             "next_clue_turn" => {
@@ -566,6 +692,14 @@ impl Game {
             }
             "resume" => {
                 self.require_host(actor)?;
+                if self.round.roster.iter().any(|id| {
+                    self.players
+                        .iter()
+                        .any(|player| &player.id == id && player.left)
+                }) && ["roles", "discussion", "voting", "runoff"].contains(&self.phase.as_str())
+                {
+                    return Err("A player left. Abandon this round to continue.".into());
+                }
                 if self.active().iter().any(|p| !p.connected) {
                     return Err("Wait for everyone to reconnect, or abandon the round.".into());
                 }
@@ -575,6 +709,7 @@ impl Game {
             "abandon" => {
                 self.require_host(actor)?;
                 self.require_phase(&[
+                    "rule_reveal",
                     "topic_voting",
                     "topic_results",
                     "topic_chosen",
@@ -655,6 +790,10 @@ impl Game {
                 if actor != turn && !(actor == self.host && action.kind == "skip") {
                     return Err("Only the current player can finish their turn.".into());
                 }
+                // A host can skip anyone, so a delayed tap must identify the turn it was made on.
+                if actor == self.host && action.kind == "skip" {
+                    self.require_punishment_turn(&action.value)?;
+                }
                 if action.kind == "done" && self.round.choice.is_none() {
                     return Err("Choose Drink or Dare first.".into());
                 }
@@ -668,6 +807,7 @@ impl Game {
             "reassign" => {
                 self.require_host(actor)?;
                 self.require_phase(&["punishment"])?;
+                self.require_punishment_turn(&action.value)?;
                 if self.round.choice.as_deref() != Some("dare") {
                     return Err("There is no dare giver to replace.".into());
                 }
@@ -675,10 +815,18 @@ impl Game {
                 let choices: Vec<_> = self
                     .active()
                     .iter()
-                    .filter(|p| p.connected && &p.id != recipient)
+                    .filter(|p| {
+                        p.connected
+                            && &p.id != recipient
+                            && self.round.giver.as_ref() != Some(&p.id)
+                    })
                     .map(|p| p.id.clone())
                     .collect();
-                self.round.giver = choices.choose(&mut rand::thread_rng()).cloned();
+                let giver = choices
+                    .choose(&mut rand::thread_rng())
+                    .cloned()
+                    .ok_or("Wait for another player to reconnect, or skip this turn.")?;
+                self.round.giver = Some(giver);
             }
             "next" | "setup" => {
                 self.require_host(actor)?;
@@ -714,6 +862,13 @@ impl Game {
         self.revision += 1;
         Ok(())
     }
+    fn require_punishment_turn(&self, value: &Value) -> GameResult<()> {
+        if value.as_u64() != Some((self.round.turn + 1) as u64) {
+            return Err("That turn has finished or changed.".into());
+        }
+        Ok(())
+    }
+
     fn to_lobby(&mut self) {
         self.phase = "lobby".into();
         self.paused = false;
@@ -723,6 +878,9 @@ impl Game {
         self.round.topic_counts.clear();
         self.round.topic_leaders.clear();
         self.round.topic = None;
+        self.round.rule = None;
+        self.round.eligible_targets.clear();
+        self.round.performed.clear();
         self.round.clue_turn = 0;
         self.round.clues.clear();
         self.round.stakes.clear();
@@ -774,7 +932,14 @@ impl Game {
         self.phase = "topic_chosen".into();
     }
     fn remove_topic_voter(&mut self, id: &str) {
-        if !["topic_voting", "topic_results", "topic_chosen"].contains(&self.phase.as_str()) {
+        if ![
+            "rule_reveal",
+            "topic_voting",
+            "topic_results",
+            "topic_chosen",
+        ]
+        .contains(&self.phase.as_str())
+        {
             return;
         }
         self.round.roster.retain(|p| p != id);
@@ -782,7 +947,7 @@ impl Game {
             self.to_lobby();
             return;
         }
-        if self.phase == "topic_voting" {
+        if ["rule_reveal", "topic_voting"].contains(&self.phase.as_str()) {
             self.round.topic_voters.retain(|p| p != id);
             self.round.topic_ballots.remove(id);
             self.finish_topic_voting();
@@ -926,6 +1091,13 @@ impl Game {
         let roles = ["roles", "discussion", "voting", "runoff"].contains(&self.phase.as_str())
             && self.round.roster.iter().any(|id| id == actor)
             && me.is_some_and(|p| !p.left);
+        let private_role = roles.then(|| {
+            if actor == self.round.imposter {
+                json!({"imposter":true,"clue":self.round.hint})
+            } else {
+                json!({"imposter":false,"clue":self.round.word,"definition":self.round.definition})
+            }
+        });
         let current = self.round.queue.get(self.round.turn);
         let votes = if self.phase == "runoff" {
             &self.round.runoff
@@ -937,10 +1109,19 @@ impl Game {
             .iter()
             .filter(|p| !p.left || p.points != 0 || self.round.roster.contains(&p.id))
             .collect();
-        json!({"id":self.id,"name":self.name,"wifi":self.wifi,"phase":self.phase,"revision":self.revision,"round_id":self.round.id,"host_id":self.host,"my_id":actor,"is_host":actor==self.host,"paused":self.paused,"pause_reason":self.pause_reason,"topics":self.topics,"catalog":content::catalog(),
+        let host = actor == self.host;
+        let deck_status = (host && self.phase == "lobby").then(|| {
+            let available = selection::availability(&self.topics, &self.deck, self.deck.random_rules);
+            json!({"played":self.deck.deals.iter().rev().take_while(|deal| deal.cycle == self.deck.cycle).count(),
+                "reason":available.modes.is_empty().then(|| available.reason())})
+        });
+        json!({"id":self.id,"name":self.name,"wifi":self.wifi,"phase":self.phase,"revision":self.revision,"round_id":self.round.id,"host_id":self.host,"my_id":actor,"is_host":host,"paused":self.paused,"pause_reason":self.pause_reason,"topics":self.topics,"catalog":content::catalog(),
+          "round_rule":self.round.rule,"random_rules":host.then_some(self.deck.random_rules),
+          "rule_change_pending":host && self.round.rule.is_some() && self.deck.random_rules != self.round.random_at_start,
+          "deck_status":deck_status,
           "score_session":{"number":self.session_number,"target":self.target_score,"started":self.session_started,"complete":!self.session_winners.is_empty(),"winner_ids":self.session_winners},
           "betting":{"eligible":roles && actor!=self.round.imposter,"max_stake":if roles && actor!=self.round.imposter {me.map(|p|p.points.clamp(0,3)).unwrap_or(0)}else{0},"my_stake":self.round.stakes.get(actor),"original_vote":self.round.original.get(actor),"reading_streak":self.reading_streaks.get(actor).copied().unwrap_or(0)},
-          "topic_vote":if !self.round.topic_voters.is_empty() && self.phase != "lobby" {Some(json!({
+          "topic_vote":if !self.round.topic_voters.is_empty() && !["lobby","rule_reveal"].contains(&self.phase.as_str()) {Some(json!({
             "my_topics":self.round.topic_ballots.get(actor), "submitted_ids":self.round.topic_ballots.keys().collect::<Vec<_>>(),
             "player_ids":self.round.topic_voters,"available_topics":self.round.topic_pool,
             "counts":if self.phase == "topic_voting" {Value::Null}else{json!(self.round.topic_counts)},
@@ -948,11 +1129,12 @@ impl Game {
             "selected_topic":self.round.topic
           }))}else{None},
           "players":eligible.iter().map(|p|json!({"id":p.id,"name":p.name,"ready":p.ready,"connected":p.connected,"left":p.left,"points":p.points,"earned":if results {p.earned}else{0},"report_penalty":if results {self.round.scores.get(&p.id).map(|s|s.penalty).unwrap_or(0)}else{0},"report_round":if results {self.round.report_penalties.get(&p.id)}else{None}})).collect::<Vec<_>>(),
-          "private_role":if roles {Some(json!({"imposter":actor==self.round.imposter,"clue":if actor==self.round.imposter {&self.round.hint}else{&self.round.word}}))}else{None},
+          "private_role":private_role,
           "clue_turn":self.round.clue_turn,"clues":self.round.clues.iter().flat_map(|(player_id, turns)| turns.iter().map(move |(turn, text)| json!({"player_id":player_id,"turn":turn,"text":text}))).collect::<Vec<_>>(),
+          "performed":self.round.performed.iter().flat_map(|(player_id, turns)| turns.iter().map(move |turn| json!({"player_id":player_id,"turn":turn}))).collect::<Vec<_>>(),
           "role_ready":self.round.acknowledged.contains(actor),"ready_count":self.round.acknowledged.len(),"starting_id":if self.phase=="discussion" {Some(&self.round.starting)}else{None},
           "vote_count":votes.len(),"my_vote":votes.get(actor),"candidates":if self.phase=="runoff" {self.round.candidates.clone()}else{vec![]},
-          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0)}))}else{None},
+          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"definition":self.round.definition,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0)}))}else{None},
           "reporting":if self.phase=="reporting" {Some(json!({"my_reports":self.round.reports.get(actor),"submitted_count":self.round.reports.len(),"total":self.round.roster.len(),"majority":self.round.roster.len()/2+1,"player_ids":self.round.roster}))}else{None},
           "punishment":if self.phase=="punishment" {Some(json!({"player_id":current,"giver_id":self.round.giver,"choice":self.round.choice,"turn":self.round.turn+1,"total":self.round.queue.len()}))}else{None}})
     }
@@ -977,8 +1159,16 @@ mod tests {
         )
     }
     fn finish_topics(g: &mut Game) {
+        let topic = g
+            .round
+            .topic_pool
+            .iter()
+            .find(|topic| topic.as_str() == "food")
+            .or_else(|| g.round.topic_pool.first())
+            .unwrap()
+            .clone();
         for id in g.round.roster.clone() {
-            action(g, &id, "topic_vote", json!(["food"])).unwrap();
+            action(g, &id, "topic_vote", json!([topic])).unwrap();
         }
         let host = g.host.clone();
         action(g, &host, "begin_round", Value::Null).unwrap();
@@ -995,6 +1185,128 @@ mod tests {
         action(&mut g, &h, "start", Value::Null).unwrap();
         finish_topics(&mut g);
         g
+    }
+
+    #[test]
+    fn a_departure_after_dealing_requires_abandoning_the_round() {
+        let mut g = party();
+        let host = g.host.clone();
+        let departing = g.players[1].id.clone();
+        action(&mut g, &departing, "leave", Value::Null).unwrap();
+        assert!(g.paused);
+        assert!(action(&mut g, &host, "resume", Value::Null).is_err());
+        assert!(g.paused);
+        action(&mut g, &host, "abandon", Value::Null).unwrap();
+        assert_eq!(g.phase, "lobby");
+        assert_eq!(g.active().len(), 3);
+    }
+
+    #[test]
+    fn delayed_host_actions_cannot_skip_or_change_the_next_punishment_turn() {
+        let mut g = party();
+        let host = g.host.clone();
+        let first = g.players[1].id.clone();
+        let second = g.players[2].id.clone();
+        g.phase = "punishment".into();
+        g.round.queue = vec![first.clone(), second.clone()];
+        g.round.choice = Some("dare".into());
+        action(&mut g, &first, "done", Value::Null).unwrap();
+        action(&mut g, &second, "choice", json!("dare")).unwrap();
+        let giver = g.round.giver.clone();
+        assert!(action(&mut g, &host, "skip", json!(1)).is_err());
+        assert!(action(&mut g, &host, "reassign", json!(1)).is_err());
+        assert_eq!(g.round.turn, 1);
+        assert_eq!(g.round.giver, giver);
+        action(&mut g, &host, "reassign", json!(2)).unwrap();
+        assert_ne!(g.round.giver, giver);
+        action(&mut g, &host, "skip", json!(2)).unwrap();
+        assert_eq!(g.phase, "rankings");
+    }
+
+    #[test]
+    fn nonverbal_rules_stay_fixed_and_performed_markers_follow_their_owner() {
+        for wanted in [GameMode::ActIt, GameMode::SoundOnly] {
+            let mut game = Game::new("Rules", "Alex", "Wi-Fi").unwrap();
+            let host = game.host.clone();
+            let guest = game.join("Sam").unwrap().id;
+            game.join("Mia").unwrap();
+            game.topics = vec!["animals".into()];
+            assert!(action(&mut game, &guest, "random_rules", json!(true)).is_err());
+            action(&mut game, &host, "random_rules", json!(true)).unwrap();
+            for _ in 0..100 {
+                for player in &mut game.players {
+                    player.ready = true;
+                }
+                action(&mut game, &host, "start", Value::Null).unwrap();
+                assert_eq!(game.phase, "rule_reveal");
+                assert_eq!(game.view(&guest)["topic_vote"], Value::Null);
+                assert_eq!(game.view(&guest)["private_role"], Value::Null);
+                if game.round.rule == Some(wanted) {
+                    break;
+                }
+                action(&mut game, &host, "abandon", Value::Null).unwrap();
+            }
+            assert_eq!(game.round.rule, Some(wanted));
+            assert!(game.deck.deals.is_empty());
+            action(&mut game, &host, "random_rules", json!(false)).unwrap();
+            assert_eq!(game.round.rule, Some(wanted));
+            assert_eq!(game.view(&host)["rule_change_pending"], true);
+            assert!(action(&mut game, &guest, "open_topics", Value::Null).is_err());
+            action(&mut game, &host, "open_topics", Value::Null).unwrap();
+            let roster = game.round.roster.clone();
+            for player in &roster {
+                action(&mut game, player, "topic_vote", json!(["animals"])).unwrap();
+            }
+            action(&mut game, &host, "begin_round", Value::Null).unwrap();
+            let word = game.round.word_id.as_ref().unwrap();
+            let pair = content::bundled_topics()
+                .iter()
+                .flat_map(|t| &t.words)
+                .find(|pair| &pair.word_id == word)
+                .unwrap();
+            assert!(pair.hint_for_mode(wanted).is_some());
+            assert_eq!(game.deck.deals.len(), 1);
+            for player in &roster {
+                action(&mut game, player, "role_ready", Value::Null).unwrap();
+            }
+            assert!(action(&mut game, &guest, "clue", json!({"turn":1,"text":"A word"})).is_err());
+            assert!(action(
+                &mut game,
+                &guest,
+                "performed",
+                json!({"turn":1,"performed":true,"player_id":host})
+            )
+            .is_err());
+            action(
+                &mut game,
+                &guest,
+                "performed",
+                json!({"turn":1,"performed":true}),
+            )
+            .unwrap();
+            assert_eq!(
+                game.view(&host)["performed"],
+                json!([{"turn":1,"player_id":guest}])
+            );
+            action(&mut game, &host, "next_clue_turn", json!(1)).unwrap();
+            assert_eq!(game.round.rule, Some(wanted));
+            assert_eq!(game.deck.deals.len(), 1);
+            action(&mut game, &host, "open_vote", Value::Null).unwrap();
+            assert!(action(
+                &mut game,
+                &guest,
+                "performed",
+                json!({"turn":1,"performed":false})
+            )
+            .is_err());
+            action(&mut game, &host, "abandon", Value::Null).unwrap();
+            for player in &mut game.players {
+                player.ready = true;
+            }
+            action(&mut game, &host, "start", Value::Null).unwrap();
+            assert_eq!(game.phase, "topic_voting");
+            assert_eq!(game.round.rule, Some(GameMode::Classic));
+        }
     }
     fn ballots(g: &mut Game, targets: [usize; 4]) {
         g.phase = "voting".into();
@@ -1304,8 +1616,9 @@ mod tests {
     }
     fn next_round(g: &mut Game) {
         while g.phase == "punishment" {
-            let recipient = g.round.queue[g.round.turn].clone();
-            action(g, &recipient, "skip", Value::Null).unwrap();
+            let turn = g.round.turn;
+            let recipient = g.round.queue[turn].clone();
+            action(g, &recipient, "skip", json!(turn + 1)).unwrap();
         }
         let host = g.host.clone();
         action(g, &host, "next", Value::Null).unwrap();
@@ -1512,7 +1825,11 @@ mod tests {
                 );
                 assert!(view["result"].is_null());
                 if imposter {
+                    assert!(view["private_role"].get("definition").is_none());
                     assert!(!view.to_string().contains(&format!("\"{}\"", g.round.word)));
+                    assert!(!view.to_string().contains(&g.round.definition));
+                } else {
+                    assert_eq!(view["private_role"]["definition"], g.round.definition);
                 }
             }
             assert!(g.view("unknown-player")["private_role"].is_null());
@@ -1523,6 +1840,24 @@ mod tests {
         for phase in ["lobby", "results", "punishment", "rankings", "ended"] {
             g.phase = phase.into();
             assert!(g.view(&g.host)["private_role"].is_null());
+        }
+    }
+    #[test]
+    fn results_reveal_the_same_definition_to_every_player() {
+        let mut g = party();
+        assert!(!g.round.definition.is_empty());
+        assert!(g.view(&g.host)["catalog"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .all(|topic| topic.get("words").is_none()));
+        ballots(&mut g, [1, 0, 1, 1]);
+        assert_eq!(g.phase, "results");
+        for player in &g.players {
+            let view = g.view(&player.id);
+            assert!(view["private_role"].is_null());
+            assert_eq!(view["result"]["word"], g.round.word);
+            assert_eq!(view["result"]["definition"], g.round.definition);
         }
     }
     #[test]

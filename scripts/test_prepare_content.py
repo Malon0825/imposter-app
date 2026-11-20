@@ -24,6 +24,18 @@ class ContentValidationTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     content.validate(packs)
 
+    def test_definitions_are_required_and_must_fit_the_card(self):
+        for definition in (None, "Wallet.", "X" * 161 + ".", "A small case.\nFor money."):
+            with self.subTest(definition=definition):
+                packs = copy.deepcopy(self.packs)
+                word = packs[0]["words"][0]
+                if definition is None:
+                    word.pop("definition")
+                else:
+                    word["definition"] = definition
+                with self.assertRaisesRegex(ValueError, "plain-language definition"):
+                    content.validate(packs)
+
     def test_missing_and_answer_repeating_mode_hints_are_rejected(self):
         for hint in (None, "Wallet"):
             with self.subTest(hint=hint):
