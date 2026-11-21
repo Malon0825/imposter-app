@@ -140,7 +140,7 @@ mod tests {
                 }
             }
         }
-        assert_eq!(totals, [23, 21, 14, 2, 2, 2]);
+        assert_eq!(totals, [23, 21, 14, 7, 7, 7]);
         let everyday = pack("everyday");
         let wallet = everyday
             .words
@@ -180,7 +180,13 @@ mod tests {
         assert!(modes_for_topics(&["unknown".into()]).is_empty());
         assert_eq!(
             modes_for_topics(&["food".into()]),
-            vec![GameMode::Classic, GameMode::ActIt, GameMode::TwoTruths]
+            vec![
+                GameMode::Classic,
+                GameMode::ActIt,
+                GameMode::TwoTruths,
+                GameMode::IfItCouldTalk,
+                GameMode::SellIt
+            ]
         );
         assert_eq!(
             modes_for_topics(&["health".into()]),

@@ -157,9 +157,9 @@ async function roundFlowSmoke(hostPage) {
       two_truths: "Two Truths and a Lie", if_it_could_talk: "If It Could Talk", sell_it: "Sell It",
     };
     const spokenPacks = {
-      two_truths: ["food", "animals"],
-      if_it_could_talk: ["everyday", "chaos"],
-      sell_it: ["technology", "travel"],
+      two_truths: ["animals", "everyday", "food", "places", "sports", "technology", "travel"],
+      if_it_could_talk: ["animals", "chaos", "emotions", "everyday", "food", "places", "travel"],
+      sell_it: ["everyday", "food", "gaming", "hobbies", "places", "technology", "travel"],
     };
     // The reveal lasts a fixed 4.25s, so a client one poll behind can miss it
     // entirely. Never block on the beat: retry the rule until a poll lands in it.
@@ -182,7 +182,10 @@ async function roundFlowSmoke(hostPage) {
       if (!seen.has(rule)) {
         const pool = (await waitPhase("topic_voting")).topic_vote.available_topics;
         assert(pool.length > 0, `The ${rule} topic ballot was empty`);
-        if (spokenPacks[rule]) assert(pool.every((id) => spokenPacks[rule].includes(id)), `Unreviewed packs appeared for ${rule}`);
+        if (spokenPacks[rule]) {
+          assert(pool.every((id) => spokenPacks[rule].includes(id)), `Unreviewed packs appeared for ${rule}`);
+          assert(pool.length >= 5, `${rule} offered only ${pool.length} topics to vote on`);
+        }
         seen.add(rule);
       }
       if (seen.size < total || revealed.size < total) {

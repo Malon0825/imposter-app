@@ -23,9 +23,9 @@ Played words and equivalent concepts stay deducted across modes and parties on t
 - **Classic:** 23 playable topics; 581 words across those playable pools.
 - **Act It:** 21 playable topics; 486 words across those playable pools.
 - **Sound Only:** 14 playable topics; 194 words across those playable pools.
-- **Two Truths and a Lie:** 2 playable topics; 24 words across those playable pools.
-- **If It Could Talk:** 2 playable topics; 24 words across those playable pools.
-- **Sell It:** 2 playable topics; 24 words across those playable pools.
+- **Two Truths and a Lie:** 7 playable topics; 84 words across those playable pools.
+- **If It Could Talk:** 7 playable topics; 84 words across those playable pools.
+- **Sell It:** 7 playable topics; 84 words across those playable pools.
 
 **581 distinct catalog entries.** The 2026-11-17 review preserved the original 552 entries and Classic hints, and added 29 words: Everyday +7, Nature +6, Travel +6, Technology +5, Hobbies +5.
 
@@ -47,11 +47,11 @@ Eligible words: Toothbrush, Scissors, Key, Clock, Notebook, Pen, Water bottle, M
 
 Excluded words: Wallet, Umbrella, Mirror, Pillow, Candle, Backpack, Remote control, Towel, Comb, Soap, Blanket, Lamp, Charger, Sunglasses, Basket.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Wallet, Umbrella, Mirror, Pillow, Toothbrush, Scissors, Key, Candle, Backpack, Remote control, Towel, Comb, Soap, Clock, Notebook, Pen, Water bottle, Mug, Blanket, Lamp, Charger, Tape, Sunglasses, Basket, Doorbell, Vacuum cleaner, Hair dryer, Kettle, Stapler, Wind chime, Electric shaver.
+Eligible words: Toothbrush, Remote control, Towel, Comb, Notebook, Pen, Lamp, Charger, Vacuum cleaner, Hair dryer, Kettle, Stapler.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Wallet, Umbrella, Mirror, Pillow, Scissors, Key, Candle, Backpack, Soap, Clock, Water bottle, Mug, Blanket, Tape, Sunglasses, Basket, Doorbell, Wind chime, Electric shaver.
 
 **If It Could Talk — playable (12 accepted; minimum 10).**
 
@@ -59,11 +59,11 @@ Eligible words: Wallet, Umbrella, Pillow, Key, Candle, Comb, Clock, Pen, Blanket
 
 Excluded words: Mirror, Toothbrush, Scissors, Backpack, Remote control, Towel, Soap, Notebook, Water bottle, Mug, Charger, Tape, Basket, Doorbell, Vacuum cleaner, Hair dryer, Kettle, Stapler, Electric shaver.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Wallet, Umbrella, Mirror, Pillow, Toothbrush, Scissors, Key, Candle, Backpack, Remote control, Towel, Comb, Soap, Clock, Notebook, Pen, Water bottle, Mug, Blanket, Lamp, Charger, Tape, Sunglasses, Basket, Doorbell, Vacuum cleaner, Hair dryer, Kettle, Stapler, Wind chime, Electric shaver.
+Eligible words: Toothbrush, Towel, Soap, Notebook, Pen, Lamp, Tape, Basket, Vacuum cleaner, Hair dryer, Kettle, Stapler.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Wallet, Umbrella, Mirror, Pillow, Scissors, Key, Candle, Backpack, Remote control, Comb, Clock, Water bottle, Mug, Blanket, Charger, Sunglasses, Doorbell, Wind chime, Electric shaver.
 
 ## Food
 
@@ -89,17 +89,17 @@ Eligible words: Sushi, Dumpling, Taco, Ice cream, Popcorn, Coffee, Sandwich, Pan
 
 Excluded words: Pizza, Curry, Noodles, Bubble tea, Burger, Salad, Soup, Pasta, Fried rice, Cheese, Lemonade, Smoothie.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Pizza, Sushi, Dumpling, Taco, Curry, Noodles, Ice cream, Popcorn, Coffee, Bubble tea, Burger, Sandwich, Pancakes, Waffle, Salad, Soup, Pasta, Fried rice, Croissant, Chocolate, Cheese, Lemonade, Smoothie, Cake.
+Eligible words: Pizza, Curry, Noodles, Ice cream, Popcorn, Waffle, Soup, Pasta, Fried rice, Chocolate, Smoothie, Cake.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Sushi, Dumpling, Taco, Coffee, Bubble tea, Burger, Sandwich, Pancakes, Salad, Croissant, Cheese, Lemonade.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Pizza, Sushi, Dumpling, Taco, Curry, Noodles, Ice cream, Popcorn, Coffee, Bubble tea, Burger, Sandwich, Pancakes, Waffle, Salad, Soup, Pasta, Fried rice, Croissant, Chocolate, Cheese, Lemonade, Smoothie, Cake.
+Eligible words: Pizza, Noodles, Ice cream, Popcorn, Bubble tea, Sandwich, Fried rice, Croissant, Chocolate, Cheese, Smoothie, Cake.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Sushi, Dumpling, Taco, Curry, Coffee, Burger, Pancakes, Waffle, Salad, Soup, Pasta, Lemonade.
 
 ## Animals
 
@@ -123,11 +123,11 @@ Eligible words: Elephant, Dolphin, Lion, Bear, Giraffe, Zebra, Rabbit, Fox, Turt
 
 Excluded words: Octopus, Penguin, Butterfly, Owl, Dog, Cat, Tiger, Kangaroo, Horse, Duck, Bee, Shark.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Octopus, Penguin, Butterfly, Elephant, Dolphin, Owl, Dog, Cat, Lion, Tiger, Bear, Giraffe, Zebra, Kangaroo, Rabbit, Fox, Horse, Duck, Turtle, Frog, Bee, Shark, Whale, Crocodile.
+Eligible words: Octopus, Butterfly, Dolphin, Dog, Cat, Rabbit, Horse, Duck, Frog, Bee, Shark, Whale.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Penguin, Elephant, Owl, Lion, Tiger, Bear, Giraffe, Zebra, Kangaroo, Fox, Turtle, Crocodile.
 
 **Sell It — unavailable (0 accepted; minimum 10).**
 
@@ -187,23 +187,23 @@ Eligible words: Supermarket, Hospital, Airport, Playground, Salon, Fire station,
 
 Excluded words: Library, Cinema, Bakery, Museum, Bank, Post office, Pharmacy, Hotel.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Library, Supermarket, Hospital, Cinema, Bakery, Airport, Museum, Playground, Salon, Fire station, School, Park, Restaurant, Cafe, Bank, Post office, Pharmacy, Police station, Train station, Hotel, Gym, Stadium, Zoo, Theater.
+Eligible words: Library, Supermarket, Cinema, Bakery, Museum, Fire station, Bank, Post office, Pharmacy, Police station, Stadium, Zoo.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Hospital, Airport, Playground, Salon, School, Park, Restaurant, Cafe, Train station, Hotel, Gym, Theater.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Library, Supermarket, Hospital, Cinema, Bakery, Airport, Museum, Playground, Salon, Fire station, School, Park, Restaurant, Cafe, Bank, Post office, Pharmacy, Police station, Train station, Hotel, Gym, Stadium, Zoo, Theater.
+Eligible words: Library, Hospital, Cinema, Airport, Museum, School, Restaurant, Post office, Train station, Stadium, Zoo, Theater.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Supermarket, Bakery, Playground, Salon, Fire station, Park, Cafe, Bank, Pharmacy, Police station, Hotel, Gym.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Library, Supermarket, Hospital, Cinema, Bakery, Airport, Museum, Playground, Salon, Fire station, School, Park, Restaurant, Cafe, Bank, Post office, Pharmacy, Police station, Train station, Hotel, Gym, Stadium, Zoo, Theater.
+Eligible words: Cinema, Bakery, Museum, Playground, Salon, Park, Restaurant, Cafe, Hotel, Stadium, Zoo, Theater.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Library, Supermarket, Hospital, Airport, Fire station, School, Bank, Post office, Pharmacy, Police station, Train station, Gym.
 
 ## Jobs
 
@@ -257,17 +257,17 @@ Eligible words: Suitcase, Campsite, Road trip, Jet lag, Cruise, Ferry, Rental ca
 
 Excluded words: Passport, Boarding pass, Souvenir, Sunscreen, Hostel, Visa, Itinerary, Map, Compass, Hotel reservation, Layover, Tour guide, Backpacking, Sightseeing, Currency exchange, Travel insurance, Train ticket.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Passport, Suitcase, Boarding pass, Campsite, Souvenir, Sunscreen, Hostel, Road trip, Jet lag, Cruise, Visa, Itinerary, Map, Compass, Hotel reservation, Layover, Tour guide, Backpacking, Sightseeing, Currency exchange, Travel insurance, Train ticket, Ferry, Rental car, Airplane, Helicopter, Motorcycle, Train, Bus, Speedboat.
+Eligible words: Passport, Suitcase, Boarding pass, Souvenir, Sunscreen, Road trip, Jet lag, Cruise, Visa, Compass, Layover, Train ticket.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Campsite, Hostel, Itinerary, Map, Hotel reservation, Tour guide, Backpacking, Sightseeing, Currency exchange, Travel insurance, Ferry, Rental car, Airplane, Helicopter, Motorcycle, Train, Bus, Speedboat.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Passport, Suitcase, Boarding pass, Campsite, Souvenir, Sunscreen, Hostel, Road trip, Jet lag, Cruise, Visa, Itinerary, Map, Compass, Hotel reservation, Layover, Tour guide, Backpacking, Sightseeing, Currency exchange, Travel insurance, Train ticket, Ferry, Rental car, Airplane, Helicopter, Motorcycle, Train, Bus, Speedboat.
+Eligible words: Passport, Suitcase, Boarding pass, Souvenir, Sunscreen, Jet lag, Itinerary, Map, Compass, Layover, Ferry, Rental car.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Campsite, Hostel, Road trip, Cruise, Visa, Hotel reservation, Tour guide, Backpacking, Sightseeing, Currency exchange, Travel insurance, Train ticket, Airplane, Helicopter, Motorcycle, Train, Bus, Speedboat.
 
 **Sell It — playable (12 accepted; minimum 10).**
 
@@ -363,11 +363,11 @@ Eligible words: Basketball, Swimming, Bowling, Boxing, Surfing, Skateboarding, T
 
 Excluded words: Football (soccer), Badminton, Volleyball, Cricket, Golf, Rugby, Gymnastics, Snowboarding.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Basketball, Football (soccer), Badminton, Swimming, Bowling, Boxing, Surfing, Skateboarding, Volleyball, Tennis, Table tennis, Baseball, Cricket, Golf, Rugby, Cycling, Running, Gymnastics, Skiing, Snowboarding, Ice skating, Hockey, Archery, Wrestling.
+Eligible words: Basketball, Football (soccer), Badminton, Volleyball, Tennis, Baseball, Cricket, Rugby, Skiing, Snowboarding, Ice skating, Hockey.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Swimming, Bowling, Boxing, Surfing, Skateboarding, Table tennis, Golf, Cycling, Running, Gymnastics, Archery, Wrestling.
 
 **If It Could Talk — unavailable (0 accepted; minimum 10).**
 
@@ -411,11 +411,11 @@ Excluded words: Respawn, Boss fight, Loot, Checkpoint, Avatar, Speedrun, Power-u
 
 Outside the reviewed starter pool for this rule.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Respawn, Boss fight, Loot, Checkpoint, Avatar, Speedrun, Power-up, Controller, Open world, Side quest, Multiplayer, Co-op, Inventory, Crafting, Achievement, Leaderboard, Tutorial, Puzzle, Health bar, Mana, Cooldown, Stealth, Battle royale, Character class.
+Eligible words: Checkpoint, Avatar, Power-up, Open world, Side quest, Multiplayer, Co-op, Inventory, Crafting, Achievement, Leaderboard, Battle royale.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Respawn, Boss fight, Loot, Speedrun, Controller, Tutorial, Puzzle, Health bar, Mana, Cooldown, Stealth, Character class.
 
 ## Technology
 
@@ -435,11 +435,11 @@ Eligible words: Group chat, Smartphone, Keyboard, Mouse, Printer, Headphones, Vi
 
 Excluded words: Meme, Emoji, Password, Wi-Fi, Screenshot, Livestream, Spam, Chatbot, Power bank, Laptop, Tablet, Bluetooth, Cloud storage, Search engine, QR code, Web browser, Software update.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Meme, Emoji, Password, Wi-Fi, Screenshot, Livestream, Group chat, Spam, Chatbot, Power bank, Smartphone, Laptop, Tablet, Keyboard, Mouse, Printer, Headphones, Bluetooth, Cloud storage, Search engine, QR code, Video call, Web browser, Software update, Scanner, Computer fan, Walkie-talkie, Ringtone, Error alert.
+Eligible words: Meme, Emoji, Password, Wi-Fi, Livestream, Group chat, Spam, Smartphone, Laptop, Tablet, Search engine, Video call.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Screenshot, Chatbot, Power bank, Keyboard, Mouse, Printer, Headphones, Bluetooth, Cloud storage, QR code, Web browser, Software update, Scanner, Computer fan, Walkie-talkie, Ringtone, Error alert.
 
 **If It Could Talk — unavailable (0 accepted; minimum 10).**
 
@@ -515,11 +515,11 @@ Excluded words: Gardening, Knitting, Photography, Pottery, Origami, Baking, Pain
 
 Outside the reviewed starter pool for this rule.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Gardening, Knitting, Photography, Pottery, Origami, Baking, Painting, Birdwatching, Journaling, Magic trick, Reading, Sewing, Embroidery, Woodworking, Candle making, Calligraphy, Scrapbooking, Jigsaw puzzles, Model building, Stargazing, Fishing, Hiking, Dancing, Chess, Beatboxing, Tap dancing, Metal detecting, Billiards, Dominoes.
+Eligible words: Gardening, Knitting, Pottery, Birdwatching, Journaling, Reading, Woodworking, Candle making, Calligraphy, Jigsaw puzzles, Fishing, Hiking.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Photography, Origami, Baking, Painting, Magic trick, Sewing, Embroidery, Scrapbooking, Model building, Stargazing, Dancing, Chess, Beatboxing, Tap dancing, Metal detecting, Billiards, Dominoes.
 
 ## Celebrations
 
@@ -615,11 +615,11 @@ Excluded words: Jealousy, Excitement, Embarrassment, Relief, Curiosity, Frustrat
 
 Outside the reviewed starter pool for this rule.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Jealousy, Excitement, Embarrassment, Relief, Curiosity, Frustration, Pride, Loneliness, Gratitude, Surprise, Happiness, Sadness, Anger, Fear, Disgust, Boredom, Hope, Guilt, Shame, Disappointment, Affection, Awe, Contentment, Nostalgia.
+Eligible words: Jealousy, Embarrassment, Relief, Curiosity, Frustration, Pride, Loneliness, Gratitude, Sadness, Boredom, Hope, Guilt.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Excitement, Surprise, Happiness, Anger, Fear, Disgust, Shame, Disappointment, Affection, Awe, Contentment, Nostalgia.
 
 **Sell It — unavailable (0 accepted; minimum 10).**
 

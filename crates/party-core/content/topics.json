@@ -70,11 +70,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Routine",
-          "sound_only": "Routine"
+          "sound_only": "Routine",
+          "two_truths": "Morning",
+          "sell_it": "Morning"
         },
         "word_id": "everyday/toothbrush",
         "definition": "A small brush used to clean your teeth."
@@ -144,10 +148,12 @@
         "hint": "Couch",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Couch"
+          "act_it": "Couch",
+          "two_truths": "Mains"
         },
         "word_id": "everyday/remote-control",
         "definition": "A handheld device used to operate things like a TV from a distance."
@@ -157,10 +163,14 @@
         "hint": "Bathroom",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Bathroom"
+          "act_it": "Bathroom",
+          "two_truths": "Morning",
+          "sell_it": "Morning"
         },
         "word_id": "everyday/towel",
         "definition": "A piece of absorbent cloth used to dry yourself or a surface."
@@ -171,11 +181,13 @@
         "modes": [
           "classic",
           "act_it",
+          "two_truths",
           "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Routine",
-          "if_it_could_talk": "Pocket"
+          "if_it_could_talk": "Pocket",
+          "two_truths": "Morning"
         },
         "word_id": "everyday/comb",
         "definition": "A tool with a row of teeth used to tidy or untangle hair."
@@ -185,10 +197,12 @@
         "hint": "Bathroom",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Bathroom"
+          "act_it": "Bathroom",
+          "sell_it": "Tidy"
         },
         "word_id": "everyday/soap",
         "definition": "A substance used with water to wash away dirt and oil."
@@ -216,11 +230,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Desk",
-          "sound_only": "Desk"
+          "sound_only": "Desk",
+          "two_truths": "Desk",
+          "sell_it": "Desk"
         },
         "word_id": "everyday/notebook",
         "definition": "A book of blank or lined pages for writing in."
@@ -232,12 +250,16 @@
           "classic",
           "act_it",
           "sound_only",
-          "if_it_could_talk"
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Pocket",
           "sound_only": "Craft",
-          "if_it_could_talk": "Pocket"
+          "if_it_could_talk": "Pocket",
+          "two_truths": "Desk",
+          "sell_it": "Desk"
         },
         "word_id": "everyday/pen",
         "definition": "A handheld tool that writes with ink."
@@ -293,11 +315,15 @@
         "modes": [
           "classic",
           "act_it",
-          "if_it_could_talk"
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Bedside",
-          "if_it_could_talk": "Night"
+          "if_it_could_talk": "Night",
+          "two_truths": "Desk",
+          "sell_it": "Desk"
         },
         "word_id": "everyday/lamp",
         "definition": "A device that gives light, often placed on a table or floor."
@@ -307,10 +333,12 @@
         "hint": "Bedside",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Bedside"
+          "act_it": "Bedside",
+          "two_truths": "Mains"
         },
         "word_id": "everyday/charger",
         "definition": "A device that supplies electricity to refill a battery."
@@ -321,11 +349,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Craft",
-          "sound_only": "Craft"
+          "sound_only": "Craft",
+          "sell_it": "Tidy"
         },
         "word_id": "everyday/tape",
         "definition": "A sticky strip used to attach, seal, or repair things."
@@ -350,10 +380,12 @@
         "hint": "Picnic",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Picnic"
+          "act_it": "Picnic",
+          "sell_it": "Tidy"
         },
         "word_id": "everyday/basket",
         "definition": "An open container, often woven, for carrying or storing things."
@@ -379,11 +411,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Cleaning",
-          "sound_only": "Motor"
+          "sound_only": "Motor",
+          "two_truths": "Mains",
+          "sell_it": "Tidy"
         },
         "word_id": "everyday/vacuum-cleaner",
         "definition": "A machine that sucks dust and dirt from floors and other surfaces."
@@ -394,11 +430,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Routine",
-          "sound_only": "Routine"
+          "sound_only": "Routine",
+          "two_truths": "Mains",
+          "sell_it": "Morning"
         },
         "word_id": "everyday/hair-dryer",
         "definition": "A handheld device that blows warm air to dry wet hair."
@@ -409,11 +449,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Morning",
-          "sound_only": "Morning"
+          "sound_only": "Morning",
+          "two_truths": "Morning",
+          "sell_it": "Morning"
         },
         "word_id": "everyday/kettle",
         "definition": "A container used to boil water, usually with a lid and spout."
@@ -424,11 +468,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Desk",
-          "sound_only": "Desk"
+          "sound_only": "Desk",
+          "two_truths": "Desk",
+          "sell_it": "Desk"
         },
         "word_id": "everyday/stapler",
         "definition": "A tool that fastens papers together with small metal clips."
@@ -479,10 +527,14 @@
         "hint": "Oven",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Oven"
+          "act_it": "Oven",
+          "if_it_could_talk": "Sharing",
+          "sell_it": "Sharing"
         },
         "word_id": "food/pizza",
         "definition": "A flat round base baked with toppings such as sauce and cheese."
@@ -537,10 +589,12 @@
         "hint": "Spice",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Spice"
+          "act_it": "Spice",
+          "if_it_could_talk": "Comfort"
         },
         "word_id": "food/curry",
         "definition": "A dish of meat or vegetables cooked with spices, often in a sauce."
@@ -551,11 +605,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Bowl",
-          "sound_only": "Bowl"
+          "sound_only": "Bowl",
+          "if_it_could_talk": "Comfort",
+          "sell_it": "Quick"
         },
         "word_id": "food/noodles",
         "definition": "Long, thin pieces of dough cooked in water and served in various dishes."
@@ -566,11 +624,15 @@
         "modes": [
           "classic",
           "act_it",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Chilled",
-          "two_truths": "Treat"
+          "two_truths": "Treat",
+          "if_it_could_talk": "Sweet",
+          "sell_it": "Treat"
         },
         "word_id": "food/ice-cream",
         "definition": "A sweet, frozen dessert often made with milk or cream."
@@ -582,12 +644,16 @@
           "classic",
           "act_it",
           "sound_only",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Snack",
           "sound_only": "Snack",
-          "two_truths": "Treat"
+          "two_truths": "Treat",
+          "if_it_could_talk": "Sharing",
+          "sell_it": "Sharing"
         },
         "word_id": "food/popcorn",
         "definition": "Corn kernels that puff and burst when heated."
@@ -615,11 +681,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Straw",
-          "sound_only": "Straw"
+          "sound_only": "Straw",
+          "sell_it": "Treat"
         },
         "word_id": "food/bubble-tea",
         "definition": "A tea-based drink often served with chewy tapioca pearls."
@@ -643,11 +711,13 @@
         "modes": [
           "classic",
           "act_it",
-          "two_truths"
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Lunch",
-          "two_truths": "Filling"
+          "two_truths": "Filling",
+          "sell_it": "Quick"
         },
         "word_id": "food/sandwich",
         "definition": "A filling served between slices of bread."
@@ -673,11 +743,13 @@
         "modes": [
           "classic",
           "act_it",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Breakfast",
-          "two_truths": "Breakfast"
+          "two_truths": "Breakfast",
+          "if_it_could_talk": "Sweet"
         },
         "word_id": "food/waffle",
         "definition": "A crisp batter cake cooked in a patterned iron."
@@ -701,11 +773,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Warmth",
-          "sound_only": "Warmth"
+          "sound_only": "Warmth",
+          "if_it_could_talk": "Comfort"
         },
         "word_id": "food/soup",
         "definition": "A liquid dish usually made by cooking ingredients in water or stock."
@@ -715,10 +789,12 @@
         "hint": "Sauce",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Sauce"
+          "act_it": "Sauce",
+          "if_it_could_talk": "Comfort"
         },
         "word_id": "food/pasta",
         "definition": "A food made from dough shaped into forms such as tubes, strands, or sheets."
@@ -728,10 +804,14 @@
         "hint": "Pan",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Pan"
+          "act_it": "Pan",
+          "if_it_could_talk": "Sharing",
+          "sell_it": "Quick"
         },
         "word_id": "food/fried-rice",
         "definition": "Cooked rice stir-fried with ingredients such as vegetables, eggs, or meat."
@@ -742,11 +822,13 @@
         "modes": [
           "classic",
           "act_it",
-          "two_truths"
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Bakery",
-          "two_truths": "Breakfast"
+          "two_truths": "Breakfast",
+          "sell_it": "Treat"
         },
         "word_id": "food/croissant",
         "definition": "A flaky, buttery pastry often shaped like a crescent."
@@ -757,11 +839,15 @@
         "modes": [
           "classic",
           "act_it",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Sweet",
-          "two_truths": "Treat"
+          "two_truths": "Treat",
+          "if_it_could_talk": "Sweet",
+          "sell_it": "Treat"
         },
         "word_id": "food/chocolate",
         "definition": "A food made from cacao, often sweetened and eaten as a treat."
@@ -771,10 +857,12 @@
         "hint": "Dairy",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Dairy"
+          "act_it": "Dairy",
+          "sell_it": "Sharing"
         },
         "word_id": "food/cheese",
         "definition": "A food made by separating and processing the solid parts of milk."
@@ -798,11 +886,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Straw",
-          "sound_only": "Straw"
+          "sound_only": "Straw",
+          "if_it_could_talk": "Sweet",
+          "sell_it": "Quick"
         },
         "word_id": "food/smoothie",
         "definition": "A thick drink made by blending fruit or other ingredients."
@@ -813,11 +905,15 @@
         "modes": [
           "classic",
           "act_it",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Celebration",
-          "two_truths": "Treat"
+          "two_truths": "Treat",
+          "if_it_could_talk": "Sharing",
+          "sell_it": "Sharing"
         },
         "word_id": "food/cake",
         "definition": "A sweet baked dessert often made with flour, sugar, and eggs."
@@ -836,10 +932,12 @@
         "hint": "Reef",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Reef"
+          "act_it": "Reef",
+          "if_it_could_talk": "Ocean"
         },
         "word_id": "animals/octopus",
         "definition": "A sea animal with a soft body and eight arms lined with suckers."
@@ -864,10 +962,12 @@
         "hint": "Garden",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Garden"
+          "act_it": "Garden",
+          "if_it_could_talk": "Garden"
         },
         "word_id": "animals/butterfly",
         "definition": "An insect with broad, often colorful wings and a slender body."
@@ -896,12 +996,14 @@
           "classic",
           "act_it",
           "sound_only",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Playful",
           "sound_only": "Playful",
-          "two_truths": "Water"
+          "two_truths": "Water",
+          "if_it_could_talk": "Ocean"
         },
         "word_id": "animals/dolphin",
         "definition": "An intelligent sea mammal with a curved body that breathes air."
@@ -927,11 +1029,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Paws",
-          "sound_only": "Paws"
+          "sound_only": "Paws",
+          "if_it_could_talk": "Household"
         },
         "word_id": "animals/dog",
         "definition": "A domesticated mammal that barks and is often kept as a pet."
@@ -942,11 +1046,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Paws",
-          "sound_only": "Paws"
+          "sound_only": "Paws",
+          "if_it_could_talk": "Household"
         },
         "word_id": "animals/cat",
         "definition": "A small domesticated mammal that meows and can retract its claws."
@@ -1051,11 +1157,13 @@
         "modes": [
           "classic",
           "act_it",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Garden",
-          "two_truths": "Burrow"
+          "two_truths": "Burrow",
+          "if_it_could_talk": "Garden"
         },
         "word_id": "animals/rabbit",
         "definition": "A small mammal with long ears and strong hind legs for hopping."
@@ -1083,11 +1191,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Herd",
-          "sound_only": "Herd"
+          "sound_only": "Herd",
+          "if_it_could_talk": "Household"
         },
         "word_id": "animals/horse",
         "definition": "A large hoofed animal often kept for riding or pulling loads."
@@ -1098,11 +1208,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Pond",
-          "sound_only": "Water"
+          "sound_only": "Water",
+          "if_it_could_talk": "Household"
         },
         "word_id": "animals/duck",
         "definition": "A waterbird with a broad bill and webbed feet."
@@ -1129,12 +1241,14 @@
           "classic",
           "act_it",
           "sound_only",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Pond",
           "sound_only": "Water",
-          "two_truths": "Burrow"
+          "two_truths": "Burrow",
+          "if_it_could_talk": "Garden"
         },
         "word_id": "animals/frog",
         "definition": "An amphibian with strong hind legs that often lives near water."
@@ -1145,11 +1259,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Colony",
-          "sound_only": "Stripes"
+          "sound_only": "Stripes",
+          "if_it_could_talk": "Garden"
         },
         "word_id": "animals/bee",
         "definition": "An insect that collects nectar and pollen, with some kinds making honey."
@@ -1159,10 +1275,12 @@
         "hint": "Ocean",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Ocean"
+          "act_it": "Ocean",
+          "if_it_could_talk": "Ocean"
         },
         "word_id": "animals/shark",
         "definition": "A fish with a skeleton made of cartilage, found mostly in the sea."
@@ -1174,12 +1292,14 @@
           "classic",
           "act_it",
           "sound_only",
-          "two_truths"
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Ocean",
           "sound_only": "Ocean",
-          "two_truths": "Water"
+          "two_truths": "Water",
+          "if_it_could_talk": "Ocean"
         },
         "word_id": "animals/whale",
         "definition": "A large marine mammal that breathes through a blowhole."
@@ -1631,10 +1751,14 @@
         "hint": "Shelves",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Shelves"
+          "act_it": "Shelves",
+          "two_truths": "Civic",
+          "if_it_could_talk": "Learning"
         },
         "word_id": "places/library",
         "definition": "A place where people can read, borrow, or use books and other materials."
@@ -1645,11 +1769,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Shelves",
-          "sound_only": "Counter"
+          "sound_only": "Counter",
+          "two_truths": "Errands"
         },
         "word_id": "places/supermarket",
         "definition": "A large store that sells groceries and household goods."
@@ -1660,11 +1786,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Care",
-          "sound_only": "Uniform"
+          "sound_only": "Uniform",
+          "if_it_could_talk": "Queue"
         },
         "word_id": "places/hospital",
         "definition": "A facility where people receive medical treatment and care."
@@ -1674,10 +1802,16 @@
         "hint": "Tickets",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Tickets"
+          "act_it": "Tickets",
+          "two_truths": "Outing",
+          "if_it_could_talk": "Evening",
+          "sell_it": "Evening"
         },
         "word_id": "places/cinema",
         "definition": "A venue where audiences watch films on a large screen."
@@ -1687,10 +1821,14 @@
         "hint": "Morning",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Morning"
+          "act_it": "Morning",
+          "two_truths": "Errands",
+          "sell_it": "Treat"
         },
         "word_id": "places/bakery",
         "definition": "A shop or workplace that makes or sells bread and pastries."
@@ -1701,11 +1839,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Arrivals",
-          "sound_only": "Crowd"
+          "sound_only": "Crowd",
+          "if_it_could_talk": "Queue"
         },
         "word_id": "places/airport",
         "definition": "A place where aircraft take off and land and passengers board."
@@ -1715,10 +1855,16 @@
         "hint": "Displays",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Displays"
+          "act_it": "Displays",
+          "two_truths": "Outing",
+          "if_it_could_talk": "Learning",
+          "sell_it": "Outing"
         },
         "word_id": "places/museum",
         "definition": "A place that collects and displays objects of cultural, scientific, or historical interest."
@@ -1729,11 +1875,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Outdoors",
-          "sound_only": "Outdoors"
+          "sound_only": "Outdoors",
+          "sell_it": "Outing"
         },
         "word_id": "places/playground",
         "definition": "An outdoor area with equipment for children to play on."
@@ -1744,11 +1892,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Reception",
-          "sound_only": "Motor"
+          "sound_only": "Motor",
+          "sell_it": "Treat"
         },
         "word_id": "places/salon",
         "definition": "A business that offers haircuts, styling, or other beauty services."
@@ -1759,11 +1909,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Uniform",
-          "sound_only": "Uniform"
+          "sound_only": "Uniform",
+          "two_truths": "Civic"
         },
         "word_id": "places/fire-station",
         "definition": "A building where emergency crews keep their vehicles and equipment."
@@ -1774,11 +1926,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Learning",
-          "sound_only": "Uniform"
+          "sound_only": "Uniform",
+          "if_it_could_talk": "Learning"
         },
         "word_id": "places/school",
         "definition": "A place where students go to learn."
@@ -1789,11 +1943,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Outdoors",
-          "sound_only": "Outdoors"
+          "sound_only": "Outdoors",
+          "sell_it": "Outing"
         },
         "word_id": "places/park",
         "definition": "A public area set aside for recreation or enjoying nature."
@@ -1804,11 +1960,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Menu",
-          "sound_only": "Counter"
+          "sound_only": "Counter",
+          "if_it_could_talk": "Evening",
+          "sell_it": "Evening"
         },
         "word_id": "places/restaurant",
         "definition": "A business that prepares and serves meals to customers."
@@ -1819,11 +1979,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Menu",
-          "sound_only": "Counter"
+          "sound_only": "Counter",
+          "sell_it": "Treat"
         },
         "word_id": "places/cafe",
         "definition": "A small place that serves coffee, other drinks, and light food."
@@ -1833,10 +1995,12 @@
         "hint": "Counter",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Counter"
+          "act_it": "Counter",
+          "two_truths": "Errands"
         },
         "word_id": "places/bank",
         "definition": "A business that holds money and provides services such as loans."
@@ -1846,10 +2010,14 @@
         "hint": "Counter",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Counter"
+          "act_it": "Counter",
+          "two_truths": "Civic",
+          "if_it_could_talk": "Queue"
         },
         "word_id": "places/post-office",
         "definition": "A place to send letters and parcels and buy stamps."
@@ -1859,10 +2027,12 @@
         "hint": "Shelves",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Shelves"
+          "act_it": "Shelves",
+          "two_truths": "Errands"
         },
         "word_id": "places/pharmacy",
         "definition": "A place where medicines are prepared, dispensed, or sold."
@@ -1873,11 +2043,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Uniform",
-          "sound_only": "Uniform"
+          "sound_only": "Uniform",
+          "two_truths": "Civic"
         },
         "word_id": "places/police-station",
         "definition": "A building where officers work and the public can report incidents."
@@ -1888,11 +2060,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Arrivals",
-          "sound_only": "Motor"
+          "sound_only": "Motor",
+          "if_it_could_talk": "Queue"
         },
         "word_id": "places/train-station",
         "definition": "A place where passengers get on and off trains."
@@ -1902,10 +2076,12 @@
         "hint": "Reception",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Reception"
+          "act_it": "Reception",
+          "sell_it": "Treat"
         },
         "word_id": "places/hotel",
         "definition": "A business that rents rooms to guests for short stays."
@@ -1931,11 +2107,17 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Crowd",
-          "sound_only": "Crowd"
+          "sound_only": "Crowd",
+          "two_truths": "Outing",
+          "if_it_could_talk": "Evening",
+          "sell_it": "Evening"
         },
         "word_id": "places/stadium",
         "definition": "A large venue with seating around a field or other performance area."
@@ -1946,11 +2128,17 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Visitors",
-          "sound_only": "Tickets"
+          "sound_only": "Tickets",
+          "two_truths": "Outing",
+          "if_it_could_talk": "Learning",
+          "sell_it": "Outing"
         },
         "word_id": "places/zoo",
         "definition": "A place that keeps animals for people to see and learn about."
@@ -1961,11 +2149,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Tickets",
-          "sound_only": "Tickets"
+          "sound_only": "Tickets",
+          "if_it_could_talk": "Evening",
+          "sell_it": "Evening"
         },
         "word_id": "places/theater",
         "definition": "A venue for live performances such as plays or musicals."
@@ -2329,10 +2521,14 @@
         "hint": "Border",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Abroad"
+          "act_it": "Abroad",
+          "two_truths": "Document",
+          "if_it_could_talk": "Paper"
         },
         "word_id": "travel/passport",
         "definition": "An official document that identifies you and your nationality when traveling abroad."
@@ -2344,12 +2540,16 @@
           "classic",
           "act_it",
           "sound_only",
+          "two_truths",
+          "if_it_could_talk",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Packing",
           "sound_only": "Packing",
-          "sell_it": "Packing"
+          "sell_it": "Packing",
+          "two_truths": "Packed",
+          "if_it_could_talk": "Packed"
         },
         "word_id": "travel/suitcase",
         "definition": "A case with a handle, often with wheels, used to carry clothes when traveling."
@@ -2359,10 +2559,14 @@
         "hint": "Departure",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Departure"
+          "act_it": "Departure",
+          "two_truths": "Document",
+          "if_it_could_talk": "Paper"
         },
         "word_id": "travel/boarding-pass",
         "definition": "A printed or digital document that lets you board a specific flight."
@@ -2388,11 +2592,15 @@
         "modes": [
           "classic",
           "act_it",
+          "two_truths",
+          "if_it_could_talk",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Market",
-          "sell_it": "Packing"
+          "sell_it": "Packing",
+          "two_truths": "Packed",
+          "if_it_could_talk": "Packed"
         },
         "word_id": "travel/souvenir",
         "definition": "An object kept as a reminder of a place or experience."
@@ -2403,11 +2611,15 @@
         "modes": [
           "classic",
           "act_it",
+          "two_truths",
+          "if_it_could_talk",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Outdoors",
-          "sell_it": "Packing"
+          "sell_it": "Packing",
+          "two_truths": "Packed",
+          "if_it_could_talk": "Packed"
         },
         "word_id": "travel/sunscreen",
         "definition": "A product applied to the skin to help protect it from ultraviolet light."
@@ -2432,12 +2644,14 @@
           "classic",
           "act_it",
           "sound_only",
+          "two_truths",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Route",
           "sound_only": "Route",
-          "sell_it": "Excursion"
+          "sell_it": "Excursion",
+          "two_truths": "Journey"
         },
         "word_id": "travel/road-trip",
         "definition": "A journey taken by car or another road vehicle, often with several stops."
@@ -2448,11 +2662,15 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Fatigue",
-          "sound_only": "Rest"
+          "sound_only": "Rest",
+          "two_truths": "Journey",
+          "if_it_could_talk": "Transit"
         },
         "word_id": "travel/jet-lag",
         "definition": "Tiredness and disrupted sleep after crossing time zones quickly."
@@ -2464,12 +2682,14 @@
           "classic",
           "act_it",
           "sound_only",
+          "two_truths",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Coast",
           "sound_only": "Coast",
-          "sell_it": "Excursion"
+          "sell_it": "Excursion",
+          "two_truths": "Journey"
         },
         "word_id": "travel/cruise",
         "definition": "A vacation spent on a ship that usually stops at several destinations."
@@ -2478,9 +2698,12 @@
         "word": "Visa",
         "hint": "Border",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Document"
+        },
         "word_id": "travel/visa",
         "definition": "Official permission to enter, stay in, or pass through a country."
       },
@@ -2489,10 +2712,12 @@
         "hint": "Schedule",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Schedule"
+          "act_it": "Schedule",
+          "if_it_could_talk": "Paper"
         },
         "word_id": "travel/itinerary",
         "definition": "A plan that lists the places, times, and activities for a journey."
@@ -2503,11 +2728,13 @@
         "modes": [
           "classic",
           "act_it",
+          "if_it_could_talk",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Direction",
-          "sell_it": "Packing"
+          "sell_it": "Packing",
+          "if_it_could_talk": "Paper"
         },
         "word_id": "travel/map",
         "definition": "A drawing or digital view that shows the location of places and routes."
@@ -2517,10 +2744,14 @@
         "hint": "Direction",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Direction"
+          "act_it": "Direction",
+          "two_truths": "Packed",
+          "if_it_could_talk": "Packed"
         },
         "word_id": "travel/compass",
         "definition": "A tool that helps you find directions, often using a needle that points north."
@@ -2540,10 +2771,14 @@
         "hint": "Waiting",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Waiting"
+          "act_it": "Waiting",
+          "two_truths": "Journey",
+          "if_it_could_talk": "Transit"
         },
         "word_id": "travel/layover",
         "definition": "A waiting period between parts of a journey, often between flights."
@@ -2621,11 +2856,13 @@
         "modes": [
           "classic",
           "act_it",
+          "two_truths",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Departure",
-          "sell_it": "Transport"
+          "sell_it": "Transport",
+          "two_truths": "Document"
         },
         "word_id": "travel/train-ticket",
         "definition": "Proof of payment or permission to ride a particular rail service."
@@ -2637,12 +2874,14 @@
           "classic",
           "act_it",
           "sound_only",
+          "if_it_could_talk",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Coast",
           "sound_only": "Coast",
-          "sell_it": "Transport"
+          "sell_it": "Transport",
+          "if_it_could_talk": "Transit"
         },
         "word_id": "travel/ferry",
         "definition": "A boat that regularly carries people or vehicles across water."
@@ -2654,12 +2893,14 @@
           "classic",
           "act_it",
           "sound_only",
+          "if_it_could_talk",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Route",
           "sound_only": "Route",
-          "sell_it": "Transport"
+          "sell_it": "Transport",
+          "if_it_could_talk": "Transit"
         },
         "word_id": "travel/rental-car",
         "definition": "A vehicle you pay to use for a limited period."
@@ -3437,11 +3678,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Court",
-          "sound_only": "Impact"
+          "sound_only": "Impact",
+          "two_truths": "Court"
         },
         "word_id": "sports/basketball",
         "definition": "A team sport in which players score by throwing a ball through a raised hoop."
@@ -3451,10 +3694,12 @@
         "hint": "Team",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Team"
+          "act_it": "Team",
+          "two_truths": "Pitch"
         },
         "word_id": "sports/football-soccer",
         "definition": "A team sport in which players mostly use their feet to send a ball into a goal."
@@ -3464,10 +3709,12 @@
         "hint": "Court",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Court"
+          "act_it": "Court",
+          "two_truths": "Court"
         },
         "word_id": "sports/badminton",
         "definition": "A racket sport in which players hit a feathered or plastic shuttlecock over a net."
@@ -3552,10 +3799,12 @@
         "hint": "Team",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Team"
+          "act_it": "Team",
+          "two_truths": "Court"
         },
         "word_id": "sports/volleyball",
         "definition": "A team sport in which players hit a ball over a high net without catching it."
@@ -3566,11 +3815,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Court",
-          "sound_only": "Spin"
+          "sound_only": "Spin",
+          "two_truths": "Court"
         },
         "word_id": "sports/tennis",
         "definition": "A racket sport in which players hit a ball between opposite sides of a netted court."
@@ -3596,11 +3847,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Swing",
-          "sound_only": "Impact"
+          "sound_only": "Impact",
+          "two_truths": "Pitch"
         },
         "word_id": "sports/baseball",
         "definition": "A bat-and-ball sport in which players score by running around four bases."
@@ -3610,10 +3863,12 @@
         "hint": "Swing",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Swing"
+          "act_it": "Swing",
+          "two_truths": "Pitch"
         },
         "word_id": "sports/cricket",
         "definition": "A bat-and-ball sport in which teams score runs and try to get batters out at wickets."
@@ -3636,10 +3891,12 @@
         "hint": "Team",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Team"
+          "act_it": "Team",
+          "two_truths": "Pitch"
         },
         "word_id": "sports/rugby",
         "definition": "A team sport in which players carry or kick an oval ball and can tackle opponents."
@@ -3693,11 +3950,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Winter",
-          "sound_only": "Winter"
+          "sound_only": "Winter",
+          "two_truths": "Winter"
         },
         "word_id": "sports/skiing",
         "definition": "Gliding over snow using two long, narrow pieces of equipment attached to your boots."
@@ -3707,10 +3966,12 @@
         "hint": "Winter",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Winter"
+          "act_it": "Winter",
+          "two_truths": "Winter"
         },
         "word_id": "sports/snowboarding",
         "definition": "Sliding down snow on a single wide board attached to your boots."
@@ -3721,11 +3982,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Winter",
-          "sound_only": "Winter"
+          "sound_only": "Winter",
+          "two_truths": "Winter"
         },
         "word_id": "sports/ice-skating",
         "definition": "Gliding across a frozen surface on boots fitted with blades."
@@ -3736,11 +3999,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Team",
-          "sound_only": "Contact"
+          "sound_only": "Contact",
+          "two_truths": "Winter"
         },
         "word_id": "sports/hockey",
         "definition": "A team sport in which players use curved sticks to send a puck or ball into a goal."
@@ -3828,10 +4093,12 @@
         "hint": "Progress",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Progress"
+          "act_it": "Progress",
+          "sell_it": "Progress"
         },
         "word_id": "gaming/checkpoint",
         "definition": "A point in a game where progress is saved so you can restart nearby."
@@ -3840,9 +4107,12 @@
         "word": "Avatar",
         "hint": "Customization",
         "modes": [
-          "classic"
+          "classic",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "sell_it": "Together"
+        },
         "word_id": "gaming/avatar",
         "definition": "A character or image that represents a player in a game."
       },
@@ -3864,10 +4134,12 @@
         "hint": "Energy",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Energy"
+          "act_it": "Energy",
+          "sell_it": "Progress"
         },
         "word_id": "gaming/power-up",
         "definition": "An item or effect that improves a character's abilities, often for a short time."
@@ -3890,10 +4162,12 @@
         "hint": "Exploration",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Exploration"
+          "act_it": "Exploration",
+          "sell_it": "Adventure"
         },
         "word_id": "gaming/open-world",
         "definition": "A game setting that players can explore freely across a large area."
@@ -3903,10 +4177,12 @@
         "hint": "Reward",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Reward"
+          "act_it": "Reward",
+          "sell_it": "Adventure"
         },
         "word_id": "gaming/side-quest",
         "definition": "An optional task outside a game's main story or objective."
@@ -3916,10 +4192,12 @@
         "hint": "Friends",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Friends"
+          "act_it": "Friends",
+          "sell_it": "Together"
         },
         "word_id": "gaming/multiplayer",
         "definition": "A game or mode that lets more than one person play together or against each other."
@@ -3929,10 +4207,12 @@
         "hint": "Friends",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Friends"
+          "act_it": "Friends",
+          "sell_it": "Together"
         },
         "word_id": "gaming/co-op",
         "definition": "A game mode in which players work together toward a shared goal."
@@ -3942,10 +4222,12 @@
         "hint": "Storage",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Storage"
+          "act_it": "Storage",
+          "sell_it": "Adventure"
         },
         "word_id": "gaming/inventory",
         "definition": "The list or storage space for items a player is carrying."
@@ -3955,10 +4237,12 @@
         "hint": "Materials",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Materials"
+          "act_it": "Materials",
+          "sell_it": "Adventure"
         },
         "word_id": "gaming/crafting",
         "definition": "Creating new items in a game by combining materials or parts."
@@ -3968,10 +4252,12 @@
         "hint": "Completion",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Completion"
+          "act_it": "Completion",
+          "sell_it": "Progress"
         },
         "word_id": "gaming/achievement",
         "definition": "An award or record earned for completing a specific challenge."
@@ -3981,10 +4267,12 @@
         "hint": "Competition",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Competition"
+          "act_it": "Competition",
+          "sell_it": "Progress"
         },
         "word_id": "gaming/leaderboard",
         "definition": "A ranked list of players or teams based on their scores or performance."
@@ -4072,10 +4360,12 @@
         "hint": "Survival",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Survival"
+          "act_it": "Survival",
+          "sell_it": "Together"
         },
         "word_id": "gaming/battle-royale",
         "definition": "A game format in which many players compete until one person or team remains."
@@ -4104,10 +4394,12 @@
         "hint": "Sharing",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Sharing"
+          "act_it": "Sharing",
+          "two_truths": "Posted"
         },
         "word_id": "technology/meme",
         "definition": "An idea, joke, image, or video that people copy and share, often with variations."
@@ -4117,10 +4409,12 @@
         "hint": "Expression",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Expression"
+          "act_it": "Expression",
+          "two_truths": "Posted"
         },
         "word_id": "technology/emoji",
         "definition": "A small digital picture used to express an idea, feeling, or reaction in a message."
@@ -4130,10 +4424,12 @@
         "hint": "Security",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Security"
+          "act_it": "Security",
+          "two_truths": "Account"
         },
         "word_id": "technology/password",
         "definition": "A secret string of characters used to verify access to an account or device."
@@ -4142,9 +4438,12 @@
         "word": "Wi-Fi",
         "hint": "Wireless",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Account"
+        },
         "word_id": "technology/wi-fi",
         "definition": "A way for devices to connect to a local network wirelessly."
       },
@@ -4166,10 +4465,12 @@
         "hint": "Audience",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Audience"
+          "act_it": "Audience",
+          "two_truths": "Posted"
         },
         "word_id": "technology/livestream",
         "definition": "Video or audio broadcast over the internet as it happens."
@@ -4180,11 +4481,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Notifications",
-          "sound_only": "Incoming"
+          "sound_only": "Incoming",
+          "two_truths": "Posted"
         },
         "word_id": "technology/group-chat",
         "definition": "A digital conversation with several people in the same message thread."
@@ -4194,10 +4497,12 @@
         "hint": "Messages",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Messages"
+          "act_it": "Messages",
+          "two_truths": "Account"
         },
         "word_id": "technology/spam",
         "definition": "Unwanted messages sent in bulk, often to advertise something."
@@ -4234,12 +4539,14 @@
           "classic",
           "act_it",
           "sound_only",
+          "two_truths",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Portable",
           "sound_only": "Wireless",
-          "sell_it": "Travel"
+          "sell_it": "Travel",
+          "two_truths": "Screen"
         },
         "word_id": "technology/smartphone",
         "definition": "A mobile phone that can run apps and access the internet."
@@ -4250,11 +4557,13 @@
         "modes": [
           "classic",
           "act_it",
+          "two_truths",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Portable",
-          "sell_it": "Travel"
+          "sell_it": "Travel",
+          "two_truths": "Screen"
         },
         "word_id": "technology/laptop",
         "definition": "A portable computer with a screen and keyboard that fold together."
@@ -4265,11 +4574,13 @@
         "modes": [
           "classic",
           "act_it",
+          "two_truths",
           "sell_it"
         ],
         "mode_hints": {
           "act_it": "Screen",
-          "sell_it": "Travel"
+          "sell_it": "Travel",
+          "two_truths": "Screen"
         },
         "word_id": "technology/tablet",
         "definition": "A portable computer with a flat touchscreen as its main control."
@@ -4375,10 +4686,12 @@
         "hint": "Research",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Research"
+          "act_it": "Research",
+          "two_truths": "Account"
         },
         "word_id": "technology/search-engine",
         "definition": "An online service that finds webpages or other information matching your query."
@@ -4402,11 +4715,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Camera",
-          "sound_only": "Audio"
+          "sound_only": "Audio",
+          "two_truths": "Screen"
         },
         "word_id": "technology/video-call",
         "definition": "A conversation in which people can see and hear each other through connected devices."
@@ -4901,10 +5216,12 @@
         "hint": "Seasons",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Seasons"
+          "act_it": "Seasons",
+          "sell_it": "Outdoor"
         },
         "word_id": "hobbies/gardening",
         "definition": "Growing and caring for plants, often in a yard, pots, or beds."
@@ -4915,11 +5232,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Loops",
-          "sound_only": "Patience"
+          "sound_only": "Patience",
+          "sell_it": "Craft"
         },
         "word_id": "hobbies/knitting",
         "definition": "Making fabric by looping yarn with needles."
@@ -4944,10 +5263,12 @@
         "hint": "Studio",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Studio"
+          "act_it": "Studio",
+          "sell_it": "Craft"
         },
         "word_id": "hobbies/pottery",
         "definition": "Shaping clay into objects and firing it to make them hard."
@@ -4997,11 +5318,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Outdoors",
-          "sound_only": "Outdoors"
+          "sound_only": "Outdoors",
+          "sell_it": "Outdoor"
         },
         "word_id": "hobbies/birdwatching",
         "definition": "Watching and identifying wild birds as a pastime."
@@ -5011,10 +5334,12 @@
         "hint": "Pages",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Pages"
+          "act_it": "Pages",
+          "sell_it": "Quiet"
         },
         "word_id": "hobbies/journaling",
         "definition": "Regularly writing down events, thoughts, or feelings for yourself."
@@ -5037,10 +5362,12 @@
         "hint": "Pages",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Pages"
+          "act_it": "Pages",
+          "sell_it": "Quiet"
         },
         "word_id": "hobbies/reading",
         "definition": "Looking at written or printed words to understand what they say."
@@ -5079,11 +5406,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Workshop",
-          "sound_only": "Workshop"
+          "sound_only": "Workshop",
+          "sell_it": "Craft"
         },
         "word_id": "hobbies/woodworking",
         "definition": "Making or repairing things by cutting, shaping, and joining wood."
@@ -5093,10 +5422,12 @@
         "hint": "Scent",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Scent"
+          "act_it": "Scent",
+          "sell_it": "Craft"
         },
         "word_id": "hobbies/candle-making",
         "definition": "Creating objects that give light by pouring or shaping wax around a wick."
@@ -5106,10 +5437,12 @@
         "hint": "Ink",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Ink"
+          "act_it": "Ink",
+          "sell_it": "Quiet"
         },
         "word_id": "hobbies/calligraphy",
         "definition": "The art of forming decorative letters by hand."
@@ -5132,10 +5465,12 @@
         "hint": "Patience",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Patience"
+          "act_it": "Patience",
+          "sell_it": "Quiet"
         },
         "word_id": "hobbies/jigsaw-puzzles",
         "definition": "Pictures cut into irregular pieces that you fit together again."
@@ -5172,11 +5507,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Patience",
-          "sound_only": "Patience"
+          "sound_only": "Patience",
+          "sell_it": "Outdoor"
         },
         "word_id": "hobbies/fishing",
         "definition": "Trying to catch fish, often with a rod, line, and hook."
@@ -5187,11 +5524,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Trail",
-          "sound_only": "Trail"
+          "sound_only": "Trail",
+          "sell_it": "Outdoor"
         },
         "word_id": "hobbies/hiking",
         "definition": "Taking a long walk outdoors, often along a trail."
@@ -5963,10 +6302,12 @@
         "hint": "Comparison",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Comparison"
+          "act_it": "Comparison",
+          "if_it_could_talk": "Social"
         },
         "word_id": "emotions/jealousy",
         "definition": "An uneasy feeling about losing someone's attention or wanting what someone else has."
@@ -5991,10 +6332,12 @@
         "hint": "Attention",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Attention"
+          "act_it": "Attention",
+          "if_it_could_talk": "Social"
         },
         "word_id": "emotions/embarrassment",
         "definition": "An uncomfortable feeling of being exposed or looking foolish in front of others."
@@ -6005,11 +6348,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Exhale",
-          "sound_only": "Exhale"
+          "sound_only": "Exhale",
+          "if_it_could_talk": "Waiting"
         },
         "word_id": "emotions/relief",
         "definition": "The easing of worry, pain, or tension when something improves."
@@ -6019,10 +6364,12 @@
         "hint": "Discovery",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Discovery"
+          "act_it": "Discovery",
+          "if_it_could_talk": "Waiting"
         },
         "word_id": "emotions/curiosity",
         "definition": "A strong desire to find out, learn, or understand something."
@@ -6033,11 +6380,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Obstacle",
-          "sound_only": "Obstacle"
+          "sound_only": "Obstacle",
+          "if_it_could_talk": "Heavy"
         },
         "word_id": "emotions/frustration",
         "definition": "The upset feeling that comes when something keeps you from reaching a goal."
@@ -6047,10 +6396,12 @@
         "hint": "Achievement",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Achievement"
+          "act_it": "Achievement",
+          "if_it_could_talk": "Social"
         },
         "word_id": "emotions/pride",
         "definition": "A sense of satisfaction in something you or someone you care about has done."
@@ -6060,10 +6411,12 @@
         "hint": "Distance",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Distance"
+          "act_it": "Distance",
+          "if_it_could_talk": "Heavy"
         },
         "word_id": "emotions/loneliness",
         "definition": "The painful feeling of wanting more connection or companionship."
@@ -6073,10 +6426,12 @@
         "hint": "Kindness",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Kindness"
+          "act_it": "Kindness",
+          "if_it_could_talk": "Social"
         },
         "word_id": "emotions/gratitude",
         "definition": "A feeling of appreciation for kindness or something good you received."
@@ -6117,11 +6472,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Tears",
-          "sound_only": "Tears"
+          "sound_only": "Tears",
+          "if_it_could_talk": "Heavy"
         },
         "word_id": "emotions/sadness",
         "definition": "An unhappy feeling often connected to loss, hurt, or disappointment."
@@ -6177,11 +6534,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Waiting",
-          "sound_only": "Waiting"
+          "sound_only": "Waiting",
+          "if_it_could_talk": "Waiting"
         },
         "word_id": "emotions/boredom",
         "definition": "A restless or flat feeling when nothing seems interesting or engaging."
@@ -6191,10 +6550,12 @@
         "hint": "Future",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Future"
+          "act_it": "Future",
+          "if_it_could_talk": "Waiting"
         },
         "word_id": "emotions/hope",
         "definition": "A feeling that something you want may happen or improve."
@@ -6204,10 +6565,12 @@
         "hint": "Apology",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Apology"
+          "act_it": "Apology",
+          "if_it_could_talk": "Heavy"
         },
         "word_id": "emotions/guilt",
         "definition": "An uneasy feeling that you did something wrong or caused harm."

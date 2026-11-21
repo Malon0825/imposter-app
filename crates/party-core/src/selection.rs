@@ -335,7 +335,7 @@ mod tests {
                 .values()
                 .map(BTreeMap::len)
                 .collect::<Vec<_>>(),
-            [23, 21, 14, 2, 2, 2]
+            [23, 21, 14, 7, 7, 7]
         );
         for enabled in [
             &ids[..],
