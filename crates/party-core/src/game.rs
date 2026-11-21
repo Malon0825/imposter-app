@@ -104,6 +104,8 @@ pub struct Game {
     pending_reports: BTreeMap<String, u32>,
     // Party-only selection history, deliberately excluded from per-player views.
     imposter_turns: BTreeMap<String, u64>,
+    rule_turns: BTreeMap<GameMode, u64>,
+    last_rule: Option<GameMode>,
     last_imposter: Option<String>,
     processed: HashSet<String>,
     replacement: bool,
@@ -170,6 +172,8 @@ impl Game {
             reading_streaks: BTreeMap::new(),
             pending_reports: BTreeMap::new(),
             imposter_turns: BTreeMap::new(),
+            rule_turns: BTreeMap::new(),
+            last_rule: None,
             last_imposter: None,
             processed: HashSet::new(),
             replacement: false,
@@ -260,6 +264,31 @@ impl Game {
             .choose_weighted(rng, |(_, weight)| *weight)
             .map(|(id, _)| (*id).to_owned())
             .map_err(|_| "No connected players are available for this round.".into())
+    }
+    fn rule_weights(&self, feasible: &[GameMode]) -> Vec<(GameMode, f64)> {
+        // A rule that has never been feasible starts level with the least aired
+        // one, so it is preferred without flooding the next several rounds.
+        let minimum = feasible
+            .iter()
+            .filter_map(|rule| self.rule_turns.get(rule).copied())
+            .min()
+            .unwrap_or(0);
+        feasible
+            .iter()
+            .map(|rule| {
+                let turns = self.rule_turns.get(rule).copied().unwrap_or(minimum);
+                // Same shape as the imposter weighting: one extra airing drops
+                // the weight to 1/4, two to 1/9, and the last rule is halved.
+                let gap = turns.saturating_sub(minimum).min(15) as f64;
+                let recent = if self.last_rule == Some(*rule) { 0.5 } else { 1.0 };
+                (*rule, recent / (1.0 + gap).powi(2))
+            })
+            .collect()
+    }
+    fn record_rule(&mut self, rule: GameMode) {
+        let turns = self.rule_turns.entry(rule).or_default();
+        *turns = turns.saturating_add(1);
+        self.last_rule = Some(rule);
     }
     fn record_imposter(&mut self, id: &str) {
         let turns = self.imposter_turns.entry(id.into()).or_default();
@@ -904,6 +933,8 @@ impl Game {
                 self.pending_reports.clear();
                 self.imposter_turns.clear();
                 self.last_imposter = None;
+                self.rule_turns.clear();
+                self.last_rule = None;
             }
             "leave" => {
                 if actor == self.host {
@@ -960,9 +991,11 @@ impl Game {
         let random = self.deck.random_rules;
         let mut availability = selection::availability(&self.topics, &self.deck, random).modes;
         let modes: Vec<_> = availability.keys().copied().collect();
-        let rule = *modes
-            .choose(&mut rand::thread_rng())
-            .ok_or(NO_FRESH_TOPICS)?;
+        let rule = self
+            .rule_weights(&modes)
+            .choose_weighted(&mut rand::thread_rng(), |(_, weight)| *weight)
+            .map(|(rule, _)| *rule)
+            .map_err(|_| NO_FRESH_TOPICS)?;
         let eligible_targets = availability.remove(&rule).expect("sampled a feasible rule");
         self.round = Round {
             id: self
@@ -979,6 +1012,11 @@ impl Game {
             deck_revision: self.deck.revision,
             ..Default::default()
         };
+        // Charged once the round exists, and only for a genuine choice, so
+        // fixed-Classic rounds never bias the draw when random rules return.
+        if modes.len() > 1 {
+            self.record_rule(rule);
+        }
         for p in &mut self.players {
             p.earned = 0;
         }
@@ -1868,6 +1906,56 @@ mod tests {
         assert!(g.apply(&host, &stale).is_err());
         assert!(g.round.clues.is_empty());
     }
+    #[test]
+    fn weighted_rule_draw_spreads_the_rules_and_never_excludes_one() {
+        let feasible = GameMode::ALL.to_vec();
+        let mut g = party();
+
+        // A rule that has just aired is the least likely of equals.
+        g.record_rule(GameMode::SoundOnly);
+        let weights: BTreeMap<_, _> = g.rule_weights(&feasible).into_iter().collect();
+        assert!(weights[&GameMode::SoundOnly] < weights[&GameMode::Classic]);
+        // An unplayed rule sits level with the least aired one, not above it.
+        assert_eq!(weights[&GameMode::Classic], weights[&GameMode::ActIt]);
+
+        // A rule aired far more often keeps real but much lower odds.
+        g.rule_turns.insert(GameMode::Classic, 5);
+        let weights: BTreeMap<_, _> = g.rule_weights(&feasible).into_iter().collect();
+        assert!(weights[&GameMode::Classic] > 0.0);
+        assert!(weights[&GameMode::Classic] * 10.0 < weights[&GameMode::ActIt]);
+
+        // Over a long party every rule airs, and no rule runs away with it.
+        g.rule_turns.clear();
+        g.last_rule = None;
+        let mut repeats = 0;
+        for _ in 0..600 {
+            let previous = g.last_rule;
+            g.to_lobby();
+            for player in &mut g.players {
+                player.ready = true;
+            }
+            g.deck.random_rules = true;
+            g.kickoff(false).unwrap();
+            let rule = g.round.rule.unwrap();
+            if previous == Some(rule) {
+                repeats += 1;
+            }
+        }
+        let counts: Vec<_> = GameMode::ALL
+            .iter()
+            .map(|rule| g.rule_turns.get(rule).copied().unwrap_or(0))
+            .collect();
+        assert_eq!(counts.iter().sum::<u64>(), 600);
+        assert!(counts.iter().all(|n| *n > 0), "a rule never aired: {counts:?}");
+        // Uniform draws would land near 100 each; weighting tightens the spread.
+        assert!(
+            counts.iter().max().unwrap() - counts.iter().min().unwrap() < 40,
+            "rules drifted apart: {counts:?}"
+        );
+        // Back-to-back repeats stay possible, just rarer than a uniform 1 in 6.
+        assert!(repeats < 60, "the same rule kept appearing: {repeats}");
+    }
+
     #[test]
     fn weighted_imposter_selection_favors_fewer_turns_but_allows_repeats() {
         use rand::{rngs::StdRng, SeedableRng};
