@@ -11,10 +11,12 @@
         "hint": "Pocket",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Pocket"
+          "act_it": "Pocket",
+          "if_it_could_talk": "Pocket"
         },
         "word_id": "everyday/wallet",
         "definition": "A small folding case for carrying money and cards."
@@ -24,10 +26,12 @@
         "hint": "Weather",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Weather"
+          "act_it": "Weather",
+          "if_it_could_talk": "Weather"
         },
         "word_id": "everyday/umbrella",
         "definition": "A folding cover held overhead to protect you from rain or sun."
@@ -50,10 +54,12 @@
         "hint": "Soft",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Soft"
+          "act_it": "Soft",
+          "if_it_could_talk": "Night"
         },
         "word_id": "everyday/pillow",
         "definition": "A soft cushion that supports your head while you rest."
@@ -94,11 +100,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Pocket",
-          "sound_only": "Metal"
+          "sound_only": "Metal",
+          "if_it_could_talk": "Pocket"
         },
         "word_id": "everyday/key",
         "definition": "A small shaped object that locks or unlocks something."
@@ -108,10 +116,12 @@
         "hint": "Evening",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Evening"
+          "act_it": "Evening",
+          "if_it_could_talk": "Night"
         },
         "word_id": "everyday/candle",
         "definition": "A stick of wax with a wick that burns to give light."
@@ -160,10 +170,12 @@
         "hint": "Routine",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Routine"
+          "act_it": "Routine",
+          "if_it_could_talk": "Pocket"
         },
         "word_id": "everyday/comb",
         "definition": "A tool with a row of teeth used to tidy or untangle hair."
@@ -187,11 +199,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Bedside",
-          "sound_only": "Routine"
+          "sound_only": "Routine",
+          "if_it_could_talk": "Night"
         },
         "word_id": "everyday/clock",
         "definition": "A device that shows the current time."
@@ -217,11 +231,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Pocket",
-          "sound_only": "Craft"
+          "sound_only": "Craft",
+          "if_it_could_talk": "Pocket"
         },
         "word_id": "everyday/pen",
         "definition": "A handheld tool that writes with ink."
@@ -261,10 +277,12 @@
         "hint": "Soft",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Soft"
+          "act_it": "Soft",
+          "if_it_could_talk": "Weather"
         },
         "word_id": "everyday/blanket",
         "definition": "A large, soft covering that helps keep you warm."
@@ -274,10 +292,12 @@
         "hint": "Bedside",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Bedside"
+          "act_it": "Bedside",
+          "if_it_could_talk": "Night"
         },
         "word_id": "everyday/lamp",
         "definition": "A device that gives light, often placed on a table or floor."
@@ -315,10 +335,12 @@
         "hint": "Weather",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Weather"
+          "act_it": "Weather",
+          "if_it_could_talk": "Weather"
         },
         "word_id": "everyday/sunglasses",
         "definition": "Glasses with dark lenses that protect your eyes from bright light."
@@ -417,11 +439,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Weather",
-          "sound_only": "Metal"
+          "sound_only": "Metal",
+          "if_it_could_talk": "Weather"
         },
         "word_id": "everyday/wind-chime",
         "definition": "Hanging pieces that strike one another and make sounds in a breeze."
@@ -468,10 +492,12 @@
         "hint": "Rice",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Rice"
+          "act_it": "Rice",
+          "two_truths": "Filling"
         },
         "word_id": "food/sushi",
         "definition": "A Japanese dish made with vinegared rice and ingredients such as fish or vegetables."
@@ -481,10 +507,12 @@
         "hint": "Steam",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Steam"
+          "act_it": "Steam",
+          "two_truths": "Filling"
         },
         "word_id": "food/dumpling",
         "definition": "A small piece of cooked dough, often wrapped around a filling."
@@ -494,10 +522,12 @@
         "hint": "Filling",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Filling"
+          "act_it": "Filling",
+          "two_truths": "Filling"
         },
         "word_id": "food/taco",
         "definition": "A folded tortilla filled with ingredients such as meat, beans, or vegetables."
@@ -535,10 +565,12 @@
         "hint": "Chilled",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Chilled"
+          "act_it": "Chilled",
+          "two_truths": "Treat"
         },
         "word_id": "food/ice-cream",
         "definition": "A sweet, frozen dessert often made with milk or cream."
@@ -549,11 +581,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Snack",
-          "sound_only": "Snack"
+          "sound_only": "Snack",
+          "two_truths": "Treat"
         },
         "word_id": "food/popcorn",
         "definition": "Corn kernels that puff and burst when heated."
@@ -564,11 +598,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Morning",
-          "sound_only": "Morning"
+          "sound_only": "Morning",
+          "two_truths": "Breakfast"
         },
         "word_id": "food/coffee",
         "definition": "A drink brewed from roasted, ground beans."
@@ -606,10 +642,12 @@
         "hint": "Lunch",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Lunch"
+          "act_it": "Lunch",
+          "two_truths": "Filling"
         },
         "word_id": "food/sandwich",
         "definition": "A filling served between slices of bread."
@@ -619,10 +657,12 @@
         "hint": "Breakfast",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Breakfast"
+          "act_it": "Breakfast",
+          "two_truths": "Breakfast"
         },
         "word_id": "food/pancakes",
         "definition": "Flat, round cakes made by cooking batter on a hot pan."
@@ -632,10 +672,12 @@
         "hint": "Breakfast",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Breakfast"
+          "act_it": "Breakfast",
+          "two_truths": "Breakfast"
         },
         "word_id": "food/waffle",
         "definition": "A crisp batter cake cooked in a patterned iron."
@@ -699,10 +741,12 @@
         "hint": "Bakery",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Bakery"
+          "act_it": "Bakery",
+          "two_truths": "Breakfast"
         },
         "word_id": "food/croissant",
         "definition": "A flaky, buttery pastry often shaped like a crescent."
@@ -712,10 +756,12 @@
         "hint": "Sweet",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Sweet"
+          "act_it": "Sweet",
+          "two_truths": "Treat"
         },
         "word_id": "food/chocolate",
         "definition": "A food made from cacao, often sweetened and eaten as a treat."
@@ -766,10 +812,12 @@
         "hint": "Celebration",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Celebration"
+          "act_it": "Celebration",
+          "two_truths": "Treat"
         },
         "word_id": "food/cake",
         "definition": "A sweet baked dessert often made with flour, sugar, and eggs."
@@ -830,11 +878,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Herd",
-          "sound_only": "Herd"
+          "sound_only": "Herd",
+          "two_truths": "Africa"
         },
         "word_id": "animals/elephant",
         "definition": "A large land mammal with a trunk and wide ears."
@@ -845,11 +895,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Playful",
-          "sound_only": "Playful"
+          "sound_only": "Playful",
+          "two_truths": "Water"
         },
         "word_id": "animals/dolphin",
         "definition": "An intelligent sea mammal with a curved body that breathes air."
@@ -905,11 +957,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Grassland",
-          "sound_only": "Grassland"
+          "sound_only": "Grassland",
+          "two_truths": "Africa"
         },
         "word_id": "animals/lion",
         "definition": "A large wild cat whose males often have a mane."
@@ -935,11 +989,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Woodland",
-          "sound_only": "Woodland"
+          "sound_only": "Woodland",
+          "two_truths": "Burrow"
         },
         "word_id": "animals/bear",
         "definition": "A large, heavy mammal with thick fur and powerful paws."
@@ -949,10 +1005,12 @@
         "hint": "Grassland",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Grassland"
+          "act_it": "Grassland",
+          "two_truths": "Africa"
         },
         "word_id": "animals/giraffe",
         "definition": "A tall African mammal with a very long neck and a patterned coat."
@@ -963,11 +1021,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Herd",
-          "sound_only": "Herd"
+          "sound_only": "Herd",
+          "two_truths": "Africa"
         },
         "word_id": "animals/zebra",
         "definition": "An African animal related to horses with black and white stripes."
@@ -990,10 +1050,12 @@
         "hint": "Garden",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Garden"
+          "act_it": "Garden",
+          "two_truths": "Burrow"
         },
         "word_id": "animals/rabbit",
         "definition": "A small mammal with long ears and strong hind legs for hopping."
@@ -1004,11 +1066,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Night",
-          "sound_only": "Night"
+          "sound_only": "Night",
+          "two_truths": "Burrow"
         },
         "word_id": "animals/fox",
         "definition": "A wild mammal related to dogs, often with a pointed snout and bushy tail."
@@ -1048,10 +1112,12 @@
         "hint": "Pond",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Pond"
+          "act_it": "Pond",
+          "two_truths": "Water"
         },
         "word_id": "animals/turtle",
         "definition": "A reptile with a hard shell that protects much of its body."
@@ -1062,11 +1128,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Pond",
-          "sound_only": "Water"
+          "sound_only": "Water",
+          "two_truths": "Burrow"
         },
         "word_id": "animals/frog",
         "definition": "An amphibian with strong hind legs that often lives near water."
@@ -1105,11 +1173,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Ocean",
-          "sound_only": "Ocean"
+          "sound_only": "Ocean",
+          "two_truths": "Water"
         },
         "word_id": "animals/whale",
         "definition": "A large marine mammal that breathes through a blowhole."
@@ -1119,10 +1189,12 @@
         "hint": "River",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "River"
+          "act_it": "River",
+          "two_truths": "Water"
         },
         "word_id": "animals/crocodile",
         "definition": "A large reptile with a long snout and strong jaws that lives near water."
@@ -2271,11 +2343,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Packing",
-          "sound_only": "Packing"
+          "sound_only": "Packing",
+          "sell_it": "Packing"
         },
         "word_id": "travel/suitcase",
         "definition": "A case with a handle, often with wheels, used to carry clothes when traveling."
@@ -2313,10 +2387,12 @@
         "hint": "Market",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Market"
+          "act_it": "Market",
+          "sell_it": "Packing"
         },
         "word_id": "travel/souvenir",
         "definition": "An object kept as a reminder of a place or experience."
@@ -2326,10 +2402,12 @@
         "hint": "Outdoors",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Outdoors"
+          "act_it": "Outdoors",
+          "sell_it": "Packing"
         },
         "word_id": "travel/sunscreen",
         "definition": "A product applied to the skin to help protect it from ultraviolet light."
@@ -2353,11 +2431,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Route",
-          "sound_only": "Route"
+          "sound_only": "Route",
+          "sell_it": "Excursion"
         },
         "word_id": "travel/road-trip",
         "definition": "A journey taken by car or another road vehicle, often with several stops."
@@ -2383,11 +2463,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Coast",
-          "sound_only": "Coast"
+          "sound_only": "Coast",
+          "sell_it": "Excursion"
         },
         "word_id": "travel/cruise",
         "definition": "A vacation spent on a ship that usually stops at several destinations."
@@ -2420,10 +2502,12 @@
         "hint": "Direction",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Direction"
+          "act_it": "Direction",
+          "sell_it": "Packing"
         },
         "word_id": "travel/map",
         "definition": "A drawing or digital view that shows the location of places and routes."
@@ -2469,10 +2553,12 @@
         "hint": "Local",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Local"
+          "act_it": "Local",
+          "sell_it": "Excursion"
         },
         "word_id": "travel/tour-guide",
         "definition": "A person who leads visitors and explains the places they see."
@@ -2520,9 +2606,12 @@
         "word": "Travel insurance",
         "hint": "Documents",
         "modes": [
-          "classic"
+          "classic",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "sell_it": "Excursion"
+        },
         "word_id": "travel/travel-insurance",
         "definition": "Coverage that can help pay for certain costs if something goes wrong on a trip."
       },
@@ -2531,10 +2620,12 @@
         "hint": "Departure",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Departure"
+          "act_it": "Departure",
+          "sell_it": "Transport"
         },
         "word_id": "travel/train-ticket",
         "definition": "Proof of payment or permission to ride a particular rail service."
@@ -2545,11 +2636,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Coast",
-          "sound_only": "Coast"
+          "sound_only": "Coast",
+          "sell_it": "Transport"
         },
         "word_id": "travel/ferry",
         "definition": "A boat that regularly carries people or vehicles across water."
@@ -2560,11 +2653,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Route",
-          "sound_only": "Route"
+          "sound_only": "Route",
+          "sell_it": "Transport"
         },
         "word_id": "travel/rental-car",
         "definition": "A vehicle you pay to use for a limited period."
@@ -2650,11 +2745,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Coast",
-          "sound_only": "Coast"
+          "sound_only": "Coast",
+          "sell_it": "Transport"
         },
         "word_id": "travel/speedboat",
         "definition": "A small powered boat built to travel quickly."
@@ -4120,10 +4217,12 @@
         "hint": "Battery",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Battery"
+          "act_it": "Battery",
+          "sell_it": "Travel"
         },
         "word_id": "technology/power-bank",
         "definition": "A portable battery used to recharge other devices."
@@ -4134,11 +4233,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Portable",
-          "sound_only": "Wireless"
+          "sound_only": "Wireless",
+          "sell_it": "Travel"
         },
         "word_id": "technology/smartphone",
         "definition": "A mobile phone that can run apps and access the internet."
@@ -4148,10 +4249,12 @@
         "hint": "Portable",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Portable"
+          "act_it": "Portable",
+          "sell_it": "Travel"
         },
         "word_id": "technology/laptop",
         "definition": "A portable computer with a screen and keyboard that fold together."
@@ -4161,10 +4264,12 @@
         "hint": "Screen",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Screen"
+          "act_it": "Screen",
+          "sell_it": "Travel"
         },
         "word_id": "technology/tablet",
         "definition": "A portable computer with a flat touchscreen as its main control."
@@ -4175,11 +4280,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Input",
-          "sound_only": "Desktop"
+          "sound_only": "Desktop",
+          "sell_it": "Desk"
         },
         "word_id": "technology/keyboard",
         "definition": "A set of keys used for typing and entering commands."
@@ -4190,11 +4297,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Desktop",
-          "sound_only": "Desktop"
+          "sound_only": "Desktop",
+          "sell_it": "Desk"
         },
         "word_id": "technology/mouse",
         "definition": "A small handheld device that moves a pointer around a computer screen."
@@ -4205,11 +4314,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Office",
-          "sound_only": "Office"
+          "sound_only": "Office",
+          "sell_it": "Desk"
         },
         "word_id": "technology/printer",
         "definition": "A machine that produces text or images on paper or another material."
@@ -4220,11 +4331,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Audio",
-          "sound_only": "Audio"
+          "sound_only": "Audio",
+          "sell_it": "Audio"
         },
         "word_id": "technology/headphones",
         "definition": "A pair of small speakers worn over or in the ears."
@@ -4234,10 +4347,12 @@
         "hint": "Pairing",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Pairing"
+          "act_it": "Pairing",
+          "sell_it": "Audio"
         },
         "word_id": "technology/bluetooth",
         "definition": "A wireless technology used to connect devices across short distances."
@@ -4328,11 +4443,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Office",
-          "sound_only": "Office"
+          "sound_only": "Office",
+          "sell_it": "Desk"
         },
         "word_id": "technology/scanner",
         "definition": "A device that reads an image, document, or code and converts it to digital data."
@@ -4358,11 +4475,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Wireless",
-          "sound_only": "Wireless"
+          "sound_only": "Wireless",
+          "sell_it": "Audio"
         },
         "word_id": "technology/walkie-talkie",
         "definition": "A handheld two-way radio used to talk to someone nearby."
@@ -4373,11 +4492,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Incoming",
-          "sound_only": "Incoming"
+          "sound_only": "Incoming",
+          "sell_it": "Audio"
         },
         "word_id": "technology/ringtone",
         "definition": "The sound a phone makes to announce an incoming call."
@@ -4412,11 +4533,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Morning",
-          "sound_only": "Morning"
+          "sound_only": "Morning",
+          "if_it_could_talk": "Delay"
         },
         "word_id": "chaos/oversleeping",
         "definition": "Sleeping past the time you meant to wake up."
@@ -4440,11 +4563,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Warning",
-          "sound_only": "Warning"
+          "sound_only": "Warning",
+          "if_it_could_talk": "Blocked"
         },
         "word_id": "chaos/dead-phone-battery",
         "definition": "Having too little charge left for your mobile phone to work."
@@ -4481,11 +4606,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Hurry",
-          "sound_only": "Morning"
+          "sound_only": "Morning",
+          "if_it_could_talk": "Delay"
         },
         "word_id": "chaos/missed-bus",
         "definition": "Arriving too late to board the road vehicle you planned to catch."
@@ -4496,11 +4623,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Cleanup",
-          "sound_only": "Cleanup"
+          "sound_only": "Cleanup",
+          "if_it_could_talk": "Mess"
         },
         "word_id": "chaos/spilled-coffee",
         "definition": "Accidentally knocking over or sloshing a cup of brewed coffee."
@@ -4524,11 +4653,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Kitchen",
-          "sound_only": "Kitchen"
+          "sound_only": "Kitchen",
+          "if_it_could_talk": "Mess"
         },
         "word_id": "chaos/burnt-toast",
         "definition": "Bread heated so long that it becomes charred."
@@ -4551,10 +4682,12 @@
         "hint": "Door",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Door"
+          "act_it": "Door",
+          "if_it_could_talk": "Blocked"
         },
         "word_id": "chaos/locked-out",
         "definition": "Being unable to get inside because you do not have a way to open the lock."
@@ -4565,11 +4698,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Delay",
-          "sound_only": "Delay"
+          "sound_only": "Delay",
+          "if_it_could_talk": "Delay"
         },
         "word_id": "chaos/flat-tire",
         "definition": "A wheel's rubber covering losing the air it needs to work properly."
@@ -4580,11 +4715,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Delay",
-          "sound_only": "Delay"
+          "sound_only": "Delay",
+          "if_it_could_talk": "Delay"
         },
         "word_id": "chaos/traffic-jam",
         "definition": "Lots of road vehicles packed together and moving slowly or barely at all."
@@ -4621,11 +4758,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Cleanup",
-          "sound_only": "Cleanup"
+          "sound_only": "Cleanup",
+          "if_it_could_talk": "Mess"
         },
         "word_id": "chaos/clogged-sink",
         "definition": "A basin whose drain is blocked so water cannot flow out properly."
@@ -4636,11 +4775,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Rain",
-          "sound_only": "Cleanup"
+          "sound_only": "Cleanup",
+          "if_it_could_talk": "Mess"
         },
         "word_id": "chaos/leaking-roof",
         "definition": "Water getting through the top of a building when it should stay outside."
@@ -4677,11 +4818,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Delay",
-          "sound_only": "Delay"
+          "sound_only": "Delay",
+          "if_it_could_talk": "Blocked"
         },
         "word_id": "chaos/printer-jam",
         "definition": "Paper getting trapped inside a machine while it is trying to print."
@@ -4733,11 +4876,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
           "act_it": "Clothing",
-          "sound_only": "Resistance"
+          "sound_only": "Resistance",
+          "if_it_could_talk": "Blocked"
         },
         "word_id": "chaos/stuck-zipper",
         "definition": "A clothing or bag fastener that will not slide open or closed."

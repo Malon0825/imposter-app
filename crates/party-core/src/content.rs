@@ -9,10 +9,24 @@ pub enum GameMode {
     Classic,
     ActIt,
     SoundOnly,
+    TwoTruths,
+    IfItCouldTalk,
+    SellIt,
 }
 
 impl GameMode {
-    pub const ALL: [Self; 3] = [Self::Classic, Self::ActIt, Self::SoundOnly];
+    pub const ALL: [Self; 6] = [
+        Self::Classic,
+        Self::ActIt,
+        Self::SoundOnly,
+        Self::TwoTruths,
+        Self::IfItCouldTalk,
+        Self::SellIt,
+    ];
+
+    pub fn nonverbal(self) -> bool {
+        matches!(self, Self::ActIt | Self::SoundOnly)
+    }
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -111,7 +125,7 @@ mod tests {
 
     #[test]
     fn playable_pools_require_ten_compatible_words_and_private_hints() {
-        let mut totals = [0; 3];
+        let mut totals = [0; GameMode::ALL.len()];
         for topic in topics() {
             for (index, mode) in GameMode::ALL.into_iter().enumerate() {
                 let pool = topic.words_for_mode(mode);
@@ -126,7 +140,7 @@ mod tests {
                 }
             }
         }
-        assert_eq!(totals, [23, 21, 14]);
+        assert_eq!(totals, [23, 21, 14, 2, 2, 2]);
         let everyday = pack("everyday");
         let wallet = everyday
             .words
@@ -166,7 +180,7 @@ mod tests {
         assert!(modes_for_topics(&["unknown".into()]).is_empty());
         assert_eq!(
             modes_for_topics(&["food".into()]),
-            vec![GameMode::Classic, GameMode::ActIt]
+            vec![GameMode::Classic, GameMode::ActIt, GameMode::TwoTruths]
         );
         assert_eq!(
             modes_for_topics(&["health".into()]),

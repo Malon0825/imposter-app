@@ -98,13 +98,9 @@ async function sessionScoringSmoke(page) {
     p.locator(`main.screen-${phase}`).waitFor();
   const nativeView = (s) => call("state", { session_id: s.session_id });
   const finish = async () => {
+    await waitPhase(page, "results");
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
     let v = await state();
-    await page
-      .getByRole("button", { name: "Continue to reports", exact: true })
-      .click();
-    await waitPhase(page, "reporting");
-    await act(host, "punish");
-    v = await state();
     while (v.phase === "punishment")
       v = await act(host, "skip", v.punishment.turn);
     await waitPhase(page, v.phase);
@@ -113,11 +109,14 @@ async function sessionScoringSmoke(page) {
   const begin = async () => {
     let v = await state();
     if (v.phase === "rankings") await act(host, "next");
-    for (const s of natives.slice(1)) await act(s, "ready", true);
-    await guest.getByRole("button", { name: "I’m ready", exact: true }).click();
-    await page
-      .getByRole("button", { name: "Vote for topic", exact: true })
-      .click();
+    v = await state();
+    if (v.phase === "lobby") {
+      for (const s of natives.slice(1)) await act(s, "ready", true);
+      await guest
+        .getByRole("button", { name: "I’m ready", exact: true })
+        .click();
+      await act(host, "start");
+    }
     await waitPhase(page, "topic_voting");
     v = await state();
     round = v.round_id;
@@ -129,7 +128,7 @@ async function sessionScoringSmoke(page) {
     await guest
       .getByRole("button", { name: "Lock my vote", exact: true })
       .click();
-    await act(host, "begin_round");
+    await waitPhase(page, "roles");
     const views = await Promise.all(natives.map(nativeView));
     for (const s of natives) await act(s, "role_ready");
     await guest
@@ -162,23 +161,6 @@ async function sessionScoringSmoke(page) {
           : imposter;
       await act(s, "vote", { player_id: target, stake: 0 });
     }
-    const v = await state();
-    if (v.phase === "runoff") {
-      await waitPhase(guest, "runoff");
-      await guestVote(
-        guestId === imposter
-          ? v.candidates.find((id) => id !== guestId)
-          : imposter,
-      );
-      for (const s of natives) {
-        const id = s.credentials.player_id;
-        await act(
-          s,
-          "vote",
-          id === imposter ? v.candidates.find((x) => x !== id) : imposter,
-        );
-      }
-    }
     return accused;
   };
   const guestVote = async (target, stake = 0, lostResponse = false) => {
@@ -188,7 +170,7 @@ async function sessionScoringSmoke(page) {
       .locator(".ballot-row")
       .filter({ has: guest.getByText(name, { exact: true }) })
       .click();
-    if (gv.phase !== "runoff" && !gv.private_role.imposter)
+    if (!gv.private_role.imposter)
       await guest
         .getByRole("button", {
           name: stake
@@ -324,11 +306,20 @@ async function sessionScoringSmoke(page) {
           await capture(guest, "bet-compact");
           await guest.setViewportSize({ width: 390, height: 844 });
         }
-      } else
+      } else {
+        await guest
+          .getByText(
+            "Your vote is a dummy vote. It won’t count toward the tally.",
+            { exact: true },
+          )
+          .waitFor();
         assert(
-          (await guest.locator(".confidence-bet").count()) === 0,
-          "Imposter has betting controls",
+          (await guest
+            .getByRole("group", { name: "Bet on your escape", exact: true })
+            .count()) === 1,
+          "The imposter is missing the escape bet",
         );
+      }
       const target =
         imposter === guestId
           ? gv.players.find((p) => p.id !== guestId).id
@@ -465,7 +456,7 @@ async function sessionScoringSmoke(page) {
       checks: [
         "target selection",
         "affordable/optional bets",
-        "imposter exclusion",
+        "imposter escape bet",
         "private stakes",
         "lost-response recovery",
         "closed-tab QR reconnect",

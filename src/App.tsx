@@ -1,6 +1,7 @@
 import {
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type ReactNode,
@@ -31,7 +32,7 @@ import type {
   View,
 } from "./types";
 import { Icon } from "./icons";
-import { ROUND_RULES, RuleArt, RuleIndicator, RuleReveal } from "./round-rules";
+import { ROUND_RULES, RandomRulesSwitch, RuleArt, RuleIndicator, RuleReveal } from "./round-rules";
 import { RoleClue, RoleMeaning } from "./role-meaning";
 import {
   MOTION,
@@ -253,6 +254,9 @@ function TopicVoting({
   const [searching, setSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const submitted = vote.my_topics !== null;
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [showResults, submitted]);
   useEffect(() => {
     if (submitted) preferences.removeItem(draftKey);
   }, [submitted, draftKey]);
@@ -344,7 +348,7 @@ function TopicVoting({
             <div className="center-stage topic-locked">
               <LockedVoteArt />
               <h1>Your topics are locked</h1>
-              {nonverbal && <RuleIndicator rule={rule} />}
+              {rule && rule !== "classic" && <RuleIndicator rule={rule} />}
               <p className="muted">You chose {names(vote.my_topics!)}.</p>
               <p>Results appear when everyone votes.</p>
             </div>
@@ -366,14 +370,14 @@ function TopicVoting({
           </>
         ) : (
           <>
-            <h1>Choose the mood</h1>
-            {nonverbal && <RuleIndicator rule={rule} />}
+            <h1>What should we play?</h1>
+            {rule && rule !== "classic" && <RuleIndicator rule={rule} />}
             <p className="muted topic-ballot-copy">
               {rule === "sound_only"
                 ? "Only topics with sound-ready words."
                 : rule === "act_it"
                   ? "Only topics with words you can act out."
-                  : "Pick one or more. Each gets 1 vote."}
+                  : "Choose one or more topics."}
             </p>
             <ExpandSection open={searching}>
               <input
@@ -495,7 +499,7 @@ function TopicVoting({
           )
         }
       />
-      {nonverbal && (
+      {rule && rule !== "classic" && (
         <div className="topic-result-rule">
           <RuleIndicator rule={rule} />
         </div>
@@ -633,18 +637,14 @@ function TopicVoting({
             <Button kind="text" onClick={() => setShowResults(true)}>
               View votes
             </Button>
-            {view.is_host ? (
-              <Button
-                disabled={
-                  busy || view.players.some((p) => !p.left && !p.connected)
-                }
-                onClick={() => send("begin_round")}
-              >
-                Continue to roles
-              </Button>
-            ) : (
-              waiting("Waiting for the host to continue to roles.")
-            )}
+            {view.deal_error && view.is_host ? (
+              <>
+                <p role="alert" className="terra">{view.deal_error}</p>
+                <Button disabled={busy} onClick={() => send("begin_round")}>Retry deal</Button>
+              </>
+            ) : waiting(view.players.some((p) => !p.left && !p.connected)
+              ? "Waiting for everyone to reconnect."
+              : "Dealing private cards…")}
             {nonverbal && (
               <p className="muted center compact">
                 {ROUND_RULES[rule].name} stays for the whole round.
@@ -710,23 +710,6 @@ export default function App() {
     text: string;
     existing: boolean;
   } | null>(null);
-  useEffect(() => {
-    if (!clueEditor || !window.visualViewport) return;
-    const viewport = window.visualViewport;
-    const update = () =>
-      document.documentElement.style.setProperty(
-        "--clue-keyboard-inset",
-        `${Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop)}px`,
-      );
-    viewport.addEventListener("resize", update);
-    viewport.addEventListener("scroll", update);
-    update();
-    return () => {
-      viewport.removeEventListener("resize", update);
-      viewport.removeEventListener("scroll", update);
-      document.documentElement.style.removeProperty("--clue-keyboard-inset");
-    };
-  }, [!!clueEditor]);
   const [reportTargets, setReportTargets] = useState<string[]>([]);
   const [revealRequested, setRevealed] = useState(false);
   const revealRound = useRef<number | null>(null);
@@ -735,6 +718,8 @@ export default function App() {
   const [qr, setQr] = useState("");
   const [showQr, setShowQr] = useState(false);
   const [showRoundSettings, setShowRoundSettings] = useState(false);
+  const [skipRule, setSkipRule] = useState<boolean | null>(null);
+  const [reportOpen, setReportOpen] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [confirm, setConfirm] = useState<{
     title: string;
@@ -837,7 +822,7 @@ export default function App() {
         disconnected)
     ) {
       setClueEditor(null);
-      if (view?.phase === "voting" || view?.phase === "runoff")
+      if (view?.phase === "voting")
         setNotice("Voting has started. Clues are now read-only.");
     }
   }, [view?.phase, view?.round_id, disconnected, clueEditor?.round]);
@@ -1062,8 +1047,13 @@ export default function App() {
     setVote("");
     setBet(0);
     setReportTargets([]);
+    setReportOpen(false);
+    setSkipRule(null);
     setError("");
   }, [view?.round_id, view?.phase]);
+  useEffect(() => {
+    if (view?.round_notice) setNotice(view.round_notice);
+  }, [view?.round_id, view?.round_notice]);
   useEffect(() => {
     if (
       page === "secret" &&
@@ -1133,6 +1123,11 @@ export default function App() {
         setShowQr(false);
         return;
       }
+      if (skipRule !== null || reportOpen) {
+        setSkipRule(null);
+        setReportOpen(false);
+        return;
+      }
       if (showRoundSettings) {
         setShowRoundSettings(false);
         return;
@@ -1190,7 +1185,7 @@ export default function App() {
       !showQr &&
       !reconnectRequest &&
       !clueEditor &&
-      !showRoundSettings
+      !showRoundSettings && skipRule === null && !reportOpen
     )
       return;
     document.documentElement.setAttribute("data-private-concealed", "");
@@ -1217,6 +1212,8 @@ export default function App() {
         setConfirm(null);
         setShowQr(false);
         setClueEditor(null);
+        setSkipRule(null);
+        setReportOpen(false);
         setShowRoundSettings(false);
         if (reconnectRequest) send("reject_reconnect", reconnectRequest.id);
         return;
@@ -1242,12 +1239,14 @@ export default function App() {
       clearTimeout(timer);
       document.removeEventListener("keydown", keys);
       document.body.style.overflow = previousOverflow;
-      previous?.focus();
+      if (previous?.isConnected) previous.focus({ preventScroll: true });
     };
   }, [
     confirm,
     showQr,
     reconnectRequest?.id,
+    skipRule !== null,
+    reportOpen,
     clueEditor?.turn,
     showRoundSettings,
   ]);
@@ -1280,6 +1279,11 @@ export default function App() {
     setPage(webGuest && p === "home" ? "web_join" : p);
     setShowQr(false);
     setShowRoundSettings(false);
+  };
+  const requestReconnect = async (player: string) => {
+    const result = await api<RecoveryData>("recover", { invitation, player });
+    if (result.session) adopt(result.session);
+    else if (result.code) setRecovery({ name: player, code: result.code });
   };
   const help = () => {
     setReturnPage(page);
@@ -1332,17 +1336,11 @@ export default function App() {
         }),
     });
   };
-  const askAbandon = () =>
-    setConfirm({
-      title: "Abandon this round?",
-      body: "No points will be awarded. Earlier scores stay the same.",
-      label: "Return to lobby",
-      action: () =>
-        execute(async () => {
-          await act("abandon");
-          setConfirm(null);
-        }),
-    });
+  const askAbandon = () => {
+    setRevealed(false);
+    setShowRoundSettings(false);
+    setSkipRule(!!view?.random_rules);
+  };
   const confirmRemovePlayer = (player: Player) =>
     setConfirm({
       title: `Remove ${player.name}?`,
@@ -1619,6 +1617,8 @@ export default function App() {
     setRevealed(false);
     setShowRoundSettings(true);
   };
+  const kickoffToggle = <RandomRulesSwitch checked={!!view?.random_rules} disabled={busy} toggle={() => send("random_rules", !view?.random_rules)} />;
+  const canSkipRound = !!view?.is_host && ["rule_reveal", "topic_voting", "topic_chosen", "roles", "discussion", "voting"].includes(view.phase);
   const settingsButton = view?.is_host ? (
     <button
       className="icon-button"
@@ -1701,7 +1701,7 @@ export default function App() {
                 disabled={busy}
                 onClick={askAbandon}
               >
-                Abandon round
+                Skip round
               </button>
             )}
           </div>
@@ -1956,10 +1956,6 @@ export default function App() {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </label>
-                <p className="muted compact">
-                  Close your old tab and wait about 10 seconds before requesting
-                  a reconnect.
-                </p>
               </>
             )}
           </div>
@@ -1969,17 +1965,7 @@ export default function App() {
             ) : (
               <Button
                 disabled={busy || !name.trim()}
-                onClick={() =>
-                  execute(async () => {
-                    const result = await api<RecoveryData>("recover", {
-                      invitation,
-                      player: name.trim(),
-                    });
-                    if (result.session) adopt(result.session);
-                    else if (result.code)
-                      setRecovery({ name: name.trim(), code: result.code });
-                  })
-                }
+                onClick={() => execute(() => requestReconnect(name.trim()))}
               >
                 Request reconnect
               </Button>
@@ -2435,12 +2421,21 @@ export default function App() {
             onSubmit={(e) => {
               e.preventDefault();
               execute(async () => {
-                const s = await api<SessionData>("join", {
-                  invitation,
-                  player: name.trim(),
-                });
-                preferences.setItem("imposter.name", name.trim());
-                adopt(s);
+                const player = name.trim();
+                try {
+                  const s = await api<SessionData>("join", { invitation, player });
+                  preferences.setItem("imposter.name", player);
+                  adopt(s);
+                } catch (error) {
+                  if (
+                    !webGuest ||
+                    !(error instanceof ApiError) ||
+                    error.code !== "reconnect_required"
+                  )
+                    throw error;
+                  nav("recover");
+                  await requestReconnect(player);
+                }
               });
             }}
           >
@@ -2695,7 +2690,7 @@ export default function App() {
                   Resume round
                 </Button>
                 <Button kind="outline" onClick={askAbandon}>
-                  Abandon round
+                  Skip round
                 </Button>
               </>
             ) : (
@@ -2705,7 +2700,6 @@ export default function App() {
         </>
       );
     if (view.phase === "rule_reveal" && view.round_rule) {
-      const missing = activePlayers.filter((p) => !p.connected);
       return (
         <>
           <Header
@@ -2714,36 +2708,7 @@ export default function App() {
             notice={connectionStatus}
             right={hostHeaderActions}
           />
-          <RuleReveal rule={view.round_rule} />
-          {footer(
-            view.is_host ? (
-              <>
-                {missing.map((player) => (
-                  <button
-                    className="inline-link"
-                    key={player.id}
-                    disabled={busy}
-                    onClick={() => confirmRemovePlayer(player)}
-                  >
-                    Remove {player.name}
-                  </button>
-                ))}
-                <Button
-                  disabled={busy || missing.length > 0}
-                  onClick={() => send("open_topics")}
-                >
-                  Vote for topic
-                </Button>
-                <p className="center muted compact">
-                  {ROUND_RULES[view.round_rule].next}
-                </p>
-              </>
-            ) : (
-              <p className="center muted">
-                Waiting for the host to open topic voting.
-              </p>
-            ),
-          )}
+          <RuleReveal rule={view.round_rule} reveal={view.reveal} />
         </>
       );
     }
@@ -2836,23 +2801,7 @@ export default function App() {
               <Icon name="edit" size={20} />
             )}
           </button>
-          {view.is_host && (
-            <button className="round-rules-summary" onClick={openRoundSettings}>
-              <Icon name="shuffle" />
-              <span>
-                <strong>Random round rules</strong>
-                <small>
-                  {view.random_rules
-                    ? "Classic, Act It, or Sound Only"
-                    : "Classic every round"}
-                </small>
-              </span>
-              <b className={view.random_rules ? "round-rules-on" : "muted"}>
-                {view.random_rules ? "On" : "Off"}
-              </b>
-              <Icon name="chevron" size={18} />
-            </button>
-          )}
+
           {playersList()}
           {activePlayers.length < 3 && (
             <p className="muted compact lobby-tip">
@@ -2894,6 +2843,7 @@ export default function App() {
                     ? "Enable more topics"
                     : "Topic settings"}
                 </Button>
+                {kickoffToggle}
                 {view.deck_status?.reason ? (
                   <>
                     <p className="muted center" role="status">
@@ -2912,7 +2862,7 @@ export default function App() {
                     }
                     onClick={() => send("start")}
                   >
-                    {view.random_rules ? "Reveal round rule" : "Vote for topic"}
+                    Start round
                   </Button>
                 )}
                 {view.random_rules && !view.deck_status?.reason && (
@@ -2962,6 +2912,18 @@ export default function App() {
           />
           {nonverbal && view.round_rule && (
             <RuleIndicator rule={view.round_rule} />
+          )}
+          {!reviewingCard && !revealed && !view.role_ready && view.topic_vote?.selected_topic && (
+            <div className="dealt-topic center">
+              <strong>{view.round_rule && ROUND_RULES[view.round_rule].name} · {view.catalog.find((topic) => topic.id === view.topic_vote?.selected_topic)?.name}</strong>
+              {view.topic_vote.leaders.length > 1 && <p className="muted compact">Picked from a tie</p>}
+              {view.topic_vote.counts && <details>
+                <summary>View topic votes</summary>
+                <ul>{Object.entries(view.topic_vote.counts).sort((a, b) => b[1] - a[1]).map(([id, count]) => (
+                  <li key={id}>{view.catalog.find((topic) => topic.id === id)?.name} · {count}</li>
+                ))}</ul>
+              </details>}
+            </div>
           )}
           {view.role_ready && !reviewingCard ? (
             <>
@@ -3096,6 +3058,16 @@ export default function App() {
           ) : (
             <p className="muted">Need more clues? Keep talking.</p>
           )}
+          {view.round_rule && ["two_truths", "if_it_could_talk", "sell_it"].includes(view.round_rule) && (
+            <div className="spoken-rule-reminder">
+              <Icon name="chat" />
+              <div>
+                <strong>{ROUND_RULES[view.round_rule].name}</strong>
+                <p>{ROUND_RULES[view.round_rule].instruction}</p>
+                {view.round_rule === "sell_it" && <p className="muted">{ROUND_RULES.sell_it.detail}</p>}
+              </div>
+            </div>
+          )}
           <div className="clue-board-heading">
             <h2>Clues by turn</h2>
             <p className="muted compact">
@@ -3142,16 +3114,13 @@ export default function App() {
           )}
         </>
       );
-    if (view.phase === "voting" || view.phase === "runoff") {
-      const runoff = view.phase === "runoff";
-      const choices = activePlayers.filter(
-        (p) => !runoff || view.candidates.includes(p.id),
-      );
+    if (view.phase === "voting") {
+      const choices = activePlayers.filter((p) => p.id !== view.my_id);
       return (
         <>
           <Header
             back={askLeave}
-            title={`Round ${view.round_id} · ${runoff ? "Runoff" : "Vote"}`}
+            title={`Round ${view.round_id} · Vote`}
             right={
               view.is_host ? (
                 <div className="party-header-actions">
@@ -3178,7 +3147,7 @@ export default function App() {
                 </p>
                 {view.betting.my_stake !== null && (
                   <p className="muted compact">
-                    {runoff ? "Original bet: " : "Confidence bet: "}
+                    {view.private_role?.imposter ? "Escape bet: " : "Confidence bet: "}
                     {view.betting.my_stake
                       ? `${view.betting.my_stake} point${view.betting.my_stake === 1 ? "" : "s"}`
                       : "No bet"}
@@ -3221,10 +3190,10 @@ export default function App() {
             </>
           ) : (
             <>
-              <h1>{runoff ? "One more vote." : "Who is the imposter?"}</h1>
+              <h1>Who is the imposter?</h1>
               <p className="muted">
-                {runoff
-                  ? `${view.candidates.length <= 3 ? new Intl.ListFormat("en").format(view.candidates.map(playerName)) : "The top suspects"} tied. Choose again.`
+                {view.private_role?.imposter
+                  ? "Your vote is a dummy vote. It won’t count toward the tally."
                   : "Your vote stays private."}
               </p>
               {!!view.clues?.length && (
@@ -3270,13 +3239,13 @@ export default function App() {
                   </motion.button>
                 ))}
               </div>
-              {!runoff && view.betting.eligible && (
+              {view.betting.eligible && (
                 <section
                   className="confidence-bet"
                   aria-labelledby="bet-heading"
                 >
                   <div className="bet-heading">
-                    <h2 id="bet-heading">Confidence bet</h2>
+                    <h2 id="bet-heading">{view.private_role?.imposter ? "Bet on your escape" : "Confidence bet"}</h2>
                     <span className="muted">Optional</span>
                   </div>
                   <p className="muted compact">
@@ -3285,7 +3254,7 @@ export default function App() {
                   <div
                     className="bet-options"
                     role="group"
-                    aria-label="Confidence bet"
+                    aria-label={view.private_role?.imposter ? "Bet on your escape" : "Confidence bet"}
                   >
                     {[0, 1, 2, 3].map((stake) => (
                       <motion.button
@@ -3317,10 +3286,11 @@ export default function App() {
                     className="muted compact"
                     aria-live="polite"
                   >
-                    {bet > 0
-                      ? `Correct: +${bet} · Wrong: −${bet}`
-                      : "No points at risk."}{" "}
-                    A correct vote also earns +1.
+                    {view.private_role?.imposter
+                      ? "Escape to win your bet. Get caught and lose it."
+                      : bet > 0
+                        ? `Correct: +${bet} · Wrong: −${bet}. A correct vote also earns +1.`
+                        : "No points at risk. A correct vote earns +1."}
                   </p>
                   {view.betting.max_stake === 0 && (
                     <p className="muted compact">
@@ -3337,34 +3307,6 @@ export default function App() {
                   )}
                 </section>
               )}
-              {runoff &&
-                activePlayers.some(
-                  (p) =>
-                    !choices.includes(p) &&
-                    view.clues?.some((c) => c.player_id === p.id),
-                ) && (
-                  <div className="locked-clue-board">
-                    <h2>Other players’ clues</h2>
-                    {activePlayers
-                      .filter(
-                        (p) =>
-                          !choices.includes(p) &&
-                          view.clues?.some((c) => c.player_id === p.id),
-                      )
-                      .map((p) => (
-                        <div key={p.id}>
-                          <strong>{p.name}</strong>
-                          {clueHistory(p.id)}
-                        </div>
-                      ))}
-                  </div>
-                )}
-              {runoff && (
-                <p className="muted runoff-note">
-                  Your original guess still decides your points, bet, and
-                  reading streak. No extra bet in runoff.
-                </p>
-              )}
               {footer(
                 <>
                   <Button
@@ -3373,29 +3315,50 @@ export default function App() {
                       execute(() =>
                         act(
                           "vote",
-                          runoff
-                            ? vote
-                            : {
-                                player_id: vote,
-                                stake: view.betting.eligible ? bet : 0,
-                              },
+                          { player_id: vote, stake: view.betting.eligible ? bet : 0 },
                           view.round_id,
                         ),
                       )
                     }
                   >
-                    {!runoff && view.betting.eligible && bet > 0
+                    {!view.private_role?.imposter && view.betting.eligible && bet > 0
                       ? `Lock vote · Bet ${bet}`
                       : "Confirm vote"}
                   </Button>
-                  {runoff && (
-                    <p className="muted center compact">
-                      Another tie? The imposter escapes.
-                    </p>
-                  )}
                 </>,
               )}
             </>
+          )}
+        </>
+      );
+    }
+    if (view.phase === "result_reveal") {
+      const verdict = view.verdict;
+      return (
+        <>
+          <Header title={`Round ${view.round_id} · Results`} back={askLeave} />
+          {verdict ? (
+            <div className="verdict-stage center-stage" aria-live="polite">
+              <motion.div
+                className={`verdict-card ${verdict.escaped ? "escaped" : "caught"}`}
+                initial={reduced || !visible || (view.reveal?.remaining_ms ?? 0) < 450 ? false : { rotateY: -70, opacity: 0, x: verdict.escaped ? -18 : 0 }}
+                animate={{ rotateY: 0, opacity: 1, x: 0 }}
+                transition={{ duration: reduced ? 0 : MOTION.roleReveal, ease: MOTION.easeOut }}
+              >
+                {!verdict.escaped && <Rays />}
+                <Avatar player={person(verdict.imposter_id)} large />
+                <p className="verdict-role">IMPOSTER</p>
+                <h1>{verdict.tied && <>It’s a tie.<br /></>}{playerName(verdict.imposter_id)} {verdict.escaped ? "escaped." : "was caught"}</h1>
+                {verdict.tied && <p>No one was accused.</p>}
+              </motion.div>
+            </div>
+          ) : (
+            <div className="result-suspense center-stage" aria-live="polite">
+              <h1>The votes are in.</h1>
+              <LockedVoteArt />
+              <p className="muted">{view.vote_count} of {view.vote_count} votes locked</p>
+              <ProgressDots count={view.vote_count} filled={view.vote_count} linked />
+            </div>
           )}
         </>
       );
@@ -3419,19 +3382,19 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
+            <p className="recap-verdict">{!r.accused_id && "It’s a tie. "}<b>{playerName(r.imposter_id)}</b> {r.escaped ? "escaped." : "was caught"}</p>
+            {!r.accused_id && <p className="muted compact">No one was accused.</p>}
             <span className={`result-disc ${win ? "win" : ""}`}>
               <Icon name={win ? "check" : "x"} size={42} />
             </span>
             <h1>
               {r.was_imposter
                 ? r.escaped
-                  ? score.bluff
-                    ? "Perfect bluff."
-                    : "You fooled them."
-                  : "You were caught."
+                  ? "You escaped"
+                  : "You were caught"
                 : win
-                  ? "You read them right."
-                  : "Wrong suspect."}
+                  ? "You got it"
+                  : "You guessed wrong"}
             </h1>
             <div className={`round-points ${net > 0 ? "lime" : "terra"}`}>
               {signed(net)} {Math.abs(net) === 1 ? "point" : "points"}
@@ -3459,17 +3422,17 @@ export default function App() {
             </p>
             <dl className="score-breakdown">
               <div>
-                <dt>{r.was_imposter ? "Escaped the vote" : "Correct vote"}</dt>
+                <dt>{r.was_imposter ? r.escaped ? "Escaped" : "Caught" : "Correct vote"}</dt>
                 <dd>{signed(score.base)}</dd>
               </div>
-              {!r.was_imposter && (
+              {(!r.was_imposter || view.betting.my_stake) ? (
                 <div>
-                  <dt>Confidence bet</dt>
+                  <dt>{r.was_imposter ? "Escape bet" : "Confidence bet"}</dt>
                   <dd className={score.bet < 0 ? "terra" : ""}>
                     {signed(score.bet)}
                   </dd>
                 </div>
-              )}
+              ) : null}
               {!!score.streak && (
                 <div>
                   <dt>Reading streak</dt>
@@ -3519,14 +3482,7 @@ export default function App() {
               score={score.after}
               target={view.score_session.target}
             />
-            <div className="result-pair">
-              <div>
-                <small>Imposter:</small>
-                <strong>
-                  <Avatar player={person(r.imposter_id)} />
-                  {playerName(r.imposter_id)}
-                </strong>
-              </div>
+            <div className="result-pair round-flow-word">
               <div>
                 <small>Secret word:</small>
                 <strong>{r.word}</strong>
@@ -3538,25 +3494,6 @@ export default function App() {
                 <p>{r.definition}</p>
               </details>
             )}
-            <div className="result-summary">
-              {!r.accused_id && (
-                <p className="resolution-detail">
-                  The runoff tied. No one was accused.
-                </p>
-              )}
-              <p>
-                {playerName(r.imposter_id)}{" "}
-                {r.escaped
-                  ? "escaped the group vote."
-                  : "was caught by the group."}
-              </p>
-              {r.escaped && (
-                <strong className="lime">
-                  +{2 + r.imposter_bonus} points
-                  {r.imposter_bonus ? " · Perfect bluff" : ""}
-                </strong>
-              )}
-            </div>
             {view.score_session.complete && (
               <p className="muted compact center">
                 Session target reached. Final standings follow reports and Drink
@@ -3565,150 +3502,16 @@ export default function App() {
             )}
           </motion.div>
           {footer(
-            view.is_host ? (
-              <Button disabled={busy} onClick={() => send("open_reports")}>
-                Continue to reports
-              </Button>
-            ) : (
-              <p className="muted center">
-                Waiting for {playerName(view.host_id)} to continue to reports.
-              </p>
-            ),
-          )}
-        </>
-      );
-    }
-    if (view.phase === "reporting" && view.reporting) {
-      const reporting = view.reporting;
-      const submitted = reporting.my_reports !== null;
-      const choices = reporting.player_ids
-        .filter((id) => id !== view.my_id)
-        .map(person)
-        .filter((p): p is Player => !!p);
-      return (
-        <>
-          <Header
-            notice={connectionStatus}
-            back={askLeave}
-            title={`Round ${view.round_id}`}
-            right={hostHeaderActions}
-          />
-          {submitted ? (
             <>
-              <div className="report-waiting">
-                <span className="report-seal">
-                  <CheckStroke size={32} />
-                </span>
-                <h1>
-                  {reporting.my_reports!.length
-                    ? "Reports submitted."
-                    : "You skipped reporting."}
-                </h1>
-                <p className="muted">
-                  {reporting.my_reports!.length
-                    ? "Your selections stay private."
-                    : "That counts as no reports for anyone."}
-                </p>
-                <p className="muted report-progress" role="status">
-                  {reporting.submitted_count} of {reporting.total} players
-                  finished
-                </p>
-                <ProgressDots
-                  count={reporting.total}
-                  filled={reporting.submitted_count}
-                />
-              </div>
-              {footer(
-                view.is_host ? (
-                  <>
-                    <Button disabled={busy} onClick={() => send("punish")}>
-                      Continue to Drink or Dare
-                    </Button>
-                    <p className="muted center compact">
-                      Anyone who hasn’t submitted counts as no reports.
-                    </p>
-                  </>
-                ) : (
-                  <p className="muted center">
-                    Waiting for the others or the host to continue.
-                  </p>
-                ),
-              )}
-            </>
-          ) : (
-            <>
-              <p className="report-eyebrow">Optional · End of round</p>
-              <h1>Anyone break the rules?</h1>
-              <p className="muted report-intro">
-                Select one or more players, or skip if everyone played fair.
-              </p>
-              <p className="report-rule">
-                <Icon name="lock" size={18} />
-                Private reports. {reporting.majority} of {reporting.total}{" "}
-                {view.score_session.complete
-                  ? "needed. Reports clear with the next session."
-                  : "needed for −1 point after the next round. Scores stay at 0 or above."}
-              </p>
-              <div
-                className="ballot-list report-list"
-                role="group"
-                aria-label="Players to report"
-              >
-                {choices.map((p) => {
-                  const selected = reportTargets.includes(p.id);
-                  return (
-                    <motion.button
-                      key={p.id}
-                      role="checkbox"
-                      aria-checked={selected}
-                      aria-label={p.name}
-                      className={`ballot-row report-row ${selected ? "selected" : ""}`}
-                      disabled={busy}
-                      whileTap={reduced ? undefined : { scale: 0.985 }}
-                      transition={MOTION.press}
-                      onClick={() =>
-                        setReportTargets((old) =>
-                          old.includes(p.id)
-                            ? old.filter((id) => id !== p.id)
-                            : [...old, p.id],
-                        )
-                      }
-                    >
-                      <Avatar player={p} mine={p.id === view.host_id} />
-                      <strong>{p.name}</strong>
-                      <span className="radio-mark report-mark">
-                        {selected && (
-                          <SelectionCheck>
-                            <CheckStroke size={18} />
-                          </SelectionCheck>
-                        )}
-                      </span>
-                    </motion.button>
-                  );
-                })}
-              </div>
-              {footer(
-                <>
-                  <Button
-                    disabled={busy || reportTargets.length === 0}
-                    onClick={() => send("report", reportTargets)}
-                  >
-                    Submit reports
-                    {reportTargets.length ? ` · ${reportTargets.length}` : ""}
-                  </Button>
-                  <Button
-                    kind="outline"
-                    disabled={busy}
-                    onClick={() => send("report", [])}
-                  >
-                    Skip reporting
-                  </Button>
-                  <p className="muted center compact">
-                    Skipping means no reports.
-                  </p>
-                </>,
-              )}
-            </>
+              {view.reporting && (view.reporting.my_reports === null ? (
+                <Button kind="text" disabled={busy} onClick={() => { setReportTargets([]); setReportOpen(true); }}>
+                  Report a rule violation
+                </Button>
+              ) : <p className="muted center compact" role="status">Report submitted.</p>)}
+              {view.is_host ? (
+                <Button disabled={busy} onClick={() => send("punish")}>Continue</Button>
+              ) : <p className="muted center compact">Waiting for the host to continue</p>}
+            </>,
           )}
         </>
       );
@@ -4008,6 +3811,7 @@ export default function App() {
               </Button>
             ) : view.is_host ? (
               <>
+                {!complete && kickoffToggle}
                 <Button
                   disabled={busy}
                   onClick={() => send(complete ? "new_session" : "next")}
@@ -4039,14 +3843,12 @@ export default function App() {
           ? "reconnect"
           : showPauseScreen
             ? "paused"
-            : `${view.phase}-${view.phase === "punishment" ? `${view.punishment?.turn}-${view.punishment?.choice}` : ""}-${view.phase === "reporting" ? view.reporting?.my_reports !== null : view.phase === "voting" || view.phase === "runoff" ? !!view.my_vote : ""}`);
+            : `${view.phase}-${view.phase === "punishment" ? `${view.punishment?.turn}-${view.punishment?.choice}` : ""}-${view.phase === "reporting" ? view.reporting?.my_reports !== null : view.phase === "voting" ? !!view.my_vote : ""}`);
   const motionKind: ScreenMotion = page
     ? "page"
     : view?.phase === "punishment"
       ? "turn"
-      : view?.phase === "runoff"
-        ? "runoff"
-        : "phase";
+          : "phase";
   return (
     <div className={`app-shell ${scanning ? "is-scanning" : ""}`}>
       <AnimatePresence mode="wait" initial={false} custom={direction}>
@@ -4114,7 +3916,16 @@ export default function App() {
             >
               <Icon name="x" />
             </button>
-            <h2 id="round-settings-title">Session settings</h2>
+            <h2 id="round-settings-title">{canSkipRound ? "Round settings" : "Session settings"}</h2>
+            {canSkipRound && (
+              <div className="round-menu-actions">
+                {view.phase === "discussion" && !view.paused && (
+                  <Button kind="text" disabled={busy} onClick={() => execute(async () => { await act("pause"); setShowRoundSettings(false); })}>Pause round</Button>
+                )}
+                <Button kind="outline" className="skip-round-menu" disabled={busy} onClick={askAbandon}>Skip round</Button>
+                <p className="muted compact">Start a fresh round. Everyone keeps their points.</p>
+              </div>
+            )}
             <div className="round-settings-toggle">
               <strong>Random round rules</strong>
               <span className="muted" aria-hidden="true">
@@ -4164,7 +3975,7 @@ export default function App() {
                   {view.random_rules ? "In the draw" : "Available round rules"}
                 </h3>
                 <ul className="round-settings-rules">
-                  {(["classic", "act_it", "sound_only"] as const).map(
+                  {(Object.keys(ROUND_RULES) as Array<keyof typeof ROUND_RULES>).map(
                     (rule) => (
                       <li key={rule}>
                         <RuleArt rule={rule} />
@@ -4235,6 +4046,43 @@ export default function App() {
             {view.random_rules && !view.rule_change_pending && (
               <p className="muted center compact">Your session keeps going.</p>
             )}
+          </MotionSheet>
+        )}
+        {skipRule !== null && canSkipRound && view && (
+          <MotionSheet key="skip-round" labelledBy="skip-round-title" busy={busy} onDismiss={() => setSkipRule(null)}>
+            <button className="sheet-close icon-button" aria-label="Cancel skip" disabled={busy} onClick={() => setSkipRule(null)}><Icon name="x" /></button>
+            <h2 id="skip-round-title">Skip this round?</h2>
+            <p className="muted">Everyone keeps their points.</p>
+            <RandomRulesSwitch checked={skipRule} disabled={busy} toggle={() => setSkipRule(!skipRule)} />
+            {!skipRule && <p className="muted compact">The replacement reveals Classic.</p>}
+            {error && <p className="terra" role="alert">{error}</p>}
+            <Button disabled={busy} onClick={() => execute(async () => {
+              await act("skip_round", skipRule, view.round_id);
+              setSkipRule(null);
+            })}>Skip and start</Button>
+            <Button kind="text" disabled={busy} onClick={() => setSkipRule(null)}>Cancel</Button>
+          </MotionSheet>
+        )}
+        {reportOpen && view?.phase === "results" && view.reporting && (
+          <MotionSheet key="report-round" labelledBy="report-round-title" busy={busy} onDismiss={() => setReportOpen(false)}>
+            <button className="sheet-close icon-button" aria-label="Close report" disabled={busy} onClick={() => setReportOpen(false)}><Icon name="x" /></button>
+            <h2 id="report-round-title">Report a rule violation</h2>
+            <p className="muted">Select one or more players.</p>
+            <div className="report-sheet-list" role="group" aria-label="Players to report">
+              {view.reporting.player_ids.filter((id) => id !== view.my_id).map((id) => {
+                const checked = reportTargets.includes(id);
+                return <button key={id} type="button" className="report-sheet-row" role="checkbox" aria-checked={checked} disabled={busy} onClick={() => setReportTargets((current) => checked ? current.filter((id2) => id2 !== id) : [...current, id])}>
+                  <span className={`report-sheet-check ${checked ? "checked" : ""}`}>{checked && <Icon name="check" size={16} />}</span>
+                  <Avatar player={person(id)} />
+                  <strong>{playerName(id)}</strong>
+                </button>;
+              })}
+            </div>
+            {error && <p className="terra" role="alert">{error}</p>}
+            <Button disabled={busy || !reportTargets.length} onClick={() => execute(async () => {
+              await act("report", reportTargets, view.round_id);
+              setReportOpen(false);
+            })}>Submit report</Button>
           </MotionSheet>
         )}
         {clueEditor && (
@@ -4342,7 +4190,7 @@ export default function App() {
             <h2 id="recovery-title">Reconnect {reconnectRequest.name}?</h2>
             <p className="muted">
               Confirm this player is with you and their screen shows this code
-              before approving.
+              before approving. Approving signs out their old browser tab.
             </p>
             <strong className="recovery-code">{reconnectRequest.code}</strong>
             <Button

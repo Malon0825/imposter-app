@@ -88,12 +88,13 @@ async function deal(host) {
   await Promise.all(
     [host, ...guests].map((s) => act(s, round, "topic_vote", ["animals"])),
   );
-  const request = crypto.randomUUID();
-  state = await act(host, round, "begin_round", null, request);
-  assert.deepEqual(
-    (await act(host, round, "begin_round", null, request)).private_role,
-    state.private_role,
-  );
+  for (let retries = 0; retries < 70; retries++) {
+    state = await view(host);
+    if (state.private_role) break;
+    if (state.deal_error) throw Error(state.deal_error);
+    await setTimeout(100);
+  }
+  assert.equal(state.phase, "roles", "The host should deal once after the final topic vote");
   const cards = await Promise.all([host, ...guests].map(view));
   const word = cards.find((card) => !card.private_role.imposter).private_role
     .clue;

@@ -24,7 +24,20 @@ export interface Credentials {
   player_id: string;
   is_host: boolean;
 }
-export type RoundRule = "classic" | "act_it" | "sound_only";
+export type RoundRule = "classic" | "act_it" | "sound_only" | "two_truths" | "if_it_could_talk" | "sell_it";
+
+export interface RoundRevealStage {
+  stage: "shuffle" | "rule" | "suspense" | "verdict";
+  remaining_ms: number;
+  total_ms: number;
+  shuffled?: boolean;
+}
+
+export interface RoundVerdict {
+  imposter_id: string;
+  escaped: boolean;
+  tied: boolean;
+}
 
 export interface PerformedClue {
   player_id: string;
@@ -32,6 +45,10 @@ export interface PerformedClue {
 }
 
 export interface View {
+  reveal?: RoundRevealStage | null;
+  verdict?: RoundVerdict | null;
+  deal_error?: string | null;
+  round_notice?: string | null;
   round_rule?: RoundRule | null;
   random_rules?: boolean | null;
   rule_change_pending?: boolean;

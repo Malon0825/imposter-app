@@ -61,6 +61,7 @@ async function roundRulesSmoke(page) {
   try {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(base);
+    await button(page, "Host party").waitFor();
     await page.evaluate(
       (s) => sessionStorage.setItem("imposter.session.v1", JSON.stringify(s)),
       host,
@@ -88,53 +89,68 @@ async function roundRulesSmoke(page) {
     stage = "enable random rules";
     await button(page, "Session settings").click();
     await page.getByRole("switch", { name: "Random round rules" }).click();
-    await page.getByRole("switch", { checked: true }).waitFor();
+    await page
+      .getByRole("switch", { name: "Random round rules", checked: true })
+      .waitFor();
     await capture("02-settings-on");
     await button(page, "Done").click();
 
-    const variants = {
+    const RULE_NAMES = {
+    classic: "Classic",
+    act_it: "Act It",
+    sound_only: "Sound Only",
+  };
+  const variants = {
       classic: "05-classic",
       act_it: "04-act-it",
       sound_only: "03-sound-only",
     };
-    stage = "reveal all three rules";
+    stage = "reveal the nonverbal and classic rules";
     const observed = new Set();
     let round = 0;
-    for (let attempt = 0; attempt < 50; attempt++) {
-      let state = await snapshot(host);
-      for (const session of native)
-        await act(session, state.round_id, "ready", true);
-      await button(guest, "I’m ready").click();
-      await button(page, "Reveal round rule").waitFor();
-      if (attempt === 0) await capture("01-lobby");
-      await button(page, "Reveal round rule").click();
-      await page.locator(".round-rule-card").waitFor();
-      state = await snapshot(host);
+    for (const session of native)
+      await act(session, (await snapshot(host)).round_id, "ready", true);
+    await button(guest, "I’m ready").click();
+    await capture("01-lobby");
+    await act(host, 0, "start");
+    for (let attempt = 0; attempt < 240; attempt++) {
+      const state = await snapshot(host);
       round = state.round_id;
-      assert(
-        state.phase === "rule_reveal" &&
-          !state.topic_vote &&
-          !state.private_role,
-        "Rule reveal leaked a ballot or role",
-      );
-      if (!observed.has(state.round_rule)) {
-        observed.add(state.round_rule);
-        await capture(variants[state.round_rule]);
+      if (state.phase === "rule_reveal") {
+        assert(
+          !state.topic_vote && !state.private_role,
+          "Rule reveal leaked a ballot or role",
+        );
+        const rule = state.round_rule;
+        if (variants[rule] && !observed.has(rule)) {
+          const landed = page.getByRole("heading", {
+            name: RULE_NAMES[rule],
+            exact: true,
+          });
+          await landed.or(page.getByRole("heading", { name: "What should we play?" })).first().waitFor();
+          if (await landed.isVisible()) {
+            observed.add(rule);
+            await capture(variants[rule]);
+          }
+        }
       }
-      if (observed.size === 3 && state.round_rule === "sound_only") break;
-      await act(host, round, "abandon");
-      await button(page, "Reveal round rule").waitFor();
+      if (observed.size === 3 && (await snapshot(host)).round_rule === "sound_only") break;
+      await act(host, (await snapshot(host)).round_id, "skip_round", true);
     }
+    assert(observed.size === 3, `Did not capture all rule variants: ${[...observed]}`);
     assert(
-      observed.size === 3 && (await snapshot(host)).phase === "rule_reveal",
-      "Did not capture all rule variants",
+      (await snapshot(host)).round_rule === "sound_only",
+      "The round did not settle on Sound Only",
     );
+    await page.getByRole("heading", { name: "What should we play?" }).waitFor();
+    round = (await snapshot(host)).round_id;
     await guest.reload();
     stage = "resume browser guest and vote on topics";
+    // The rule stays pinned above the ballot after the reveal.
     await guest
-      .getByRole("heading", { name: "Sound Only", exact: true })
+      .locator(".round-rule-indicator")
+      .filter({ hasText: "Sound Only" })
       .waitFor();
-    await button(page, "Vote for topic").click();
     await button(page, "Animals").click();
     await button(page, "Music").click();
     assert(
@@ -148,9 +164,6 @@ async function roundRulesSmoke(page) {
     await capture("06-sound-topic-vote");
     await capture("06-compact-guest", guest);
     await button(page, "Lock my vote").click();
-    await page.getByRole("heading", { name: "Animals it is." }).waitFor();
-    await capture("07-topic-chosen");
-    await button(page, "Continue to roles").click();
     stage = "private cards and performed clues";
     await button(page, "Reveal my role").waitFor();
     const players = [host, ...native];
@@ -218,10 +231,13 @@ async function roundRulesSmoke(page) {
       .filter({ hasText: guestTarget.name })
       .click();
     await button(guest, "Confirm vote").click();
-    assert(
-      (await snapshot(host)).phase === "results",
-      "Accusations did not result in a completed round",
-    );
+    let finished = null;
+    for (let tick = 0; tick < 150 && !finished; tick++) {
+      const view = await snapshot(host);
+      if (view.phase === "results") finished = view;
+      else await page.waitForTimeout(100);
+    }
+    assert(finished, "Accusations did not result in a completed round");
     assert(errors.length === 0, errors.join("\n"));
     return {
       observed: [...observed],

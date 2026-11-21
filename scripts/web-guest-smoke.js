@@ -32,6 +32,14 @@ async function smokeBrowserGuests(page) {
     round = v.round_id;
     return v;
   };
+  const waitPhase = async (phase) => {
+    for (let tick = 0; tick < 150; tick++) {
+      const view = await bridge("state", { session_id: host.session_id });
+      if (view.phase === phase) return view;
+      await page.waitForTimeout(100);
+    }
+    throw Error(`The party never reached ${phase}`);
+  };
   await act(native, "ready", true);
   const ownedContexts = [];
   let keepNativeAlive = true;
@@ -193,7 +201,8 @@ async function smokeBrowserGuests(page) {
         .getByRole("button", { name: "Lock my vote", exact: true })
         .click();
     }
-    await act(host, "begin_round");
+    const dealt = await waitPhase("roles");
+    round = dealt.round_id;
     const views = [
       await bridge("state", { session_id: host.session_id }),
       await bridge("state", { session_id: native.session_id }),
@@ -272,21 +281,22 @@ async function smokeBrowserGuests(page) {
         });
       }
     }
-    const result = await bridge("state", { session_id: host.session_id });
+    const result = await waitPhase("results");
     assert(
-      result.phase === "results" && !result.result.escaped,
+      !result.result.escaped,
       "Mixed voting did not catch the imposter",
     );
     for (const p of result.players)
       assert(p.points === (p.id === imposter ? 0 : 1), "Incorrect score");
-    await act(host, "open_reports");
     await act(host, "report", []);
     await act(native, "report", []);
+    // Guests leave the report sheet unopened, which counts as no report.
     for (const g of guests) {
       await g.page
-        .getByRole("button", { name: "Skip reporting", exact: true })
-        .click();
+        .getByRole("button", { name: "Report a rule violation", exact: true })
+        .waitFor();
     }
+    await act(host, "punish");
     let state = await bridge("state", { session_id: host.session_id });
     const loser = state.punishment.player_id;
     const actor = [host, native].find((s) => s.credentials.player_id === loser);

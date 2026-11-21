@@ -50,9 +50,12 @@ async function topicVotingSmoke(page) {
     await page.screenshot({
       path: `output/playwright/topic-voting-${name}.png`,
     });
-    const bounds = await page
-      .locator("main")
-      .evaluate((el) => ({ width: el.scrollWidth, screen: innerWidth }));
+    // Page-level scroll, not main's: the role card art bleeds past the card on
+    // purpose and is clipped, so measuring main reports a phantom overflow.
+    const bounds = await page.evaluate(() => ({
+      width: document.documentElement.scrollWidth,
+      screen: innerWidth,
+    }));
     assert(bounds.width <= bounds.screen + 1, `Horizontal overflow: ${name}`);
     const primary = page.locator("main .button.primary").last();
     if (await primary.count()) {
@@ -60,7 +63,7 @@ async function topicVotingSmoke(page) {
       assert(
         box &&
           box.y >= 0 &&
-          box.y + box.height <= (await page.viewportSize()).height,
+          box.y + box.height <= (await page.viewportSize()).height + 1,
         `Primary action clipped: ${name}`,
       );
     }
@@ -69,6 +72,9 @@ async function topicVotingSmoke(page) {
     watch(page);
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(base);
+    await page
+      .getByRole("button", { name: "Host party", exact: true })
+      .waitFor();
     await page.evaluate(
       (s) => sessionStorage.setItem("imposter.session.v1", JSON.stringify(s)),
       host,
@@ -107,11 +113,9 @@ async function topicVotingSmoke(page) {
       guests.push({ page: p, id: saved.credentials.player_id, name });
     }
     for (const s of natives) await act(s, "ready", true);
+    await act(host, "start");
     await page
-      .getByRole("button", { name: "Vote for topic", exact: true })
-      .click();
-    await page
-      .getByRole("heading", { name: "Choose the mood", exact: true })
+      .getByRole("heading", { name: "What should we play?", exact: true })
       .waitFor();
     round = (await call("state", { session_id: host.session_id })).round_id;
     assert(
@@ -139,7 +143,7 @@ async function topicVotingSmoke(page) {
     await choose(mia, "Music");
     await mia.reload();
     await mia
-      .getByRole("heading", { name: "Choose the mood", exact: true })
+      .getByRole("heading", { name: "What should we play?", exact: true })
       .waitFor();
     assert(
       (await mia
@@ -180,75 +184,75 @@ async function topicVotingSmoke(page) {
       .getByRole("heading", { name: "Your topics are locked", exact: true })
       .waitFor();
     await act(natives[2], "topic_vote", ["animals", "everyday"]);
-    await page
-      .getByRole("heading", { name: "It’s a tie.", exact: true })
-      .waitFor();
-    const tied = await call("state", { session_id: host.session_id });
+    // A tied ballot draws its own winner and the host deals automatically.
+    const waitPhase = async (phase) => {
+      for (let tick = 0; tick < 150; tick++) {
+        const view = await call("state", { session_id: host.session_id });
+        if (view.phase === phase) return view;
+        await page.waitForTimeout(100);
+      }
+      throw Error(`The party never reached ${phase}`);
+    };
+    const selected = await waitPhase("roles");
     assert(
-      JSON.stringify(tied.topic_vote.counts) ===
+      JSON.stringify(selected.topic_vote.counts) ===
         JSON.stringify({ animals: 4, everyday: 2, food: 4, music: 1 }),
       "Wrong approval totals",
     );
     assert(
-      (await page.getByText("50%", { exact: true }).count()) === 2,
-      "Tied leaders do not show equal chances",
+      selected.topic_vote.leaders.length === 2,
+      "Tied leaders were not recorded",
     );
-    assert(
-      (await mia
-        .getByRole("button", { name: "Draw topic", exact: true })
-        .count()) === 0,
-      "Guest received draw control",
-    );
-    for (const size of [
-      { width: 390, height: 844 },
-      { width: 360, height: 700 },
-      { width: 430, height: 880 },
-    ]) {
-      await page.setViewportSize(size);
-      await capture(`03-tie-${size.width}`);
-    }
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.getByRole("button", { name: "Draw topic", exact: true }).click();
-    await page
-      .getByRole("button", { name: "Continue to roles", exact: true })
-      .waitFor();
-    const selected = await call("state", { session_id: host.session_id });
     const topic = selected.topic_vote.selected_topic;
     assert(
       ["food", "animals"].includes(topic),
       "A lower-voted topic entered the draw",
     );
-    assert(selected.private_role === null, "Role revealed before continuation");
+    // Dealt cards stay concealed until each player taps to reveal.
+    for (const p of [page, mia, ben]) {
+      await p
+        .getByRole("button", { name: "Reveal my role", exact: true })
+        .waitFor();
+      assert(
+        (await p.locator(".role-title").innerText()) === "For your eyes only.",
+        "A private role was shown before the reveal tap",
+      );
+    }
+    for (const p of [page, mia]) {
+      await p.getByText("Picked from a tie", { exact: true }).waitFor();
+      assert(
+        (await p.getByRole("button", { name: "Draw topic", exact: true }).count()) === 0,
+        "A manual draw control survived",
+      );
+    }
+    // The summary is on demand; collapse it again so the captures show the
+    // resting layout with the reveal action in view.
+    await page.getByText("View topic votes", { exact: true }).click();
+    const tally = await page.getByRole("listitem").allInnerTexts();
+    assert(
+      tally.length === 4 && tally[0].endsWith("4"),
+      `Topic tally did not list every pack: ${tally.join(" / ")}`,
+    );
+    await page.getByText("View topic votes", { exact: true }).click();
+    await page.getByRole("listitem").first().waitFor({ state: "hidden" });
     for (const size of [
       { width: 390, height: 844 },
       { width: 360, height: 700 },
       { width: 430, height: 880 },
     ]) {
       await page.setViewportSize(size);
-      await capture(`04-chosen-${size.width}`);
+      await capture(`03-chosen-${size.width}`);
     }
-    await page.getByRole("button", { name: "View votes", exact: true }).click();
-    assert(
-      (await page
-        .getByRole("button", { name: "Draw topic", exact: true })
-        .count()) === 0,
-      "Review allows reroll",
-    );
-    await page
-      .getByRole("button", { name: "Back to topic", exact: true })
-      .click();
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.reload();
     await page
-      .getByRole("button", { name: "Continue to roles", exact: true })
+      .getByRole("button", { name: "Reveal my role", exact: true })
       .waitFor();
     assert(
       (await call("state", { session_id: host.session_id })).topic_vote
         .selected_topic === topic,
-      "Reload changed draw",
+      "Reload changed the drawn topic",
     );
-    await page
-      .getByRole("button", { name: "Continue to roles", exact: true })
-      .click();
     const states = await Promise.all(
       [host, ...natives].map((s) =>
         call("state", { session_id: s.session_id }),
@@ -304,30 +308,15 @@ async function topicVotingSmoke(page) {
         .getByRole("button", { name: "Confirm vote", exact: true })
         .click();
     }
-    const result = await call("state", { session_id: host.session_id });
-    assert(
-      result.phase === "results" && !result.result.escaped,
-      "Round did not finish correctly",
-    );
-    await act(host, "open_reports");
+    const result = await waitPhase("results");
+    assert(!result.result.escaped, "Round did not finish correctly");
     for (const s of [host, ...natives]) await act(s, "report", []);
-    for (const g of guests)
-      await g.page
-        .getByRole("button", { name: "Skip reporting", exact: true })
-        .click();
+    await act(host, "punish");
     const punishment = await call("state", { session_id: host.session_id });
     await act(host, "skip", punishment.punishment.turn);
     await act(host, "next");
-    for (const s of natives) await act(s, "ready", true);
-    for (const g of guests)
-      await g.page
-        .getByRole("button", { name: "I’m ready", exact: true })
-        .click();
     await page
-      .getByRole("button", { name: "Vote for topic", exact: true })
-      .click();
-    await page
-      .getByRole("heading", { name: "Choose the mood", exact: true })
+      .getByRole("heading", { name: "What should we play?", exact: true })
       .waitFor();
     round = (await call("state", { session_id: host.session_id })).round_id;
     assert(
@@ -345,24 +334,17 @@ async function topicVotingSmoke(page) {
         .click();
     }
     for (const s of natives) await act(s, "topic_vote", [topic]);
+    // A unique winner skips the draw and the host deals without a tap.
+    const second = await waitPhase("roles");
     await page
-      .getByRole("button", { name: "Continue to roles", exact: true })
+      .getByRole("button", { name: "Reveal my role", exact: true })
       .waitFor();
     assert(
-      (await page
-        .getByRole("button", { name: "Draw topic", exact: true })
-        .count()) === 0,
-      "Unique winner needs unnecessary draw",
+      (await page.getByText("Picked from a tie", { exact: true }).count()) === 0,
+      "A unique winner was labelled as a tie",
     );
     await capture("05-unique-reduced-motion");
-    await page
-      .getByRole("button", { name: "Continue to roles", exact: true })
-      .click();
-    const second = await call("state", { session_id: host.session_id });
-    assert(
-      second.phase === "roles" && second.round_id === 2,
-      "Next round did not reach roles",
-    );
+    assert(second.round_id === 2, "Next round did not reach roles");
     const secondStates = await Promise.all(
       [host, ...natives].map((s) =>
         call("state", { session_id: s.session_id }),
@@ -398,6 +380,7 @@ async function topicVotingSmoke(page) {
   } finally {
     alive = false;
     await act(host, "end").catch(() => {});
+    await call("close", { session_id: host.session_id }).catch(() => {});
     await Promise.all(contexts.map((c) => c.close()));
     await heartbeat;
     await page.emulateMedia({ reducedMotion: "no-preference" });

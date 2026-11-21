@@ -10,6 +10,15 @@ async function smokeInstalledHost(page) {
   const assert = (v, m) => {
     if (!v) throw Error(m);
   };
+  // The installed host owns the deal and the Results beats.
+  const waitPhase = async (phase) => {
+    for (let tick = 0; tick < 150; tick++) {
+      const view = await call("host-state");
+      if (view.phase === phase) return view;
+      await page.waitForTimeout(100);
+    }
+    throw Error(`The installed host never reached ${phase}`);
+  };
   const guests = [];
   const browser = page.context().browser();
   const origin = new URL(info.invitation).origin;
@@ -66,7 +75,7 @@ async function smokeInstalledHost(page) {
       .getByRole("button", { name: "Lock my vote", exact: true })
       .click();
   }
-  const started = await call("host-action", { kind: "begin_round" });
+  const started = await waitPhase("roles");
   const native = await call("native-state");
   let imposter = started.private_role.imposter
     ? info.host
@@ -110,9 +119,9 @@ async function smokeInstalledHost(page) {
       .getByRole("button", { name: "Confirm vote", exact: true })
       .click();
   }
-  const result = await call("host-state");
+  const result = await waitPhase("results");
   assert(
-    result.phase === "results" && !result.result.escaped,
+    !result.result.escaped,
     "Installed Android authority resolved incorrectly",
   );
   for (const p of result.players)
@@ -120,7 +129,6 @@ async function smokeInstalledHost(page) {
       p.points === (p.id === imposter ? 0 : 1),
       "Installed host score mismatch",
     );
-  await call("host-action", { kind: "open_reports" });
   const punishment = await call("host-action", { kind: "punish" });
   const loser = punishment.punishment.player_id;
   if (loser === info.host || loser === info.native) {

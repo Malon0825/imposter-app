@@ -14,6 +14,92 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   color-scheme: dark;
 }
+.kickoff-toggle {
+  width: 100%;
+  min-height: 50px;
+  padding: 10px 14px;
+  background: #20271f;
+  border-radius: 12px;
+  justify-content: space-between;
+}
+.kickoff-toggle .rule-switch { margin-left: auto; }
+.rule-shuffle { text-align: center; }
+.rule-shuffle img { width: min(100%, 330px); margin: 22px auto; }
+.rule-reveal-next { margin: 24px 16px 8px; }
+.rule-countdown {
+  width: min(84%, 260px);
+  height: 6px;
+  margin: 14px auto;
+  border: 1px solid var(--muted);
+  border-radius: 100px;
+  overflow: hidden;
+}
+.rule-countdown span { display: block; height: 100%; background: var(--lime); transform-origin: left; }
+.dealt-topic { margin: 4px auto 14px; }
+.dealt-topic p { margin: 4px 0; }
+.dealt-topic details { color: var(--muted); margin-top: 6px; }
+.dealt-topic summary { cursor: pointer; padding: 8px; }
+.dealt-topic ul { padding: 0; list-style: none; margin: 0; }
+.spoken-rule-reminder {
+  display: flex;
+  gap: 12px;
+  background: #20271f;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin: 10px 0 14px;
+}
+.spoken-rule-reminder svg { color: var(--muted); flex-shrink: 0; }
+.spoken-rule-reminder p { margin: 4px 0 0; line-height: 1.3; }
+.result-suspense, .verdict-stage { text-align: center; }
+.result-suspense h1 { margin-bottom: 22px; }
+.result-suspense p { margin-top: 22px; }
+.verdict-card {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: min(100%, 360px);
+  padding: 32px 18px;
+  border-radius: 18px;
+  background: var(--ink);
+  color: var(--bg);
+}
+.verdict-card.escaped { box-shadow: 5px 6px 0 #8ca388, -4px -5px 0 #303b32; }
+.verdict-card > svg { width: 34px; position: absolute; right: -8px; top: -15px; color: var(--lime); }
+.verdict-card p { margin: 0; }
+.verdict-card h1 { margin: 0; overflow-wrap: anywhere; }
+.verdict-role { color: #a34c3b; font-weight: 800; letter-spacing: .08em; }
+.recap-verdict { font-weight: 700; margin: 0 0 8px; }
+.recap-verdict b { color: var(--lime); }
+.result-pair.round-flow-word { grid-template-columns: 1fr; text-align: left; }
+.report-sheet-list { max-height: 42vh; overflow: auto; margin-bottom: 16px; }
+.report-sheet-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 6px 0;
+  font: inherit;
+  text-align: left;
+  color: var(--ink);
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.report-sheet-check {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--muted);
+  border-radius: 5px;
+}
+.report-sheet-check.checked { background: var(--lime); color: var(--bg); border-color: var(--lime); }
+.round-menu-actions { border-bottom: 1px solid var(--line); margin-bottom: 14px; }
+.round-menu-actions .skip-round-menu { color: var(--terra); border-color: var(--terra); }
 .session-target-summary {
   display: flex;
   align-items: center;
@@ -1020,7 +1106,8 @@ strong {
   order: 0;
 }
 .role-flip {
-  height: 366px;
+  min-height: 366px;
+  display: flex;
   position: relative;
   transform-style: preserve-3d;
   margin: 0 auto;
@@ -1030,12 +1117,12 @@ strong {
 }
 .role-front,
 .role-back {
-  position: absolute;
-  inset: 0;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 .role-front {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1061,6 +1148,7 @@ strong {
   background: var(--ink);
   color: #161a16;
   display: flex;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
@@ -1090,20 +1178,20 @@ strong {
 .role-meaning,
 .role-meaning-face {
   display: flex;
+  flex: 1;
   flex-direction: column;
   align-items: center;
-  height: 100%;
   width: 100%;
 }
 .role-meaning-panel {
+  display: flex;
   flex: 1;
-  min-height: 0;
   width: 100%;
   touch-action: pan-y;
   user-select: none;
 }
 .role-meaning-face .paw-stamp {
-  height: min(35%, 115px);
+  height: clamp(72px, 13dvh, 115px);
   width: 140px;
 }
 .role-meaning-face .paw-stamp > svg:last-child {
@@ -1760,18 +1848,23 @@ strong {
 }
 .sheet-scrim {
   position: fixed;
-  inset: 0;
+  inset: 0 0 var(--sheet-viewport-inset, 0px);
   background: #000a;
   z-index: 30;
   display: flex;
   align-items: end;
   justify-content: center;
-  padding: 0 0 env(safe-area-inset-bottom, 0px);
+  padding: calc(12px + env(safe-area-inset-top, 0px)) 0
+    max(0px, env(safe-area-inset-bottom, 0px) - var(--sheet-viewport-inset, 0px));
 }
 .bottom-sheet {
   background: #20271f;
   width: 100%;
   max-width: 460px;
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border-radius: 24px 24px 0 0;
   padding: 34px 25px 28px;
   position: relative;
@@ -1830,6 +1923,7 @@ strong {
   left: 50%;
   translate: -50% 0;
   z-index: 60;
+  pointer-events: none;
   background: var(--ink);
   color: var(--bg);
   padding: 14px 18px;
@@ -1875,9 +1969,6 @@ strong {
 }
 .center-stage p {
   font-size: 17px;
-}
-.screen-topics {
-  padding-bottom: 24px;
 }
 .screen-roles .actions {
   padding-top: 24px;
@@ -2018,11 +2109,17 @@ strong {
   background: #ffffff04;
 }
 
-.screen-topics {
+/* Keep the list scrollable and let the document grow if the controls need more room. */
+.screen-topics,
+.screen-topic_voting:has(.topic-scroll),
+.screen-topic_results,
+.screen-topic_chosen:has(.topic-result-list) {
   height: 100dvh;
-  min-height: 0;
-  padding-bottom: 24px;
-  overflow: hidden;
+  min-height: min-content;
+}
+
+.screen-topics {
+  padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
 }
 
 .screen-topics .appbar {
@@ -2034,10 +2131,9 @@ strong {
 }
 
 .topic-scroll {
-  min-height: 0;
+  min-height: 120px;
   flex: 1;
   overflow-y: auto;
-  overscroll-behavior: contain;
   margin: 20px -8px 0 0;
   padding-right: 8px;
 }
@@ -2452,7 +2548,7 @@ strong {
     padding-top: 28px;
   }
   .role-flip {
-    height: 390px;
+    min-height: 390px;
   }
   .discussion-art {
     height: 190px;
@@ -2517,7 +2613,7 @@ strong {
     margin-bottom: 20px;
   }
   .role-flip {
-    height: 300px;
+    min-height: 300px;
   }
   .role-title {
     margin: 8px -6px 20px;
@@ -2928,16 +3024,13 @@ strong .player-connection-label {
   align-items: center;
 }
 .bar-right:has(.party-header-actions > :nth-child(2)) {
-  flex-basis: 100px;
-  width: 100px;
+  flex: none;
+  width: auto;
 }
 /* Topic approval voting follows the approved topic-voting-v1 screens. */
 .screen-topic_voting,
 .screen-topic_results,
 .screen-topic_chosen {
-  height: 100dvh;
-  min-height: 0;
-  overflow: hidden;
   padding-left: 18px;
   padding-right: 18px;
 }
@@ -2986,10 +3079,6 @@ strong .player-connection-label {
   margin: 9px 0 0;
   line-height: 1.4;
 }
-.topic-locked {
-  min-height: 0;
-  overflow-y: auto;
-}
 .topic-locked h1 {
   font-size: 30px;
 }
@@ -3019,9 +3108,8 @@ strong .player-connection-label {
   min-height: 44px;
 }
 .topic-result-list {
-  min-height: 0;
+  min-height: 120px;
   overflow-y: auto;
-  overscroll-behavior: contain;
   margin: 24px 0 20px;
   padding: 2px;
 }
@@ -3114,8 +3202,6 @@ strong .player-connection-label {
   border-radius: 22px;
   padding: 28px 16px 22px;
   text-align: center;
-  flex-shrink: 1;
-  min-height: 0;
 }
 .chosen-topic-card > .topic-art {
   width: 150px;
@@ -3192,11 +3278,6 @@ strong .player-connection-label {
   }
 }
 @media (max-height: 650px) {
-  .screen-topic_chosen {
-    overflow-y: auto;
-    height: auto;
-    min-height: 100dvh;
-  }
   .topic-leader {
     gap: 8px;
     padding: 12px 10px;
@@ -3221,7 +3302,7 @@ strong .player-connection-label {
 }
 .screen-topic_voting .topic-grid {
   gap: 10px;
-  grid-auto-rows: var(--vote-tile-height);
+  grid-auto-rows: minmax(var(--vote-tile-height), auto);
 }
 .screen-topic_voting .topic-tile {
   min-height: 0;
@@ -3408,10 +3489,10 @@ strong .player-connection-label {
 }
 .topic-vote-progress .motion-progress {
   --progress-size: 14px !important;
-  --progress-gap: 38px !important;
+  --progress-gap: min(38px, 10vw) !important;
 }
 .topic-vote-progress .motion-progress:has(> i:nth-child(7)) {
-  --progress-gap: 14px !important;
+  --progress-gap: min(14px, 2.5vw) !important;
 }
 .screen-topic_results > h1 {
   font-size: 40px;
@@ -3475,6 +3556,10 @@ strong .player-connection-label {
 @media (max-height: 760px) {
   .screen-topic_voting {
     --vote-tile-height: 100px;
+  }
+  .screen-topic_voting .topic-tile {
+    gap: 4px;
+    padding-block: 7px;
   }
   .screen-topic_results > h1 {
     font-size: 32px;
@@ -3621,16 +3706,6 @@ strong .player-connection-label {
   padding-block: 12px;
   border-bottom: 1px solid var(--line);
 }
-.clue-editor {
-  max-height: calc(100dvh - 24px - var(--clue-keyboard-inset, 0px));
-  overflow-y: auto;
-}
-.sheet-scrim:has(.clue-editor) {
-  padding-bottom: max(
-    var(--clue-keyboard-inset, 0px),
-    env(safe-area-inset-bottom, 0px)
-  );
-}
 .clue-editor form > p {
   margin-block: 12px 18px;
 }
@@ -3696,15 +3771,14 @@ strong .player-connection-label {
 .screen-lobby:has(.round-rules-summary) .player-row { min-height: 74px; padding-block: 10px; }
 .screen-lobby:has(.round-rules-summary) .avatar { width: 51px; height: 51px; }
 .screen-rule_reveal .actions { padding-top: 8px; }
+.screen-rule_reveal .appbar > span:nth-child(2) { font-size: clamp(15px, 4.7vw, 20px); }
 .clue-rule { margin: 0 0 8px; padding: 0 0 10px; border-bottom: 1px solid var(--line); }
 .clue-rule h2 { margin: 0; font-size: 26px; }
 .clue-rule p { margin: 3px 0 0; }
 .round-secondary-actions { display: flex; gap: 8px; justify-content: space-around; }
 .round-secondary-actions .button { width: auto; color: var(--muted); font-size: 15px; text-decoration: underline; text-underline-offset: 4px; padding-inline: 4px; }
 .bottom-sheet.round-settings {
-  position: relative;
-  max-height: min(90dvh, 760px);
-  overflow: auto;
+  max-height: min(100%, 760px);
   background: var(--surface);
   border: 1px solid var(--line);
   padding-top: 16px;

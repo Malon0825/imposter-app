@@ -133,7 +133,8 @@ async function checkPrivateCardRecall(page) {
       await g.page.getByRole("button", { name: "Food", exact: true }).click();
       await g.page.getByRole("button", { name: "Lock my vote", exact: true }).click();
     }
-    await act("begin_round");
+    // The host deals as soon as the last topic ballot locks.
+    await page.locator(".screen-roles").waitFor();
     for (const player of players) {
       const p = player.page;
       await reveal(p);
@@ -286,38 +287,17 @@ async function checkPrivateCardRecall(page) {
         await p
           .getByRole("heading", { name: "Your vote is locked", exact: true })
           .waitFor();
-      }
-    }
-    assert(
-      (await call("state", { session_id: host.session_id })).phase === "runoff",
-      "Expected a runoff from the three-way tie",
-    );
-    for (const [i, player] of players.entries()) {
-      const p = player.page,
-        target = players[(i + 1) % players.length];
-      await p
-        .getByRole("heading", { name: "One more vote.", exact: true })
-        .waitFor();
-      await open(p);
-      await reveal(p);
-      assert(
-        (await p.locator(".secret-word").innerText()) === player.clue,
-        "Runoff recall changed the clue",
-      );
-      await close(p);
-      await p.locator(".ballot-row").filter({ hasText: target.name }).click();
-      await p
-        .getByRole("button", { name: "Confirm vote", exact: true })
-        .click();
-      if (i === 0) {
-        await p
-          .getByRole("heading", { name: "Your vote is locked", exact: true })
-          .waitFor();
+        // Leave this card open while the other ballots resolve the round. A
+        // three-way tie now ends it in an escape instead of a second ballot.
         await open(p);
-        await reveal(p); // Leave this card open while the other ballots resolve the round.
+        await reveal(p);
       }
     }
-    await page.locator(".screen-results").waitFor();
+    await page.locator(".screen-results").waitFor({ timeout: 15000 });
+    assert(
+      (await call("state", { session_id: host.session_id })).result.escaped,
+      "A three-way tie did not give the imposter an escape",
+    );
     assert(
       (await page.locator(".secret-word").count()) === 0,
       "Ended round kept the private card open",
@@ -352,7 +332,8 @@ async function checkPrivateCardRecall(page) {
         "same reveal screen reused",
         "ready-player recall",
         "civilian word and imposter hint",
-        "discussion/voting/runoff recall",
+        "discussion/voting recall",
+        "tie escape ends the round",
         "manual-pause recall",
         "background concealment",
         "reload recovery",

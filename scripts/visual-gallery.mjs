@@ -46,7 +46,7 @@ const ids = [
   "dare",
   "drink",
   "rankings",
-  "runoff",
+  "tie-escape",
   "reconnecting",
   "final",
   "help",

@@ -1,0 +1,506 @@
+[
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Breakfast",
+    "word": "Pancakes",
+    "example": "They are cooked in a pan; they can be stacked; they have to be chilled overnight."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Breakfast",
+    "word": "Waffle",
+    "example": "It has little pockets; it can be served with syrup; the pockets are always cut by hand."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Breakfast",
+    "word": "Coffee",
+    "example": "Its beans are roasted; it can be served cold; it is always brewed with milk."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Breakfast",
+    "word": "Croissant",
+    "example": "It has flaky layers; it can be shaped like a crescent; it gets its layers by boiling the dough."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Treat",
+    "word": "Popcorn",
+    "example": "It can be made in a pot; people often add salt after cooking; it has to be served hot."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Treat",
+    "word": "Chocolate",
+    "example": "It can melt in your hand; some versions are bitter; it takes its color from roasted coffee."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Treat",
+    "word": "Ice cream",
+    "example": "It softens as it warms; it can be served in a cone; every flavor contains eggs."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Treat",
+    "word": "Cake",
+    "example": "It can be baked in layers; it can be decorated after cooling; it can only be made in a round pan."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Filling",
+    "word": "Taco",
+    "example": "It can have a soft shell; people can fill it with vegetables; the outer shell has to be sliced from a loaf."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Filling",
+    "word": "Dumpling",
+    "example": "It can be steamed; some versions are filled with meat; every version has to be sweet."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Filling",
+    "word": "Sandwich",
+    "example": "It can be toasted; it can have layers of vegetables; the bread always has to stay in one piece."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "food",
+    "hint": "Filling",
+    "word": "Sushi",
+    "example": "It usually includes seasoned rice; some pieces are rolled around a filling; every piece must contain raw fish."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Burrow",
+    "word": "Rabbit",
+    "example": "It can grow long ears; its hind legs help it jump; its front teeth stop growing when it becomes an adult."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Burrow",
+    "word": "Fox",
+    "example": "It can have a bushy tail; it can live near towns; it hunts mainly by swinging from trees."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Burrow",
+    "word": "Frog",
+    "example": "It often begins life in water; many can jump; adult ones are covered in feathers."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Burrow",
+    "word": "Bear",
+    "example": "Some climb trees; some eat berries; all species live in groups throughout the year."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Water",
+    "word": "Dolphin",
+    "example": "It breathes air; some live in groups; it uses gills to breathe underwater."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Water",
+    "word": "Whale",
+    "example": "It comes to the surface for air; some species sing; members of every species have teeth."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Water",
+    "word": "Crocodile",
+    "example": "It can spend time on land; it lays eggs; it chews plants with flat molars."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Water",
+    "word": "Turtle",
+    "example": "It has a shell; some species live in the sea; it can step out of its shell when it grows."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Africa",
+    "word": "Elephant",
+    "example": "It can use its nose to pick things up; some have tusks; it sheds its tusks every year."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Africa",
+    "word": "Giraffe",
+    "example": "It can reach high branches; its coat has patches; it grows a set of branching antlers each year."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Africa",
+    "word": "Zebra",
+    "example": "It has stripes; it can live in herds; its young hatch from eggs."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "animals",
+    "hint": "Africa",
+    "word": "Lion",
+    "example": "It can roar; some adults grow a mane; it cannot live alongside others of its kind."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Pocket",
+    "word": "Wallet",
+    "example": "I feel lighter after every stop on payday."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Pocket",
+    "word": "Key",
+    "example": "I go everywhere with you and still get blamed when you cannot get inside."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Pocket",
+    "word": "Pen",
+    "example": "I always get borrowed just before someone needs to sign."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Pocket",
+    "word": "Comb",
+    "example": "I visit your hair and end up in the smallest pocket."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Weather",
+    "word": "Umbrella",
+    "example": "I spend my time by the door until the clouds roll in."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Weather",
+    "word": "Sunglasses",
+    "example": "I spend half the day on top of your head."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Weather",
+    "word": "Blanket",
+    "example": "I get more popular when you turn the heater down."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Weather",
+    "word": "Wind chime",
+    "example": "I get chatty whenever the air starts moving."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Night",
+    "word": "Pillow",
+    "example": "I end each day with your hair in my face."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Night",
+    "word": "Lamp",
+    "example": "I stay awake while you finish the last page."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Night",
+    "word": "Candle",
+    "example": "I get shorter while making the room feel cozy."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "everyday",
+    "hint": "Night",
+    "word": "Clock",
+    "example": "I am the first thing you blame when you wake up late."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Delay",
+    "word": "Oversleeping",
+    "example": "I can turn a peaceful morning into a race to leave."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Delay",
+    "word": "Missed bus",
+    "example": "I show up just as the doors close in front of you."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Delay",
+    "word": "Flat tire",
+    "example": "I make the shortest drive end at the side of the road."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Delay",
+    "word": "Traffic jam",
+    "example": "I make the clock move faster than the cars."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Mess",
+    "word": "Spilled coffee",
+    "example": "I leave a brown souvenir on the shirt you just put on."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Mess",
+    "word": "Burnt toast",
+    "example": "I announce breakfast before anyone sees what happened."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Mess",
+    "word": "Clogged sink",
+    "example": "I turn washing dishes into a lesson in patience."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Mess",
+    "word": "Leaking roof",
+    "example": "I make you bring a bucket into the living room."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Blocked",
+    "word": "Stuck zipper",
+    "example": "I stop you halfway out of the jacket."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Blocked",
+    "word": "Locked out",
+    "example": "I bring you all the way home and make you wait outside."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Blocked",
+    "word": "Printer jam",
+    "example": "I keep your last page right where you cannot grab it."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "chaos",
+    "hint": "Blocked",
+    "word": "Dead phone battery",
+    "example": "I end the conversation right before the pickup details."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Travel",
+    "word": "Power bank",
+    "example": "You should buy it because your phone will still work on the ride home."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Travel",
+    "word": "Smartphone",
+    "example": "You should buy it because your map, tickets, and camera can fit into one pocket."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Travel",
+    "word": "Laptop",
+    "example": "You should buy it because you can finish a full day of work at the cafe."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Travel",
+    "word": "Tablet",
+    "example": "You should buy it because the flight feels shorter when your books and games are all in one place."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Desk",
+    "word": "Keyboard",
+    "example": "You should buy it because a long email will feel quicker to write."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Desk",
+    "word": "Mouse",
+    "example": "You should buy it because moving between dozens of tiny spreadsheet cells will be less fiddly."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Desk",
+    "word": "Printer",
+    "example": "You should buy it because you can hand someone a copy without sharing a screen."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Desk",
+    "word": "Scanner",
+    "example": "You should buy it because paper receipts can live in one neat folder on your computer."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Audio",
+    "word": "Headphones",
+    "example": "You should buy it because the person beside you can keep reading in peace."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Audio",
+    "word": "Walkie-talkie",
+    "example": "You should buy it because you can still coordinate when nobody has a cell signal."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Audio",
+    "word": "Ringtone",
+    "example": "You should buy it because you will know it is your phone ringing in a crowded room."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "technology",
+    "hint": "Audio",
+    "word": "Bluetooth",
+    "example": "You should buy it because you can listen without a cord stretching across your desk."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Packing",
+    "word": "Suitcase",
+    "example": "You should buy it because you can wheel a week of outfits through the terminal."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Packing",
+    "word": "Souvenir",
+    "example": "You should buy it because a little piece of the trip can come home with you."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Packing",
+    "word": "Sunscreen",
+    "example": "You should buy it because you can spend longer outside with less worry about burning."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Packing",
+    "word": "Map",
+    "example": "You should buy it because you can find your next stop even after your phone dies."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Excursion",
+    "word": "Cruise",
+    "example": "You should buy it because you can wake up near a different city without unpacking twice."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Excursion",
+    "word": "Road trip",
+    "example": "You should buy it because you can stop for a snack in every new town."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Excursion",
+    "word": "Tour guide",
+    "example": "You should buy it because someone can explain why the old building matters."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Excursion",
+    "word": "Travel insurance",
+    "example": "You should buy it because some unexpected trip costs could be covered."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Transport",
+    "word": "Ferry",
+    "example": "You should buy it because you can cross the water without leaving your car behind."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Transport",
+    "word": "Rental car",
+    "example": "You should buy it because you can change your itinerary without checking a timetable."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Transport",
+    "word": "Train ticket",
+    "example": "You should buy it because you can read while someone else handles the journey."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "travel",
+    "hint": "Transport",
+    "word": "Speedboat",
+    "example": "You should buy it because you can spend less time crossing the bay and more time on the island."
+  }
+]

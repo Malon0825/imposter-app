@@ -2423,6 +2423,7 @@ dependencies = [
  "axum",
  "axum-server",
  "base64 0.22.1",
+ "icu_normalizer",
  "if-addrs",
  "rand 0.8.8",
  "rcgen",

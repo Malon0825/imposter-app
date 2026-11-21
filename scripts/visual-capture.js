@@ -200,8 +200,12 @@ async function captureVisuals(page) {
     },
     { id: "20-rankings", view: view("rankings", { result }) },
     {
-      id: "21-runoff",
-      view: view("runoff", { round_id: 2, candidates: ["sam", "mia"] }),
+      id: "21-tie-escape",
+      view: view("result_reveal", {
+        round_id: 2,
+        verdict: { imposter_id: "sam", escaped: true, tied: true },
+        reveal: { stage: "verdict", round_id: 2 },
+      }),
     },
     {
       id: "22-reconnecting",
@@ -212,7 +216,7 @@ async function captureVisuals(page) {
     { id: "24-help", nav: ["How to play"] },
     {
       id: "25-reports",
-      view: view("reporting", {
+      view: view("results", { result,
         reporting: {
           my_reports: null,
           submitted_count: 0,
@@ -221,11 +225,12 @@ async function captureVisuals(page) {
           player_ids: people.map((p) => p.id),
         },
       }),
-      select: "Sam",
+      nav: ["Report a rule violation"],
+      check: "Sam",
     },
     {
       id: "26-reports-submitted",
-      view: view("reporting", {
+      view: view("results", { result,
         reporting: {
           my_reports: ["sam", "ben"],
           submitted_count: 2,
@@ -237,7 +242,7 @@ async function captureVisuals(page) {
     },
     {
       id: "27-reports-skipped",
-      view: view("reporting", {
+      view: view("results", { result,
         reporting: {
           my_reports: [],
           submitted_count: 1,
@@ -357,6 +362,11 @@ async function captureVisuals(page) {
       await p
         .locator(".ballot-row")
         .filter({ hasText: scenario.select })
+        .click();
+    if (scenario.check)
+      await p
+        .locator(".report-sheet-row")
+        .filter({ hasText: scenario.check })
         .click();
     if (scenario.offline)
       await p.getByRole("heading", { name: "Hold that thought." }).waitFor();

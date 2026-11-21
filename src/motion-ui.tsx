@@ -1,5 +1,6 @@
 import {
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   type CSSProperties,
@@ -34,6 +35,9 @@ export function ScreenTransition({
     () => screenVariants(kind, !!reduced),
     [kind, reduced],
   );
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, []);
   return (
     <motion.main
       className={className}
@@ -245,12 +249,30 @@ export function MotionSheet({
   const reduced = useReducedMotion();
   const drag = useDragControls();
   const moved = useRef(false);
+  const scrim = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const viewport = window.visualViewport;
+    const element = scrim.current;
+    if (!viewport || !element) return;
+    const update = () => {
+      const inset = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
+      element.style.setProperty("--sheet-viewport-inset", `${inset}px`);
+    };
+    viewport.addEventListener("resize", update);
+    viewport.addEventListener("scroll", update);
+    update();
+    return () => {
+      viewport.removeEventListener("resize", update);
+      viewport.removeEventListener("scroll", update);
+    };
+  }, []);
   const dismiss = () => {
     if (!busy) onDismiss();
   };
   return (
     <motion.div
       className="sheet-scrim"
+      ref={scrim}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}

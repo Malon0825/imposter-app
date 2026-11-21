@@ -74,7 +74,7 @@ async function smokeGame(page) {
     pages.push(p);
   }
   await page
-    .getByRole("button", { name: "Vote for topic", exact: true })
+    .getByRole("button", { name: "Start round", exact: true })
     .waitFor({ state: "visible" });
   await page.waitForTimeout(1200);
   await page.screenshot({ path: "output/playwright/lobby.png" });
@@ -88,21 +88,17 @@ async function smokeGame(page) {
   await page.screenshot({ path: "output/playwright/topics.png" });
   await page.getByRole("button", { name: "Go back", exact: true }).click();
   const readRoles = async (round) => {
-    await page
-      .getByRole("button", { name: "Vote for topic", exact: true })
-      .click();
+    if (round === 1)
+      await page.getByRole("button", { name: "Start round", exact: true }).click();
     for (const p of pages) {
       await p
-        .getByRole("heading", { name: "Choose the mood", exact: true })
+        .getByRole("heading", { name: "What should we play?", exact: true })
         .waitFor();
       await p.getByRole("button", { name: "Food", exact: true }).click();
       await p
         .getByRole("button", { name: "Lock my vote", exact: true })
         .click();
     }
-    await page
-      .getByRole("button", { name: "Continue to roles", exact: true })
-      .click();
     let imp = -1;
     const civilian = [];
     for (let i = 0; i < pages.length; i++) {
@@ -134,43 +130,30 @@ async function smokeGame(page) {
     return imp;
   };
   const finishPunishment = async (capture) => {
-    await page
-      .getByRole("button", { name: "Continue to reports", exact: true })
-      .click();
     for (let i = 0; i < pages.length; i++) {
       const p = pages[i];
       await p
-        .getByRole("heading", { name: "Anyone break the rules?", exact: true })
+        .getByRole("button", { name: "Report a rule violation", exact: true })
         .waitFor();
-      if (capture && i > 0) {
-        await p.getByRole("checkbox", { name: names[0], exact: true }).click();
-        if (i === 1) {
-          await p
-            .getByRole("checkbox", { name: names[2], exact: true })
-            .click();
-          await p.screenshot({
-            path: "output/playwright/reports-selected.png",
-          });
-        }
-        await p.getByRole("button", { name: /^Submit reports/ }).click();
-        if (i === 1) {
-          await p
-            .getByRole("heading", { name: "Reports submitted.", exact: true })
-            .waitFor();
-          await p.reload();
-          await p
-            .getByRole("heading", { name: "Reports submitted.", exact: true })
-            .waitFor();
-          await p.screenshot({
-            path: "output/playwright/reports-submitted.png",
-          });
-        }
-      } else {
-        await p
-          .getByRole("button", { name: "Skip reporting", exact: true })
-          .click();
+      // Leaving the sheet unopened counts as no report.
+      if (!capture || i === 0) continue;
+      await p
+        .getByRole("button", { name: "Report a rule violation", exact: true })
+        .click();
+      await p.getByRole("checkbox", { name: names[0] }).click();
+      if (i === 1) {
+        await p.getByRole("checkbox", { name: names[2] }).click();
+        await p.screenshot({ path: "output/playwright/reports-selected.png" });
+      }
+      await p.getByRole("button", { name: "Submit report", exact: true }).click();
+      if (i === 1) {
+        await p.getByText("Report submitted.", { exact: true }).waitFor();
+        await p.reload();
+        await p.getByText("Report submitted.", { exact: true }).waitFor();
+        await p.screenshot({ path: "output/playwright/reports-submitted.png" });
       }
     }
+    await page.getByRole("button", { name: "Continue", exact: true }).click();
     for (let turn = 0; turn < 5; turn++) {
       await page.waitForTimeout(850);
       if (
@@ -266,29 +249,27 @@ async function smokeGame(page) {
   await page.waitForTimeout(1200);
   await page.screenshot({ path: "output/playwright/rankings.png" });
   await page.getByRole("button", { name: "Next round", exact: true }).click();
-  for (const p of pages.slice(1))
-    await p.getByRole("button", { name: "I’m ready", exact: true }).click();
-  await readRoles(2);
+  const imp2 = await readRoles(2);
   await page.getByRole("button", { name: "Open voting", exact: true }).click();
-  const tie = [1, 0, 1, 0];
+  // Three civilians on three different suspects is the 1-1-1 tie: the dummy
+  // ballot is discarded, nobody is accused, and the imposter escapes.
+  const civilians = [0, 1, 2, 3].filter((i) => i !== imp2);
+  const tie = [];
+  tie[civilians[0]] = civilians[1];
+  tie[civilians[1]] = civilians[2];
+  tie[civilians[2]] = imp2;
+  tie[imp2] = civilians[0];
   for (let i = 0; i < 4; i++) {
     const p = pages[i];
     await p.locator(".ballot-row").filter({ hasText: names[tie[i]] }).click();
     await p.getByRole("button", { name: "Confirm vote", exact: true }).click();
   }
   await page
-    .getByRole("heading", { name: "One more vote.", exact: true })
-    .waitFor();
+    .getByText("No one was accused.", { exact: true })
+    .first()
+    .waitFor({ timeout: 15000 });
   await page.waitForTimeout(1200);
-  await page.screenshot({ path: "output/playwright/runoff.png" });
-  for (let i = 0; i < 4; i++) {
-    const p = pages[i];
-    await p.locator(".ballot-row").filter({ hasText: names[tie[i]] }).click();
-    await p.getByRole("button", { name: "Confirm vote", exact: true }).click();
-  }
-  await page
-    .getByText("The runoff tied. No one was accused.", { exact: true })
-    .waitFor();
+  await page.screenshot({ path: "output/playwright/tie-escape.png" });
   await page
     .getByText("Reports · Round 1", { exact: true })
     .waitFor();
@@ -333,7 +314,7 @@ async function smokeGame(page) {
       "named human dare giver",
       "Drink turn",
       "cumulative rankings",
-      "runoff/repeated tie",
+      "tied vote escape",
       "replay",
       "host ending",
       "final score retention",

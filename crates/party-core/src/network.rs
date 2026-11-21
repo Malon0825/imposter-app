@@ -130,14 +130,20 @@ pub struct Host {
     shutdown: axum_server::Handle,
     web: Option<web::WebHost>,
 }
-const GAMEPLAY_VERSION: &str = "round-rules-v1";
+const GAMEPLAY_VERSION: &str = "round-flow-v2";
 const UPDATE_GUEST: &str =
     "Update Imposter to join this party, or open the invitation in your browser.";
 
 impl Host {
     async fn apply(self: &Arc<Self>, actor: String, action: Action) -> GameResult<Value> {
         if self.history.is_none()
-            || !["begin_round", "fresh_word_deck", "random_rules"].contains(&action.kind.as_str())
+            || ![
+                "begin_round",
+                "fresh_word_deck",
+                "random_rules",
+                "skip_round",
+            ]
+            .contains(&action.kind.as_str())
         {
             let mut game = self.game.lock().await;
             game.apply(&actor, &action)?;
@@ -168,6 +174,8 @@ impl Host {
                 if let Err(error) = saved {
                     if added_deal {
                         game.round.retry_word_id = staged.round.word_id.clone();
+                        game.round.deal_error = Some(error.clone());
+                        game.revision += 1;
                     }
                     return Err(error);
                 }
@@ -180,7 +188,7 @@ impl Host {
     }
 
     fn check_client(&self, headers: &HeaderMap) -> GameResult<()> {
-        if self.history.is_some()
+        if (cfg!(not(test)) || self.history.is_some())
             && headers
                 .get("x-imposter-gameplay")
                 .and_then(|value| value.to_str().ok())
@@ -399,24 +407,58 @@ impl Session {
                 .await;
         });
         tokio::spawn(async move {
+            let mut stages = tokio::time::interval(Duration::from_millis(100));
             let mut interval = tokio::time::interval(Duration::from_secs(2));
             loop {
-                interval.tick().await;
+                let sweep = tokio::select! {
+                    _ = stages.tick() => false,
+                    _ = interval.tick() => true,
+                };
                 let Some(host) = weak.upgrade() else {
                     break;
                 };
                 // Presence and the latest heartbeat must be read under the same game lock.
                 let mut game = host.game.lock().await;
-                let stale: Vec<String> = host
-                    .seen
-                    .lock()
-                    .await
-                    .iter()
-                    .filter(|(_, t)| t.elapsed() > Duration::from_secs(9))
-                    .map(|(id, _)| id.clone())
-                    .collect();
-                for id in stale {
-                    game.connection(&id, false);
+                if sweep {
+                    let stale: Vec<String> = host
+                        .seen
+                        .lock()
+                        .await
+                        .iter()
+                        .filter(|(_, t)| t.elapsed() > Duration::from_secs(9))
+                        .map(|(id, _)| id.clone())
+                        .collect();
+                    for id in stale {
+                        game.connection(&id, false);
+                    }
+                }
+                if !game.streamlined() {
+                    continue;
+                }
+                game.advance_reveals(Instant::now());
+                if game.phase == "topic_chosen"
+                    && game.round.deal_error.is_none()
+                    && game.active().iter().all(|p| p.connected)
+                {
+                    let action = Action {
+                        id: Uuid::new_v4().to_string(),
+                        round_id: game.round.id,
+                        kind: "begin_round".into(),
+                        value: Value::Null,
+                    };
+                    let actor = game.host.clone();
+                    drop(game);
+                    if let Err(error) = host.apply(actor, action.clone()).await {
+                        let mut game = host.game.lock().await;
+                        if game.phase == "topic_chosen"
+                            && game.round.id == action.round_id
+                            && game.active().iter().all(|p| p.connected)
+                            && game.round.deal_error.is_none()
+                        {
+                            game.round.deal_error = Some(error);
+                            game.revision += 1;
+                        }
+                    }
                 }
             }
         });
@@ -583,6 +625,17 @@ impl Sessions {
 #[cfg(test)]
 mod tests {
     use super::*;
+    // The host advances timed stages on its own schedule, so tests poll for them.
+    pub(crate) async fn wait_phase(session: &Session, phase: &str) -> Value {
+        for _ in 0..120 {
+            let view = session.snapshot().await.unwrap();
+            if view["phase"] == phase {
+                return view;
+            }
+            tokio::time::sleep(Duration::from_millis(50)).await;
+        }
+        panic!("the party never reached {phase}");
+    }
     #[tokio::test]
     async fn durable_deal_failure_keeps_cards_concealed_and_retry_consumes_once() {
         let directory = tempfile::tempdir().unwrap();
@@ -608,6 +661,22 @@ mod tests {
             .await
             .unwrap();
         assert_eq!(outdated.status(), StatusCode::BAD_REQUEST);
+        // A native client without the gameplay header cannot join or act either.
+        let client = Invitation::parse(&invitation).unwrap().client().unwrap();
+        for (route, body) in [
+            ("join", json!({"admission":host.invitation.admission,"name":"Old"})),
+            ("action", json!({"id":"1","round_id":0,"kind":"ready","value":true})),
+        ] {
+            let refused = client
+                .post(format!("{}{route}", host.invitation.endpoint))
+                .bearer_auth(&host.token)
+                .json(&body)
+                .send()
+                .await
+                .unwrap();
+            assert_eq!(refused.status(), StatusCode::BAD_REQUEST);
+            assert_eq!(refused.json::<Value>().await.unwrap()["error"], UPDATE_GUEST);
+        }
         let sam = Session::join(&invitation, "Sam").await.unwrap();
         let mia = Session::join(&invitation, "Mia").await.unwrap();
         let command = |round_id, kind: &str, value| Action {
@@ -629,6 +698,7 @@ mod tests {
         let inner = host.host.as_ref().unwrap();
         let store = inner.history.as_ref().unwrap();
         store.lock().unwrap().reject_deals(true);
+        // The host scheduler also tries this deal; both must fail the same way.
         let action = command(1, "begin_round", Value::Null);
         assert_eq!(host.send(action.clone()).await.unwrap_err(), HISTORY_ERROR);
         assert_eq!(sam.snapshot().await.unwrap()["private_role"], Value::Null);
@@ -700,16 +770,8 @@ mod tests {
                 .await
                 .unwrap();
         }
-        host.send(Action {
-            id: Uuid::new_v4().to_string(),
-            round_id: 1,
-            kind: "begin_round".into(),
-            value: Value::Null,
-        })
-        .await
-        .unwrap();
-        let view = a.snapshot().await.unwrap();
-        assert_eq!(view["phase"], "roles");
+        // The host deals automatically once the topic is locked.
+        let view = wait_phase(&a, "roles").await;
         assert!(view["result"].is_null());
         let c = a.credentials();
         let resumed = Session::resume(

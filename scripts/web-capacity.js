@@ -75,7 +75,16 @@ async function checkBrowserCapacity(page) {
       .getByRole("button", { name: "Lock my vote", exact: true })
       .click();
   }
-  await act("begin_round");
+  // The host deals as soon as the last topic ballot locks.
+  const waitPhase = async (phase) => {
+    for (let tick = 0; tick < 200; tick++) {
+      const view = await call("state", { session_id: host.session_id });
+      if (view.phase === phase) return view;
+      await page.waitForTimeout(100);
+    }
+    throw Error(`The party never reached ${phase}`);
+  };
+  await waitPhase("roles");
   for (const g of guests) {
     await g.page
       .getByRole("button", { name: "Reveal my role", exact: true })
@@ -116,6 +125,7 @@ async function checkBrowserCapacity(page) {
     }
   }
   state = await call("state", { session_id: host.session_id });
+  state = await waitPhase("results");
   assert(state.phase === "results", "Full party did not resolve all ballots");
   assert(
     state.result.accused_id === host.credentials.player_id,

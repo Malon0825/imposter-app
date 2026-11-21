@@ -17,6 +17,7 @@ reqwest = { version = "0.12", default-features = false, features = ["rustls-tls"
 base64 = "0.22"
 if-addrs = "0.13"
 url = "2"
+icu_normalizer = { version = "2", default-features = false, features = ["compiled_data"] }
 rusqlite = { version = "0.37", features = ["bundled"] }
 
 [dev-dependencies]

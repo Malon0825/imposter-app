@@ -32,6 +32,18 @@ async function clueBoardSmoke(page) {
     if (!/guest\/(state|action).*access control checks/.test(e.message))
       errors.push(e.message);
   };
+  // The host owns the deal and the Results beats, so wait on the server.
+  const waitPhase = async (phase) => {
+    for (let tick = 0; tick < 150; tick++) {
+      const view = await call("state", { session_id: host.session_id });
+      if (view.phase === phase) {
+        round = view.round_id;
+        return view;
+      }
+      await page.waitForTimeout(100);
+    }
+    throw Error(`The party never reached ${phase}`);
+  };
   const act = async (session, kind, value = null) => {
     const v = await call("action", {
       session_id: session.session_id,
@@ -116,7 +128,8 @@ async function clueBoardSmoke(page) {
         .getByRole("button", { name: "Lock my vote", exact: true })
         .click();
     }
-    await act(host, "begin_round");
+    // The host deals automatically once the last topic ballot locks.
+    await waitPhase("roles");
     await act(host, "role_ready");
     await act(native, "role_ready");
     for (const p of guests) {
@@ -303,20 +316,22 @@ async function clueBoardSmoke(page) {
         .getByRole("button", { name: "Confirm vote", exact: true })
         .click();
     }
-    await page
-      .getByRole("heading", { name: "One more vote.", exact: true })
-      .waitFor();
-    await page.getByText("Turn 2: Puddle edited", { exact: true }).waitFor();
-    await act(host, "abandon");
+    const finished = await waitPhase("results");
+    assert(
+      finished.clues.some((c) => c.text === "Puddle edited"),
+      "The round lost its clue history before Results",
+    );
+    await act(host, "punish");
     state = await call("state", { session_id: host.session_id });
+    while (state.phase === "punishment")
+      state = await act(host, "skip", state.punishment.turn);
+    // Next round restarts in place for the same connected roster.
+    await act(host, "next");
+    state = await waitPhase("topic_voting");
     assert(
       state.clues.length === 0 && state.clue_turn === 0,
-      "Abandon carried clues to lobby",
+      "The next round carried clues over",
     );
-    await act(native, "ready", true);
-    for (const p of guests)
-      await p.getByRole("button", { name: "I’m ready", exact: true }).click();
-    await act(host, "start");
     await act(host, "topic_vote", ["food"]);
     await act(native, "topic_vote", ["food"]);
     for (const p of guests) {
@@ -325,7 +340,7 @@ async function clueBoardSmoke(page) {
         .getByRole("button", { name: "Lock my vote", exact: true })
         .click();
     }
-    state = await act(host, "begin_round");
+    state = await waitPhase("roles");
     assert(
       state.clues.length === 0 && state.clue_turn === 1,
       "New round kept old clues",
@@ -344,7 +359,7 @@ async function clueBoardSmoke(page) {
         "open editor retains target turn",
         "keyboard viewport keeps Save visible",
         "voting closes editor and freezes clues",
-        "full runoff history",
+        "clue history survives the verdict",
         "new round reset",
         "no score/readiness changes",
       ],

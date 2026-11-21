@@ -36,6 +36,13 @@ let controller = "";
 let resumeRequest: Promise<SessionData> | null = null;
 let joinAttempt: { invitation: string; player: string; id: string } | null =
   null;
+const recoveryNameKey = (name: string) =>
+  name
+    .normalize("NFC")
+    .trim()
+    .replace(/\s+/gu, " ")
+    .replace(/[‘’]/gu, "'")
+    .toLowerCase();
 export function entryInvitation(): string {
   if (location.hash.startsWith("#invite=")) return location.href;
   return storedSession()?.credentials.invitation || "";
@@ -90,7 +97,7 @@ function browserHeaders(
 ): Record<string, string> {
   const headers: Record<string, string> = {
     "X-Imposter-Client": "web-v1",
-    "X-Imposter-Gameplay": "round-rules-v1",
+    "X-Imposter-Gameplay": "round-flow-v2",
   };
   if (credentials) {
     headers.Authorization = `Bearer ${credentials.token}`;
@@ -200,7 +207,8 @@ async function browserApi<T>(
       );
       if (
         saved?.party === parsed.native.party_id &&
-        saved.player === player &&
+        typeof saved.player === "string" &&
+        recoveryNameKey(saved.player) === recoveryNameKey(player) &&
         typeof saved.id === "string" &&
         /^[a-f0-9-]{36}$/i.test(saved.id)
       )

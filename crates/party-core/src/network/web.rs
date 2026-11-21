@@ -337,7 +337,7 @@ pub(super) async fn host_view(host: &Host, player_id: &str) -> Value {
         .filter_map(|r| {
             game.players
                 .iter()
-                .find(|p| p.id == r.player_id && !p.left && !p.connected)
+                .find(|p| p.id == r.player_id && !p.left)
                 .map(|p| {
                     (
                         r.created,
@@ -378,12 +378,8 @@ pub(super) async fn decide_recovery(host: &Host, action: &Action) -> GameResult<
         sessions.recoveries.get_mut(&proof).unwrap().decision = RecoveryDecision::Rejected;
         return Ok(());
     }
-    if !game
-        .players
-        .iter()
-        .any(|p| p.id == id && !p.left && !p.connected)
-    {
-        return Err("This player has already reconnected or left the party.".into());
+    if !game.players.iter().any(|p| p.id == id && !p.left) {
+        return Err("This player has left the party.".into());
     }
     let old_tokens: Vec<_> = sessions
         .players
@@ -454,15 +450,29 @@ async fn recover(State(state): State<HostState>, Json(body): Json<Recover>) -> R
             "This party has ended. Ask the host for a new invitation.",
         );
     }
-    let Some(player) = game
-        .players
-        .iter()
-        .find(|p| p.id != game.host && !p.left && p.name.to_lowercase() == name.to_lowercase())
-    else {
-        return error(StatusCode::CONFLICT, "recovery_unavailable", "No returning player has that name. Use the name you joined with, or join as a new player in the lobby.");
+    let Some(player) = game.player_named(&name).filter(|p| p.id != game.host) else {
+        return error(StatusCode::CONFLICT, "recovery_unavailable", "There’s no player with that name in this party. Ask the host to check how it appears on their screen.");
     };
     let id = player.id.clone();
-    let connected = player.connected;
+    if !sessions.players.values().any(|p| p.player_id == id) {
+        return error(
+            StatusCode::CONFLICT,
+            "recovery_unavailable",
+            "This player joined in the installed app. Reopen the app to reconnect.",
+        );
+    }
+    // The host-facing approval ID cannot serve as the browser's private proof.
+    if sessions
+        .recoveries
+        .values()
+        .any(|recovery| recovery.id == body.request_id)
+    {
+        return error(
+            StatusCode::CONFLICT,
+            "recovery_unavailable",
+            "Start a new reconnect request from your browser.",
+        );
+    }
     if let Some(recovery) = sessions.recoveries.get(&body.request_id) {
         if recovery.player_id != id {
             return bad("That recovery request was already used for another player.");
@@ -493,9 +503,8 @@ async fn recover(State(state): State<HostState>, Json(body): Json<Recover>) -> R
             RecoveryDecision::Pending => {}
         }
     } else {
-        if connected || !sessions.players.values().any(|p| p.player_id == id) {
-            return error(StatusCode::CONFLICT, "recovery_unavailable", "That player is still connected. Close their old tab, wait about 10 seconds, then try again.");
-        }
+        // A closed or backgrounded tab can still look connected until its heartbeat expires.
+        // The host can approve a transfer during that time, after matching the code.
         if sessions.recoveries.len() >= 48 {
             return error(
                 StatusCode::TOO_MANY_REQUESTS,
@@ -511,13 +520,6 @@ async fn recover(State(state): State<HostState>, Json(body): Json<Recover>) -> R
                 created: Instant::now(),
                 decision: RecoveryDecision::Pending,
             },
-        );
-    }
-    if connected {
-        return error(
-            StatusCode::CONFLICT,
-            "recovery_unavailable",
-            "This player has already reconnected. Use their active tab.",
         );
     }
     let recovery = &sessions.recoveries[&body.request_id];
@@ -558,6 +560,18 @@ async fn browser_join(State(state): State<HostState>, Json(body): Json<BrowserJo
         let result = credentials(&host, &token, player, game.view(&id));
         host.seen.lock().await.insert(id, Instant::now());
         return Json(result).into_response();
+    }
+    if game.phase != "ended"
+        && crate::game::clean_name(&body.name).is_ok_and(|name| {
+            game.player_named(&name)
+                .is_some_and(|player| sessions.players.values().any(|p| p.player_id == player.id))
+        })
+    {
+        return error(
+            StatusCode::CONFLICT,
+            "reconnect_required",
+            "This name already has a place in the party. Reconnect with host approval to keep it.",
+        );
     }
     if sessions.joins.len() >= 512 {
         return bad("This party has had too many joins. Ask the host to create a new party.");
@@ -959,14 +973,14 @@ mod tests {
         );
     }
     #[tokio::test]
-    async fn recovery_requires_disconnection_host_approval_and_a_live_place() {
+    async fn recovery_requires_host_approval_and_a_live_place() {
         let host = host().await;
         let invite = SharedInvitation::parse(&host.invitation()).unwrap();
         let client = Client::new();
         let controller = Uuid::new_v4().to_string();
-        let player = joined(&client, &invite, "Élodie", &controller).await;
+        let player = joined(&client, &invite, "Élodie O’Neil", &controller).await;
         let id = player["credentials"]["player_id"].as_str().unwrap();
-        for name in ["ÉLODIE", "Alex", "Nobody"] {
+        for name in ["Alex", "Nobody"] {
             assert_eq!(
                 recovery(&client, &invite, recovery_body(&invite, name))
                     .await
@@ -974,20 +988,15 @@ mod tests {
                 StatusCode::CONFLICT
             );
         }
-        let mut invalid = recovery_body(&invite, "élodie");
+        let mut invalid = recovery_body(&invite, "élodie o’neil");
         invalid["admission"] = json!(Uuid::new_v4().to_string());
         assert_eq!(
             recovery(&client, &invite, invalid).await.status(),
             StatusCode::UNAUTHORIZED
         );
-        host.host
-            .as_ref()
-            .unwrap()
-            .game
-            .lock()
-            .await
-            .connection(id, false);
-        let body = recovery_body(&invite, " élODIE ");
+        // The saved browser connection can still be marked active. Mobile
+        // keyboards may also produce different Unicode, spacing or punctuation.
+        let body = recovery_body(&invite, " e\u{301}LODIE\u{a0}  O'NEIL ");
         recovery(&client, &invite, body.clone())
             .await
             .error_for_status()
@@ -1021,7 +1030,7 @@ mod tests {
             .lock()
             .await
             .connection(id, false);
-        let expired = recovery_body(&invite, "élodie");
+        let expired = recovery_body(&invite, "élodie o’neil");
         recovery(&client, &invite, expired.clone())
             .await
             .error_for_status()
@@ -1043,7 +1052,7 @@ mod tests {
             .as_array()
             .unwrap()
             .is_empty());
-        let removed = recovery_body(&invite, "Élodie");
+        let removed = recovery_body(&invite, "Élodie O’Neil");
         recovery(&client, &invite, removed.clone())
             .await
             .error_for_status()
@@ -1334,15 +1343,11 @@ mod tests {
             web_action(&client, &invite, p, c, action.clone()).await;
             web_action(&client, &invite, p, c, action).await;
         }
-        let result = host.snapshot().await.unwrap();
-        assert_eq!(result["phase"], "results");
+        let result = crate::network::tests::wait_phase(&host, "results").await;
         assert_eq!(result["result"]["escaped"], false);
         for p in result["players"].as_array().unwrap() {
             assert_eq!(p["points"], if p["id"] == imposter { 0 } else { 1 });
         }
-        host.send(command(round, "open_reports", Value::Null))
-            .await
-            .unwrap();
         host.send(command(round, "report", json!([])))
             .await
             .unwrap();
@@ -1355,6 +1360,10 @@ mod tests {
             web_action(&client, &invite, p, c, report.clone()).await;
             web_action(&client, &invite, p, c, report).await;
         }
+        // Continue closes reporting and opens Drink or Dare.
+        host.send(command(round, "punish", Value::Null))
+            .await
+            .unwrap();
         let view = host.snapshot().await.unwrap();
         assert_eq!(view["phase"], "punishment");
         assert_eq!(view["result"]["report_penalty"], 0);

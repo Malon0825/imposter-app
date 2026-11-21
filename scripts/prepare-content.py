@@ -14,12 +14,15 @@ ROOT = Path(__file__).resolve().parents[1]
 CATALOG = ROOT / "crates/party-core/content/topics.json"
 REVIEW = ROOT / "crates/party-core/content/hint-review.json"
 MODE_REVIEW = ROOT / "crates/party-core/content/mode-review.json"
+SPOKEN_REVIEW = ROOT / "crates/party-core/content/spoken-mode-review.json"
 MODE_REPORT = ROOT / "TOPIC-MODES.md"
 DIVERSITY = ROOT / "crates/party-core/content/diversity-review.json"
 SELECTION_INDEX = ROOT / "crates/party-core/content/selection-index.json"
 MIN_WORDS = 20
 MIN_MODE_WORDS = 10
-MODES = ("classic", "act_it", "sound_only")
+NONVERBAL = ("act_it", "sound_only")
+SPOKEN = ("two_truths", "if_it_could_talk", "sell_it")
+MODES = ("classic", *NONVERBAL, *SPOKEN)
 OPT_IN_TOPICS = {"dating", "puberty", "health", "consent"}
 GENERIC_HINTS = {
     "thing", "stuff", "object", "animal", "nature", "food", "place", "job",
@@ -151,7 +154,7 @@ def validate_review(packs, review):
         raise ValueError(f"Missing topic reviews: {set(topics) - seen}")
 
 
-def validate_mode_review(packs, review):
+def validate_mode_review(packs, review, modes=NONVERBAL):
     """Require word-by-word decisions and hint alternatives within each pool."""
     if review.get("version") != 1 or review.get("minimum_playable_words") != MIN_MODE_WORDS:
         raise ValueError("Unsupported mode-review version or minimum pool size.")
@@ -166,10 +169,10 @@ def validate_mode_review(packs, review):
         decisions = {}
         for decision in topic_review["words"]:
             word = decision["word"]
-            if word not in pairs or word in decisions or set(decision) != {"word", *MODES[1:]}:
+            if word not in pairs or word in decisions or set(decision) != {"word", *modes}:
                 raise ValueError(f"Unknown, duplicate or incomplete mode decision: {topic_id} / {word}")
             decisions[word] = decision
-            for mode in MODES[1:]:
+            for mode in modes:
                 entry = decision[mode]
                 expected = "example" if mode in pairs[word]["modes"] else "excluded"
                 if not isinstance(entry, dict) or set(entry) != {expected}:
@@ -179,9 +182,9 @@ def validate_mode_review(packs, review):
                     raise ValueError(f"Missing concrete example or exclusion reason: {topic_id} / {word} / {mode}")
         if set(decisions) != set(pairs):
             raise ValueError(f"Missing mode decisions: {topic_id} / {set(pairs) - set(decisions)}")
-        if set(topic_review["associations"]) != set(MODES[1:]):
+        if set(topic_review["associations"]) != set(modes):
             raise ValueError(f"Missing mode association groups: {topic_id}")
-        for mode in MODES[1:]:
+        for mode in modes:
             eligible = {word for word, pair in pairs.items() if mode in pair["modes"]}
             associations = topic_review["associations"][mode]
             if len(eligible) < MIN_MODE_WORDS:
@@ -212,9 +215,34 @@ def validate_mode_review(packs, review):
         raise ValueError(f"Missing mode-review topics: {set(topics) - seen}")
 
 
+def extend_with_spoken_review(packs, review, rows):
+    topics = {topic["id"]: topic for topic in review["topics"]}
+    groups = {id: {mode: {} for mode in SPOKEN} for id in topics}
+    decisions = {(topic["id"], word["word"]): word for topic in topics.values() for word in topic["words"]}
+    pairs = {(topic["id"], word["word"]): word for topic in packs for word in topic["words"]}
+    approved = set()
+    for row in rows:
+        topic, mode, word, hint, example = (row[key] for key in ("topic", "mode", "word", "hint", "example"))
+        key = (topic, mode, word)
+        if mode not in SPOKEN or key in approved or pairs.get((topic, word), {}).get("mode_hints", {}).get(mode) != hint:
+            raise ValueError(f"Unmatched or duplicate spoken review: {key}")
+        approved.add(key)
+        decisions[topic, word][mode] = {"example": example}
+        groups[topic][mode].setdefault(hint, []).append(word)
+    for decision in decisions.values():
+        for mode in SPOKEN:
+            decision.setdefault(mode, {"excluded": "Outside the reviewed starter pool for this rule."})
+    for topic_id, topic in topics.items():
+        for mode in SPOKEN:
+            topic["associations"][mode] = [
+                {"hint": hint, "plausible_words": words}
+                for hint, words in groups[topic_id][mode].items()
+            ]
+
+
 def mode_report(packs, review):
     """Human-readable derived inventory; JSON remains the authoring source."""
-    labels = {"classic": "Classic", "act_it": "Act It", "sound_only": "Sound Only"}
+    labels = {"classic": "Classic", "act_it": "Act It", "sound_only": "Sound Only", "two_truths": "Two Truths and a Lie", "if_it_could_talk": "If It Could Talk", "sell_it": "Sell It"}
     lines = [
         "# Topic and word classifications by game mode", "",
         f"Editorial review: {review['reviewed_on']}. Generated from the canonical catalog and mode-review record. This is a content review, not human playtest certification.", "",
@@ -267,7 +295,7 @@ def selection_index(packs, classic, nonverbal, diversity):
     metadata = {name: {"concept": pair["word_id"], "semantic": [], "performance": {}, "hints": {}} for name, pair in words.items()}
     equivalents = set()
     for category in ("concepts", "semantic", *MODES):
-        for group, names in diversity[category].items():
+        for group, names in diversity.get(category, {}).items():
             if len(set(names)) != len(names) or len(names) < 2 or not set(names) <= words.keys():
                 raise ValueError(f"Unknown or duplicate words in {category}/{group}: {names}")
             for name in names:
@@ -291,7 +319,7 @@ def selection_index(packs, classic, nonverbal, diversity):
                 if not associations or mode not in pair["modes"]:
                     continue
                 primary = pair["hint"] if mode == "classic" else pair["mode_hints"][mode]
-                options = [primary, *diversity["fallback_hints"][mode].get(name, [])]
+                options = [primary, *diversity["fallback_hints"].get(mode, {}).get(name, [])]
                 hints = []
                 for hint in dict.fromkeys(options):
                     if name not in associations.get(hint, []):
@@ -323,6 +351,8 @@ def main():
     validate_review(packs, review)
     mode_review = json.loads(MODE_REVIEW.read_text(encoding="utf-8"))
     validate_mode_review(packs, mode_review)
+    extend_with_spoken_review(packs, mode_review, json.loads(SPOKEN_REVIEW.read_text(encoding="utf-8")))
+    validate_mode_review(packs, mode_review, MODES[1:])
     index = selection_index(packs, review, mode_review, json.loads(DIVERSITY.read_text(encoding="utf-8")))
     if args.check:
         if not SELECTION_INDEX.exists() or SELECTION_INDEX.read_text(encoding="utf-8") != index:

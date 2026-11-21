@@ -24,6 +24,12 @@ fn deal(g: &mut Game) {
         p.ready = true;
     }
     act(g, &host, "start", Value::Null).unwrap();
+    play_to_vote(g);
+}
+// The shipped repeat round kicks off straight from rankings, so only a lobby
+// restart taps start.
+fn play_to_vote(g: &mut Game) {
+    let host = g.host.clone();
     let topic = g.round.topic_pool.first().unwrap().clone();
     for id in g.round.roster.clone() {
         act(g, &id, "topic_vote", json!([topic])).unwrap();
@@ -52,11 +58,18 @@ fn caught(g: &mut Game, stake: u32) {
         )
         .unwrap();
     }
+    settle(g);
     assert_eq!(g.phase, "results");
+}
+// The host schedules both Results beats; tests stand in for that scheduler.
+fn settle(g: &mut Game) {
+    if let Some(at) = g.round.reveal_at {
+        g.advance_reveals(at);
+        g.advance_reveals(at + RESULT_BEAT);
+    }
 }
 fn finish(g: &mut Game) {
     let host = g.host.clone();
-    act(g, &host, "open_reports", Value::Null).unwrap();
     act(g, &host, "punish", Value::Null).unwrap();
     while g.phase == "punishment" {
         let turn = g.round.turn + 1;
@@ -67,7 +80,11 @@ fn next(g: &mut Game) {
     finish(g);
     let host = g.host.clone();
     act(g, &host, "next", Value::Null).unwrap();
-    deal(g);
+    if g.phase == "lobby" {
+        deal(g);
+    } else {
+        play_to_vote(g);
+    }
 }
 
 #[test]
@@ -154,7 +171,7 @@ fn malformed_imposter_self_and_locked_bets_cannot_mutate_the_ballot() {
         .is_err());
         assert!(g.round.original.is_empty());
     }
-    assert!(vote(&mut g, 1, 0, 1).is_err());
+    assert!(vote(&mut g, 1, 0, 4).is_err()); // The imposter may bet, but only 0-3.
     assert!(vote(&mut g, 0, 0, 1).is_err());
     assert!(act(
         &mut g,
@@ -265,6 +282,7 @@ fn maximum_civilian_award_is_five_and_perfect_bluff_is_three() {
     for (i, target) in [2, 2, 0, 2].into_iter().enumerate() {
         vote(&mut g, i, target, 0).unwrap();
     }
+    settle(&mut g);
     assert_eq!(g.players[1].earned, 3);
     assert_eq!(g.round.scores[&g.players[1].id].bluff, 1);
     assert_eq!(g.view(&host)["result"]["imposter_bonus"], 1);
@@ -273,6 +291,9 @@ fn maximum_civilian_award_is_five_and_perfect_bluff_is_three() {
 #[test]
 fn runoff_changes_neither_original_accusation_nor_bet_and_scores_once() {
     let mut g = lobby(4);
+    // ponytail: the shipped flow ends a tie in an escape and never enters a
+    // runoff. This pins the inert legacy path; delete it with the runoff code.
+    g.legacy_test_flow = true;
     deal(&mut g);
     g.players[0].points = 3;
     let host = g.host.clone();

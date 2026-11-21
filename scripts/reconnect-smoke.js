@@ -369,7 +369,7 @@ async function checkReconnect(page) {
       .click();
     await returning
       .getByRole("textbox", { name: "Your name", exact: true })
-      .fill("Mia");
+      .fill("  mIA  ");
     await returning
       .getByRole("button", { name: "Request reconnect", exact: true })
       .click();

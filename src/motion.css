@@ -63,12 +63,6 @@
 
 .bottom-sheet {
   padding-top: 52px;
-  max-height: calc(
-    100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) -
-      12px
-  );
-  overflow-y: auto;
-  overscroll-behavior: contain;
 }
 .sheet-grab {
   position: absolute;
