@@ -132,6 +132,8 @@ Run `scripts/reconnect-smoke.js` with the same Playwright CLI `run-code --filena
 
 Use `scripts/party-load-smoke.js` to hold a party of eight at the client's real poll rate and report failures, latency percentiles and any player the host dropped, and `scripts/presence-blip-smoke.js` to confirm a short network blip does not throw a player onto the reconnect screen while a sustained outage still does.
 
+Use `scripts/shared-link-smoke.js` to confirm a party link pasted into a group chat survives the chat app's redirect and joins cleanly from fresh in-app browsers on iPhone and Android.
+
 Use `scripts/card-recheck-smoke.js` to verify that ready players, civilians, and the imposter can recheck their own card through discussion, voting, reloads, and manual pauses. It also checks concealed entry/backgrounding, selected and locked vote preservation, automatic closure at results, and credential-only browser storage.
 
 Use `scripts/clue-board-smoke.js` to exercise the shared native/browser clue board: optional entry, multiple turns, editing/removing older clues, lost-save-response retries, reload and closed-tab rescan recovery, turn changes while editing, read-only voting, clue history through the verdict, and next-round reset. Screenshots are saved under `output/playwright/clue-board-*.png`. The implementation follows [the approved clue-board design](design/clue-board-v2/README.md).
