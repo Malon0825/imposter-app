@@ -233,13 +233,14 @@ async function smokeGame(page) {
       await p.screenshot({ path: "output/playwright/vote-locked.png" });
     }
   }
-  await page.locator(".round-points").waitFor();
+  await page.locator(".everyone-results").waitFor({ timeout: 15000 });
   await page.waitForTimeout(1200);
   await page.screenshot({ path: "output/playwright/results.png" });
   for (let i = 0; i < 4; i++) {
     const expected = i === imp ? 2 : i === correct ? 1 : 0;
-    const text = await pages[i].locator(".round-points").innerText();
-    if (text !== `+${expected} ${expected === 1 ? "point" : "points"}`)
+    await pages[i].locator(".everyone-results").waitFor({ timeout: 15000 });
+    const text = (await pages[i].locator(".outcome-row.is-me .outcome-delta").innerText()).trim();
+    if (text !== (expected ? `+${expected}` : "0"))
       throw Error(`Wrong points for ${names[i]}: ${text}`);
   }
   await finishPunishment(true);

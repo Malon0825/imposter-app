@@ -117,19 +117,31 @@ async function roundFlowSmoke(hostPage) {
       assert(progress.vote_count === index + 1, `Expected ${index + 1} locks, got ${progress.vote_count}`);
     }
     await Promise.all([
-      hostPage.locator(".result-suspense, .verdict-stage, .recap-verdict").first().waitFor({ timeout: 6500 }),
+      hostPage.locator(".result-suspense, .personal-stage, .verdict-stage, .recap-verdict-card").first().waitFor({ timeout: 6500 }),
       pick(civilians[2], civilians[1]),
     ]).catch(async (error) => {
       const view = await state();
       throw Error(`Reveal did not start · ${view.phase} · ${view.vote_count} votes · ${error.message}`);
     });
+    // Each player reads their own result before the room's results open.
+    const personal = (player, name) =>
+      player.page.locator(".personal-stage").getByRole("heading", { name, exact: true }).waitFor({ timeout: 8000 });
+    await Promise.all([personal(civilians[0], "You got it"), personal(imposter, "You escaped")]);
+    await capture(imposter.page, "personal-escape");
+    await hostPage.locator(".everyone-results").waitFor();
     await hostPage.getByText("No one was accused.", { exact: true }).first().waitFor();
     await capture(hostPage, "tie-verdict");
     await button(hostPage, "Continue").waitFor();
     const result = (await state()).result;
     assert(result.escaped && !result.accused_id, "Dummy vote broke the civilian tie");
-    await heading(civilians[0].page, "You got it").waitFor();
-    await heading(imposter.page, "You escaped").waitFor();
+    assert(result.outcomes.length === players.length, "Everyone's results left a player out");
+    const ownChip = async (player) => (await player.page.locator(".outcome-row.is-me .outcome-chip").innerText()).trim();
+    assert((await ownChip(civilians[0])) === "Got it", "The correct civilian's row was wrong");
+    assert((await ownChip(imposter)) === "Escaped", "The imposter's row was wrong");
+    assert(
+      (await hostPage.locator(".everyone-results .outcome-row").count()) === players.length,
+      "Everyone's results did not list the whole room",
+    );
     await capture(imposter.page, "escape-recap");
     await button(hostPage, "Report a rule violation").click();
     await hostPage.getByRole("checkbox", { name: guests[0].name }).click();

@@ -65,7 +65,7 @@ fn caught(g: &mut Game, stake: u32) {
 fn settle(g: &mut Game) {
     if let Some(at) = g.round.reveal_at {
         g.advance_reveals(at);
-        g.advance_reveals(at + RESULT_BEAT);
+        g.advance_reveals(at + PERSONAL_BEAT);
     }
 }
 fn finish(g: &mut Game) {

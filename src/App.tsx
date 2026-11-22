@@ -27,6 +27,8 @@ import type {
   DeviceStatus,
   Player,
   RecoveryData,
+  RoundOutcome,
+  RoundVerdict,
   SessionData,
   Topic,
   View,
@@ -90,6 +92,20 @@ const initials = (name: string) => {
           .join("")
   ).toUpperCase();
 };
+const OUTCOME_HEADLINE: Record<RoundOutcome, string> = {
+  correct: "You got it",
+  wrong: "You guessed wrong",
+  escaped: "You escaped",
+  caught: "You were caught",
+};
+const OUTCOME_CHIP: Record<RoundOutcome, string> = {
+  correct: "Got it",
+  wrong: "Wrong",
+  escaped: "Escaped",
+  caught: "Caught",
+};
+const goodOutcome = (o: RoundOutcome | null | undefined) =>
+  o === "correct" || o === "escaped";
 const recapItem = {
   hidden: { opacity: 0, y: 12 },
   shown: { opacity: 1, y: 0, transition: { duration: 0.32, ease: MOTION.easeOut } },
@@ -1721,6 +1737,22 @@ export default function App() {
         )}
       </aside>
     ) : null;
+  // The room's verdict: a burst when the imposter is caught, a quieter slip
+  // when they escape. Shared by the reveal fallback and the top of Results.
+  const verdictCard = (verdict: RoundVerdict, enter: boolean) => (
+    <motion.div
+      className={`verdict-card ${verdict.escaped ? "escaped" : "caught"}`}
+      initial={enter ? (verdict.escaped ? { rotateY: -70, opacity: 0, x: -18, rotate: -4 } : { rotateY: -70, opacity: 0, scale: 0.94 }) : false}
+      animate={{ rotateY: 0, opacity: 1, x: 0, rotate: 0, scale: 1 }}
+      transition={{ duration: enter ? MOTION.roleReveal : 0, ease: MOTION.easeOut }}
+    >
+      {!verdict.escaped && <Rays className={enter ? "verdict-burst" : ""} />}
+      <Avatar player={person(verdict.imposter_id)} large />
+      <p className="verdict-role">IMPOSTER</p>
+      <h1>{verdict.tied && <>It’s a tie.<br /></>}{playerName(verdict.imposter_id)} {verdict.escaped ? "escaped." : "was caught"}</h1>
+      {verdict.tied && <p>No one was accused.</p>}
+    </motion.div>
+  );
   const reconnect = () => (
     <>
       <div className="center-stage reconnecting-content">
@@ -3347,23 +3379,41 @@ export default function App() {
     }
     if (view.phase === "result_reveal") {
       const verdict = view.verdict;
+      const mine = verdict?.my_outcome;
+      // Rejoining near the end of a beat shows it at rest rather than replaying.
+      const enter = !reduced && visible && (view.reveal?.remaining_ms ?? 0) >= 450;
       return (
         <>
           <Header title={`Round ${view.round_id} · Results`} back={askLeave} />
-          {verdict ? (
-            <div className="verdict-stage center-stage" aria-live="polite">
-              <motion.div
-                className={`verdict-card ${verdict.escaped ? "escaped" : "caught"}`}
-                initial={reduced || !visible || (view.reveal?.remaining_ms ?? 0) < 450 ? false : verdict.escaped ? { rotateY: -70, opacity: 0, x: -18, rotate: -4 } : { rotateY: -70, opacity: 0, scale: 0.94 }}
-                animate={{ rotateY: 0, opacity: 1, x: 0, rotate: 0, scale: 1 }}
-                transition={{ duration: reduced ? 0 : MOTION.roleReveal, ease: MOTION.easeOut }}
+          {verdict && mine ? (
+            // Everyone looks at their own result first; the room's opens next.
+            <div className="personal-stage center-stage" aria-live="polite">
+              <motion.span
+                className={`result-disc ${goodOutcome(mine) ? "win" : ""}`}
+                initial={enter ? { scale: 0.6, opacity: 0 } : false}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={MOTION.select}
               >
-                {!verdict.escaped && <Rays className="verdict-burst" />}
-                <Avatar player={person(verdict.imposter_id)} large />
-                <p className="verdict-role">IMPOSTER</p>
-                <h1>{verdict.tied && <>It’s a tie.<br /></>}{playerName(verdict.imposter_id)} {verdict.escaped ? "escaped." : "was caught"}</h1>
-                {verdict.tied && <p>No one was accused.</p>}
-              </motion.div>
+                <Icon name={goodOutcome(mine) ? "check" : "x"} size={42} />
+              </motion.span>
+              <motion.h1
+                initial={enter ? { opacity: 0, y: 12 } : false}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.32, ease: MOTION.easeOut, delay: enter ? 0.12 : 0 }}
+              >
+                {OUTCOME_HEADLINE[mine]}
+              </motion.h1>
+              {verdict.my_delta != null && (
+                <div className={`round-points ${verdict.my_delta > 0 ? "lime" : "terra"}`}>
+                  <ScoreValue value={verdict.my_delta} from={enter ? 0 : verdict.my_delta} signed delay={enter ? 0.3 : 0} />{" "}
+                  {Math.abs(verdict.my_delta) === 1 ? "point" : "points"}
+                </div>
+              )}
+              <p className="muted">Everyone’s results are next.</p>
+            </div>
+          ) : verdict ? (
+            <div className="verdict-stage center-stage" aria-live="polite">
+              {verdictCard(verdict, enter)}
             </div>
           ) : (
             <div className="result-suspense center-stage is-waiting" aria-live="polite">
@@ -3395,26 +3445,49 @@ export default function App() {
             animate="shown"
             variants={{ shown: { transition: { staggerChildren: 0.09 } } }}
           >
-            <motion.p variants={recapItem} className="recap-verdict">{!r.accused_id && "It’s a tie. "}<b>{playerName(r.imposter_id)}</b> {r.escaped ? "escaped." : "was caught"}</motion.p>
-            {!r.accused_id && <motion.p variants={recapItem} className="muted compact">No one was accused.</motion.p>}
-            <motion.span
-              className={`result-disc ${win ? "win" : ""}`}
-              variants={{ hidden: { scale: 0.6, opacity: 0 }, shown: { scale: 1, opacity: 1, transition: MOTION.select } }}
-            >
-              <Icon name={win ? "check" : "x"} size={42} />
-            </motion.span>
-            <motion.h1 variants={recapItem}>
-              {r.was_imposter
-                ? r.escaped
-                  ? "You escaped"
-                  : "You were caught"
-                : win
-                  ? "You got it"
-                  : "You guessed wrong"}
-            </motion.h1>
-            <motion.div variants={recapItem} className={`round-points ${net > 0 ? "lime" : "terra"}`}>
-              <ScoreValue value={net} from={0} signed delay={reduced ? 0 : 0.35} /> {Math.abs(net) === 1 ? "point" : "points"}
+            <motion.div variants={recapItem} className="recap-verdict-card">
+              {verdictCard(
+                { imposter_id: r.imposter_id, escaped: r.escaped, tied: !r.accused_id },
+                !reduced && visible,
+              )}
             </motion.div>
+            <motion.section
+              variants={recapItem}
+              className="everyone-results"
+              aria-labelledby="everyone-results-title"
+            >
+              <h2 id="everyone-results-title">Everyone’s results</h2>
+              {[...r.outcomes]
+                // The imposter leads, then the room in its usual order.
+                .sort((x, y) => Number(y.player_id === r.imposter_id) - Number(x.player_id === r.imposter_id))
+                .map((o) => {
+                  const good = goodOutcome(o.outcome);
+                  const me = o.player_id === view.my_id;
+                  return (
+                    <div className={`rank-row outcome-row ${me ? "is-me" : ""}`} key={o.player_id}>
+                      <Avatar player={person(o.player_id)} />
+                      <div className="player-details">
+                        <strong>{playerName(o.player_id)}</strong>
+                        <span>
+                          {o.player_id === r.imposter_id ? "Imposter" : "Civilian"}
+                          {me ? " · You" : ""}
+                        </span>
+                      </div>
+                      {o.outcome && (
+                        <span className={`outcome-chip ${good ? "good" : "bad"}`}>
+                          <Icon name={good ? "check" : "x"} size={14} />
+                          {OUTCOME_CHIP[o.outcome]}
+                        </span>
+                      )}
+                      {o.delta != null && (
+                        <strong className={`outcome-delta ${o.delta > 0 ? "lime" : o.delta < 0 ? "terra" : "muted"}`}>
+                          {o.delta === 0 ? "0" : signed(o.delta)}
+                        </strong>
+                      )}
+                    </div>
+                  );
+                })}
+            </motion.section>
             {/* The breakdown, word and meaning land together as the last step. */}
             <motion.div variants={recapItem} className="recap-details">
             <p>

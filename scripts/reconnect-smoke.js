@@ -100,7 +100,16 @@ async function checkReconnect(page) {
       await p.getByRole("button", { name: "Food", exact: true }).click();
       await p.getByRole("button", { name: "Lock my vote", exact: true }).click();
     }
-    await act(host, "begin_round");
+    // The host deals on its own once the last topic ballot locks; a manual
+    // begin_round here races that and loses whenever the scheduler wins.
+    for (let tick = 0; tick < 150; tick++) {
+      const view = await call("state", { session_id: host.session_id });
+      if (view.phase === "roles") {
+        round = view.round_id;
+        break;
+      }
+      await page.waitForTimeout(100);
+    }
     await guest
       .getByRole("button", { name: "Reveal my role", exact: true })
       .waitFor();

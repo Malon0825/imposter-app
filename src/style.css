@@ -70,8 +70,30 @@
 .verdict-card p { margin: 0; }
 .verdict-card h1 { margin: 0; overflow-wrap: anywhere; }
 .verdict-role { color: #a34c3b; font-weight: 800; letter-spacing: .08em; }
-.recap-verdict { font-weight: 700; margin: 0 0 8px; }
-.recap-verdict b { color: var(--lime); }
+/* Personal beat: your own result, centred, before the room's opens. */
+.personal-stage { text-align: center; }
+.personal-stage h1 { margin: 0 0 10px; }
+.personal-stage .result-disc { margin: 0 auto 22px; }
+.personal-stage > p { margin-top: 18px; }
+/* Results opens on the room's verdict, then everyone's outcome. */
+.recap-verdict-card { display: grid; justify-items: center; width: 100%; margin-bottom: 26px; }
+.everyone-results { width: 100%; text-align: left; margin-bottom: 24px; }
+.everyone-results h2 { font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+.outcome-row { min-height: 64px; padding: 10px 8px; }
+.outcome-row.is-me { background: rgba(214, 245, 107, .07); border-radius: 12px; }
+.outcome-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+}
+.outcome-chip.good { background: var(--lime); color: var(--bg); }
+.outcome-chip.bad { background: var(--terra); color: var(--bg); }
+.outcome-delta { min-width: 34px; text-align: right; font-size: 18px; }
 .result-pair.round-flow-word { grid-template-columns: 1fr; text-align: left; }
 .report-sheet-list { max-height: 42vh; overflow: auto; margin-bottom: 16px; }
 .report-sheet-row {

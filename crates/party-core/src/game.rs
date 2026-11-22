@@ -18,6 +18,8 @@ pub(crate) const NO_FRESH_TOPICS: &str = "No fresh topics are available with the
 const RULE_SHUFFLE: Duration = Duration::from_millis(1250);
 const RULE_HOLD: Duration = Duration::from_secs(3);
 const RESULT_BEAT: Duration = Duration::from_secs(1);
+// Each player reads their own outcome before everyone's results open.
+const PERSONAL_BEAT: Duration = Duration::from_secs(2);
 #[derive(Clone, Debug)]
 pub struct Player {
     pub id: String,
@@ -1043,7 +1045,7 @@ impl Game {
         };
         if self.phase == "rule_reveal" && now >= at + RULE_HOLD {
             self.phase = "topic_voting".into();
-        } else if self.phase == "result_reveal" && now >= at + RESULT_BEAT {
+        } else if self.phase == "result_reveal" && now >= at + PERSONAL_BEAT {
             self.phase = "results".into();
         } else if now >= at
             && !self.round.reveal_landed
@@ -1305,15 +1307,35 @@ impl Game {
                 "rule_reveal" if !self.round.reveal_landed => ("shuffle", RULE_SHUFFLE),
                 "rule_reveal" => ("rule", RULE_HOLD),
                 "result_reveal" if !self.round.reveal_landed => ("suspense", RESULT_BEAT),
-                "result_reveal" => ("verdict", RESULT_BEAT),
+                "result_reveal" => ("verdict", PERSONAL_BEAT),
                 _ => return Value::Null,
             };
             let deadline = if self.round.reveal_landed { at + duration } else { at };
             json!({"stage":stage,"remaining_ms":deadline.saturating_duration_since(now).as_millis(),"total_ms":duration.as_millis(),"shuffled":self.phase == "rule_reveal" && self.round.random_at_start})
         });
+        let escaped = self.round.accused.as_ref() != Some(&self.round.imposter);
+        let outcome = |id: &str| -> Option<&'static str> {
+            if id == self.round.imposter {
+                Some(if escaped { "escaped" } else { "caught" })
+            } else {
+                // A civilian's own ballot decides their result, even on a tie.
+                let vote = self.round.original.get(id)?;
+                Some(if vote == &self.round.imposter { "correct" } else { "wrong" })
+            }
+        };
+        let delta = |id: &str| self.round.scores.get(id).map(|s| s.after - s.before);
+        // The personal beat carries only the viewer's own outcome; everyone
+        // else's waits for the recap.
         let verdict = (reveal.as_ref().is_some_and(|v| v["stage"] == "verdict")).then(|| json!({
-            "imposter_id":self.round.imposter,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"tied":self.round.accused.is_none()
+            "imposter_id":self.round.imposter,"escaped":escaped,"tied":self.round.accused.is_none(),
+            "my_outcome":outcome(actor),"my_delta":delta(actor)
         }));
+        let outcomes: Vec<Value> = self
+            .round
+            .roster
+            .iter()
+            .map(|id| json!({"player_id":id,"outcome":outcome(id),"delta":delta(id)}))
+            .collect();
         let visible_points = |p: &Player| {
             self.round
                 .pre_score_points
@@ -1379,7 +1401,7 @@ impl Game {
           "performed":self.round.performed.iter().flat_map(|(player_id, turns)| turns.iter().map(move |turn| json!({"player_id":player_id,"turn":turn}))).collect::<Vec<_>>(),
           "role_ready":self.round.acknowledged.contains(actor),"ready_count":self.round.acknowledged.len(),"starting_id":if self.phase=="discussion" {Some(&self.round.starting)}else{None},
           "vote_count":votes.len(),"my_vote":votes.get(actor),"candidates":if self.phase=="runoff" {self.round.candidates.clone()}else{vec![]},
-          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"definition":self.round.definition,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0)}))}else{None},
+          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"definition":self.round.definition,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0),"outcomes":outcomes}))}else{None},
           "reporting":if self.phase=="reporting" || (self.streamlined() && self.phase=="results") {Some(json!({"my_reports":self.round.reports.get(actor),"submitted_count":self.round.reports.len(),"total":self.round.roster.len(),"majority":self.round.roster.len()/2+1,"player_ids":self.round.roster}))}else{None},
           "punishment":if self.phase=="punishment" {Some(json!({"player_id":current,"giver_id":self.round.giver,"choice":self.round.choice,"turn":self.round.turn+1,"total":self.round.queue.len()}))}else{None}})
     }
@@ -1493,7 +1515,7 @@ mod tests {
             assert!(verdict["result"].is_null());
             assert_eq!(verdict["players"][0]["points"], 3);
             assert!(action(&mut game, &host, "skip_round", json!(false)).is_err());
-            game.advance_reveals(at + RESULT_BEAT);
+            game.advance_reveals(at + PERSONAL_BEAT);
             assert_eq!(game.view(&host)["result"]["score"]["bet"], -3);
             assert_eq!(game.view(&host)["players"][0]["points"], 0);
             assert_eq!(game.view(&civilians[0])["result"]["score"]["base"], 1);
@@ -1521,7 +1543,7 @@ mod tests {
         let at = game.round.reveal_at.unwrap();
         game.advance_reveals(at);
         assert_eq!(game.view(&host)["verdict"]["tied"], true);
-        game.advance_reveals(at + RESULT_BEAT);
+        game.advance_reveals(at + PERSONAL_BEAT);
         assert_eq!(game.round.scores[&host].before, 3);
         assert_eq!(game.round.scores[&host].after, 8);
         assert_eq!(game.round.scores[&a].base, 1);
@@ -1568,6 +1590,53 @@ mod tests {
     }
 
     #[test]
+    fn each_player_sees_their_own_outcome_before_everyone_elses() {
+        let mut game = party();
+        let [host, a, b, c]: [String; 4] = game.round.roster.clone().try_into().unwrap();
+        game.round.imposter = host.clone();
+        game.phase = "voting".into();
+        for (voter, target) in [(&a, &host), (&b, &host), (&c, &a), (&host, &b)] {
+            action(&mut game, voter, "vote", json!(target)).unwrap();
+        }
+        let at = game.round.reveal_at.unwrap();
+        game.advance_reveals(at);
+
+        // The personal beat: each phone holds only its own result.
+        let mine = |game: &Game, id: &str| game.view(id)["verdict"].clone();
+        assert_eq!(mine(&game, &a)["my_outcome"], "correct");
+        assert_eq!(mine(&game, &a)["my_delta"], 1);
+        assert_eq!(mine(&game, &c)["my_outcome"], "wrong");
+        assert_eq!(mine(&game, &c)["my_delta"], 0);
+        assert_eq!(mine(&game, &host)["my_outcome"], "caught");
+        for id in [&host, &a, &b, &c] {
+            let view = game.view(id);
+            assert!(view["result"].is_null(), "everyone's results leaked early");
+            assert!(view["verdict"].get("outcomes").is_none());
+        }
+
+        // A beat later the whole room's results open, in roster order.
+        game.advance_reveals(at + RESULT_BEAT);
+        assert_eq!(game.phase, "result_reveal", "the personal beat ended too soon");
+        game.advance_reveals(at + PERSONAL_BEAT);
+        assert_eq!(game.phase, "results");
+        let outcomes = game.view(&b)["result"]["outcomes"].clone();
+        let by_player: BTreeMap<_, _> = outcomes
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|o| (o["player_id"].as_str().unwrap().to_owned(), o.clone()))
+            .collect();
+        assert_eq!(by_player.len(), 4);
+        assert_eq!(by_player[&host]["outcome"], "caught");
+        assert_eq!(by_player[&a]["outcome"], "correct");
+        assert_eq!(by_player[&b]["outcome"], "correct");
+        assert_eq!(by_player[&c]["outcome"], "wrong");
+        assert_eq!(by_player[&a]["delta"], 1);
+        // Nobody's ballot target or stake is part of the shared recap.
+        assert!(by_player.values().all(|o| o.get("vote").is_none() && o.get("stake").is_none()));
+    }
+
+    #[test]
     fn escape_stakes_settle_with_the_verdict_and_keep_the_perfect_bluff_bonus() {
         for escaped in [false, true] {
             for stake in 0..=3 {
@@ -1605,7 +1674,7 @@ mod tests {
         let at = game.round.reveal_at.unwrap();
         game.advance_reveals(at);
         assert!(action(&mut game, &a, "report", json!([b])).is_err());
-        game.advance_reveals(at + RESULT_BEAT);
+        game.advance_reveals(at + PERSONAL_BEAT);
         assert_eq!(game.phase, "results");
         // A report that wins the race to Continue applies; one that loses is refused.
         action(&mut game, &a, "report", json!([b])).unwrap();
@@ -1792,7 +1861,7 @@ mod tests {
     fn settle(g: &mut Game) {
         if let Some(at) = g.round.reveal_at {
             g.advance_reveals(at);
-            g.advance_reveals(at + RESULT_BEAT);
+            g.advance_reveals(at + PERSONAL_BEAT);
         }
     }
     #[test]

@@ -33,10 +33,15 @@ export interface RoundRevealStage {
   shuffled?: boolean;
 }
 
+export type RoundOutcome = "correct" | "wrong" | "escaped" | "caught";
+
 export interface RoundVerdict {
   imposter_id: string;
   escaped: boolean;
   tied: boolean;
+  /** The viewer's own result; everyone else's opens with the recap. */
+  my_outcome?: RoundOutcome | null;
+  my_delta?: number | null;
 }
 
 export interface PerformedClue {
@@ -125,6 +130,11 @@ export interface View {
       after: number;
     };
     imposter_bonus: number;
+    outcomes: {
+      player_id: string;
+      outcome: RoundOutcome | null;
+      delta: number | null;
+    }[];
   } | null;
   reporting: {
     my_reports: string[] | null;

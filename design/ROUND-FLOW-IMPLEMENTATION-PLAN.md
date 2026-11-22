@@ -93,6 +93,8 @@ Before enabling a pack for any new rule, review each word for the actual clue fo
 
 ## Results reveal
 
+**Revised after playtesting.** Players cared about their own result before anyone else's, so the order is now: a one-second suspense, then each phone shows only its own outcome (**You got it**, **You guessed wrong**, **You escaped** or **You were caught**) with its points for two seconds, then Results opens on the shared verdict card and an **Everyone's results** list showing each player's role, outcome and points for the round. Ballot targets and stakes stay private. The sections below describe the original verdict-first order and are kept for reference.
+
 ### Shared verdict
 
 - The last locked ballot starts a face-down envelope or card for everyone. Hold it for about one second to let the room notice the outcome is ready.
