@@ -36,6 +36,7 @@ async fn native_action(app: tauri::AppHandle, operation: String) -> Result<Value
         "startHosting",
         "stopHosting",
         "secureScreen",
+        "allowScreenshots",
         "minimize",
         "consumeInvitation",
     ]

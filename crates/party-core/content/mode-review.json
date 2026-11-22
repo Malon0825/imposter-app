@@ -8395,14 +8395,42 @@
     {
       "id": "puberty",
       "associations": {
-        "act_it": [],
+        "act_it": [
+          {
+            "hint": "Teenage",
+            "plausible_words": [
+              "Voice change",
+              "Growth spurt",
+              "Acne",
+              "Puberty"
+            ]
+          },
+          {
+            "hint": "Hygiene",
+            "plausible_words": [
+              "Sweat",
+              "Body odor",
+              "Body hair",
+              "Menstruation"
+            ]
+          },
+          {
+            "hint": "Maturity",
+            "plausible_words": [
+              "Erection",
+              "Sperm",
+              "Testosterone",
+              "Breast development"
+            ]
+          }
+        ],
         "sound_only": []
       },
       "words": [
         {
           "word": "Puberty",
           "act_it": {
-            "excluded": "Most entries are internal anatomy, hormones or processes that need a diagram, specialist explanation or an ambiguous body gesture; no ten-word solo-mime pool was found."
+            "example": "Crouch like a small child, then rise into a slouching, eye-rolling teenager."
           },
           "sound_only": {
             "excluded": "Only voice change has a direct familiar sound cue. Filling the pool with unrelated body noises would change this anatomy-and-puberty topic."
@@ -8411,7 +8439,7 @@
         {
           "word": "Menstruation",
           "act_it": {
-            "excluded": "Most entries are internal anatomy, hormones or processes that need a diagram, specialist explanation or an ambiguous body gesture; no ten-word solo-mime pool was found."
+            "example": "Clutch the lower belly, wince, and press an imaginary hot-water bottle against it."
           },
           "sound_only": {
             "excluded": "Only voice change has a direct familiar sound cue. Filling the pool with unrelated body noises would change this anatomy-and-puberty topic."
@@ -8420,7 +8448,7 @@
         {
           "word": "Erection",
           "act_it": {
-            "excluded": "Most entries are internal anatomy, hormones or processes that need a diagram, specialist explanation or an ambiguous body gesture; no ten-word solo-mime pool was found."
+            "example": "Glance down in alarm, slowly raise a stiff forearm from the lap, then hide it behind an imaginary cushion."
           },
           "sound_only": {
             "excluded": "Only voice change has a direct familiar sound cue. Filling the pool with unrelated body noises would change this anatomy-and-puberty topic."
@@ -8465,7 +8493,7 @@
         {
           "word": "Sperm",
           "act_it": {
-            "excluded": "Most entries are internal anatomy, hormones or processes that need a diagram, specialist explanation or an ambiguous body gesture; no ten-word solo-mime pool was found."
+            "example": "Wiggle one finger forward like a tiny swimmer racing a crowd to a finish line."
           },
           "sound_only": {
             "excluded": "Only voice change has a direct familiar sound cue. Filling the pool with unrelated body noises would change this anatomy-and-puberty topic."
@@ -8474,7 +8502,7 @@
         {
           "word": "Breast development",
           "act_it": {
-            "excluded": "Most entries are internal anatomy, hormones or processes that need a diagram, specialist explanation or an ambiguous body gesture; no ten-word solo-mime pool was found."
+            "example": "Adjust an imaginary first bra strap with a self-conscious glance in a mirror."
           },
           "sound_only": {
             "excluded": "Only voice change has a direct familiar sound cue. Filling the pool with unrelated body noises would change this anatomy-and-puberty topic."
@@ -8546,7 +8574,7 @@
         {
           "word": "Testosterone",
           "act_it": {
-            "excluded": "Most entries are internal anatomy, hormones or processes that need a diagram, specialist explanation or an ambiguous body gesture; no ten-word solo-mime pool was found."
+            "example": "Flex both arms, puff out the chest and stroke an imaginary new beard."
           },
           "sound_only": {
             "excluded": "Only voice change has a direct familiar sound cue. Filling the pool with unrelated body noises would change this anatomy-and-puberty topic."
@@ -8620,14 +8648,42 @@
     {
       "id": "health",
       "associations": {
-        "act_it": [],
+        "act_it": [
+          {
+            "hint": "Pharmacy",
+            "plausible_words": [
+              "Pregnancy test",
+              "Emergency contraception",
+              "Lubricant",
+              "Condom"
+            ]
+          },
+          {
+            "hint": "Routine",
+            "plausible_words": [
+              "Birth control pill",
+              "Contraceptive patch",
+              "Tampon",
+              "Menstrual pad",
+              "Menstrual cup"
+            ]
+          },
+          {
+            "hint": "Lifetime",
+            "plausible_words": [
+              "HPV vaccination",
+              "Pregnancy",
+              "Menopause"
+            ]
+          }
+        ],
         "sound_only": []
       },
       "words": [
         {
           "word": "Condom",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Tear open an imaginary foil square with the teeth and unroll it down two raised fingers."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."
@@ -8645,7 +8701,7 @@
         {
           "word": "Lubricant",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Squeeze an imaginary bottle into a palm and rub the hands together, very slippery."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."
@@ -8708,7 +8764,7 @@
         {
           "word": "Menopause",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Fan the face furiously, kick off an imaginary duvet and open every window."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."
@@ -8735,7 +8791,7 @@
         {
           "word": "Contraceptive patch",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Peel an imaginary backing and press a small square firmly onto the upper arm."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."
@@ -8744,7 +8800,7 @@
         {
           "word": "Emergency contraception",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Check the time in a panic, hurry to an imaginary counter and swallow a single pill."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."
@@ -8762,7 +8818,7 @@
         {
           "word": "Menstrual pad",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Peel an imaginary wrapper and carefully unfold two small wings."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."
@@ -8771,7 +8827,7 @@
         {
           "word": "Tampon",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Slip something small from an imaginary bag into a sleeve and walk off toward the bathroom."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."
@@ -8780,7 +8836,7 @@
         {
           "word": "Menstrual cup",
           "act_it": {
-            "excluded": "Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed."
+            "example": "Fold an imaginary soft cup into a narrow C shape between finger and thumb."
           },
           "sound_only": {
             "excluded": "The clinical targets have no dependable wordless sound. Beeps and generic discomfort noises would not identify a useful concept within this topic."

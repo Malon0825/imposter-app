@@ -16,6 +16,10 @@ Purpose: confirm actions, preserve navigation direction, explain shared progress
 - **Celebration:** final rankings keep the proposal's 16 static paper pieces. One additional burst of 12 small pieces arrives from the edges, lasts about a second, and is removed after 1.4 seconds. It cannot intercept input. Hidden pages stop the burst and do not replay it on return. Reduced motion uses only the static composition.
 - **Ambient/loading:** welcome cards float over a seven-second loop only while the page is visible. Other continuous CSS animations pause in the background. Busy actions disable their controls immediately, but the secondary spinner appears only after 250 ms to avoid flashes on quick local actions.
 
+## Results reveal extension
+
+While the room waits on the verdict, the locked envelope breathes at 104% over 1.1 seconds. A caught imposter's card turns over the 420ms reveal from 94% scale, then its rays burst once from 40% to 125% and settle at full size. An escaped card turns with an 18px slide and a 4-degree tilt that both settle to zero, a quieter landing that carries the same verdict without the burst. The recap then arrives in the plan's order on a 90ms stagger: the verdict line, the outcome disc on the selection spring, the headline, the round's points counting up from zero to the committed delta, and finally the breakdown, word and meaning together. Every step rests fully opaque with no offset. Hidden pages pause the breath and the burst. Reduced motion removes the breath, the burst, the tilt and the stagger and shows the final numbers immediately.
+
 ## Tuning
 
 Shared values live in `src/motion.ts`. Adjust `pageEnter`/`pageExit` for pace, spring damping for bounce, and `celebration` for the short burst's duration. Keep taps brief and the reveal at the approved 420 ms. `src/motion-ui.tsx` contains the reusable sheet, check, progress, score, and envelope components; `src/motion.css` holds their motion-only styles.

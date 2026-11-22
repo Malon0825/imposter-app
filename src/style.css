@@ -312,7 +312,8 @@
 .score-breakdown dd.terra {
   color: var(--terra);
 }
-.result-content > .reading-streak {
+.result-content > .reading-streak,
+.recap-details > .reading-streak {
   font-size: 15px;
   margin-top: 6px;
 }
@@ -1465,7 +1466,8 @@ strong {
   margin-top: 18px;
   font-size: 15px;
 }
-.result-content > .report-deduction {
+.result-content > .report-deduction,
+.recap-details > .report-deduction {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1475,6 +1477,13 @@ strong {
 }
 .report-deduction span {
   font-size: 13px;
+}
+/* The recap's final step keeps the same centred column as Results. */
+.recap-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 .result-content {
   text-align: center;
@@ -1509,7 +1518,8 @@ strong {
   margin-top: 16px;
   line-height: 1.1;
 }
-.result-content > p {
+.result-content > p,
+.recap-details > p {
   font-size: 20px;
   margin-top: 16px;
 }

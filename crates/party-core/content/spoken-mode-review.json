@@ -85,6 +85,90 @@
   },
   {
     "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Dating app",
+    "example": "People scroll through profiles; a match often lets two people message; the company checks every profile in person."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Long-distance relationship",
+    "example": "The couple live far apart; video calls help; it is only possible within one country."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Love letter",
+    "example": "It expresses romantic feelings; it can be handwritten; it has to be written in verse."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Pet name",
+    "example": "It is an affectionate nickname; it is often a food or an animal; each couple is allowed only one."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Anniversary",
+    "example": "It marks a date every year; couples often celebrate it with a meal; it can only be celebrated at a weekend."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Breakup",
+    "example": "It ends a relationship; it can be mutual; it only becomes official once it is posted online."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Engagement",
+    "example": "It comes before a wedding; it is often marked with a ring; it legally binds the couple to marry."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Honeymoon",
+    "example": "It is a holiday after a wedding; it is often somewhere warm; it has to last exactly one month."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "Blind date",
+    "example": "The two people have not met before; a friend often sets it up; neither may learn the other's name until the end."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "First date",
+    "example": "It is often over a drink or a meal; people tend to be nervous on it; it has to last at least three hours."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "Meeting the parents",
+    "example": "It usually comes once things are serious; people tend to dress a little smarter; it is always done on a birthday."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "Proposal",
+    "example": "It often involves a ring; one person asks the other a question; it has to happen in a restaurant."
+  },
+  {
+    "mode": "two_truths",
     "topic": "everyday",
     "hint": "Desk",
     "word": "Lamp",
@@ -253,6 +337,258 @@
   },
   {
     "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Confirmation bias",
+    "example": "It favours information that fits what you already think; it affects almost everyone; it only appears in people who never read."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Daydreaming",
+    "example": "It lets the mind wander; it can help creativity; it only happens with your eyes closed."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Dreaming",
+    "example": "It happens during sleep; most dreams are forgotten quickly; people only ever dream in black and white."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Déjà vu",
+    "example": "It is the feeling of having lived a moment before; it is common; it proves a person can see the future."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Recall",
+    "word": "Learning",
+    "example": "Sleep helps it stick; practice makes it faster; it stops completely after the age of twenty."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Recall",
+    "word": "Memory",
+    "example": "It can be improved with practice; a smell can trigger it strongly; it records everything exactly like a video."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Recall",
+    "word": "Perception",
+    "example": "It is how the brain makes sense of the senses; optical illusions can fool it; it works identically in everyone."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Recall",
+    "word": "Recognition",
+    "example": "It is how you know a familiar face; it is usually quicker than recalling a name; it only works on faces seen in the last month."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Habit",
+    "example": "It forms through repetition; it can be hard to break; it takes exactly seven days to form one."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Motivation",
+    "example": "It drives you toward a goal; rewards can boost it; it always arrives before you start and never during."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Procrastination",
+    "example": "It means putting a task off; it often comes with guilt; it only affects lazy people."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Self-control",
+    "example": "It helps you resist temptation; tiredness can weaken it; once you have it, it never runs low."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Stage",
+    "word": "Choir",
+    "example": "It is a group of singers; the voices are often split into parts; every member has to sing the same note."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Stage",
+    "word": "Concert",
+    "example": "It is a live performance; tickets are often sold in advance; the audience has to stay silent the whole time."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Stage",
+    "word": "DJ",
+    "example": "They play recorded music; they often mix one track into the next; they have to play every song in full."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Stage",
+    "word": "Orchestra",
+    "example": "It is led by a conductor; it includes string instruments; it never includes drums."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Strings",
+    "word": "Guitar",
+    "example": "It usually has six strings; it can be acoustic or electric; it can only be played sitting down."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Strings",
+    "word": "Harp",
+    "example": "Its strings are plucked; it can be very large; it is played by blowing into it."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Strings",
+    "word": "Piano",
+    "example": "Its keys are black and white; hammers strike strings inside it; it has exactly fifty keys."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Strings",
+    "word": "Violin",
+    "example": "It is played with a bow; it is the smallest of its family; it has twelve strings."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Vocal",
+    "word": "Chorus",
+    "example": "It is the part of a song that repeats; it is often the catchiest bit; it always comes first."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Vocal",
+    "word": "Duet",
+    "example": "It is performed by two people; they can sing or play together; both must perform the same part."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Vocal",
+    "word": "Karaoke",
+    "example": "People sing along to backing tracks; the lyrics show on a screen; it was invented in the 2010s."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "music",
+    "hint": "Vocal",
+    "word": "Lullaby",
+    "example": "It is sung to help a child sleep; it is usually slow; it has to be sung in a whisper."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Fresh",
+    "word": "Glacier",
+    "example": "It is a slow river of ice; it can carve out valleys; it never moves at all."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Fresh",
+    "word": "Lake",
+    "example": "It is a body of water surrounded by land; some are salty; every one of them connects to the ocean."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Fresh",
+    "word": "River",
+    "example": "It flows downhill; many end at the sea; every river flows from south to north."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Fresh",
+    "word": "Waterfall",
+    "example": "Water drops over a steep edge; some make their own mist; they only form in rainforests."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Plants",
+    "word": "Bamboo",
+    "example": "It is a kind of grass; some types grow very fast; it is a type of tree."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Plants",
+    "word": "Cactus",
+    "example": "It stores water; many have spines; it can only survive in sand."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Plants",
+    "word": "Moss",
+    "example": "It has no flowers; it likes damp places; it only grows on the south side of trees."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Plants",
+    "word": "Sunflower",
+    "example": "It can grow taller than a person; its seeds can be eaten; its flower is one single petal."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Weather",
+    "word": "Hail",
+    "example": "It is balls of ice falling from storm clouds; it can dent cars; it only falls in winter."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Weather",
+    "word": "Rainbow",
+    "example": "It appears when sunlight meets raindrops; its colours always come in the same order; you can reach the end of one on foot."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Weather",
+    "word": "Thunder",
+    "example": "It follows lightning; counting the seconds after the flash tells you how far away it is; it travels faster than light."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "nature",
+    "hint": "Weather",
+    "word": "Wind",
+    "example": "It is moving air; it can generate electricity; it always blows from the north."
+  },
+  {
+    "mode": "two_truths",
     "topic": "places",
     "hint": "Civic",
     "word": "Fire station",
@@ -334,6 +670,90 @@
     "hint": "Outing",
     "word": "Zoo",
     "example": "It keeps animals people can visit; many run breeding programmes; visitors feed the animals whatever they bring."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Crowd",
+    "word": "Conformity",
+    "example": "It means matching the group; experiments show people give wrong answers to fit in; it only happens among strangers."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Crowd",
+    "word": "Gossip",
+    "example": "It is talk about people who are not there; it spreads quickly; it is always untrue."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Crowd",
+    "word": "Peer pressure",
+    "example": "It comes from the people around you; it can be positive or negative; it disappears completely once school ends."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Crowd",
+    "word": "Reputation",
+    "example": "It is what others think of you; it can take years to build; once earned it can never be lost."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Manners",
+    "word": "Apology",
+    "example": "It admits a mistake; it works best when it is sincere; it only counts if it is put in writing."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Manners",
+    "word": "Compliment",
+    "example": "It is praise given to someone; it can lift a mood; it only counts if the other person returns it."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Manners",
+    "word": "Etiquette",
+    "example": "It is a set of polite customs; it changes between cultures; it is written into law in most countries."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Manners",
+    "word": "Small talk",
+    "example": "It is light conversation; the weather is a common subject; it is considered rude in every culture."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Together",
+    "word": "Altruism",
+    "example": "It means helping others at a cost to yourself; people do it for strangers; it is only ever seen in humans."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Together",
+    "word": "Cooperation",
+    "example": "It means working toward a shared goal; animals do it too; it is only possible between friends."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Together",
+    "word": "Reciprocity",
+    "example": "It means returning a favour; it builds trust; the favour has to be paid back at exactly the same value."
+  },
+  {
+    "mode": "two_truths",
+    "topic": "social",
+    "hint": "Together",
+    "word": "Teamwork",
+    "example": "It shares work between people; it relies on communication; it always needs an even number of people."
   },
   {
     "mode": "two_truths",
@@ -757,6 +1177,174 @@
   },
   {
     "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Limits",
+    "word": "Boundaries",
+    "example": "I am a line you draw, and the right people never need me explained twice."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Limits",
+    "word": "Personal space",
+    "example": "I am the invisible bubble around you that crowded trains ignore completely."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Limits",
+    "word": "Privacy",
+    "example": "I am the closed door, the locked phone and the diary nobody else reads."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Limits",
+    "word": "Refusal",
+    "example": "I am one small word, and I am a complete sentence."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Talking",
+    "word": "Check-in",
+    "example": "I am a quick question halfway through that lets everybody relax."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Talking",
+    "word": "Clarification",
+    "example": "I am what you ask for when you are not completely sure what somebody meant."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Talking",
+    "word": "Communication",
+    "example": "Most arguments happen because somebody skipped me."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Talking",
+    "word": "Consent",
+    "example": "I only count when I am given freely, and I can be taken back at any moment."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Trust",
+    "word": "Active listening",
+    "example": "I nod, I wait, and I never plan my reply while you are still talking."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Trust",
+    "word": "Assertiveness",
+    "example": "I say what you need without raising my voice or apologising for it."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Trust",
+    "word": "Confidentiality",
+    "example": "Whatever you told me stays exactly where you left it."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "consent",
+    "hint": "Trust",
+    "word": "Respect",
+    "example": "I am earned slowly and lost very quickly."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Dating app",
+    "example": "I live in your pocket and I am mostly thumbs and second thoughts."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Flirting",
+    "example": "I am a joke that is not really a joke and a look held half a second too long."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Long-distance relationship",
+    "example": "I am mostly time zones, and the goodnight always arrives at a strange hour."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Messages",
+    "word": "Love letter",
+    "example": "I was rewritten four times and I still got read in a way nobody expected."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Anniversary",
+    "example": "I come round once a year, and forgetting me is the one thing you must not do."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Breakup",
+    "example": "I end with somebody keeping the good jumper."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Engagement",
+    "example": "I sit on a finger and steer every conversation toward a date."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Milestone",
+    "word": "Honeymoon",
+    "example": "I happen right after the big day, and I usually involve a beach."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "Blind date",
+    "example": "I start with a friend promising you will get on, and I end with a story either way."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "First date",
+    "example": "I make two strangers order the same drink just to have something to agree on."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "Meeting the parents",
+    "example": "I am the dinner where nobody remembers what they ate, only what they said."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "dating",
+    "hint": "Nerves",
+    "word": "Proposal",
+    "example": "I last about thirty seconds and somebody rehearsed me for three months."
+  },
+  {
+    "mode": "if_it_could_talk",
     "topic": "emotions",
     "hint": "Heavy",
     "word": "Frustration",
@@ -1009,6 +1597,174 @@
   },
   {
     "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Bathroom",
+    "word": "Menstrual cup",
+    "example": "I am reused for years, and our first week together is a learning experience."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Bathroom",
+    "word": "Menstrual pad",
+    "example": "I come individually wrapped and I am the loudest thing in a quiet bathroom."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Bathroom",
+    "word": "Pregnancy test",
+    "example": "I take two minutes to answer, and they are the longest two minutes of somebody's year."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Bathroom",
+    "word": "Tampon",
+    "example": "I travel in the deepest pocket of the bag, and somebody else always needs me first."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Clinic",
+    "word": "Cervical screening",
+    "example": "I arrive as a letter saying it is your turn, and I am over in five minutes."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Clinic",
+    "word": "HPV vaccination",
+    "example": "I am a rolled-up sleeve and a brave face, years before anyone needs me."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Clinic",
+    "word": "IUD",
+    "example": "I am small, I stay put for years, and I am fitted at an appointment nobody looks forward to."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Clinic",
+    "word": "STI screening",
+    "example": "I am the responsible thing to do, and everybody feels better once I am over."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Nightstand",
+    "word": "Birth control pill",
+    "example": "I come in a calendar of tiny doors, one for every day."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Nightstand",
+    "word": "Condom",
+    "example": "I live in a wallet far longer than I should, waiting for my moment."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Nightstand",
+    "word": "Dental dam",
+    "example": "I am a thin square of protection that most people have never even seen."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "health",
+    "hint": "Nightstand",
+    "word": "Lubricant",
+    "example": "I make everything go more smoothly, and somebody always uses too much of me."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Attention",
+    "example": "Everybody wants me, and I can only be in one place at a time."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Daydreaming",
+    "example": "I take you to a beach in the middle of a meeting."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Distraction",
+    "example": "I am the notification that arrives the moment you finally get going."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Multitasking",
+    "example": "I make you feel productive while you do three things badly."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Dreaming",
+    "example": "I make perfect sense at three in the morning and none at breakfast."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Déjà vu",
+    "example": "I make you feel you have stood here before, saying exactly this."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Imagination",
+    "example": "I build whole worlds out of nothing and charge you nothing for them."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Mind",
+    "word": "Memory",
+    "example": "I keep the embarrassing moments perfectly and lose your keys every day."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Habit",
+    "example": "I do the same thing every morning before you have even woken up."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Motivation",
+    "example": "I turn up loudly on the first of January and quietly leave by February."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Procrastination",
+    "example": "I am the spotless desk that appears the night before a deadline."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "memory",
+    "hint": "Willpower",
+    "word": "Self-control",
+    "example": "I am the last biscuit you did not eat."
+  },
+  {
+    "mode": "if_it_could_talk",
     "topic": "places",
     "hint": "Evening",
     "word": "Cinema",
@@ -1093,6 +1849,174 @@
   },
   {
     "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Biology",
+    "word": "Menstruation",
+    "example": "I visit monthly, I am rarely punctual, and I bring cramps as a gift."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Biology",
+    "word": "Ovulation",
+    "example": "I last about a day each month and an entire app exists to predict me."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Biology",
+    "word": "Puberty",
+    "example": "I take a child and hand back a moody stranger a few years later."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Biology",
+    "word": "Sperm",
+    "example": "Millions of us set off together and only one of us gets the credit."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Mirror",
+    "word": "Acne",
+    "example": "I always appear on the morning of the photograph."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Mirror",
+    "word": "Body hair",
+    "example": "I turn up in places nobody asked me to and then refuse to leave."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Mirror",
+    "word": "Breast development",
+    "example": "I arrived unannounced, and suddenly every shopping trip involved a fitting room."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Mirror",
+    "word": "Growth spurt",
+    "example": "I made all of your trousers too short over a single summer."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Teenage",
+    "word": "Body odor",
+    "example": "Everyone in the room notices me before you do."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Teenage",
+    "word": "Hormones",
+    "example": "I am the reason you cried at an advert and had no idea why."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Teenage",
+    "word": "Sweat",
+    "example": "I arrive the exact moment you need to look calm."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "puberty",
+    "hint": "Teenage",
+    "word": "Voice change",
+    "example": "I cracked in the middle of the class presentation and everyone remembers it."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Chatter",
+    "word": "Compliment",
+    "example": "I cost nothing, and I can make somebody's whole week."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Chatter",
+    "word": "First impression",
+    "example": "I am decided in a few seconds and corrected over several years."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Chatter",
+    "word": "Gossip",
+    "example": "I travel faster than the truth and change a little every time I am passed on."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Chatter",
+    "word": "Small talk",
+    "example": "I am mostly about the weather, and I exist to fill the lift."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Friction",
+    "word": "Apology",
+    "example": "I only work if I arrive without a but."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Friction",
+    "word": "Competition",
+    "example": "I turn a friendly board game into a feud that lasts a week."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Friction",
+    "word": "Conflict",
+    "example": "I start over something small and grow into something about everything."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Friction",
+    "word": "Negotiation",
+    "example": "I begin with two prices and end somewhere neither of you wanted."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Group",
+    "word": "Conformity",
+    "example": "I make everyone in the room clap at exactly the same moment."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Group",
+    "word": "Cooperation",
+    "example": "I am two people carrying a sofa up the stairs without shouting."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Group",
+    "word": "Peer pressure",
+    "example": "I am the reason you said yes when you meant no."
+  },
+  {
+    "mode": "if_it_could_talk",
+    "topic": "social",
+    "hint": "Group",
+    "word": "Teamwork",
+    "example": "I work best when nobody is counting who did what."
+  },
+  {
+    "mode": "if_it_could_talk",
     "topic": "travel",
     "hint": "Packed",
     "word": "Compass",
@@ -1174,6 +2098,174 @@
     "hint": "Transit",
     "word": "Rental car",
     "example": "I have been a hundred people's car this year and not one of them washed me."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Decor",
+    "word": "Balloons",
+    "example": "You should buy it because a plain room becomes a party in ten minutes."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Decor",
+    "word": "Confetti",
+    "example": "You should buy it because the big moment deserves to rain down on everyone."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Decor",
+    "word": "Lantern",
+    "example": "You should buy it because the garden after dark looks like somewhere else entirely."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Decor",
+    "word": "Party hat",
+    "example": "You should buy it because nobody can stay grumpy while wearing one."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Night",
+    "word": "Banquet",
+    "example": "You should buy it because nobody leaves the table hungry or early."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Night",
+    "word": "Fireworks",
+    "example": "You should buy it because the whole street looks up at the same time."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Night",
+    "word": "New Year's countdown",
+    "example": "You should buy it because ten seconds of shouting together beats any resolution."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Night",
+    "word": "Toast",
+    "example": "You should buy it because one raised glass turns a dinner into a memory."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Present",
+    "word": "Birthday cake",
+    "example": "You should buy it because one candle-lit minute is the whole point of the day."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Present",
+    "word": "Gift wrapping",
+    "example": "You should buy it because the unwrapping is half the fun of the present."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Present",
+    "word": "Invitation",
+    "example": "You should buy it because people only turn up when you actually ask them."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "celebrations",
+    "hint": "Present",
+    "word": "Piñata",
+    "example": "You should buy it because everyone will hit it far harder than you expected."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Evening",
+    "word": "Blind date",
+    "example": "You should buy it because even the worst case is a great story for your friends."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Evening",
+    "word": "Double date",
+    "example": "You should buy it because the awkward silences get shared four ways."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Evening",
+    "word": "First date",
+    "example": "You should buy it because the best stories begin with an awkward table for two."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Evening",
+    "word": "Matchmaking",
+    "example": "You should buy it because your friends already know your type better than you do."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Romance",
+    "word": "Anniversary",
+    "example": "You should buy it because remembering it costs far less than forgetting it."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Romance",
+    "word": "Honeymoon",
+    "example": "You should buy it because after the stress of the big day you deserve a beach."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Romance",
+    "word": "Love letter",
+    "example": "You should buy it because it is the one message nobody ever deletes."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Romance",
+    "word": "Proposal",
+    "example": "You should buy it because the next fifty years start with one question."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Together",
+    "word": "Couples counseling",
+    "example": "You should buy it because one hour a week saves a great many arguments."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Together",
+    "word": "Cuddling",
+    "example": "You should buy it because nothing on a cold night costs less or works better."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Together",
+    "word": "Dating app",
+    "example": "You should buy it because the whole city is in your pocket on a Sunday night."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "dating",
+    "hint": "Together",
+    "word": "Shared home",
+    "example": "You should buy it because you finally split the rent and the washing-up."
   },
   {
     "mode": "sell_it",
@@ -1429,6 +2521,90 @@
   },
   {
     "mode": "sell_it",
+    "topic": "health",
+    "hint": "Monthly",
+    "word": "Menstrual cup",
+    "example": "You should buy it because it lasts for years and you never run out at midnight."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Monthly",
+    "word": "Menstrual pad",
+    "example": "You should buy it because it is the easy option when you are not in the mood for anything else."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Monthly",
+    "word": "Period underwear",
+    "example": "You should buy it because the backup plan is already on."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Monthly",
+    "word": "Tampon",
+    "example": "You should buy it because you can still go swimming on the worst week of the month."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Planning",
+    "word": "Birth control pill",
+    "example": "You should buy it because one small daily habit puts the timeline in your hands."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Planning",
+    "word": "Contraceptive implant",
+    "example": "You should buy it because you can forget about it for three years."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Planning",
+    "word": "Emergency contraception",
+    "example": "You should buy it because the morning after should not decide the next eighteen years."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Planning",
+    "word": "Pregnancy test",
+    "example": "You should buy it because two minutes of waiting beats two weeks of wondering."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Protection",
+    "word": "Condom",
+    "example": "You should buy it because the cheapest way to avoid a very expensive surprise fits in a wallet."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Protection",
+    "word": "Dental dam",
+    "example": "You should buy it because protection should not stop at the obvious."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Protection",
+    "word": "HPV vaccination",
+    "example": "You should buy it because one appointment now heads off a serious problem years later."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "health",
+    "hint": "Protection",
+    "word": "STI screening",
+    "example": "You should buy it because knowing for certain beats worrying for a month."
+  },
+  {
+    "mode": "sell_it",
     "topic": "hobbies",
     "hint": "Craft",
     "word": "Candle making",
@@ -1510,6 +2686,90 @@
     "hint": "Quiet",
     "word": "Reading",
     "example": "You should buy it because you can be somewhere else without packing."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Brain",
+    "word": "Imagination",
+    "example": "You should buy it because a long journey becomes a whole adventure."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Brain",
+    "word": "Learning",
+    "example": "You should buy it because every new thing makes the next one easier."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Brain",
+    "word": "Memory",
+    "example": "You should buy it because you will never again forget a name thirty seconds after hearing it."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Brain",
+    "word": "Problem-solving",
+    "example": "You should buy it because the flat-pack wardrobe will finally have no pieces left over."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Edge",
+    "word": "Decision-making",
+    "example": "You should buy it because dinner no longer takes forty minutes to choose."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Edge",
+    "word": "Mental rehearsal",
+    "example": "You should buy it because the interview already went well before you walked in."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Edge",
+    "word": "Motivation",
+    "example": "You should buy it because Monday morning stops feeling like a punishment."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Edge",
+    "word": "Reasoning",
+    "example": "You should buy it because you win the argument and are actually right."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Attention",
+    "example": "You should buy it because the book you started will finally get finished."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Habit",
+    "example": "You should buy it because the hard thing becomes the thing you do without deciding."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Mindfulness",
+    "example": "You should buy it because the next five minutes are the only ones you can do anything about."
+  },
+  {
+    "mode": "sell_it",
+    "topic": "memory",
+    "hint": "Focus",
+    "word": "Self-control",
+    "example": "You should buy it because the last slice of cake stops winning every argument."
   },
   {
     "mode": "sell_it",

@@ -1333,10 +1333,12 @@
         "hint": "Heat",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Heat"
+          "act_it": "Heat",
+          "two_truths": "Plants"
         },
         "word_id": "nature/cactus",
         "definition": "A plant that stores water in thick stems and often has spines."
@@ -1360,11 +1362,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Spray",
-          "sound_only": "Spray"
+          "sound_only": "Spray",
+          "two_truths": "Fresh"
         },
         "word_id": "nature/waterfall",
         "definition": "Water that drops from a height, such as over a cliff."
@@ -1402,10 +1406,12 @@
         "hint": "Garden",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Garden"
+          "act_it": "Garden",
+          "two_truths": "Plants"
         },
         "word_id": "nature/sunflower",
         "definition": "A tall plant with a large, usually yellow flower head that produces seeds."
@@ -1425,10 +1431,12 @@
         "hint": "Grove",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Grove"
+          "act_it": "Grove",
+          "two_truths": "Plants"
         },
         "word_id": "nature/bamboo",
         "definition": "A tall type of grass with hard, hollow stems."
@@ -1463,9 +1471,12 @@
         "word": "Moss",
         "hint": "Shade",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Plants"
+        },
         "word_id": "nature/moss",
         "definition": "A small plant that forms soft green mats in damp places."
       },
@@ -1526,11 +1537,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Current",
-          "sound_only": "Current"
+          "sound_only": "Current",
+          "two_truths": "Fresh"
         },
         "word_id": "nature/river",
         "definition": "A natural flow of water that usually runs toward another body of water."
@@ -1541,11 +1554,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Shore",
-          "sound_only": "Shore"
+          "sound_only": "Shore",
+          "two_truths": "Fresh"
         },
         "word_id": "nature/lake",
         "definition": "A large body of water surrounded by land."
@@ -1598,10 +1613,12 @@
         "hint": "Cold",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Cold"
+          "act_it": "Cold",
+          "two_truths": "Fresh"
         },
         "word_id": "nature/glacier",
         "definition": "A large mass of land ice that moves slowly under its own weight."
@@ -1639,10 +1656,12 @@
         "hint": "Color",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Color"
+          "act_it": "Color",
+          "two_truths": "Weather"
         },
         "word_id": "nature/rainbow",
         "definition": "A colored arc formed when sunlight passes through water droplets."
@@ -1668,11 +1687,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Weather",
-          "sound_only": "Weather"
+          "sound_only": "Weather",
+          "two_truths": "Weather"
         },
         "word_id": "nature/thunder",
         "definition": "The sound produced when lightning heats the air around it."
@@ -1683,11 +1704,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Weather",
-          "sound_only": "Weather"
+          "sound_only": "Weather",
+          "two_truths": "Weather"
         },
         "word_id": "nature/wind",
         "definition": "Air moving across an area."
@@ -1698,11 +1721,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Weather",
-          "sound_only": "Weather"
+          "sound_only": "Weather",
+          "two_truths": "Weather"
         },
         "word_id": "nature/hail",
         "definition": "Pellets or lumps of ice that fall from storm clouds."
@@ -3332,11 +3357,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Preparation",
-          "sound_only": "Preparation"
+          "sound_only": "Preparation",
+          "two_truths": "Vocal"
         },
         "word_id": "music/karaoke",
         "definition": "Singing along to a recorded backing track, often with lyrics on a screen."
@@ -3347,11 +3374,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Strings",
-          "sound_only": "Strings"
+          "sound_only": "Strings",
+          "two_truths": "Strings"
         },
         "word_id": "music/guitar",
         "definition": "A stringed instrument usually played by strumming or picking."
@@ -3390,11 +3419,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Crowd",
-          "sound_only": "Crowd"
+          "sound_only": "Crowd",
+          "two_truths": "Stage"
         },
         "word_id": "music/concert",
         "definition": "A live performance of music for an audience."
@@ -3405,11 +3436,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Harmony",
-          "sound_only": "Harmony"
+          "sound_only": "Harmony",
+          "two_truths": "Stage"
         },
         "word_id": "music/choir",
         "definition": "A group of people who sing together."
@@ -3420,11 +3453,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Harmony",
-          "sound_only": "Harmony"
+          "sound_only": "Harmony",
+          "two_truths": "Stage"
         },
         "word_id": "music/orchestra",
         "definition": "A large group of musicians playing instruments together, often led by a conductor."
@@ -3435,11 +3470,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Dance",
-          "sound_only": "Dance"
+          "sound_only": "Dance",
+          "two_truths": "Stage"
         },
         "word_id": "music/dj",
         "definition": "A person who selects and plays recorded music for listeners or dancers."
@@ -3450,11 +3487,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Harmony",
-          "sound_only": "Harmony"
+          "sound_only": "Harmony",
+          "two_truths": "Vocal"
         },
         "word_id": "music/duet",
         "definition": "A piece of music performed by two singers or players."
@@ -3465,11 +3504,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Gentle",
-          "sound_only": "Gentle"
+          "sound_only": "Gentle",
+          "two_truths": "Vocal"
         },
         "word_id": "music/lullaby",
         "definition": "A gentle song used to help a child fall asleep."
@@ -3480,11 +3521,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Classical",
-          "sound_only": "Classical"
+          "sound_only": "Classical",
+          "two_truths": "Strings"
         },
         "word_id": "music/piano",
         "definition": "A keyboard instrument whose keys typically make hammers strike strings."
@@ -3495,11 +3538,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Strings",
-          "sound_only": "Strings"
+          "sound_only": "Strings",
+          "two_truths": "Strings"
         },
         "word_id": "music/violin",
         "definition": "A small four-stringed instrument played under the chin, usually with a bow."
@@ -3570,11 +3615,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "two_truths"
         ],
         "mode_hints": {
           "act_it": "Strings",
-          "sound_only": "Strings"
+          "sound_only": "Strings",
+          "two_truths": "Strings"
         },
         "word_id": "music/harp",
         "definition": "An instrument with many strings stretched across a frame and played by plucking."
@@ -3596,9 +3643,12 @@
         "word": "Chorus",
         "hint": "Repetition",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Vocal"
+        },
         "word_id": "music/chorus",
         "definition": "The part of a song that repeats, often with the same lyrics."
       },
@@ -5651,11 +5701,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Milestone",
-          "sound_only": "Milestone"
+          "sound_only": "Milestone",
+          "sell_it": "Present"
         },
         "word_id": "celebrations/birthday-cake",
         "definition": "A sweet dessert served on someone's birthday, often decorated with lit candles."
@@ -5666,11 +5718,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Evening",
-          "sound_only": "Lights"
+          "sound_only": "Lights",
+          "sell_it": "Night"
         },
         "word_id": "celebrations/fireworks",
         "definition": "Devices that burst into bright lights or loud sounds for a display."
@@ -5723,10 +5777,12 @@
         "hint": "Glow",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Glow"
+          "act_it": "Glow",
+          "sell_it": "Decor"
         },
         "word_id": "celebrations/lantern",
         "definition": "A portable light with a cover that protects or contains the light source."
@@ -5751,10 +5807,12 @@
         "hint": "Surprise",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Surprise"
+          "act_it": "Surprise",
+          "sell_it": "Present"
         },
         "word_id": "celebrations/gift-wrapping",
         "definition": "Covering a present with paper or another decorative material."
@@ -5764,10 +5822,12 @@
         "hint": "Cheers",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Cheers"
+          "act_it": "Cheers",
+          "sell_it": "Night"
         },
         "word_id": "celebrations/new-year-s-countdown",
         "definition": "Calling out the last seconds before midnight as one year changes to the next."
@@ -5791,11 +5851,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Color",
-          "sound_only": "Party"
+          "sound_only": "Party",
+          "sell_it": "Decor"
         },
         "word_id": "celebrations/confetti",
         "definition": "Small pieces of colored paper thrown in the air during a celebration."
@@ -5806,11 +5868,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Decoration",
-          "sound_only": "Party"
+          "sound_only": "Party",
+          "sell_it": "Decor"
         },
         "word_id": "celebrations/balloons",
         "definition": "Stretchy bags filled with air or gas and used for decoration or play."
@@ -5820,10 +5884,12 @@
         "hint": "Guests",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Guests"
+          "act_it": "Guests",
+          "sell_it": "Present"
         },
         "word_id": "celebrations/invitation",
         "definition": "A request asking someone to attend an event, often in written or digital form."
@@ -5833,10 +5899,12 @@
         "hint": "Decoration",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Decoration"
+          "act_it": "Decoration",
+          "sell_it": "Decor"
         },
         "word_id": "celebrations/party-hat",
         "definition": "A festive headpiece, often a colorful paper cone."
@@ -5847,11 +5915,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Surprise",
-          "sound_only": "Party"
+          "sound_only": "Party",
+          "sell_it": "Present"
         },
         "word_id": "celebrations/pinata",
         "definition": "A decorated container filled with treats or prizes that a player breaks open."
@@ -5861,10 +5931,12 @@
         "hint": "Table",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Table"
+          "act_it": "Table",
+          "sell_it": "Night"
         },
         "word_id": "celebrations/banquet",
         "definition": "A large formal meal held for a group, often to celebrate an occasion."
@@ -5875,11 +5947,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "sell_it"
         ],
         "mode_hints": {
           "act_it": "Cheers",
-          "sound_only": "Cheers"
+          "sound_only": "Cheers",
+          "sell_it": "Night"
         },
         "word_id": "celebrations/toast",
         "definition": "A short speech of praise or goodwill followed by raising or sipping a drink."
@@ -6673,10 +6747,14 @@
         "hint": "Boredom",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Boredom"
+          "act_it": "Boredom",
+          "two_truths": "Mind",
+          "if_it_could_talk": "Focus"
         },
         "word_id": "memory/daydreaming",
         "definition": "Letting your thoughts drift into imaginary situations while awake."
@@ -6685,9 +6763,14 @@
         "word": "Déjà vu",
         "hint": "Revisit",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Mind",
+          "if_it_could_talk": "Mind"
+        },
         "word_id": "memory/deja-vu",
         "definition": "The feeling that a new experience has happened to you before."
       },
@@ -6696,10 +6779,12 @@
         "hint": "Noise",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Noise"
+          "act_it": "Noise",
+          "if_it_could_talk": "Focus"
         },
         "word_id": "memory/distraction",
         "definition": "Something that draws your attention away from what you meant to focus on."
@@ -6709,10 +6794,16 @@
         "hint": "Routine",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Routine"
+          "act_it": "Routine",
+          "two_truths": "Willpower",
+          "if_it_could_talk": "Willpower",
+          "sell_it": "Focus"
         },
         "word_id": "memory/habit",
         "definition": "An action or pattern you repeat often, sometimes without thinking."
@@ -6722,10 +6813,16 @@
         "hint": "Goals",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Goals"
+          "act_it": "Goals",
+          "two_truths": "Willpower",
+          "if_it_could_talk": "Willpower",
+          "sell_it": "Edge"
         },
         "word_id": "memory/motivation",
         "definition": "The reason or drive that gets you to start or keep doing something."
@@ -6735,10 +6832,14 @@
         "hint": "Noise",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Noise"
+          "act_it": "Noise",
+          "if_it_could_talk": "Focus",
+          "sell_it": "Focus"
         },
         "word_id": "memory/attention",
         "definition": "Directing your mental focus toward something."
@@ -6748,10 +6849,16 @@
         "hint": "Photos",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Photos"
+          "act_it": "Photos",
+          "two_truths": "Recall",
+          "if_it_could_talk": "Mind",
+          "sell_it": "Brain"
         },
         "word_id": "memory/memory",
         "definition": "The ability to store and recall information or experiences."
@@ -6761,10 +6868,14 @@
         "hint": "Scenes",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Scenes"
+          "act_it": "Scenes",
+          "if_it_could_talk": "Mind",
+          "sell_it": "Brain"
         },
         "word_id": "memory/imagination",
         "definition": "The ability to form ideas or pictures in your mind beyond what is in front of you."
@@ -6774,10 +6885,14 @@
         "hint": "Practice",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Practice"
+          "act_it": "Practice",
+          "two_truths": "Recall",
+          "sell_it": "Brain"
         },
         "word_id": "memory/learning",
         "definition": "Gaining knowledge or skills through experience, practice, or study."
@@ -6786,9 +6901,12 @@
         "word": "Confirmation bias",
         "hint": "Opinions",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Mind"
+        },
         "word_id": "memory/confirmation-bias",
         "definition": "The tendency to favor information that fits what you already believe."
       },
@@ -6796,9 +6914,12 @@
         "word": "Perception",
         "hint": "Senses",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Recall"
+        },
         "word_id": "memory/perception",
         "definition": "How your mind notices and makes sense of what you sense or experience."
       },
@@ -6806,9 +6927,12 @@
         "word": "Reasoning",
         "hint": "Puzzle",
         "modes": [
-          "classic"
+          "classic",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "sell_it": "Edge"
+        },
         "word_id": "memory/reasoning",
         "definition": "Thinking through information to reach a conclusion."
       },
@@ -6817,10 +6941,12 @@
         "hint": "Options",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Options"
+          "act_it": "Options",
+          "sell_it": "Edge"
         },
         "word_id": "memory/decision-making",
         "definition": "Choosing what to do after considering two or more options."
@@ -6830,10 +6956,12 @@
         "hint": "Puzzle",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Options"
+          "act_it": "Options",
+          "sell_it": "Brain"
         },
         "word_id": "memory/problem-solving",
         "definition": "Finding a way to overcome a difficulty or answer a question."
@@ -6843,10 +6971,12 @@
         "hint": "Faces",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Photos"
+          "act_it": "Photos",
+          "two_truths": "Recall"
         },
         "word_id": "memory/recognition",
         "definition": "Knowing that you have seen, heard, or experienced something before."
@@ -6869,10 +6999,12 @@
         "hint": "Interruptions",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Interruptions"
+          "act_it": "Interruptions",
+          "if_it_could_talk": "Focus"
         },
         "word_id": "memory/multitasking",
         "definition": "Trying to handle more than one task at the same time or by switching quickly between them."
@@ -6895,10 +7027,14 @@
         "hint": "Scenes",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Scenes"
+          "act_it": "Scenes",
+          "two_truths": "Mind",
+          "if_it_could_talk": "Mind"
         },
         "word_id": "memory/dreaming",
         "definition": "Experiencing images, thoughts, or events in your mind while asleep."
@@ -6918,10 +7054,14 @@
         "hint": "Deadline",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Deadline"
+          "act_it": "Deadline",
+          "two_truths": "Willpower",
+          "if_it_could_talk": "Willpower"
         },
         "word_id": "memory/procrastination",
         "definition": "Putting off a task even though delaying it may make things harder."
@@ -6931,10 +7071,16 @@
         "hint": "Temptation",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Temptation"
+          "act_it": "Temptation",
+          "two_truths": "Willpower",
+          "if_it_could_talk": "Willpower",
+          "sell_it": "Focus"
         },
         "word_id": "memory/self-control",
         "definition": "The ability to manage your impulses, feelings, or actions."
@@ -6944,10 +7090,12 @@
         "hint": "Senses",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Routine"
+          "act_it": "Routine",
+          "sell_it": "Focus"
         },
         "word_id": "memory/mindfulness",
         "definition": "Paying attention to the present moment with openness and without judgment."
@@ -6957,10 +7105,12 @@
         "hint": "Scenes",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Scenes"
+          "act_it": "Scenes",
+          "sell_it": "Edge"
         },
         "word_id": "memory/mental-rehearsal",
         "definition": "Practicing a task in your imagination before actually doing it."
@@ -6979,10 +7129,14 @@
         "hint": "Crowd",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Party"
+          "act_it": "Party",
+          "two_truths": "Crowd",
+          "if_it_could_talk": "Group"
         },
         "word_id": "social/peer-pressure",
         "definition": "Influence from people your age or in your group that pushes you to act a certain way."
@@ -6992,10 +7146,12 @@
         "hint": "Introductions",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Greetings"
+          "act_it": "Greetings",
+          "if_it_could_talk": "Chatter"
         },
         "word_id": "social/first-impression",
         "definition": "The initial idea or feeling you form about someone or something when you encounter it."
@@ -7005,10 +7161,14 @@
         "hint": "Uniform",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Belonging"
+          "act_it": "Belonging",
+          "two_truths": "Crowd",
+          "if_it_could_talk": "Group"
         },
         "word_id": "social/conformity",
         "definition": "Changing your behavior or opinions to fit in with a group."
@@ -7031,10 +7191,14 @@
         "hint": "Shared",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Shared"
+          "act_it": "Shared",
+          "two_truths": "Together",
+          "if_it_could_talk": "Group"
         },
         "word_id": "social/cooperation",
         "definition": "Working with other people to achieve something together."
@@ -7044,10 +7208,12 @@
         "hint": "Winning",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Winning"
+          "act_it": "Winning",
+          "if_it_could_talk": "Friction"
         },
         "word_id": "social/competition",
         "definition": "A situation where people or teams try to outperform one another."
@@ -7092,9 +7258,14 @@
         "word": "Gossip",
         "hint": "Whispers",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Crowd",
+          "if_it_could_talk": "Chatter"
+        },
         "word_id": "social/gossip",
         "definition": "Informal talk about other people's private lives, often based on unverified information."
       },
@@ -7103,10 +7274,12 @@
         "hint": "Compromise",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Compromise"
+          "act_it": "Compromise",
+          "if_it_could_talk": "Friction"
         },
         "word_id": "social/negotiation",
         "definition": "A discussion in which people try to reach an agreement."
@@ -7129,10 +7302,14 @@
         "hint": "Roles",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Roles"
+          "act_it": "Roles",
+          "two_truths": "Together",
+          "if_it_could_talk": "Group"
         },
         "word_id": "social/teamwork",
         "definition": "People combining their skills and effort to achieve a shared goal."
@@ -7142,10 +7319,12 @@
         "hint": "Sharing",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Sharing"
+          "act_it": "Sharing",
+          "two_truths": "Together"
         },
         "word_id": "social/altruism",
         "definition": "Helping others out of concern for them, even when you gain little or nothing."
@@ -7155,10 +7334,12 @@
         "hint": "Favors",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Favors"
+          "act_it": "Favors",
+          "two_truths": "Together"
         },
         "word_id": "social/reciprocity",
         "definition": "Returning a favor or responding to a similar action from someone else."
@@ -7168,10 +7349,12 @@
         "hint": "Greetings",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths"
         ],
         "mode_hints": {
-          "act_it": "Greetings"
+          "act_it": "Greetings",
+          "two_truths": "Manners"
         },
         "word_id": "social/etiquette",
         "definition": "Accepted customs for polite behavior in a particular setting."
@@ -7180,9 +7363,14 @@
         "word": "Small talk",
         "hint": "Greetings",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Manners",
+          "if_it_could_talk": "Chatter"
+        },
         "word_id": "social/small-talk",
         "definition": "Light conversation about ordinary topics, often with someone you do not know well."
       },
@@ -7191,10 +7379,14 @@
         "hint": "Repair",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Repair"
+          "act_it": "Repair",
+          "two_truths": "Manners",
+          "if_it_could_talk": "Friction"
         },
         "word_id": "social/apology",
         "definition": "An expression of regret and responsibility for something you did."
@@ -7204,10 +7396,14 @@
         "hint": "Smile",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Greetings"
+          "act_it": "Greetings",
+          "two_truths": "Manners",
+          "if_it_could_talk": "Chatter"
         },
         "word_id": "social/compliment",
         "definition": "A comment that expresses praise or approval."
@@ -7252,9 +7448,12 @@
         "word": "Reputation",
         "hint": "Stories",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Crowd"
+        },
         "word_id": "social/reputation",
         "definition": "What other people generally think about a person, group, or organization."
       },
@@ -7263,10 +7462,12 @@
         "hint": "Tension",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Tension"
+          "act_it": "Tension",
+          "if_it_could_talk": "Friction"
         },
         "word_id": "social/conflict",
         "definition": "A disagreement or struggle between people or competing interests."
@@ -7298,10 +7499,16 @@
         "hint": "Nerves",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Nerves"
+          "act_it": "Nerves",
+          "two_truths": "Nerves",
+          "if_it_could_talk": "Nerves",
+          "sell_it": "Evening"
         },
         "word_id": "dating/first-date",
         "definition": "The first planned meeting between two people exploring a romantic connection."
@@ -7311,10 +7518,12 @@
         "hint": "Signals",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Signals"
+          "act_it": "Signals",
+          "if_it_could_talk": "Messages"
         },
         "word_id": "dating/flirting",
         "definition": "Acting playfully to show or suggest romantic interest."
@@ -7324,10 +7533,14 @@
         "hint": "Messages",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Messages"
+          "act_it": "Messages",
+          "two_truths": "Messages",
+          "if_it_could_talk": "Messages"
         },
         "word_id": "dating/long-distance-relationship",
         "definition": "A partnership in which the people live far apart."
@@ -7337,10 +7550,14 @@
         "hint": "Closure",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Closure"
+          "act_it": "Closure",
+          "two_truths": "Milestone",
+          "if_it_could_talk": "Milestone"
         },
         "word_id": "dating/breakup",
         "definition": "The end of a romantic relationship."
@@ -7350,10 +7567,16 @@
         "hint": "Calendar",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Calendar"
+          "act_it": "Calendar",
+          "two_truths": "Milestone",
+          "if_it_could_talk": "Milestone",
+          "sell_it": "Romance"
         },
         "word_id": "dating/anniversary",
         "definition": "A date marking the completion of another year since an important event."
@@ -7363,10 +7586,16 @@
         "hint": "Commitment",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Commitment"
+          "act_it": "Commitment",
+          "two_truths": "Nerves",
+          "if_it_could_talk": "Nerves",
+          "sell_it": "Romance"
         },
         "word_id": "dating/proposal",
         "definition": "A request to marry someone."
@@ -7376,10 +7605,16 @@
         "hint": "Introductions",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Introductions"
+          "act_it": "Introductions",
+          "two_truths": "Nerves",
+          "if_it_could_talk": "Nerves",
+          "sell_it": "Evening"
         },
         "word_id": "dating/blind-date",
         "definition": "A romantic meeting between two people who have never met before."
@@ -7389,10 +7624,16 @@
         "hint": "Affection",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Affection"
+          "act_it": "Affection",
+          "two_truths": "Messages",
+          "if_it_could_talk": "Messages",
+          "sell_it": "Romance"
         },
         "word_id": "dating/love-letter",
         "definition": "A written message expressing romantic affection."
@@ -7402,10 +7643,12 @@
         "hint": "Friends",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Friends"
+          "act_it": "Friends",
+          "sell_it": "Evening"
         },
         "word_id": "dating/matchmaking",
         "definition": "Helping introduce people who might be a good romantic fit."
@@ -7415,10 +7658,12 @@
         "hint": "Table",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Table"
+          "act_it": "Table",
+          "sell_it": "Evening"
         },
         "word_id": "dating/double-date",
         "definition": "A social outing where two couples spend time together."
@@ -7428,10 +7673,16 @@
         "hint": "Travel",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Travel"
+          "act_it": "Travel",
+          "two_truths": "Milestone",
+          "if_it_could_talk": "Milestone",
+          "sell_it": "Romance"
         },
         "word_id": "dating/honeymoon",
         "definition": "A vacation that a couple takes soon after getting married."
@@ -7441,10 +7692,14 @@
         "hint": "Promise",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Commitment"
+          "act_it": "Commitment",
+          "two_truths": "Milestone",
+          "if_it_could_talk": "Milestone"
         },
         "word_id": "dating/engagement",
         "definition": "An agreement between two people to get married."
@@ -7467,10 +7722,12 @@
         "hint": "Comfort",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Comfort"
+          "act_it": "Comfort",
+          "sell_it": "Together"
         },
         "word_id": "dating/cuddling",
         "definition": "Holding someone close for warmth, comfort, or affection."
@@ -7479,9 +7736,12 @@
         "word": "Pet name",
         "hint": "Affection",
         "modes": [
-          "classic"
+          "classic",
+          "two_truths"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "two_truths": "Messages"
+        },
         "word_id": "dating/pet-name",
         "definition": "An affectionate nickname used for someone close to you."
       },
@@ -7536,10 +7796,16 @@
         "hint": "Messages",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Messages"
+          "act_it": "Messages",
+          "two_truths": "Messages",
+          "if_it_could_talk": "Messages",
+          "sell_it": "Together"
         },
         "word_id": "dating/dating-app",
         "definition": "A phone or web service that helps people meet potential romantic partners."
@@ -7549,10 +7815,14 @@
         "hint": "Nerves",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "two_truths",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Nerves"
+          "act_it": "Nerves",
+          "two_truths": "Nerves",
+          "if_it_could_talk": "Nerves"
         },
         "word_id": "dating/meeting-the-parents",
         "definition": "Being introduced to the mother, father, or caregivers of a romantic partner."
@@ -7562,10 +7832,12 @@
         "hint": "Routine",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Routine"
+          "act_it": "Routine",
+          "sell_it": "Together"
         },
         "word_id": "dating/shared-home",
         "definition": "A place where partners live together."
@@ -7575,10 +7847,12 @@
         "hint": "Listening",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Comfort"
+          "act_it": "Comfort",
+          "sell_it": "Together"
         },
         "word_id": "dating/couples-counseling",
         "definition": "Sessions with a trained professional to work on a romantic relationship."
@@ -7596,9 +7870,14 @@
         "word": "Puberty",
         "hint": "Milestone",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Biology",
+          "act_it": "Teenage"
+        },
         "word_id": "puberty/puberty",
         "definition": "The stage of development when the body matures toward adulthood and becomes capable of reproduction."
       },
@@ -7606,9 +7885,14 @@
         "word": "Menstruation",
         "hint": "Cycle",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Biology",
+          "act_it": "Hygiene"
+        },
         "word_id": "puberty/menstruation",
         "definition": "The shedding of the uterine lining, which leaves the body through the vagina as bleeding."
       },
@@ -7616,9 +7900,12 @@
         "word": "Erection",
         "hint": "Blood",
         "modes": [
-          "classic"
+          "classic",
+          "act_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "act_it": "Maturity"
+        },
         "word_id": "puberty/erection",
         "definition": "A change in which tissue in the penis or clitoris becomes firmer as it fills with blood."
       },
@@ -7626,9 +7913,12 @@
         "word": "Ovulation",
         "hint": "Cycle",
         "modes": [
-          "classic"
+          "classic",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Biology"
+        },
         "word_id": "puberty/ovulation",
         "definition": "The release of an egg from an ovary."
       },
@@ -7666,9 +7956,14 @@
         "word": "Sperm",
         "hint": "Reproduction",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Biology",
+          "act_it": "Maturity"
+        },
         "word_id": "puberty/sperm",
         "definition": "Reproductive cells that can fertilize an egg."
       },
@@ -7676,9 +7971,14 @@
         "word": "Breast development",
         "hint": "Adolescence",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Mirror",
+          "act_it": "Maturity"
+        },
         "word_id": "puberty/breast-development",
         "definition": "The growth of breast tissue, often beginning during puberty."
       },
@@ -7687,10 +7987,12 @@
         "hint": "Growth",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Growth"
+          "act_it": "Hygiene",
+          "if_it_could_talk": "Mirror"
         },
         "word_id": "puberty/body-hair",
         "definition": "Hair that grows on parts of the body such as the arms, legs, underarms, or groin."
@@ -7700,10 +8002,12 @@
         "hint": "Adolescence",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Adolescence"
+          "act_it": "Teenage",
+          "if_it_could_talk": "Mirror"
         },
         "word_id": "puberty/growth-spurt",
         "definition": "A period when the body gets taller or larger more quickly than usual."
@@ -7714,11 +8018,13 @@
         "modes": [
           "classic",
           "act_it",
-          "sound_only"
+          "sound_only",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Adolescence",
-          "sound_only": "Adolescence"
+          "act_it": "Teenage",
+          "sound_only": "Adolescence",
+          "if_it_could_talk": "Teenage"
         },
         "word_id": "puberty/voice-change",
         "definition": "A shift in how high or low someone sounds, often as the voice box grows during puberty."
@@ -7728,10 +8034,12 @@
         "hint": "Skin",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Skin"
+          "act_it": "Teenage",
+          "if_it_could_talk": "Mirror"
         },
         "word_id": "puberty/acne",
         "definition": "A skin condition that causes pimples, blackheads, or other bumps when pores become clogged."
@@ -7741,10 +8049,12 @@
         "hint": "Hygiene",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Hygiene"
+          "act_it": "Hygiene",
+          "if_it_could_talk": "Teenage"
         },
         "word_id": "puberty/sweat",
         "definition": "Liquid released through the skin that helps cool the body."
@@ -7754,10 +8064,12 @@
         "hint": "Hygiene",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Hygiene"
+          "act_it": "Hygiene",
+          "if_it_could_talk": "Teenage"
         },
         "word_id": "puberty/body-odor",
         "definition": "The smell that can develop when skin bacteria break down sweat and other secretions."
@@ -7766,9 +8078,12 @@
         "word": "Hormones",
         "hint": "Signals",
         "modes": [
-          "classic"
+          "classic",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Teenage"
+        },
         "word_id": "puberty/hormones",
         "definition": "Chemical messengers that help control processes such as growth, mood, and reproduction."
       },
@@ -7776,9 +8091,12 @@
         "word": "Testosterone",
         "hint": "Glands",
         "modes": [
-          "classic"
+          "classic",
+          "act_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "act_it": "Maturity"
+        },
         "word_id": "puberty/testosterone",
         "definition": "A hormone that helps regulate sexual development, muscle, and bone growth."
       },
@@ -7865,9 +8183,16 @@
         "word": "Condom",
         "hint": "Protection",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Nightstand",
+          "sell_it": "Protection",
+          "act_it": "Pharmacy"
+        },
         "word_id": "health/condom",
         "definition": "A thin barrier used during sex to reduce the chance of pregnancy or sexually transmitted infections."
       },
@@ -7885,9 +8210,14 @@
         "word": "Lubricant",
         "hint": "Comfort",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Nightstand",
+          "act_it": "Pharmacy"
+        },
         "word_id": "health/lubricant",
         "definition": "A liquid or gel used to reduce friction between surfaces, including skin."
       },
@@ -7896,10 +8226,14 @@
         "hint": "Pharmacy",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Pharmacy"
+          "act_it": "Pharmacy",
+          "if_it_could_talk": "Bathroom",
+          "sell_it": "Planning"
         },
         "word_id": "health/pregnancy-test",
         "definition": "A test that checks urine or blood for a hormone produced during pregnancy."
@@ -7908,9 +8242,12 @@
         "word": "IUD",
         "hint": "Clinic",
         "modes": [
-          "classic"
+          "classic",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Clinic"
+        },
         "word_id": "health/iud",
         "definition": "A small device placed inside the uterus by a health professional to prevent pregnancy."
       },
@@ -7919,10 +8256,14 @@
         "hint": "Prevention",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Prevention"
+          "act_it": "Lifetime",
+          "if_it_could_talk": "Clinic",
+          "sell_it": "Protection"
         },
         "word_id": "health/hpv-vaccination",
         "definition": "A vaccine that protects against types of human papillomavirus that can cause cancers or genital warts."
@@ -7931,9 +8272,14 @@
         "word": "STI screening",
         "hint": "Testing",
         "modes": [
-          "classic"
+          "classic",
+          "if_it_could_talk",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Clinic",
+          "sell_it": "Protection"
+        },
         "word_id": "health/sti-screening",
         "definition": "Testing for sexually transmitted infections, including when a person has no symptoms."
       },
@@ -7961,9 +8307,12 @@
         "word": "Menopause",
         "hint": "Hormones",
         "modes": [
-          "classic"
+          "classic",
+          "act_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "act_it": "Lifetime"
+        },
         "word_id": "health/menopause",
         "definition": "The point when menstrual periods have stopped for 12 months in a row without another cause."
       },
@@ -7972,10 +8321,14 @@
         "hint": "Schedule",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
         "mode_hints": {
-          "act_it": "Schedule"
+          "act_it": "Routine",
+          "if_it_could_talk": "Nightstand",
+          "sell_it": "Planning"
         },
         "word_id": "health/birth-control-pill",
         "definition": "A medicine taken by mouth on a schedule to help prevent pregnancy."
@@ -7984,9 +8337,12 @@
         "word": "Contraceptive implant",
         "hint": "Clinic",
         "modes": [
-          "classic"
+          "classic",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "sell_it": "Planning"
+        },
         "word_id": "health/contraceptive-implant",
         "definition": "A small rod placed under the skin that releases a hormone to prevent pregnancy."
       },
@@ -7994,9 +8350,12 @@
         "word": "Contraceptive patch",
         "hint": "Routine",
         "modes": [
-          "classic"
+          "classic",
+          "act_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "act_it": "Routine"
+        },
         "word_id": "health/contraceptive-patch",
         "definition": "An adhesive worn on the skin that releases hormones to prevent pregnancy."
       },
@@ -8004,9 +8363,14 @@
         "word": "Emergency contraception",
         "hint": "Timing",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "sell_it": "Planning",
+          "act_it": "Pharmacy"
+        },
         "word_id": "health/emergency-contraception",
         "definition": "A method used after unprotected sex or contraceptive failure to reduce the chance of pregnancy."
       },
@@ -8014,9 +8378,14 @@
         "word": "Dental dam",
         "hint": "Wrapper",
         "modes": [
-          "classic"
+          "classic",
+          "if_it_could_talk",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Nightstand",
+          "sell_it": "Protection"
+        },
         "word_id": "health/dental-dam",
         "definition": "A thin sheet used as a barrier during oral sex to help reduce infection risk."
       },
@@ -8024,9 +8393,16 @@
         "word": "Menstrual pad",
         "hint": "Bathroom",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Bathroom",
+          "sell_it": "Monthly",
+          "act_it": "Routine"
+        },
         "word_id": "health/menstrual-pad",
         "definition": "An absorbent strip worn inside underwear to catch menstrual fluid."
       },
@@ -8034,9 +8410,16 @@
         "word": "Tampon",
         "hint": "Bathroom",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Bathroom",
+          "sell_it": "Monthly",
+          "act_it": "Routine"
+        },
         "word_id": "health/tampon",
         "definition": "A small absorbent product inserted into the vagina to absorb menstrual fluid."
       },
@@ -8044,9 +8427,16 @@
         "word": "Menstrual cup",
         "hint": "Bathroom",
         "modes": [
-          "classic"
+          "classic",
+          "act_it",
+          "if_it_could_talk",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Bathroom",
+          "sell_it": "Monthly",
+          "act_it": "Routine"
+        },
         "word_id": "health/menstrual-cup",
         "definition": "A flexible container worn inside the vagina that collects menstrual fluid."
       },
@@ -8054,9 +8444,12 @@
         "word": "Period underwear",
         "hint": "Comfort",
         "modes": [
-          "classic"
+          "classic",
+          "sell_it"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "sell_it": "Monthly"
+        },
         "word_id": "health/period-underwear",
         "definition": "Underwear designed with layers that absorb menstrual fluid."
       },
@@ -8074,9 +8467,12 @@
         "word": "Cervical screening",
         "hint": "Prevention",
         "modes": [
-          "classic"
+          "classic",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Clinic"
+        },
         "word_id": "health/cervical-screening",
         "definition": "Checking for changes or infections linked to cancer of the cervix."
       },
@@ -8088,7 +8484,7 @@
           "act_it"
         ],
         "mode_hints": {
-          "act_it": "Checkups"
+          "act_it": "Lifetime"
         },
         "word_id": "health/pregnancy",
         "definition": "The condition that begins when a fertilized egg has begun to develop and implants, usually in the lining of the uterus."
@@ -8127,10 +8523,12 @@
         "hint": "Conversation",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Conversation"
+          "act_it": "Conversation",
+          "if_it_could_talk": "Talking"
         },
         "word_id": "consent/consent",
         "definition": "A freely given agreement to a specific activity that a person can withdraw at any time."
@@ -8140,10 +8538,12 @@
         "hint": "Comfort",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Comfort"
+          "act_it": "Comfort",
+          "if_it_could_talk": "Limits"
         },
         "word_id": "consent/boundaries",
         "definition": "Limits people set about what they are comfortable with or willing to take part in."
@@ -8153,10 +8553,12 @@
         "hint": "Curtain",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Curtain"
+          "act_it": "Curtain",
+          "if_it_could_talk": "Limits"
         },
         "word_id": "consent/privacy",
         "definition": "The ability to control who can access your personal information, space, or experiences."
@@ -8166,10 +8568,12 @@
         "hint": "Choice",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Choice"
+          "act_it": "Choice",
+          "if_it_could_talk": "Limits"
         },
         "word_id": "consent/refusal",
         "definition": "An act of saying or showing that you do not agree or do not want to take part."
@@ -8179,10 +8583,12 @@
         "hint": "Listening",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Reassurance"
+          "act_it": "Reassurance",
+          "if_it_could_talk": "Trust"
         },
         "word_id": "consent/respect",
         "definition": "Treating someone as a person whose choices, feelings, and limits matter."
@@ -8191,9 +8597,12 @@
         "word": "Communication",
         "hint": "Questions",
         "modes": [
-          "classic"
+          "classic",
+          "if_it_could_talk"
         ],
-        "mode_hints": {},
+        "mode_hints": {
+          "if_it_could_talk": "Talking"
+        },
         "word_id": "consent/communication",
         "definition": "Sharing and receiving information, thoughts, or feelings so others can understand you."
       },
@@ -8202,10 +8611,12 @@
         "hint": "Distance",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Distance"
+          "act_it": "Distance",
+          "if_it_could_talk": "Limits"
         },
         "word_id": "consent/personal-space",
         "definition": "The area around your body where you feel comfortable keeping some distance from others."
@@ -8238,10 +8649,12 @@
         "hint": "Reassurance",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Reassurance"
+          "act_it": "Reassurance",
+          "if_it_could_talk": "Talking"
         },
         "word_id": "consent/check-in",
         "definition": "Briefly asking how someone feels or whether they are still comfortable continuing."
@@ -8264,10 +8677,12 @@
         "hint": "Attention",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Attention"
+          "act_it": "Attention",
+          "if_it_could_talk": "Trust"
         },
         "word_id": "consent/active-listening",
         "definition": "Paying close attention to what someone says and checking that you understood them."
@@ -8277,10 +8692,12 @@
         "hint": "Trust",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Trust"
+          "act_it": "Trust",
+          "if_it_could_talk": "Trust"
         },
         "word_id": "consent/confidentiality",
         "definition": "Keeping information private when it has been shared in confidence."
@@ -8290,10 +8707,12 @@
         "hint": "Voice",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Choice"
+          "act_it": "Choice",
+          "if_it_could_talk": "Trust"
         },
         "word_id": "consent/assertiveness",
         "definition": "Stating what you need, think, or want clearly while respecting others."
@@ -8362,10 +8781,12 @@
         "hint": "Questions",
         "modes": [
           "classic",
-          "act_it"
+          "act_it",
+          "if_it_could_talk"
         ],
         "mode_hints": {
-          "act_it": "Questions"
+          "act_it": "Questions",
+          "if_it_could_talk": "Talking"
         },
         "word_id": "consent/clarification",
         "definition": "Asking for or giving more information to make something easier to understand."

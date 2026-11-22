@@ -157,9 +157,9 @@ async function roundFlowSmoke(hostPage) {
       two_truths: "Two Truths and a Lie", if_it_could_talk: "If It Could Talk", sell_it: "Sell It",
     };
     const spokenPacks = {
-      two_truths: ["animals", "everyday", "food", "places", "sports", "technology", "travel"],
-      if_it_could_talk: ["animals", "chaos", "emotions", "everyday", "food", "places", "travel"],
-      sell_it: ["everyday", "food", "gaming", "hobbies", "places", "technology", "travel"],
+      two_truths: ["animals", "dating", "everyday", "food", "memory", "music", "nature", "places", "social", "sports", "technology", "travel"],
+      if_it_could_talk: ["animals", "chaos", "consent", "dating", "emotions", "everyday", "food", "health", "memory", "places", "puberty", "social", "travel"],
+      sell_it: ["celebrations", "dating", "everyday", "food", "gaming", "health", "hobbies", "memory", "places", "technology", "travel"],
     };
     // The reveal lasts a fixed 4.25s, so a client one poll behind can miss it
     // entirely. Never block on the beat: retry the rule until a poll lands in it.

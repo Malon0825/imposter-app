@@ -140,7 +140,7 @@ mod tests {
                 }
             }
         }
-        assert_eq!(totals, [23, 21, 14, 7, 7, 7]);
+        assert_eq!(totals, [23, 23, 14, 12, 13, 11]);
         let everyday = pack("everyday");
         let wallet = everyday
             .words
@@ -190,7 +190,12 @@ mod tests {
         );
         assert_eq!(
             modes_for_topics(&["health".into()]),
-            vec![GameMode::Classic]
+            vec![
+                GameMode::Classic,
+                GameMode::ActIt,
+                GameMode::IfItCouldTalk,
+                GameMode::SellIt
+            ]
         );
         let available = topics_for_mode(&["animals".into()], GameMode::SoundOnly);
         assert_eq!(available.len(), 1);

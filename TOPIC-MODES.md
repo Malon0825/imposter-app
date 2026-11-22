@@ -21,11 +21,11 @@ Played words and equivalent concepts stay deducted across modes and parties on t
 ## Coverage
 
 - **Classic:** 23 playable topics; 581 words across those playable pools.
-- **Act It:** 21 playable topics; 486 words across those playable pools.
+- **Act It:** 23 playable topics; 510 words across those playable pools.
 - **Sound Only:** 14 playable topics; 194 words across those playable pools.
-- **Two Truths and a Lie:** 7 playable topics; 84 words across those playable pools.
-- **If It Could Talk:** 7 playable topics; 84 words across those playable pools.
-- **Sell It:** 7 playable topics; 84 words across those playable pools.
+- **Two Truths and a Lie:** 12 playable topics; 144 words across those playable pools.
+- **If It Could Talk:** 13 playable topics; 156 words across those playable pools.
+- **Sell It:** 11 playable topics; 132 words across those playable pools.
 
 **581 distinct catalog entries.** The 2026-11-17 review preserved the original 552 entries and Classic hints, and added 29 words: Everyday +7, Nature +6, Travel +6, Technology +5, Hobbies +5.
 
@@ -153,11 +153,11 @@ Eligible words: Waterfall, Volcano, Forest, River, Lake, Ocean, Beach, Cave, Rai
 
 Excluded words: Cactus, Mushroom, Rose, Sunflower, Fern, Bamboo, Oak tree, Palm tree, Moss, Seaweed, Desert, Mountain, Island, Glacier, Iceberg, Rainbow.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Cactus, Mushroom, Waterfall, Volcano, Rose, Sunflower, Fern, Bamboo, Oak tree, Palm tree, Moss, Seaweed, Forest, Desert, Mountain, River, Lake, Ocean, Beach, Island, Glacier, Iceberg, Cave, Rainbow, Rain, Thunder, Wind, Hail, Geyser, Avalanche.
+Eligible words: Cactus, Waterfall, Sunflower, Bamboo, Moss, River, Lake, Glacier, Rainbow, Thunder, Wind, Hail.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Mushroom, Volcano, Rose, Fern, Oak tree, Palm tree, Seaweed, Forest, Desert, Mountain, Ocean, Beach, Island, Iceberg, Cave, Rain, Geyser, Avalanche.
 
 **If It Could Talk — unavailable (0 accepted; minimum 10).**
 
@@ -329,11 +329,11 @@ Eligible words: Karaoke, Guitar, Drums, Concert, Choir, Orchestra, DJ, Duet, Lul
 
 Excluded words: Microphone, Chorus, Verse, Album, Rehearsal.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Karaoke, Guitar, Drums, Microphone, Concert, Choir, Orchestra, DJ, Duet, Lullaby, Piano, Violin, Flute, Trumpet, Saxophone, Tambourine, Harp, Song, Chorus, Verse, Melody, Rhythm, Album, Rehearsal.
+Eligible words: Karaoke, Guitar, Concert, Choir, Orchestra, DJ, Duet, Lullaby, Piano, Violin, Harp, Chorus.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Drums, Microphone, Flute, Trumpet, Saxophone, Tambourine, Song, Verse, Melody, Rhythm, Album, Rehearsal.
 
 **If It Could Talk — unavailable (0 accepted; minimum 10).**
 
@@ -549,11 +549,11 @@ Excluded words: Birthday cake, Fireworks, Wedding, Graduation, Costume party, La
 
 Outside the reviewed starter pool for this rule.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Birthday cake, Fireworks, Wedding, Graduation, Costume party, Lantern, Parade, Gift wrapping, New Year's countdown, Family reunion, Confetti, Balloons, Invitation, Party hat, Piñata, Banquet, Toast, Ribbon, Christmas, Lunar New Year, Diwali, Eid, Halloween, Carnival.
+Eligible words: Birthday cake, Fireworks, Lantern, Gift wrapping, New Year's countdown, Confetti, Balloons, Invitation, Party hat, Piñata, Banquet, Toast.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Wedding, Graduation, Costume party, Parade, Family reunion, Ribbon, Christmas, Lunar New Year, Diwali, Eid, Halloween, Carnival.
 
 ## Space & science
 
@@ -645,23 +645,23 @@ Excluded words: Daydreaming, Déjà vu, Distraction, Habit, Motivation, Attentio
 
 These are mental processes rather than reliable sound sources. Snoring would suggest sleep, not distinguish dreaming, and beeps would only describe a possible distraction.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Daydreaming, Déjà vu, Distraction, Habit, Motivation, Attention, Memory, Imagination, Learning, Confirmation bias, Perception, Reasoning, Decision-making, Problem-solving, Recognition, Tip-of-the-tongue, Multitasking, Forgetfulness, Dreaming, Conditioning, Procrastination, Self-control, Mindfulness, Mental rehearsal.
+Eligible words: Daydreaming, Déjà vu, Habit, Motivation, Memory, Learning, Confirmation bias, Perception, Recognition, Dreaming, Procrastination, Self-control.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Distraction, Attention, Imagination, Reasoning, Decision-making, Problem-solving, Tip-of-the-tongue, Multitasking, Forgetfulness, Conditioning, Mindfulness, Mental rehearsal.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Daydreaming, Déjà vu, Distraction, Habit, Motivation, Attention, Memory, Imagination, Learning, Confirmation bias, Perception, Reasoning, Decision-making, Problem-solving, Recognition, Tip-of-the-tongue, Multitasking, Forgetfulness, Dreaming, Conditioning, Procrastination, Self-control, Mindfulness, Mental rehearsal.
+Eligible words: Daydreaming, Déjà vu, Distraction, Habit, Motivation, Attention, Memory, Imagination, Multitasking, Dreaming, Procrastination, Self-control.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Learning, Confirmation bias, Perception, Reasoning, Decision-making, Problem-solving, Recognition, Tip-of-the-tongue, Forgetfulness, Conditioning, Mindfulness, Mental rehearsal.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Daydreaming, Déjà vu, Distraction, Habit, Motivation, Attention, Memory, Imagination, Learning, Confirmation bias, Perception, Reasoning, Decision-making, Problem-solving, Recognition, Tip-of-the-tongue, Multitasking, Forgetfulness, Dreaming, Conditioning, Procrastination, Self-control, Mindfulness, Mental rehearsal.
+Eligible words: Habit, Motivation, Attention, Memory, Imagination, Learning, Reasoning, Decision-making, Problem-solving, Self-control, Mindfulness, Mental rehearsal.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Daydreaming, Déjà vu, Distraction, Confirmation bias, Perception, Recognition, Tip-of-the-tongue, Multitasking, Forgetfulness, Dreaming, Conditioning, Procrastination.
 
 ## Social behavior
 
@@ -681,17 +681,17 @@ Excluded words: Peer pressure, First impression, Conformity, Persuasion, Coopera
 
 These targets require social context. Whispering, cheering or sighing alone cannot reliably distinguish the intended behavior without words or an acted scene.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Peer pressure, First impression, Conformity, Persuasion, Cooperation, Competition, Empathy, Trust, Stereotype, Gossip, Negotiation, Leadership, Teamwork, Altruism, Reciprocity, Etiquette, Small talk, Apology, Compliment, Exclusion, Inclusion, Social norms, Reputation, Conflict.
+Eligible words: Peer pressure, Conformity, Cooperation, Gossip, Teamwork, Altruism, Reciprocity, Etiquette, Small talk, Apology, Compliment, Reputation.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: First impression, Persuasion, Competition, Empathy, Trust, Stereotype, Negotiation, Leadership, Exclusion, Inclusion, Social norms, Conflict.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Peer pressure, First impression, Conformity, Persuasion, Cooperation, Competition, Empathy, Trust, Stereotype, Gossip, Negotiation, Leadership, Teamwork, Altruism, Reciprocity, Etiquette, Small talk, Apology, Compliment, Exclusion, Inclusion, Social norms, Reputation, Conflict.
+Eligible words: Peer pressure, First impression, Conformity, Cooperation, Competition, Gossip, Negotiation, Teamwork, Small talk, Apology, Compliment, Conflict.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Persuasion, Empathy, Trust, Stereotype, Leadership, Altruism, Reciprocity, Etiquette, Exclusion, Inclusion, Social norms, Reputation.
 
 **Sell It — unavailable (0 accepted; minimum 10).**
 
@@ -719,23 +719,23 @@ Excluded words: Crush, First date, Flirting, Long-distance relationship, Breakup
 
 Kissing, sighing and crying overlap many relationship situations. Adding enough near-identical noises would create an unfair sound pool rather than meaningful variety.
 
-**Two Truths and a Lie — unavailable (0 accepted; minimum 10).**
+**Two Truths and a Lie — playable (12 accepted; minimum 10).**
 
-Excluded words: Crush, First date, Flirting, Long-distance relationship, Breakup, Anniversary, Proposal, Blind date, Love letter, Matchmaking, Double date, Honeymoon, Engagement, Holding hands, Cuddling, Pet name, Reconciliation, Commitment, Compatibility, Heartbreak, Dating app, Meeting the parents, Shared home, Couples counseling.
+Eligible words: First date, Long-distance relationship, Breakup, Anniversary, Proposal, Blind date, Love letter, Honeymoon, Engagement, Pet name, Dating app, Meeting the parents.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Crush, Flirting, Matchmaking, Double date, Holding hands, Cuddling, Reconciliation, Commitment, Compatibility, Heartbreak, Shared home, Couples counseling.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Crush, First date, Flirting, Long-distance relationship, Breakup, Anniversary, Proposal, Blind date, Love letter, Matchmaking, Double date, Honeymoon, Engagement, Holding hands, Cuddling, Pet name, Reconciliation, Commitment, Compatibility, Heartbreak, Dating app, Meeting the parents, Shared home, Couples counseling.
+Eligible words: First date, Flirting, Long-distance relationship, Breakup, Anniversary, Proposal, Blind date, Love letter, Honeymoon, Engagement, Dating app, Meeting the parents.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Crush, Matchmaking, Double date, Holding hands, Cuddling, Pet name, Reconciliation, Commitment, Compatibility, Heartbreak, Shared home, Couples counseling.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Crush, First date, Flirting, Long-distance relationship, Breakup, Anniversary, Proposal, Blind date, Love letter, Matchmaking, Double date, Honeymoon, Engagement, Holding hands, Cuddling, Pet name, Reconciliation, Commitment, Compatibility, Heartbreak, Dating app, Meeting the parents, Shared home, Couples counseling.
+Eligible words: First date, Anniversary, Proposal, Blind date, Love letter, Matchmaking, Double date, Honeymoon, Cuddling, Dating app, Shared home, Couples counseling.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Crush, Flirting, Long-distance relationship, Breakup, Engagement, Holding hands, Pet name, Reconciliation, Commitment, Compatibility, Heartbreak, Meeting the parents.
 
 ## Body & puberty
 
@@ -745,13 +745,11 @@ Opt-in pack; classification does not enable it automatically.
 
 **All catalog words:** Puberty, Menstruation, Erection, Ovulation, Uterus, Ovaries, Testes, Sperm, Breast development, Body hair, Growth spurt, Voice change, Acne, Sweat, Body odor, Hormones, Testosterone, Estrogen, Pituitary gland, Vulva, Penis, Scrotum, Vagina, Fallopian tubes.
 
-**Act It — unavailable (6 accepted; minimum 10).**
+**Act It — playable (12 accepted; minimum 10).**
 
-Held-back candidates: Body hair, Growth spurt, Voice change, Acne, Sweat, Body odor.
+Eligible words: Puberty, Menstruation, Erection, Sperm, Breast development, Body hair, Growth spurt, Voice change, Acne, Sweat, Body odor, Testosterone.
 
-Excluded words: Puberty, Menstruation, Erection, Ovulation, Uterus, Ovaries, Testes, Sperm, Breast development, Hormones, Testosterone, Estrogen, Pituitary gland, Vulva, Penis, Scrotum, Vagina, Fallopian tubes.
-
-Most entries are internal anatomy, hormones or processes that need a diagram, specialist explanation or an ambiguous body gesture; no ten-word solo-mime pool was found.
+Excluded words: Ovulation, Uterus, Ovaries, Testes, Hormones, Estrogen, Pituitary gland, Vulva, Penis, Scrotum, Vagina, Fallopian tubes.
 
 **Sound Only — unavailable (1 accepted; minimum 10).**
 
@@ -767,11 +765,11 @@ Excluded words: Puberty, Menstruation, Erection, Ovulation, Uterus, Ovaries, Tes
 
 Outside the reviewed starter pool for this rule.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Puberty, Menstruation, Erection, Ovulation, Uterus, Ovaries, Testes, Sperm, Breast development, Body hair, Growth spurt, Voice change, Acne, Sweat, Body odor, Hormones, Testosterone, Estrogen, Pituitary gland, Vulva, Penis, Scrotum, Vagina, Fallopian tubes.
+Eligible words: Puberty, Menstruation, Ovulation, Sperm, Breast development, Body hair, Growth spurt, Voice change, Acne, Sweat, Body odor, Hormones.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Erection, Uterus, Ovaries, Testes, Testosterone, Estrogen, Pituitary gland, Vulva, Penis, Scrotum, Vagina, Fallopian tubes.
 
 **Sell It — unavailable (0 accepted; minimum 10).**
 
@@ -787,13 +785,11 @@ Opt-in pack; classification does not enable it automatically.
 
 **All catalog words:** Condom, Contraception, Lubricant, Pregnancy test, IUD, HPV vaccination, STI screening, Fertility, Prenatal care, Menopause, Birth control pill, Contraceptive implant, Contraceptive patch, Emergency contraception, Dental dam, Menstrual pad, Tampon, Menstrual cup, Period underwear, Sexual health clinic, Cervical screening, Pregnancy, HIV, Sexual health counseling.
 
-**Act It — unavailable (4 accepted; minimum 10).**
+**Act It — playable (12 accepted; minimum 10).**
 
-Held-back candidates: Pregnancy test, HPV vaccination, Birth control pill, Pregnancy.
+Eligible words: Condom, Lubricant, Pregnancy test, HPV vaccination, Menopause, Birth control pill, Contraceptive patch, Emergency contraception, Menstrual pad, Tampon, Menstrual cup, Pregnancy.
 
-Excluded words: Condom, Contraception, Lubricant, IUD, STI screening, Fertility, Prenatal care, Menopause, Contraceptive implant, Contraceptive patch, Emergency contraception, Dental dam, Menstrual pad, Tampon, Menstrual cup, Period underwear, Sexual health clinic, Cervical screening, HIV, Sexual health counseling.
-
-Most entries require specific clinical knowledge or look identical in a short wordless performance. Keep this topic unavailable until ten distinct, respectful, usable mimes are reviewed.
+Excluded words: Contraception, IUD, STI screening, Fertility, Prenatal care, Contraceptive implant, Dental dam, Period underwear, Sexual health clinic, Cervical screening, HIV, Sexual health counseling.
 
 **Sound Only — unavailable (0 accepted; minimum 10).**
 
@@ -807,17 +803,17 @@ Excluded words: Condom, Contraception, Lubricant, Pregnancy test, IUD, HPV vacci
 
 Outside the reviewed starter pool for this rule.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Condom, Contraception, Lubricant, Pregnancy test, IUD, HPV vaccination, STI screening, Fertility, Prenatal care, Menopause, Birth control pill, Contraceptive implant, Contraceptive patch, Emergency contraception, Dental dam, Menstrual pad, Tampon, Menstrual cup, Period underwear, Sexual health clinic, Cervical screening, Pregnancy, HIV, Sexual health counseling.
+Eligible words: Condom, Lubricant, Pregnancy test, IUD, HPV vaccination, STI screening, Birth control pill, Dental dam, Menstrual pad, Tampon, Menstrual cup, Cervical screening.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Contraception, Fertility, Prenatal care, Menopause, Contraceptive implant, Contraceptive patch, Emergency contraception, Period underwear, Sexual health clinic, Pregnancy, HIV, Sexual health counseling.
 
-**Sell It — unavailable (0 accepted; minimum 10).**
+**Sell It — playable (12 accepted; minimum 10).**
 
-Excluded words: Condom, Contraception, Lubricant, Pregnancy test, IUD, HPV vaccination, STI screening, Fertility, Prenatal care, Menopause, Birth control pill, Contraceptive implant, Contraceptive patch, Emergency contraception, Dental dam, Menstrual pad, Tampon, Menstrual cup, Period underwear, Sexual health clinic, Cervical screening, Pregnancy, HIV, Sexual health counseling.
+Eligible words: Condom, Pregnancy test, HPV vaccination, STI screening, Birth control pill, Contraceptive implant, Emergency contraception, Dental dam, Menstrual pad, Tampon, Menstrual cup, Period underwear.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Contraception, Lubricant, IUD, Fertility, Prenatal care, Menopause, Contraceptive patch, Sexual health clinic, Cervical screening, Pregnancy, HIV, Sexual health counseling.
 
 ## Consent
 
@@ -845,11 +841,11 @@ Excluded words: Consent, Boundaries, Privacy, Refusal, Respect, Communication, P
 
 Outside the reviewed starter pool for this rule.
 
-**If It Could Talk — unavailable (0 accepted; minimum 10).**
+**If It Could Talk — playable (12 accepted; minimum 10).**
 
-Excluded words: Consent, Boundaries, Privacy, Refusal, Respect, Communication, Personal space, Bodily autonomy, Coercion, Check-in, Changing your mind, Active listening, Confidentiality, Assertiveness, Unwanted touch, Intoxication, Power imbalance, Silence, Hesitation, Clarification, Image sharing, Bystander intervention, Accountability, Manipulation.
+Eligible words: Consent, Boundaries, Privacy, Refusal, Respect, Communication, Personal space, Check-in, Active listening, Confidentiality, Assertiveness, Clarification.
 
-Outside the reviewed starter pool for this rule.
+Excluded words: Bodily autonomy, Coercion, Changing your mind, Unwanted touch, Intoxication, Power imbalance, Silence, Hesitation, Image sharing, Bystander intervention, Accountability, Manipulation.
 
 **Sell It — unavailable (0 accepted; minimum 10).**
 

@@ -36,7 +36,6 @@ class PartyPlugin(private val activity: Activity) : Plugin(activity) {
     }
 
     override fun load(webView: WebView) {
-        activity.window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         webView.setBackgroundColor(android.graphics.Color.rgb(20,25,22))
         val owner = activity as ComponentActivity
         owner.onBackPressedDispatcher.addCallback(owner, object : OnBackPressedCallback(true) {
@@ -137,8 +136,20 @@ class PartyPlugin(private val activity: Activity) : Plugin(activity) {
         invoke.resolve(information())
     }
 
+    // Blocks screenshots and the recents thumbnail only while a private card
+    // is face up; the rest of the app stays shareable. Window flags must be
+    // changed on the UI thread.
     @Command fun secureScreen(invoke: Invoke) {
-        activity.window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        invoke.resolve(information())
+        activity.runOnUiThread {
+            activity.window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            invoke.resolve(information())
+        }
+    }
+
+    @Command fun allowScreenshots(invoke: Invoke) {
+        activity.runOnUiThread {
+            activity.window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
+            invoke.resolve(information())
+        }
     }
 }

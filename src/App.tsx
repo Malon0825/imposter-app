@@ -90,6 +90,10 @@ const initials = (name: string) => {
           .join("")
   ).toUpperCase();
 };
+const recapItem = {
+  hidden: { opacity: 0, y: 12 },
+  shown: { opacity: 1, y: 0, transition: { duration: 0.32, ease: MOTION.easeOut } },
+};
 const signed = (value: number) =>
   value < 0 ? `−${Math.abs(value)}` : `+${value}`;
 function SessionProgress({ score, target }: { score: number; target: number }) {
@@ -714,6 +718,12 @@ export default function App() {
   const [revealRequested, setRevealed] = useState(false);
   const revealRound = useRef<number | null>(null);
   const revealed = revealRequested && revealRound.current === view?.round_id;
+  // Block screenshots only while a private card is face up. Browsers cannot
+  // block them at all, so this is the installed app only.
+  useEffect(() => {
+    if (native)
+      device(revealed ? "secureScreen" : "allowScreenshots").catch(() => {});
+  }, [revealed]);
   const reviewRound = useRef<number | null>(null);
   const [qr, setQr] = useState("");
   const [showQr, setShowQr] = useState(false);
@@ -3344,11 +3354,11 @@ export default function App() {
             <div className="verdict-stage center-stage" aria-live="polite">
               <motion.div
                 className={`verdict-card ${verdict.escaped ? "escaped" : "caught"}`}
-                initial={reduced || !visible || (view.reveal?.remaining_ms ?? 0) < 450 ? false : { rotateY: -70, opacity: 0, x: verdict.escaped ? -18 : 0 }}
-                animate={{ rotateY: 0, opacity: 1, x: 0 }}
+                initial={reduced || !visible || (view.reveal?.remaining_ms ?? 0) < 450 ? false : verdict.escaped ? { rotateY: -70, opacity: 0, x: -18, rotate: -4 } : { rotateY: -70, opacity: 0, scale: 0.94 }}
+                animate={{ rotateY: 0, opacity: 1, x: 0, rotate: 0, scale: 1 }}
                 transition={{ duration: reduced ? 0 : MOTION.roleReveal, ease: MOTION.easeOut }}
               >
-                {!verdict.escaped && <Rays />}
+                {!verdict.escaped && <Rays className="verdict-burst" />}
                 <Avatar player={person(verdict.imposter_id)} large />
                 <p className="verdict-role">IMPOSTER</p>
                 <h1>{verdict.tied && <>It’s a tie.<br /></>}{playerName(verdict.imposter_id)} {verdict.escaped ? "escaped." : "was caught"}</h1>
@@ -3356,7 +3366,7 @@ export default function App() {
               </motion.div>
             </div>
           ) : (
-            <div className="result-suspense center-stage" aria-live="polite">
+            <div className="result-suspense center-stage is-waiting" aria-live="polite">
               <h1>The votes are in.</h1>
               <LockedVoteArt />
               <p className="muted">{view.vote_count} of {view.vote_count} votes locked</p>
@@ -3381,16 +3391,19 @@ export default function App() {
           />
           <motion.div
             className="result-content"
-            initial={reduced ? false : { opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            initial={reduced ? false : "hidden"}
+            animate="shown"
+            variants={{ shown: { transition: { staggerChildren: 0.09 } } }}
           >
-            <p className="recap-verdict">{!r.accused_id && "It’s a tie. "}<b>{playerName(r.imposter_id)}</b> {r.escaped ? "escaped." : "was caught"}</p>
-            {!r.accused_id && <p className="muted compact">No one was accused.</p>}
-            <span className={`result-disc ${win ? "win" : ""}`}>
+            <motion.p variants={recapItem} className="recap-verdict">{!r.accused_id && "It’s a tie. "}<b>{playerName(r.imposter_id)}</b> {r.escaped ? "escaped." : "was caught"}</motion.p>
+            {!r.accused_id && <motion.p variants={recapItem} className="muted compact">No one was accused.</motion.p>}
+            <motion.span
+              className={`result-disc ${win ? "win" : ""}`}
+              variants={{ hidden: { scale: 0.6, opacity: 0 }, shown: { scale: 1, opacity: 1, transition: MOTION.select } }}
+            >
               <Icon name={win ? "check" : "x"} size={42} />
-            </span>
-            <h1>
+            </motion.span>
+            <motion.h1 variants={recapItem}>
               {r.was_imposter
                 ? r.escaped
                   ? "You escaped"
@@ -3398,10 +3411,12 @@ export default function App() {
                 : win
                   ? "You got it"
                   : "You guessed wrong"}
-            </h1>
-            <div className={`round-points ${net > 0 ? "lime" : "terra"}`}>
-              {signed(net)} {Math.abs(net) === 1 ? "point" : "points"}
-            </div>
+            </motion.h1>
+            <motion.div variants={recapItem} className={`round-points ${net > 0 ? "lime" : "terra"}`}>
+              <ScoreValue value={net} from={0} signed delay={reduced ? 0 : 0.35} /> {Math.abs(net) === 1 ? "point" : "points"}
+            </motion.div>
+            {/* The breakdown, word and meaning land together as the last step. */}
+            <motion.div variants={recapItem} className="recap-details">
             <p>
               {r.was_imposter ? (
                 r.escaped ? (
@@ -3503,6 +3518,7 @@ export default function App() {
                 or Dare.
               </p>
             )}
+            </motion.div>
           </motion.div>
           {footer(
             <>
