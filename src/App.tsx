@@ -993,7 +993,10 @@ export default function App() {
   useEffect(() => {
     if (!sessionId || view?.phase === "ended" || sessionBlocked) return;
     let active = true;
-    let failures = 0;
+    // The host keeps a 9s presence grace before it calls anyone offline, so the
+    // player's own screen must not give up first. A phone on a busy Wi-Fi drops
+    // the odd request; only a sustained outage is worth interrupting them for.
+    let lastOk = Date.now();
     const refresh = async () => {
       if (polling.current) return;
       if (webGuest && document.hidden) return;
@@ -1003,7 +1006,7 @@ export default function App() {
         if (active) {
           accept(v);
           setDisconnected(false);
-          failures = 0;
+          lastOk = Date.now();
         }
       } catch (e) {
         if (
@@ -1016,7 +1019,7 @@ export default function App() {
           setRevealed(false);
           return;
         }
-        if (active && ++failures >= 2) {
+        if (active && Date.now() - lastOk >= 5000) {
           setDisconnected(true);
           setRevealed(false);
         }

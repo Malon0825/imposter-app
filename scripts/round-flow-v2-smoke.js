@@ -47,7 +47,7 @@ async function roundFlowSmoke(hostPage) {
     const nativePage = await nativeContext.newPage();
     await adopt(nativePage, native);
     guests.push({ page: nativePage, id: native.credentials.player_id, name: "Ben" });
-    for (const [name, width] of [["Mia Alexandra Fitzgerald-Rey", 360], ["Sam", 390]]) {
+    for (const [name, width] of [["Wilhelmina Thornbury-Hayes", 360], ["Sam", 390]]) {
       const context = await browser.newContext({ viewport: { width, height: 844 }, reducedMotion: name === "Mia" ? "reduce" : "no-preference" });
       contexts.push(context);
       const page = await context.newPage();

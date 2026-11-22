@@ -74,7 +74,7 @@ async function post<T>(
   } catch (error) {
     if (error instanceof ApiError) throw error;
     throw new ApiError(
-      "Can’t reach the host. Connect to the shared Wi-Fi and keep the host app open.",
+      "Can’t reach the host. Keep this open; if it continues, check the host’s Wi-Fi and that their app is running.",
       "unreachable",
       0,
     );
