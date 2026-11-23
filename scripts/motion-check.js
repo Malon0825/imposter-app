@@ -21,6 +21,7 @@ async function checkMotion(page) {
         left: false,
         points: 0,
         earned: 0,
+        report_penalty: 0, report_round: null,
       }));
       const invitation =
         "imposter://join/" +
@@ -40,6 +41,8 @@ async function checkMotion(page) {
         phase: "lobby",
         revision: 1,
         round_id: 1,
+    score_session: { number: 1, target: 15, started: true, complete: false, winner_ids: [] },
+    betting: { eligible: false, max_stake: 0, my_stake: null, original_vote: null, reading_streak: 0 },
         host_id: "alex",
         my_id: "alex",
         is_host: true,
@@ -99,7 +102,8 @@ async function checkMotion(page) {
               view.my_vote = null;
             }
             if (kind === "vote") {
-              view.my_vote = value;
+              view.my_vote = typeof value === "string" ? value : value.player_id;
+              view.betting.my_stake = typeof value === "string" ? 0 : value.stake;
               view.vote_count = 3;
             }
             if (kind === "role_ready") view.role_ready = true;
@@ -279,7 +283,7 @@ async function checkMotion(page) {
   );
 
   await page
-    .getByRole("button", { name: "Choose topics", exact: true })
+    .getByRole("button", { name: "Topic settings", exact: true })
     .click();
   const topic = page.locator(".topic-tile").filter({ hasText: "Animals" });
   await topic.waitFor();
@@ -462,6 +466,7 @@ async function checkMotion(page) {
     my_vote: "mia",
     earned: 0,
     was_imposter: false,
+    score: { before: 0, base: 0, bet: 0, streak: 0, bluff: 0, penalty: 0, after: 0 }, imposter_bonus: 0, report_penalty: 0, report_round: null,
   };
   await page.evaluate(() => {
     const f = window.__motionTest;

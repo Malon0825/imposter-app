@@ -1,8 +1,11 @@
+param([switch]$Preview)
 $ErrorActionPreference = 'Stop'
 . "$PSScriptRoot/env.ps1"
 $imposterSigningDir = Join-Path $env:LOCALAPPDATA 'Imposter/signing'
-$imposterKeyStore = Join-Path $imposterSigningDir 'imposter-release.jks'
-$imposterCredentials = Join-Path $imposterSigningDir 'release.credential.xml'
+$imposterSigningProfile = if ($Preview) { 'preview' } else { 'release' }
+$imposterKeyStore = Join-Path $imposterSigningDir "imposter-$imposterSigningProfile.jks"
+$imposterCredentials = Join-Path $imposterSigningDir "$imposterSigningProfile.credential.xml"
+$imposterCertificateName = if ($Preview) { 'Imposter Preview' } else { 'Imposter' }
 if ((Test-Path -LiteralPath $imposterKeyStore) -or (Test-Path -LiteralPath $imposterCredentials)) {
     throw 'Signing material already exists. Reuse it for updates; never overwrite a published app signing key.'
 }
@@ -12,7 +15,7 @@ $imposterRng = [System.Security.Cryptography.RandomNumberGenerator]::Create()
 try { $imposterRng.GetBytes($imposterRandom) } finally { $imposterRng.Dispose() }
 $env:IMPOSTER_SIGNING_PASSWORD = [Convert]::ToBase64String($imposterRandom)
 try {
-    & "$env:JAVA_HOME/bin/keytool.exe" -genkeypair -keystore $imposterKeyStore -storetype JKS -alias imposter -keyalg RSA -keysize 3072 -validity 10000 -dname 'CN=Imposter' -storepass:env IMPOSTER_SIGNING_PASSWORD -keypass:env IMPOSTER_SIGNING_PASSWORD -noprompt
+    & "$env:JAVA_HOME/bin/keytool.exe" -genkeypair -keystore $imposterKeyStore -storetype JKS -alias imposter -keyalg RSA -keysize 3072 -validity 10000 -dname "CN=$imposterCertificateName" -storepass:env IMPOSTER_SIGNING_PASSWORD -keypass:env IMPOSTER_SIGNING_PASSWORD -noprompt
     if ($LASTEXITCODE -ne 0) { throw 'Android signing key creation failed.' }
     $imposterSecurePassword = ConvertTo-SecureString $env:IMPOSTER_SIGNING_PASSWORD -AsPlainText -Force
     [PSCredential]::new('imposter', $imposterSecurePassword) | Export-Clixml -LiteralPath $imposterCredentials

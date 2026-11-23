@@ -22,7 +22,7 @@ async function checkNativeMotion(page) {
   await page.screenshot({path:'output/playwright/motion-check/android-sheet.png'});
   await drag(150);
   assert(await page.getByRole('dialog').count()===0,'Native sheet drag did not dismiss');
-  await page.getByRole('button',{name:'Choose topics',exact:true}).click();
+  await page.getByRole('button',{name:'Topic settings',exact:true}).click();
   const tile=page.locator('.topic-tile').filter({hasText:'Psychology'});
   await tile.click();await page.waitForTimeout(400);
   assert(await tile.getAttribute('aria-pressed')==='true','Native topic selection failed');

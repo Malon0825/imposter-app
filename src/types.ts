@@ -6,6 +6,8 @@ export interface Player {
   left: boolean;
   points: number;
   earned: number;
+  report_penalty: number;
+  report_round: number | null;
 }
 export interface Topic {
   id: string;
@@ -22,13 +24,77 @@ export interface Credentials {
   player_id: string;
   is_host: boolean;
 }
+export type RoundRule = "classic" | "act_it" | "sound_only" | "two_truths" | "if_it_could_talk" | "sell_it";
+
+export interface RoundRevealStage {
+  stage: "shuffle" | "rule" | "suspense" | "verdict";
+  remaining_ms: number;
+  total_ms: number;
+  shuffled?: boolean;
+}
+
+export type RoundOutcome = "correct" | "wrong" | "escaped" | "caught" | "spotted";
+
+export type CastRole = "imposter" | "accomplice" | "detective" | "judge" | "decoy" | "gambler";
+
+export interface CastPicks {
+  accomplice: string | null;
+  decoy: string | null;
+}
+
+export interface RoundVerdict {
+  imposter_id: string;
+  escaped: boolean;
+  tied: boolean;
+  /** The viewer's own result; everyone else's opens with the recap. */
+  my_outcome?: RoundOutcome | null;
+  my_delta?: number | null;
+  my_role?: CastRole | null;
+}
+
+export interface PerformedClue {
+  player_id: string;
+  turn: number;
+}
+
 export interface View {
+  reveal?: RoundRevealStage | null;
+  verdict?: RoundVerdict | null;
+  deal_error?: string | null;
+  round_notice?: string | null;
+  round_rule?: RoundRule | null;
+  random_rules?: boolean | null;
+  rule_change_pending?: boolean;
+  performed?: PerformedClue[];
+  deck_status?: {
+    played: number;
+    reason: "incompatible" | "played" | "recent" | "hints" | null;
+  } | null;
+  reconnect_requests?: { id: string; name: string; code: string }[];
   id: string;
   name: string;
   wifi: string;
   phase: string;
   revision: number;
   round_id: number;
+  score_session: {
+    number: number;
+    target: number;
+    started: boolean;
+    complete: boolean;
+    winner_ids: string[];
+  };
+  betting: {
+    eligible: boolean;
+    max_stake: number;
+    my_stake: number | null;
+    original_vote: string | null;
+    /** 5 for a Gambler's top tier, otherwise 3. */
+    top_payout?: number;
+    my_picks?: CastPicks | null;
+  };
+  clue_turn: number;
+  clues: { player_id: string; turn: number; text: string }[];
   host_id: string;
   my_id: string;
   is_host: boolean;
@@ -36,22 +102,78 @@ export interface View {
   pause_reason: string | null;
   topics: string[];
   catalog: Topic[];
+  topic_vote?: {
+    my_topics: string[] | null;
+    submitted_ids: string[];
+    player_ids: string[];
+    available_topics: string[];
+    counts: Record<string, number> | null;
+    leaders: string[];
+    selected_topic: string | null;
+  } | null;
   players: Player[];
-  private_role: { imposter: boolean; clue: string } | null;
+  private_role: {
+    imposter: boolean;
+    clue: string;
+    definition?: string;
+    role?: CastRole;
+    imposter_id?: string | null;
+    cleared_id?: string | null;
+  } | null;
   role_ready: boolean;
   ready_count: number;
   starting_id: string | null;
+  /** Discussion only: this round's speaking order, first speaker first. */
+  speaking_order?: string[] | null;
   vote_count: number;
   my_vote: string | null;
   candidates: string[];
   result: {
     imposter_id: string;
     word: string;
+    definition?: string;
     accused_id: string | null;
     escaped: boolean;
     my_vote: string | null;
     earned: number;
     was_imposter: boolean;
+    report_penalty: number;
+    report_round: number | null;
+    score: {
+      before: number;
+      base: number;
+      bet: number;
+      bluff: number;
+      bonus?: number;
+      voided?: boolean;
+      fine?: number;
+      penalty: number;
+      after: number;
+    };
+    imposter_bonus: number;
+    cast?: {
+      roles: Record<string, CastRole>;
+      decoy_word: string;
+      my_role: CastRole | null;
+      bait_decoy: boolean;
+      decoy_voted: boolean;
+      accomplice_caught: boolean;
+      decoy_caught: boolean;
+      pair_bonus: boolean;
+      judge_tiebreak: boolean;
+    } | null;
+    outcomes: {
+      player_id: string;
+      outcome: RoundOutcome | null;
+      delta: number | null;
+    }[];
+  } | null;
+  reporting: {
+    my_reports: string[] | null;
+    submitted_count: number;
+    total: number;
+    majority: number;
+    player_ids: string[];
   } | null;
   punishment: {
     player_id: string;
@@ -65,6 +187,11 @@ export interface SessionData {
   session_id: string;
   credentials: Credentials;
   view: View;
+}
+export interface RecoveryData {
+  status: "pending" | "approved";
+  code?: string;
+  session?: SessionData;
 }
 export interface DeviceStatus {
   platform: string;

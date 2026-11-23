@@ -26,7 +26,7 @@ async function demoMotion(page) {
   await page.mouse.move(handle.x+handle.width/2,handle.y+handle.height/2);await page.mouse.down();
   for(let i=1;i<=14;i++){await page.mouse.move(handle.x+handle.width/2,handle.y+handle.height/2+i*10);await hold(20);}
   await page.mouse.up();await hold(500);
-  mark('selections');await page.getByRole('button',{name:'Choose topics',exact:true}).click();
+  mark('selections');await page.getByRole('button',{name:'Topic settings',exact:true}).click();
   await page.locator('.topic-tile').filter({hasText:'Food'}).click();await hold(450);
   await page.locator('.topic-tile').filter({hasText:'Psychology'}).click();await hold(650);
   await page.getByRole('button',{name:'Save topics',exact:true}).click();await hold(650);
@@ -38,7 +38,7 @@ async function demoMotion(page) {
   mark('vote lock');await page.getByRole('button',{name:'Confirm vote',exact:true}).click();
   await page.getByRole('heading',{name:'Your vote is locked',exact:true}).waitFor();await hold(1300);
   await page.evaluate(()=>{const f=window.__motionTest;f.view.vote_count=4;f.view.revision++;});await hold(850);
-  const result={imposter_id:'sam',word:'Dog',accused_id:'mia',escaped:true,my_vote:'mia',earned:0,was_imposter:false};
+  const result={imposter_id:'sam',word:'Dog',accused_id:'mia',escaped:true,my_vote:'mia',earned:0,was_imposter:false,score: { before: 0, base: 0, bet: 0, streak: 0, bluff: 0, penalty: 0, after: 0 }, imposter_bonus: 0, report_penalty: 0, report_round: null,};
   await page.evaluate(()=>{const f=window.__motionTest;f.players[1].points=2;f.players[1].earned=2;f.players[2].points=1;f.players[2].earned=1;});
   mark('score count');await phase('rankings',{result});await hold(1100);
   mark('final celebration');await phase('ended',{result});await hold(1900);

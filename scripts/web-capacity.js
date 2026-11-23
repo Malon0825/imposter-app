@@ -1,5 +1,5 @@
 async function checkBrowserCapacity(page) {
-  const base = "http://127.0.0.1:1428";
+  const base = new URL(page.url()).origin;
   const call = async (method, body = {}) => {
     const r = await page.request.post(`${base}/api/${method}`, {
       headers: { "X-Imposter-Dev": "1" },
@@ -68,6 +68,23 @@ async function checkBrowserCapacity(page) {
   let state = await call("state", { session_id: host.session_id });
   assert(state.players.length === 12, "Capacity was not enforced");
   await act("start");
+  await act("topic_vote", ["food"]);
+  for (const g of guests) {
+    await g.page.getByRole("button", { name: "Food", exact: true }).click();
+    await g.page
+      .getByRole("button", { name: "Lock my vote", exact: true })
+      .click();
+  }
+  // The host deals as soon as the last topic ballot locks.
+  const waitPhase = async (phase) => {
+    for (let tick = 0; tick < 200; tick++) {
+      const view = await call("state", { session_id: host.session_id });
+      if (view.phase === phase) return view;
+      await page.waitForTimeout(100);
+    }
+    throw Error(`The party never reached ${phase}`);
+  };
+  await waitPhase("roles");
   for (const g of guests) {
     await g.page
       .getByRole("button", { name: "Reveal my role", exact: true })
@@ -108,6 +125,7 @@ async function checkBrowserCapacity(page) {
     }
   }
   state = await call("state", { session_id: host.session_id });
+  state = await waitPhase("results");
   assert(state.phase === "results", "Full party did not resolve all ballots");
   assert(
     state.result.accused_id === host.credentials.player_id,

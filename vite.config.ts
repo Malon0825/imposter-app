@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     port: 1428,
     strictPort: true,
-    proxy: { "/api": "http://127.0.0.1:3142" },
+    proxy: { "/api": process.env.IMPOSTER_DEV_API || "http://127.0.0.1:3142" },
   },
   build: { target: "es2022" },
 });

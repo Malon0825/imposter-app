@@ -52,6 +52,7 @@ async function captureVisuals(page) {
       earned: 0,
     },
   ];
+  for (const p of people) Object.assign(p, {report_penalty: 0, report_round: null});
   const sampleNative = {
     version: 1,
     wifi: "Home Wi-Fi",
@@ -81,6 +82,8 @@ async function captureVisuals(page) {
     phase,
     revision: 10,
     round_id: 1,
+    score_session: { number: 1, target: 15, started: true, complete: false, winner_ids: [] },
+    betting: { eligible: false, max_stake: 0, my_stake: null, original_vote: null, reading_streak: 0 },
     host_id: "alex",
     my_id: "alex",
     is_host: true,
@@ -108,6 +111,7 @@ async function captureVisuals(page) {
     my_vote: "mia",
     earned: 0,
     was_imposter: false,
+    score: { before: 0, base: 0, bet: 0, streak: 0, bluff: 0, penalty: 0, after: 0 }, imposter_bonus: 0, report_penalty: 0, report_round: null,
   };
   const scenarios = [
     { id: "01-welcome" },
@@ -127,7 +131,7 @@ async function captureVisuals(page) {
         ),
       }),
     },
-    { id: "09-topics", view: view(), nav: ["Choose topics"] },
+    { id: "09-topics", view: view(), nav: ["Topic settings"] },
     {
       id: "10-role-concealed",
       view: view("roles", { private_role: { imposter: false, clue: "Dog" } }),
@@ -196,8 +200,12 @@ async function captureVisuals(page) {
     },
     { id: "20-rankings", view: view("rankings", { result }) },
     {
-      id: "21-runoff",
-      view: view("runoff", { round_id: 2, candidates: ["sam", "mia"] }),
+      id: "21-tie-escape",
+      view: view("result_reveal", {
+        round_id: 2,
+        verdict: { imposter_id: "sam", escaped: true, tied: true },
+        reveal: { stage: "verdict", round_id: 2 },
+      }),
     },
     {
       id: "22-reconnecting",
@@ -206,6 +214,58 @@ async function captureVisuals(page) {
     },
     { id: "23-final", view: view("ended", { result }) },
     { id: "24-help", nav: ["How to play"] },
+    {
+      id: "25-reports",
+      view: view("results", { result,
+        reporting: {
+          my_reports: null,
+          submitted_count: 0,
+          total: 4,
+          majority: 3,
+          player_ids: people.map((p) => p.id),
+        },
+      }),
+      nav: ["Report a rule violation"],
+      check: "Sam",
+    },
+    {
+      id: "26-reports-submitted",
+      view: view("results", { result,
+        reporting: {
+          my_reports: ["sam", "ben"],
+          submitted_count: 2,
+          total: 4,
+          majority: 3,
+          player_ids: people.map((p) => p.id),
+        },
+      }),
+    },
+    {
+      id: "27-reports-skipped",
+      view: view("results", { result,
+        reporting: {
+          my_reports: [],
+          submitted_count: 1,
+          total: 4,
+          majority: 3,
+          player_ids: people.map((p) => p.id),
+        },
+      }),
+    },
+    {
+      id: "28-report-deduction",
+      view: view("results", {
+        round_id: 2,
+        result: {
+          ...result,
+          my_vote: "sam",
+          earned: 1,
+          score: { before: 0, base: 1, bet: 0, streak: 0, bluff: 0, penalty: 1, after: 0 },
+          report_penalty: 1,
+          report_round: 1,
+        },
+      }),
+    },
   ];
   const captures = [];
   for (const old of page.context().pages()) if (old !== page) await old.close();
@@ -302,6 +362,11 @@ async function captureVisuals(page) {
       await p
         .locator(".ballot-row")
         .filter({ hasText: scenario.select })
+        .click();
+    if (scenario.check)
+      await p
+        .locator(".report-sheet-row")
+        .filter({ hasText: scenario.check })
         .click();
     if (scenario.offline)
       await p.getByRole("heading", { name: "Hold that thought." }).waitFor();

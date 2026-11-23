@@ -1,5 +1,9 @@
 import type { CSSProperties } from "react";
 const paths: Record<string, string> = {
+  shuffle: "M3 6h3c5 0 7 12 12 12h3m-4-4 4 4-4 4M3 18h3c2 0 4-3 5-5m3-5c1-1 2-2 4-2h3m-4-4 4 4-4 4",
+  waveform: "M2 12h2l2-4 3 9 3-13 3 16 3-11 2 3h2",
+  chat: "M20 10a8 7 0 0 1-8 7H9l-5 4 1-7a7 7 0 0 1-1-4 8 7 0 0 1 16 0Z",
+  edit: "m15 4 5 5M4 16 16 4a3 3 0 0 1 4 4L8 20l-5 1 1-5Z",
   back: "m14 5-7 7 7 7M7 12h14",
   chevron: "m9 5 7 7-7 7",
   check: "m5 12 4 4L19 6",

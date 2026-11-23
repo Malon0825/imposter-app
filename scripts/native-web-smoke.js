@@ -10,6 +10,15 @@ async function smokeInstalledHost(page) {
   const assert = (v, m) => {
     if (!v) throw Error(m);
   };
+  // The installed host owns the deal and the Results beats.
+  const waitPhase = async (phase) => {
+    for (let tick = 0; tick < 150; tick++) {
+      const view = await call("host-state");
+      if (view.phase === phase) return view;
+      await page.waitForTimeout(100);
+    }
+    throw Error(`The installed host never reached ${phase}`);
+  };
   const guests = [];
   const browser = page.context().browser();
   const origin = new URL(info.invitation).origin;
@@ -57,7 +66,16 @@ async function smokeInstalledHost(page) {
     );
     guests.push({ page: p, context, id: s.credentials.player_id });
   }
-  const started = await call("host-action", { kind: "start" });
+  await call("host-action", { kind: "start" });
+  await call("host-action", { kind: "topic_vote", value: ["food"] });
+  await call("native-action", { kind: "topic_vote", value: ["food"] });
+  for (const g of guests) {
+    await g.page.getByRole("button", { name: "Food", exact: true }).click();
+    await g.page
+      .getByRole("button", { name: "Lock my vote", exact: true })
+      .click();
+  }
+  const started = await waitPhase("roles");
   const native = await call("native-state");
   let imposter = started.private_role.imposter
     ? info.host
@@ -101,9 +119,9 @@ async function smokeInstalledHost(page) {
       .getByRole("button", { name: "Confirm vote", exact: true })
       .click();
   }
-  const result = await call("host-state");
+  const result = await waitPhase("results");
   assert(
-    result.phase === "results" && !result.result.escaped,
+    !result.result.escaped,
     "Installed Android authority resolved incorrectly",
   );
   for (const p of result.players)

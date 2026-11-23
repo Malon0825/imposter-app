@@ -1,0 +1,3677 @@
+{
+  "version": 1,
+  "reviewed_on": "2026-11-17",
+  "method": "Editorial candidate sets, not human association measurements or exhaustive lists of every possible answer. See TOPICS.md.",
+  "topics": [
+    {
+      "id": "everyday",
+      "associations": [
+        {
+          "hint": "Pocket",
+          "plausible_words": [
+            "Wallet",
+            "Key",
+            "Pen",
+            "Comb"
+          ]
+        },
+        {
+          "hint": "Weather",
+          "plausible_words": [
+            "Umbrella",
+            "Sunglasses",
+            "Blanket",
+            "Wind chime"
+          ]
+        },
+        {
+          "hint": "Bathroom",
+          "plausible_words": [
+            "Mirror",
+            "Toothbrush",
+            "Towel",
+            "Comb",
+            "Soap"
+          ]
+        },
+        {
+          "hint": "Soft",
+          "plausible_words": [
+            "Pillow",
+            "Blanket",
+            "Towel"
+          ]
+        },
+        {
+          "hint": "Routine",
+          "plausible_words": [
+            "Toothbrush",
+            "Comb",
+            "Soap",
+            "Clock",
+            "Hair dryer",
+            "Electric shaver"
+          ]
+        },
+        {
+          "hint": "Craft",
+          "plausible_words": [
+            "Scissors",
+            "Tape",
+            "Pen",
+            "Notebook"
+          ]
+        },
+        {
+          "hint": "Evening",
+          "plausible_words": [
+            "Candle",
+            "Lamp",
+            "Blanket",
+            "Pillow"
+          ]
+        },
+        {
+          "hint": "Outdoors",
+          "plausible_words": [
+            "Backpack",
+            "Umbrella",
+            "Water bottle",
+            "Sunglasses",
+            "Basket"
+          ]
+        },
+        {
+          "hint": "Couch",
+          "plausible_words": [
+            "Remote control",
+            "Pillow",
+            "Blanket"
+          ]
+        },
+        {
+          "hint": "Bedside",
+          "plausible_words": [
+            "Clock",
+            "Lamp",
+            "Pillow",
+            "Charger"
+          ]
+        },
+        {
+          "hint": "Desk",
+          "plausible_words": [
+            "Notebook",
+            "Pen",
+            "Scissors",
+            "Tape",
+            "Lamp",
+            "Stapler"
+          ]
+        },
+        {
+          "hint": "Morning",
+          "plausible_words": [
+            "Mug",
+            "Toothbrush",
+            "Comb",
+            "Clock",
+            "Kettle"
+          ]
+        },
+        {
+          "hint": "Picnic",
+          "plausible_words": [
+            "Basket",
+            "Blanket",
+            "Water bottle"
+          ]
+        },
+        {
+          "hint": "Entrance",
+          "plausible_words": [
+            "Doorbell",
+            "Key",
+            "Umbrella",
+            "Backpack"
+          ]
+        },
+        {
+          "hint": "Cleaning",
+          "plausible_words": [
+            "Vacuum cleaner",
+            "Soap",
+            "Towel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "food",
+      "associations": [
+        {
+          "hint": "Oven",
+          "plausible_words": [
+            "Pizza",
+            "Croissant",
+            "Cake"
+          ]
+        },
+        {
+          "hint": "Rice",
+          "plausible_words": [
+            "Sushi",
+            "Fried rice",
+            "Curry"
+          ]
+        },
+        {
+          "hint": "Steam",
+          "plausible_words": [
+            "Dumpling",
+            "Noodles",
+            "Soup"
+          ]
+        },
+        {
+          "hint": "Filling",
+          "plausible_words": [
+            "Taco",
+            "Burger",
+            "Sandwich",
+            "Dumpling"
+          ]
+        },
+        {
+          "hint": "Spice",
+          "plausible_words": [
+            "Curry",
+            "Taco",
+            "Fried rice",
+            "Soup"
+          ]
+        },
+        {
+          "hint": "Bowl",
+          "plausible_words": [
+            "Noodles",
+            "Soup",
+            "Salad",
+            "Curry"
+          ]
+        },
+        {
+          "hint": "Chilled",
+          "plausible_words": [
+            "Ice cream",
+            "Lemonade",
+            "Smoothie",
+            "Bubble tea"
+          ]
+        },
+        {
+          "hint": "Snack",
+          "plausible_words": [
+            "Popcorn",
+            "Chocolate",
+            "Cheese"
+          ]
+        },
+        {
+          "hint": "Morning",
+          "plausible_words": [
+            "Coffee",
+            "Pancakes",
+            "Waffle",
+            "Croissant"
+          ]
+        },
+        {
+          "hint": "Straw",
+          "plausible_words": [
+            "Bubble tea",
+            "Smoothie",
+            "Lemonade"
+          ]
+        },
+        {
+          "hint": "Layers",
+          "plausible_words": [
+            "Burger",
+            "Sandwich",
+            "Cake"
+          ]
+        },
+        {
+          "hint": "Lunch",
+          "plausible_words": [
+            "Sandwich",
+            "Salad",
+            "Pasta",
+            "Noodles"
+          ]
+        },
+        {
+          "hint": "Breakfast",
+          "plausible_words": [
+            "Pancakes",
+            "Waffle",
+            "Croissant",
+            "Coffee"
+          ]
+        },
+        {
+          "hint": "Fresh",
+          "plausible_words": [
+            "Salad",
+            "Smoothie",
+            "Lemonade"
+          ]
+        },
+        {
+          "hint": "Warmth",
+          "plausible_words": [
+            "Soup",
+            "Coffee",
+            "Curry",
+            "Noodles"
+          ]
+        },
+        {
+          "hint": "Sauce",
+          "plausible_words": [
+            "Pasta",
+            "Pizza",
+            "Burger",
+            "Curry"
+          ]
+        },
+        {
+          "hint": "Pan",
+          "plausible_words": [
+            "Fried rice",
+            "Pancakes",
+            "Curry"
+          ]
+        },
+        {
+          "hint": "Bakery",
+          "plausible_words": [
+            "Croissant",
+            "Cake",
+            "Sandwich"
+          ]
+        },
+        {
+          "hint": "Sweet",
+          "plausible_words": [
+            "Chocolate",
+            "Cake",
+            "Ice cream",
+            "Bubble tea"
+          ]
+        },
+        {
+          "hint": "Dairy",
+          "plausible_words": [
+            "Cheese",
+            "Ice cream",
+            "Smoothie"
+          ]
+        },
+        {
+          "hint": "Celebration",
+          "plausible_words": [
+            "Cake",
+            "Pizza",
+            "Ice cream"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "animals",
+      "associations": [
+        {
+          "hint": "Reef",
+          "plausible_words": [
+            "Octopus",
+            "Shark",
+            "Turtle"
+          ]
+        },
+        {
+          "hint": "Colony",
+          "plausible_words": [
+            "Penguin",
+            "Bee",
+            "Rabbit"
+          ]
+        },
+        {
+          "hint": "Garden",
+          "plausible_words": [
+            "Butterfly",
+            "Bee",
+            "Rabbit"
+          ]
+        },
+        {
+          "hint": "Herd",
+          "plausible_words": [
+            "Elephant",
+            "Zebra",
+            "Giraffe",
+            "Horse"
+          ]
+        },
+        {
+          "hint": "Playful",
+          "plausible_words": [
+            "Dolphin",
+            "Dog",
+            "Cat"
+          ]
+        },
+        {
+          "hint": "Night",
+          "plausible_words": [
+            "Owl",
+            "Fox",
+            "Cat",
+            "Tiger"
+          ]
+        },
+        {
+          "hint": "Paws",
+          "plausible_words": [
+            "Dog",
+            "Cat",
+            "Bear",
+            "Fox"
+          ]
+        },
+        {
+          "hint": "Grassland",
+          "plausible_words": [
+            "Lion",
+            "Zebra",
+            "Giraffe",
+            "Elephant",
+            "Kangaroo"
+          ]
+        },
+        {
+          "hint": "Stripes",
+          "plausible_words": [
+            "Tiger",
+            "Zebra",
+            "Bee"
+          ]
+        },
+        {
+          "hint": "Woodland",
+          "plausible_words": [
+            "Bear",
+            "Fox",
+            "Owl",
+            "Rabbit"
+          ]
+        },
+        {
+          "hint": "Pond",
+          "plausible_words": [
+            "Duck",
+            "Frog",
+            "Turtle"
+          ]
+        },
+        {
+          "hint": "Ocean",
+          "plausible_words": [
+            "Shark",
+            "Whale",
+            "Dolphin",
+            "Octopus",
+            "Turtle",
+            "Penguin"
+          ]
+        },
+        {
+          "hint": "River",
+          "plausible_words": [
+            "Crocodile",
+            "Duck",
+            "Frog",
+            "Turtle"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nature",
+      "associations": [
+        {
+          "hint": "Heat",
+          "plausible_words": [
+            "Cactus",
+            "Desert",
+            "Volcano"
+          ]
+        },
+        {
+          "hint": "Woodland",
+          "plausible_words": [
+            "Mushroom",
+            "Oak tree",
+            "Fern",
+            "Moss",
+            "Forest"
+          ]
+        },
+        {
+          "hint": "Spray",
+          "plausible_words": [
+            "Waterfall",
+            "Ocean",
+            "Beach",
+            "Geyser"
+          ]
+        },
+        {
+          "hint": "Garden",
+          "plausible_words": [
+            "Rose",
+            "Sunflower",
+            "Bamboo",
+            "Fern"
+          ]
+        },
+        {
+          "hint": "Shade",
+          "plausible_words": [
+            "Fern",
+            "Moss",
+            "Forest",
+            "Mushroom"
+          ]
+        },
+        {
+          "hint": "Grove",
+          "plausible_words": [
+            "Bamboo",
+            "Oak tree",
+            "Palm tree"
+          ]
+        },
+        {
+          "hint": "Coast",
+          "plausible_words": [
+            "Palm tree",
+            "Seaweed",
+            "Beach",
+            "Island"
+          ]
+        },
+        {
+          "hint": "Trail",
+          "plausible_words": [
+            "Mountain",
+            "Forest",
+            "Cave",
+            "Waterfall"
+          ]
+        },
+        {
+          "hint": "Current",
+          "plausible_words": [
+            "River",
+            "Ocean",
+            "Waterfall"
+          ]
+        },
+        {
+          "hint": "Shore",
+          "plausible_words": [
+            "Lake",
+            "Ocean",
+            "Island",
+            "Beach"
+          ]
+        },
+        {
+          "hint": "Cold",
+          "plausible_words": [
+            "Glacier",
+            "Iceberg",
+            "Mountain"
+          ]
+        },
+        {
+          "hint": "Shelter",
+          "plausible_words": [
+            "Cave",
+            "Forest",
+            "Oak tree"
+          ]
+        },
+        {
+          "hint": "Color",
+          "plausible_words": [
+            "Rainbow",
+            "Rose",
+            "Sunflower"
+          ]
+        },
+        {
+          "hint": "Weather",
+          "plausible_words": [
+            "Rain",
+            "Thunder",
+            "Wind",
+            "Hail",
+            "Rainbow"
+          ]
+        },
+        {
+          "hint": "Slope",
+          "plausible_words": [
+            "Avalanche",
+            "Mountain",
+            "Glacier"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "places",
+      "associations": [
+        {
+          "hint": "Shelves",
+          "plausible_words": [
+            "Library",
+            "Supermarket",
+            "Pharmacy",
+            "Bakery"
+          ]
+        },
+        {
+          "hint": "Care",
+          "plausible_words": [
+            "Hospital",
+            "Pharmacy",
+            "Salon"
+          ]
+        },
+        {
+          "hint": "Tickets",
+          "plausible_words": [
+            "Cinema",
+            "Theater",
+            "Museum",
+            "Zoo",
+            "Stadium"
+          ]
+        },
+        {
+          "hint": "Morning",
+          "plausible_words": [
+            "Bakery",
+            "Cafe",
+            "School"
+          ]
+        },
+        {
+          "hint": "Arrivals",
+          "plausible_words": [
+            "Airport",
+            "Train station",
+            "Hotel"
+          ]
+        },
+        {
+          "hint": "Displays",
+          "plausible_words": [
+            "Museum",
+            "Zoo",
+            "Supermarket",
+            "Bakery"
+          ]
+        },
+        {
+          "hint": "Outdoors",
+          "plausible_words": [
+            "Playground",
+            "Park",
+            "Zoo",
+            "Stadium"
+          ]
+        },
+        {
+          "hint": "Reception",
+          "plausible_words": [
+            "Salon",
+            "Hospital",
+            "Hotel"
+          ]
+        },
+        {
+          "hint": "Uniform",
+          "plausible_words": [
+            "Fire station",
+            "Police station",
+            "Hospital",
+            "School"
+          ]
+        },
+        {
+          "hint": "Learning",
+          "plausible_words": [
+            "School",
+            "Library",
+            "Museum"
+          ]
+        },
+        {
+          "hint": "Menu",
+          "plausible_words": [
+            "Restaurant",
+            "Cafe",
+            "Bakery"
+          ]
+        },
+        {
+          "hint": "Counter",
+          "plausible_words": [
+            "Bank",
+            "Post office",
+            "Pharmacy",
+            "Bakery"
+          ]
+        },
+        {
+          "hint": "Training",
+          "plausible_words": [
+            "Gym",
+            "School",
+            "Stadium",
+            "Fire station"
+          ]
+        },
+        {
+          "hint": "Crowd",
+          "plausible_words": [
+            "Stadium",
+            "Cinema",
+            "Theater",
+            "Airport"
+          ]
+        },
+        {
+          "hint": "Visitors",
+          "plausible_words": [
+            "Zoo",
+            "Museum",
+            "Hospital",
+            "Hotel"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "jobs",
+      "associations": [
+        {
+          "hint": "Heat",
+          "plausible_words": [
+            "Chef",
+            "Baker",
+            "Firefighter"
+          ]
+        },
+        {
+          "hint": "Emergency",
+          "plausible_words": [
+            "Firefighter",
+            "Doctor",
+            "Nurse"
+          ]
+        },
+        {
+          "hint": "Uniform",
+          "plausible_words": [
+            "Pilot",
+            "Nurse",
+            "Firefighter",
+            "Chef"
+          ]
+        },
+        {
+          "hint": "Notes",
+          "plausible_words": [
+            "Teacher",
+            "Journalist",
+            "Scientist",
+            "Doctor"
+          ]
+        },
+        {
+          "hint": "Evidence",
+          "plausible_words": [
+            "Detective",
+            "Journalist",
+            "Scientist"
+          ]
+        },
+        {
+          "hint": "Outdoors",
+          "plausible_words": [
+            "Farmer",
+            "Photographer",
+            "Coach",
+            "Firefighter"
+          ]
+        },
+        {
+          "hint": "Appointment",
+          "plausible_words": [
+            "Dentist",
+            "Doctor",
+            "Photographer"
+          ]
+        },
+        {
+          "hint": "Deadline",
+          "plausible_words": [
+            "Journalist",
+            "Architect",
+            "Programmer",
+            "Accountant"
+          ]
+        },
+        {
+          "hint": "Plans",
+          "plausible_words": [
+            "Architect",
+            "Carpenter",
+            "Electrician",
+            "Plumber"
+          ]
+        },
+        {
+          "hint": "Audience",
+          "plausible_words": [
+            "Magician",
+            "Musician",
+            "Teacher",
+            "Journalist"
+          ]
+        },
+        {
+          "hint": "Care",
+          "plausible_words": [
+            "Nurse",
+            "Doctor",
+            "Dentist"
+          ]
+        },
+        {
+          "hint": "Repairs",
+          "plausible_words": [
+            "Plumber",
+            "Electrician",
+            "Mechanic",
+            "Carpenter"
+          ]
+        },
+        {
+          "hint": "Tools",
+          "plausible_words": [
+            "Carpenter",
+            "Mechanic",
+            "Plumber",
+            "Electrician"
+          ]
+        },
+        {
+          "hint": "Research",
+          "plausible_words": [
+            "Scientist",
+            "Librarian",
+            "Journalist",
+            "Detective"
+          ]
+        },
+        {
+          "hint": "Logic",
+          "plausible_words": [
+            "Programmer",
+            "Scientist",
+            "Accountant",
+            "Detective"
+          ]
+        },
+        {
+          "hint": "Morning",
+          "plausible_words": [
+            "Baker",
+            "Farmer",
+            "Chef"
+          ]
+        },
+        {
+          "hint": "Lighting",
+          "plausible_words": [
+            "Photographer",
+            "Magician",
+            "Musician"
+          ]
+        },
+        {
+          "hint": "Numbers",
+          "plausible_words": [
+            "Accountant",
+            "Programmer",
+            "Architect",
+            "Scientist"
+          ]
+        },
+        {
+          "hint": "Team",
+          "plausible_words": [
+            "Coach",
+            "Firefighter",
+            "Nurse",
+            "Pilot"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "travel",
+      "associations": [
+        {
+          "hint": "Border",
+          "plausible_words": [
+            "Passport",
+            "Visa",
+            "Boarding pass"
+          ]
+        },
+        {
+          "hint": "Packing",
+          "plausible_words": [
+            "Suitcase",
+            "Backpacking",
+            "Sunscreen",
+            "Souvenir"
+          ]
+        },
+        {
+          "hint": "Departure",
+          "plausible_words": [
+            "Boarding pass",
+            "Train ticket",
+            "Ferry",
+            "Cruise"
+          ]
+        },
+        {
+          "hint": "Outdoors",
+          "plausible_words": [
+            "Campsite",
+            "Backpacking",
+            "Sunscreen",
+            "Sightseeing"
+          ]
+        },
+        {
+          "hint": "Market",
+          "plausible_words": [
+            "Souvenir",
+            "Tour guide",
+            "Sightseeing"
+          ]
+        },
+        {
+          "hint": "Overnight",
+          "plausible_words": [
+            "Hostel",
+            "Campsite",
+            "Cruise",
+            "Layover"
+          ]
+        },
+        {
+          "hint": "Route",
+          "plausible_words": [
+            "Road trip",
+            "Itinerary",
+            "Map",
+            "Rental car"
+          ]
+        },
+        {
+          "hint": "Fatigue",
+          "plausible_words": [
+            "Jet lag",
+            "Layover",
+            "Road trip",
+            "Backpacking"
+          ]
+        },
+        {
+          "hint": "Coast",
+          "plausible_words": [
+            "Cruise",
+            "Ferry",
+            "Sightseeing",
+            "Speedboat"
+          ]
+        },
+        {
+          "hint": "Schedule",
+          "plausible_words": [
+            "Itinerary",
+            "Boarding pass",
+            "Train ticket",
+            "Layover"
+          ]
+        },
+        {
+          "hint": "Direction",
+          "plausible_words": [
+            "Map",
+            "Compass",
+            "Tour guide"
+          ]
+        },
+        {
+          "hint": "Confirmation",
+          "plausible_words": [
+            "Hotel reservation",
+            "Visa",
+            "Boarding pass",
+            "Rental car"
+          ]
+        },
+        {
+          "hint": "Waiting",
+          "plausible_words": [
+            "Layover",
+            "Visa",
+            "Boarding pass",
+            "Currency exchange"
+          ]
+        },
+        {
+          "hint": "Local",
+          "plausible_words": [
+            "Tour guide",
+            "Souvenir",
+            "Sightseeing"
+          ]
+        },
+        {
+          "hint": "Landmarks",
+          "plausible_words": [
+            "Sightseeing",
+            "Map",
+            "Tour guide"
+          ]
+        },
+        {
+          "hint": "Abroad",
+          "plausible_words": [
+            "Currency exchange",
+            "Passport",
+            "Visa",
+            "Jet lag",
+            "Travel insurance"
+          ]
+        },
+        {
+          "hint": "Documents",
+          "plausible_words": [
+            "Travel insurance",
+            "Passport",
+            "Visa",
+            "Boarding pass"
+          ]
+        },
+        {
+          "hint": "Journey",
+          "plausible_words": [
+            "Airplane",
+            "Helicopter",
+            "Motorcycle",
+            "Train",
+            "Bus",
+            "Road trip"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "movies",
+      "associations": [
+        {
+          "hint": "Action",
+          "plausible_words": [
+            "Superhero",
+            "Stunt double",
+            "Special effects",
+            "Villain"
+          ]
+        },
+        {
+          "hint": "Makeup",
+          "plausible_words": [
+            "Zombie",
+            "Vampire",
+            "Superhero"
+          ]
+        },
+        {
+          "hint": "Shadows",
+          "plausible_words": [
+            "Vampire",
+            "Zombie",
+            "Haunted house",
+            "Villain"
+          ]
+        },
+        {
+          "hint": "Future",
+          "plausible_words": [
+            "Time machine",
+            "Spaceship",
+            "Alien"
+          ]
+        },
+        {
+          "hint": "Suspense",
+          "plausible_words": [
+            "Plot twist",
+            "Cliffhanger",
+            "Detective story",
+            "Haunted house"
+          ]
+        },
+        {
+          "hint": "Conflict",
+          "plausible_words": [
+            "Villain",
+            "Superhero",
+            "Detective story"
+          ]
+        },
+        {
+          "hint": "Creature",
+          "plausible_words": [
+            "Dragon",
+            "Vampire",
+            "Zombie",
+            "Alien"
+          ]
+        },
+        {
+          "hint": "Crew",
+          "plausible_words": [
+            "Director",
+            "Film set",
+            "Special effects",
+            "Stunt double"
+          ]
+        },
+        {
+          "hint": "Dialogue",
+          "plausible_words": [
+            "Screenplay",
+            "Comedy",
+            "Animation",
+            "Detective story"
+          ]
+        },
+        {
+          "hint": "Return",
+          "plausible_words": [
+            "Sequel",
+            "Zombie",
+            "Vampire"
+          ]
+        },
+        {
+          "hint": "Anticipation",
+          "plausible_words": [
+            "Trailer",
+            "Premiere",
+            "Cliffhanger"
+          ]
+        },
+        {
+          "hint": "Studio",
+          "plausible_words": [
+            "Animation",
+            "Director",
+            "Soundtrack",
+            "Special effects",
+            "Film set"
+          ]
+        },
+        {
+          "hint": "Illusion",
+          "plausible_words": [
+            "Special effects",
+            "Animation",
+            "Stunt double"
+          ]
+        },
+        {
+          "hint": "Atmosphere",
+          "plausible_words": [
+            "Soundtrack",
+            "Special effects",
+            "Haunted house"
+          ]
+        },
+        {
+          "hint": "Research",
+          "plausible_words": [
+            "Documentary",
+            "Detective story",
+            "Screenplay"
+          ]
+        },
+        {
+          "hint": "Timing",
+          "plausible_words": [
+            "Comedy",
+            "Plot twist",
+            "Stunt double"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "music",
+      "associations": [
+        {
+          "hint": "Lyrics",
+          "plausible_words": [
+            "Karaoke",
+            "Song",
+            "Chorus",
+            "Verse"
+          ]
+        },
+        {
+          "hint": "Strings",
+          "plausible_words": [
+            "Guitar",
+            "Violin",
+            "Harp"
+          ]
+        },
+        {
+          "hint": "Beat",
+          "plausible_words": [
+            "Drums",
+            "Tambourine",
+            "Rhythm"
+          ]
+        },
+        {
+          "hint": "Stage",
+          "plausible_words": [
+            "Microphone",
+            "Concert",
+            "Choir",
+            "Orchestra",
+            "DJ"
+          ]
+        },
+        {
+          "hint": "Crowd",
+          "plausible_words": [
+            "Concert",
+            "DJ",
+            "Choir"
+          ]
+        },
+        {
+          "hint": "Harmony",
+          "plausible_words": [
+            "Choir",
+            "Duet",
+            "Orchestra"
+          ]
+        },
+        {
+          "hint": "Dance",
+          "plausible_words": [
+            "DJ",
+            "Rhythm",
+            "Drums",
+            "Concert"
+          ]
+        },
+        {
+          "hint": "Gentle",
+          "plausible_words": [
+            "Lullaby",
+            "Harp",
+            "Flute",
+            "Melody"
+          ]
+        },
+        {
+          "hint": "Classical",
+          "plausible_words": [
+            "Piano",
+            "Violin",
+            "Orchestra",
+            "Flute",
+            "Harp"
+          ]
+        },
+        {
+          "hint": "Breath",
+          "plausible_words": [
+            "Flute",
+            "Trumpet",
+            "Saxophone",
+            "Choir"
+          ]
+        },
+        {
+          "hint": "Jazz",
+          "plausible_words": [
+            "Saxophone",
+            "Piano",
+            "Trumpet",
+            "Drums"
+          ]
+        },
+        {
+          "hint": "Repetition",
+          "plausible_words": [
+            "Chorus",
+            "Rhythm",
+            "Rehearsal"
+          ]
+        },
+        {
+          "hint": "Story",
+          "plausible_words": [
+            "Verse",
+            "Song",
+            "Lullaby"
+          ]
+        },
+        {
+          "hint": "Humming",
+          "plausible_words": [
+            "Melody",
+            "Lullaby",
+            "Song"
+          ]
+        },
+        {
+          "hint": "Movement",
+          "plausible_words": [
+            "Rhythm",
+            "Drums",
+            "DJ"
+          ]
+        },
+        {
+          "hint": "Recording",
+          "plausible_words": [
+            "Album",
+            "Song",
+            "Duet",
+            "Choir"
+          ]
+        },
+        {
+          "hint": "Preparation",
+          "plausible_words": [
+            "Rehearsal",
+            "Concert",
+            "Karaoke",
+            "Orchestra"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sports",
+      "associations": [
+        {
+          "hint": "Court",
+          "plausible_words": [
+            "Basketball",
+            "Badminton",
+            "Tennis",
+            "Volleyball"
+          ]
+        },
+        {
+          "hint": "Team",
+          "plausible_words": [
+            "Football (soccer)",
+            "Rugby",
+            "Volleyball",
+            "Basketball",
+            "Hockey"
+          ]
+        },
+        {
+          "hint": "Lanes",
+          "plausible_words": [
+            "Swimming",
+            "Bowling",
+            "Running"
+          ]
+        },
+        {
+          "hint": "Contact",
+          "plausible_words": [
+            "Boxing",
+            "Wrestling",
+            "Rugby",
+            "Hockey"
+          ]
+        },
+        {
+          "hint": "Balance",
+          "plausible_words": [
+            "Surfing",
+            "Skateboarding",
+            "Gymnastics",
+            "Ice skating",
+            "Snowboarding"
+          ]
+        },
+        {
+          "hint": "Spin",
+          "plausible_words": [
+            "Table tennis",
+            "Tennis",
+            "Cricket",
+            "Bowling"
+          ]
+        },
+        {
+          "hint": "Swing",
+          "plausible_words": [
+            "Baseball",
+            "Cricket",
+            "Golf",
+            "Tennis"
+          ]
+        },
+        {
+          "hint": "Precision",
+          "plausible_words": [
+            "Golf",
+            "Archery",
+            "Bowling",
+            "Table tennis"
+          ]
+        },
+        {
+          "hint": "Endurance",
+          "plausible_words": [
+            "Cycling",
+            "Running",
+            "Swimming"
+          ]
+        },
+        {
+          "hint": "Winter",
+          "plausible_words": [
+            "Skiing",
+            "Snowboarding",
+            "Ice skating",
+            "Hockey"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gaming",
+      "associations": [
+        {
+          "hint": "Lives",
+          "plausible_words": [
+            "Respawn",
+            "Health bar",
+            "Checkpoint"
+          ]
+        },
+        {
+          "hint": "Pattern",
+          "plausible_words": [
+            "Boss fight",
+            "Puzzle",
+            "Stealth"
+          ]
+        },
+        {
+          "hint": "Reward",
+          "plausible_words": [
+            "Loot",
+            "Side quest",
+            "Achievement",
+            "Boss fight"
+          ]
+        },
+        {
+          "hint": "Progress",
+          "plausible_words": [
+            "Checkpoint",
+            "Achievement",
+            "Tutorial",
+            "Speedrun"
+          ]
+        },
+        {
+          "hint": "Customization",
+          "plausible_words": [
+            "Avatar",
+            "Character class",
+            "Crafting"
+          ]
+        },
+        {
+          "hint": "Timing",
+          "plausible_words": [
+            "Speedrun",
+            "Cooldown",
+            "Power-up",
+            "Boss fight"
+          ]
+        },
+        {
+          "hint": "Energy",
+          "plausible_words": [
+            "Power-up",
+            "Mana",
+            "Health bar"
+          ]
+        },
+        {
+          "hint": "Couch",
+          "plausible_words": [
+            "Controller",
+            "Co-op",
+            "Multiplayer"
+          ]
+        },
+        {
+          "hint": "Exploration",
+          "plausible_words": [
+            "Open world",
+            "Side quest",
+            "Loot"
+          ]
+        },
+        {
+          "hint": "Friends",
+          "plausible_words": [
+            "Multiplayer",
+            "Co-op",
+            "Battle royale"
+          ]
+        },
+        {
+          "hint": "Storage",
+          "plausible_words": [
+            "Inventory",
+            "Loot",
+            "Crafting"
+          ]
+        },
+        {
+          "hint": "Materials",
+          "plausible_words": [
+            "Crafting",
+            "Loot",
+            "Inventory"
+          ]
+        },
+        {
+          "hint": "Completion",
+          "plausible_words": [
+            "Achievement",
+            "Speedrun",
+            "Side quest",
+            "Tutorial"
+          ]
+        },
+        {
+          "hint": "Competition",
+          "plausible_words": [
+            "Leaderboard",
+            "Multiplayer",
+            "Battle royale",
+            "Speedrun"
+          ]
+        },
+        {
+          "hint": "Practice",
+          "plausible_words": [
+            "Tutorial",
+            "Boss fight",
+            "Speedrun",
+            "Puzzle"
+          ]
+        },
+        {
+          "hint": "Survival",
+          "plausible_words": [
+            "Health bar",
+            "Respawn",
+            "Battle royale",
+            "Stealth"
+          ]
+        },
+        {
+          "hint": "Resource",
+          "plausible_words": [
+            "Mana",
+            "Health bar",
+            "Loot",
+            "Inventory"
+          ]
+        },
+        {
+          "hint": "Enemies",
+          "plausible_words": [
+            "Stealth",
+            "Boss fight",
+            "Battle royale",
+            "Respawn"
+          ]
+        },
+        {
+          "hint": "Abilities",
+          "plausible_words": [
+            "Character class",
+            "Avatar",
+            "Power-up",
+            "Mana"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "technology",
+      "associations": [
+        {
+          "hint": "Sharing",
+          "plausible_words": [
+            "Meme",
+            "Screenshot",
+            "Group chat",
+            "Livestream",
+            "Cloud storage"
+          ]
+        },
+        {
+          "hint": "Expression",
+          "plausible_words": [
+            "Emoji",
+            "Video call",
+            "Group chat"
+          ]
+        },
+        {
+          "hint": "Security",
+          "plausible_words": [
+            "Password",
+            "Software update",
+            "Cloud storage",
+            "Wi-Fi"
+          ]
+        },
+        {
+          "hint": "Wireless",
+          "plausible_words": [
+            "Wi-Fi",
+            "Bluetooth",
+            "Smartphone",
+            "Headphones",
+            "Walkie-talkie"
+          ]
+        },
+        {
+          "hint": "Audience",
+          "plausible_words": [
+            "Livestream",
+            "Video call",
+            "Group chat"
+          ]
+        },
+        {
+          "hint": "Notifications",
+          "plausible_words": [
+            "Group chat",
+            "Smartphone",
+            "Software update",
+            "Cloud storage"
+          ]
+        },
+        {
+          "hint": "Messages",
+          "plausible_words": [
+            "Spam",
+            "Group chat",
+            "Chatbot",
+            "Emoji"
+          ]
+        },
+        {
+          "hint": "Battery",
+          "plausible_words": [
+            "Power bank",
+            "Smartphone",
+            "Laptop",
+            "Tablet",
+            "Headphones"
+          ]
+        },
+        {
+          "hint": "Portable",
+          "plausible_words": [
+            "Smartphone",
+            "Laptop",
+            "Tablet",
+            "Power bank"
+          ]
+        },
+        {
+          "hint": "Screen",
+          "plausible_words": [
+            "Tablet",
+            "Laptop",
+            "Smartphone",
+            "Web browser"
+          ]
+        },
+        {
+          "hint": "Input",
+          "plausible_words": [
+            "Keyboard",
+            "Mouse",
+            "Tablet"
+          ]
+        },
+        {
+          "hint": "Desktop",
+          "plausible_words": [
+            "Mouse",
+            "Keyboard",
+            "Printer",
+            "Laptop",
+            "Computer fan"
+          ]
+        },
+        {
+          "hint": "Office",
+          "plausible_words": [
+            "Printer",
+            "Keyboard",
+            "Mouse",
+            "Laptop",
+            "Scanner"
+          ]
+        },
+        {
+          "hint": "Audio",
+          "plausible_words": [
+            "Headphones",
+            "Video call",
+            "Livestream",
+            "Smartphone"
+          ]
+        },
+        {
+          "hint": "Pairing",
+          "plausible_words": [
+            "Bluetooth",
+            "Headphones",
+            "Keyboard",
+            "Mouse"
+          ]
+        },
+        {
+          "hint": "Backup",
+          "plausible_words": [
+            "Cloud storage",
+            "Smartphone",
+            "Laptop"
+          ]
+        },
+        {
+          "hint": "Research",
+          "plausible_words": [
+            "Search engine",
+            "Web browser",
+            "Chatbot"
+          ]
+        },
+        {
+          "hint": "Camera",
+          "plausible_words": [
+            "QR code",
+            "Video call",
+            "Smartphone",
+            "Tablet"
+          ]
+        },
+        {
+          "hint": "Restart",
+          "plausible_words": [
+            "Software update",
+            "Laptop",
+            "Smartphone",
+            "Tablet"
+          ]
+        },
+        {
+          "hint": "Incoming",
+          "plausible_words": [
+            "Ringtone",
+            "Group chat",
+            "Video call",
+            "Smartphone"
+          ]
+        },
+        {
+          "hint": "Interruption",
+          "plausible_words": [
+            "Error alert",
+            "Video call",
+            "Group chat",
+            "Software update"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chaos",
+      "associations": [
+        {
+          "hint": "Morning",
+          "plausible_words": [
+            "Oversleeping",
+            "Missed bus",
+            "Burnt toast",
+            "Spilled coffee"
+          ]
+        },
+        {
+          "hint": "Embarrassment",
+          "plausible_words": [
+            "Wrong group chat",
+            "Wardrobe malfunction",
+            "Accidental reply-all",
+            "Food stuck in teeth"
+          ]
+        },
+        {
+          "hint": "Warning",
+          "plausible_words": [
+            "Dead phone battery",
+            "Flat tire",
+            "Burnt toast"
+          ]
+        },
+        {
+          "hint": "Arrival",
+          "plausible_words": [
+            "Lost luggage",
+            "Wrong delivery",
+            "Missed bus"
+          ]
+        },
+        {
+          "hint": "Conversation",
+          "plausible_words": [
+            "Awkward silence",
+            "Wrong group chat",
+            "Accidental reply-all",
+            "Phone ringing in a meeting"
+          ]
+        },
+        {
+          "hint": "Hurry",
+          "plausible_words": [
+            "Missed bus",
+            "Oversleeping",
+            "Lost keys",
+            "Locked out"
+          ]
+        },
+        {
+          "hint": "Cleanup",
+          "plausible_words": [
+            "Spilled coffee",
+            "Clogged sink",
+            "Leaking roof"
+          ]
+        },
+        {
+          "hint": "Apology",
+          "plausible_words": [
+            "Forgotten birthday",
+            "Wrong group chat",
+            "Accidental reply-all",
+            "Wrong delivery"
+          ]
+        },
+        {
+          "hint": "Kitchen",
+          "plausible_words": [
+            "Burnt toast",
+            "Clogged sink",
+            "Spilled coffee"
+          ]
+        },
+        {
+          "hint": "Door",
+          "plausible_words": [
+            "Locked out",
+            "Lost keys",
+            "Wrong delivery"
+          ]
+        },
+        {
+          "hint": "Delay",
+          "plausible_words": [
+            "Flat tire",
+            "Traffic jam",
+            "Missed bus",
+            "Printer jam"
+          ]
+        },
+        {
+          "hint": "Rain",
+          "plausible_words": [
+            "Broken umbrella",
+            "Leaking roof",
+            "Traffic jam"
+          ]
+        },
+        {
+          "hint": "Interruption",
+          "plausible_words": [
+            "Power outage",
+            "Phone ringing in a meeting",
+            "Printer jam"
+          ]
+        },
+        {
+          "hint": "Search",
+          "plausible_words": [
+            "Lost keys",
+            "Lost luggage",
+            "Wrong delivery"
+          ]
+        },
+        {
+          "hint": "Clothing",
+          "plausible_words": [
+            "Stuck zipper",
+            "Wardrobe malfunction",
+            "Lost luggage"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hobbies",
+      "associations": [
+        {
+          "hint": "Seasons",
+          "plausible_words": [
+            "Gardening",
+            "Birdwatching",
+            "Fishing",
+            "Hiking"
+          ]
+        },
+        {
+          "hint": "Loops",
+          "plausible_words": [
+            "Knitting",
+            "Embroidery",
+            "Sewing"
+          ]
+        },
+        {
+          "hint": "Light",
+          "plausible_words": [
+            "Photography",
+            "Stargazing",
+            "Painting"
+          ]
+        },
+        {
+          "hint": "Studio",
+          "plausible_words": [
+            "Pottery",
+            "Painting",
+            "Photography"
+          ]
+        },
+        {
+          "hint": "Paper",
+          "plausible_words": [
+            "Origami",
+            "Reading",
+            "Journaling",
+            "Calligraphy",
+            "Scrapbooking"
+          ]
+        },
+        {
+          "hint": "Mixture",
+          "plausible_words": [
+            "Baking",
+            "Pottery",
+            "Candle making"
+          ]
+        },
+        {
+          "hint": "Color",
+          "plausible_words": [
+            "Painting",
+            "Photography",
+            "Embroidery",
+            "Scrapbooking"
+          ]
+        },
+        {
+          "hint": "Outdoors",
+          "plausible_words": [
+            "Birdwatching",
+            "Fishing",
+            "Hiking",
+            "Stargazing",
+            "Gardening"
+          ]
+        },
+        {
+          "hint": "Pages",
+          "plausible_words": [
+            "Journaling",
+            "Reading",
+            "Scrapbooking"
+          ]
+        },
+        {
+          "hint": "Practice",
+          "plausible_words": [
+            "Magic trick",
+            "Dancing",
+            "Chess",
+            "Calligraphy"
+          ]
+        },
+        {
+          "hint": "Fabric",
+          "plausible_words": [
+            "Sewing",
+            "Embroidery",
+            "Knitting"
+          ]
+        },
+        {
+          "hint": "Workshop",
+          "plausible_words": [
+            "Woodworking",
+            "Pottery",
+            "Model building"
+          ]
+        },
+        {
+          "hint": "Scent",
+          "plausible_words": [
+            "Candle making",
+            "Baking",
+            "Gardening"
+          ]
+        },
+        {
+          "hint": "Ink",
+          "plausible_words": [
+            "Calligraphy",
+            "Journaling",
+            "Scrapbooking"
+          ]
+        },
+        {
+          "hint": "Keepsakes",
+          "plausible_words": [
+            "Scrapbooking",
+            "Photography",
+            "Journaling"
+          ]
+        },
+        {
+          "hint": "Patience",
+          "plausible_words": [
+            "Jigsaw puzzles",
+            "Fishing",
+            "Birdwatching",
+            "Knitting"
+          ]
+        },
+        {
+          "hint": "Pieces",
+          "plausible_words": [
+            "Model building",
+            "Jigsaw puzzles",
+            "Woodworking"
+          ]
+        },
+        {
+          "hint": "Trail",
+          "plausible_words": [
+            "Hiking",
+            "Photography",
+            "Birdwatching"
+          ]
+        },
+        {
+          "hint": "Expression",
+          "plausible_words": [
+            "Dancing",
+            "Painting",
+            "Journaling",
+            "Photography"
+          ]
+        },
+        {
+          "hint": "Planning",
+          "plausible_words": [
+            "Chess",
+            "Woodworking",
+            "Gardening",
+            "Model building"
+          ]
+        },
+        {
+          "hint": "Performance",
+          "plausible_words": [
+            "Beatboxing",
+            "Tap dancing",
+            "Dancing",
+            "Magic trick"
+          ]
+        },
+        {
+          "hint": "Searching",
+          "plausible_words": [
+            "Metal detecting",
+            "Birdwatching",
+            "Fishing",
+            "Stargazing"
+          ]
+        },
+        {
+          "hint": "Tabletop",
+          "plausible_words": [
+            "Billiards",
+            "Dominoes",
+            "Chess",
+            "Jigsaw puzzles",
+            "Model building"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "celebrations",
+      "associations": [
+        {
+          "hint": "Milestone",
+          "plausible_words": [
+            "Birthday cake",
+            "Graduation",
+            "Wedding"
+          ]
+        },
+        {
+          "hint": "Evening",
+          "plausible_words": [
+            "Fireworks",
+            "Lantern",
+            "New Year's countdown",
+            "Halloween"
+          ]
+        },
+        {
+          "hint": "Guests",
+          "plausible_words": [
+            "Wedding",
+            "Costume party",
+            "Family reunion",
+            "Banquet",
+            "Invitation"
+          ]
+        },
+        {
+          "hint": "Disguise",
+          "plausible_words": [
+            "Costume party",
+            "Halloween",
+            "Carnival"
+          ]
+        },
+        {
+          "hint": "Glow",
+          "plausible_words": [
+            "Lantern",
+            "Fireworks",
+            "Birthday cake"
+          ]
+        },
+        {
+          "hint": "Street",
+          "plausible_words": [
+            "Parade",
+            "Carnival",
+            "Halloween"
+          ]
+        },
+        {
+          "hint": "Surprise",
+          "plausible_words": [
+            "Gift wrapping",
+            "Piñata",
+            "Birthday cake"
+          ]
+        },
+        {
+          "hint": "Cheers",
+          "plausible_words": [
+            "New Year's countdown",
+            "Toast",
+            "Wedding",
+            "Graduation"
+          ]
+        },
+        {
+          "hint": "Stories",
+          "plausible_words": [
+            "Family reunion",
+            "Toast",
+            "Wedding"
+          ]
+        },
+        {
+          "hint": "Color",
+          "plausible_words": [
+            "Confetti",
+            "Balloons",
+            "Ribbon",
+            "Lantern"
+          ]
+        },
+        {
+          "hint": "Decoration",
+          "plausible_words": [
+            "Confetti",
+            "Balloons",
+            "Ribbon",
+            "Party hat"
+          ]
+        },
+        {
+          "hint": "Table",
+          "plausible_words": [
+            "Banquet",
+            "Birthday cake",
+            "Toast",
+            "Family reunion"
+          ]
+        },
+        {
+          "hint": "Ceremony",
+          "plausible_words": [
+            "Ribbon",
+            "Graduation",
+            "Wedding"
+          ]
+        },
+        {
+          "hint": "Gifts",
+          "plausible_words": [
+            "Christmas",
+            "Lunar New Year",
+            "Wedding"
+          ]
+        },
+        {
+          "hint": "Family",
+          "plausible_words": [
+            "Lunar New Year",
+            "Christmas",
+            "Eid",
+            "Family reunion"
+          ]
+        },
+        {
+          "hint": "Lights",
+          "plausible_words": [
+            "Diwali",
+            "Fireworks",
+            "Lantern",
+            "Christmas"
+          ]
+        },
+        {
+          "hint": "Feast",
+          "plausible_words": [
+            "Eid",
+            "Banquet",
+            "Family reunion",
+            "Christmas"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "space",
+      "associations": [
+        {
+          "hint": "Light",
+          "plausible_words": [
+            "Sun",
+            "Meteor",
+            "Supernova",
+            "Solar panel"
+          ]
+        },
+        {
+          "hint": "Orbit",
+          "plausible_words": [
+            "Moon",
+            "Saturn",
+            "Mars",
+            "Satellite",
+            "Space station"
+          ]
+        },
+        {
+          "hint": "Rocky",
+          "plausible_words": [
+            "Mars",
+            "Asteroid",
+            "Moon"
+          ]
+        },
+        {
+          "hint": "Trail",
+          "plausible_words": [
+            "Comet",
+            "Meteor",
+            "Rocket"
+          ]
+        },
+        {
+          "hint": "Mission",
+          "plausible_words": [
+            "Astronaut",
+            "Rover",
+            "Space station",
+            "Rocket",
+            "Satellite"
+          ]
+        },
+        {
+          "hint": "Countdown",
+          "plausible_words": [
+            "Rocket",
+            "Astronaut",
+            "Satellite"
+          ]
+        },
+        {
+          "hint": "Observation",
+          "plausible_words": [
+            "Telescope",
+            "Astronaut",
+            "Rover",
+            "Satellite"
+          ]
+        },
+        {
+          "hint": "Motion",
+          "plausible_words": [
+            "Gravity",
+            "Orbit",
+            "Rocket"
+          ]
+        },
+        {
+          "hint": "Stars",
+          "plausible_words": [
+            "Galaxy",
+            "Constellation",
+            "Supernova",
+            "Nebula"
+          ]
+        },
+        {
+          "hint": "Gravity",
+          "plausible_words": [
+            "Black hole",
+            "Orbit",
+            "Moon",
+            "Saturn",
+            "Astronaut"
+          ]
+        },
+        {
+          "hint": "Signal",
+          "plausible_words": [
+            "Satellite",
+            "Rover",
+            "Space station",
+            "Astronaut"
+          ]
+        },
+        {
+          "hint": "Crew",
+          "plausible_words": [
+            "Space station",
+            "Astronaut",
+            "Rocket"
+          ]
+        },
+        {
+          "hint": "Shadow",
+          "plausible_words": [
+            "Eclipse",
+            "Moon",
+            "Sun"
+          ]
+        },
+        {
+          "hint": "Pattern",
+          "plausible_words": [
+            "Constellation",
+            "Orbit",
+            "Galaxy"
+          ]
+        },
+        {
+          "hint": "Color",
+          "plausible_words": [
+            "Nebula",
+            "Mars",
+            "Sun"
+          ]
+        },
+        {
+          "hint": "Energy",
+          "plausible_words": [
+            "Supernova",
+            "Sun",
+            "Solar panel",
+            "Rocket"
+          ]
+        },
+        {
+          "hint": "Exploration",
+          "plausible_words": [
+            "Rover",
+            "Astronaut",
+            "Rocket",
+            "Telescope"
+          ]
+        },
+        {
+          "hint": "Journey",
+          "plausible_words": [
+            "Light-year",
+            "Rocket",
+            "Astronaut",
+            "Rover"
+          ]
+        },
+        {
+          "hint": "Pressure",
+          "plausible_words": [
+            "Space vacuum",
+            "Space station",
+            "Astronaut"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "emotions",
+      "associations": [
+        {
+          "hint": "Comparison",
+          "plausible_words": [
+            "Jealousy",
+            "Pride",
+            "Disappointment",
+            "Shame"
+          ]
+        },
+        {
+          "hint": "Heartbeat",
+          "plausible_words": [
+            "Excitement",
+            "Fear",
+            "Embarrassment"
+          ]
+        },
+        {
+          "hint": "Attention",
+          "plausible_words": [
+            "Embarrassment",
+            "Pride",
+            "Shame",
+            "Surprise"
+          ]
+        },
+        {
+          "hint": "Exhale",
+          "plausible_words": [
+            "Relief",
+            "Contentment",
+            "Frustration"
+          ]
+        },
+        {
+          "hint": "Discovery",
+          "plausible_words": [
+            "Curiosity",
+            "Surprise",
+            "Awe",
+            "Excitement"
+          ]
+        },
+        {
+          "hint": "Obstacle",
+          "plausible_words": [
+            "Frustration",
+            "Anger",
+            "Disappointment"
+          ]
+        },
+        {
+          "hint": "Achievement",
+          "plausible_words": [
+            "Pride",
+            "Happiness",
+            "Gratitude",
+            "Relief"
+          ]
+        },
+        {
+          "hint": "Distance",
+          "plausible_words": [
+            "Loneliness",
+            "Nostalgia",
+            "Affection"
+          ]
+        },
+        {
+          "hint": "Kindness",
+          "plausible_words": [
+            "Gratitude",
+            "Happiness",
+            "Affection"
+          ]
+        },
+        {
+          "hint": "News",
+          "plausible_words": [
+            "Surprise",
+            "Excitement",
+            "Disappointment",
+            "Fear"
+          ]
+        },
+        {
+          "hint": "Smile",
+          "plausible_words": [
+            "Happiness",
+            "Affection",
+            "Pride",
+            "Contentment"
+          ]
+        },
+        {
+          "hint": "Tears",
+          "plausible_words": [
+            "Sadness",
+            "Happiness",
+            "Relief"
+          ]
+        },
+        {
+          "hint": "Heat",
+          "plausible_words": [
+            "Anger",
+            "Embarrassment",
+            "Excitement"
+          ]
+        },
+        {
+          "hint": "Recoil",
+          "plausible_words": [
+            "Disgust",
+            "Fear",
+            "Surprise"
+          ]
+        },
+        {
+          "hint": "Waiting",
+          "plausible_words": [
+            "Boredom",
+            "Frustration",
+            "Excitement",
+            "Hope"
+          ]
+        },
+        {
+          "hint": "Future",
+          "plausible_words": [
+            "Hope",
+            "Excitement",
+            "Fear"
+          ]
+        },
+        {
+          "hint": "Apology",
+          "plausible_words": [
+            "Guilt",
+            "Shame",
+            "Relief",
+            "Gratitude"
+          ]
+        },
+        {
+          "hint": "Exposure",
+          "plausible_words": [
+            "Shame",
+            "Embarrassment",
+            "Fear"
+          ]
+        },
+        {
+          "hint": "Expectations",
+          "plausible_words": [
+            "Disappointment",
+            "Hope",
+            "Excitement",
+            "Surprise"
+          ]
+        },
+        {
+          "hint": "Warmth",
+          "plausible_words": [
+            "Affection",
+            "Happiness",
+            "Contentment",
+            "Gratitude"
+          ]
+        },
+        {
+          "hint": "Vastness",
+          "plausible_words": [
+            "Awe",
+            "Fear",
+            "Curiosity"
+          ]
+        },
+        {
+          "hint": "Quiet",
+          "plausible_words": [
+            "Contentment",
+            "Relief",
+            "Loneliness",
+            "Boredom"
+          ]
+        },
+        {
+          "hint": "Keepsake",
+          "plausible_words": [
+            "Nostalgia",
+            "Affection",
+            "Sadness",
+            "Gratitude"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "memory",
+      "associations": [
+        {
+          "hint": "Boredom",
+          "plausible_words": [
+            "Daydreaming",
+            "Distraction",
+            "Procrastination"
+          ]
+        },
+        {
+          "hint": "Revisit",
+          "plausible_words": [
+            "Déjà vu",
+            "Recognition",
+            "Memory"
+          ]
+        },
+        {
+          "hint": "Noise",
+          "plausible_words": [
+            "Distraction",
+            "Attention",
+            "Multitasking",
+            "Perception"
+          ]
+        },
+        {
+          "hint": "Routine",
+          "plausible_words": [
+            "Habit",
+            "Conditioning",
+            "Self-control",
+            "Mindfulness"
+          ]
+        },
+        {
+          "hint": "Goals",
+          "plausible_words": [
+            "Motivation",
+            "Procrastination",
+            "Self-control",
+            "Mental rehearsal"
+          ]
+        },
+        {
+          "hint": "Photos",
+          "plausible_words": [
+            "Memory",
+            "Recognition",
+            "Imagination",
+            "Déjà vu"
+          ]
+        },
+        {
+          "hint": "Scenes",
+          "plausible_words": [
+            "Imagination",
+            "Dreaming",
+            "Daydreaming",
+            "Mental rehearsal"
+          ]
+        },
+        {
+          "hint": "Practice",
+          "plausible_words": [
+            "Learning",
+            "Conditioning",
+            "Habit",
+            "Mental rehearsal"
+          ]
+        },
+        {
+          "hint": "Opinions",
+          "plausible_words": [
+            "Confirmation bias",
+            "Decision-making",
+            "Perception"
+          ]
+        },
+        {
+          "hint": "Senses",
+          "plausible_words": [
+            "Perception",
+            "Mindfulness",
+            "Attention"
+          ]
+        },
+        {
+          "hint": "Puzzle",
+          "plausible_words": [
+            "Reasoning",
+            "Problem-solving",
+            "Decision-making"
+          ]
+        },
+        {
+          "hint": "Options",
+          "plausible_words": [
+            "Decision-making",
+            "Problem-solving",
+            "Self-control"
+          ]
+        },
+        {
+          "hint": "Faces",
+          "plausible_words": [
+            "Recognition",
+            "Memory",
+            "Déjà vu"
+          ]
+        },
+        {
+          "hint": "Names",
+          "plausible_words": [
+            "Tip-of-the-tongue",
+            "Memory",
+            "Forgetfulness",
+            "Recognition"
+          ]
+        },
+        {
+          "hint": "Interruptions",
+          "plausible_words": [
+            "Multitasking",
+            "Attention",
+            "Distraction"
+          ]
+        },
+        {
+          "hint": "Reminders",
+          "plausible_words": [
+            "Forgetfulness",
+            "Memory",
+            "Habit",
+            "Procrastination"
+          ]
+        },
+        {
+          "hint": "Rewards",
+          "plausible_words": [
+            "Conditioning",
+            "Motivation",
+            "Learning",
+            "Habit"
+          ]
+        },
+        {
+          "hint": "Deadline",
+          "plausible_words": [
+            "Procrastination",
+            "Motivation",
+            "Self-control",
+            "Multitasking"
+          ]
+        },
+        {
+          "hint": "Temptation",
+          "plausible_words": [
+            "Self-control",
+            "Motivation",
+            "Decision-making",
+            "Habit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "associations": [
+        {
+          "hint": "Crowd",
+          "plausible_words": [
+            "Peer pressure",
+            "Conformity",
+            "Social norms"
+          ]
+        },
+        {
+          "hint": "Introductions",
+          "plausible_words": [
+            "First impression",
+            "Small talk",
+            "Reputation"
+          ]
+        },
+        {
+          "hint": "Uniform",
+          "plausible_words": [
+            "Conformity",
+            "Social norms",
+            "Teamwork"
+          ]
+        },
+        {
+          "hint": "Pitch",
+          "plausible_words": [
+            "Persuasion",
+            "Negotiation",
+            "Leadership"
+          ]
+        },
+        {
+          "hint": "Shared",
+          "plausible_words": [
+            "Cooperation",
+            "Teamwork",
+            "Reciprocity"
+          ]
+        },
+        {
+          "hint": "Winning",
+          "plausible_words": [
+            "Competition",
+            "Persuasion",
+            "Negotiation"
+          ]
+        },
+        {
+          "hint": "Perspective",
+          "plausible_words": [
+            "Empathy",
+            "Negotiation",
+            "Conflict",
+            "Stereotype"
+          ]
+        },
+        {
+          "hint": "Promises",
+          "plausible_words": [
+            "Trust",
+            "Cooperation",
+            "Leadership"
+          ]
+        },
+        {
+          "hint": "Assumptions",
+          "plausible_words": [
+            "Stereotype",
+            "First impression",
+            "Reputation"
+          ]
+        },
+        {
+          "hint": "Whispers",
+          "plausible_words": [
+            "Gossip",
+            "Exclusion",
+            "Reputation"
+          ]
+        },
+        {
+          "hint": "Compromise",
+          "plausible_words": [
+            "Negotiation",
+            "Cooperation",
+            "Conflict"
+          ]
+        },
+        {
+          "hint": "Direction",
+          "plausible_words": [
+            "Leadership",
+            "Teamwork",
+            "Cooperation"
+          ]
+        },
+        {
+          "hint": "Roles",
+          "plausible_words": [
+            "Teamwork",
+            "Leadership",
+            "Cooperation"
+          ]
+        },
+        {
+          "hint": "Sharing",
+          "plausible_words": [
+            "Altruism",
+            "Cooperation",
+            "Reciprocity"
+          ]
+        },
+        {
+          "hint": "Favors",
+          "plausible_words": [
+            "Reciprocity",
+            "Cooperation",
+            "Trust",
+            "Altruism"
+          ]
+        },
+        {
+          "hint": "Greetings",
+          "plausible_words": [
+            "Etiquette",
+            "First impression",
+            "Small talk",
+            "Social norms"
+          ]
+        },
+        {
+          "hint": "Repair",
+          "plausible_words": [
+            "Apology",
+            "Trust",
+            "Cooperation",
+            "Conflict"
+          ]
+        },
+        {
+          "hint": "Smile",
+          "plausible_words": [
+            "Compliment",
+            "First impression",
+            "Small talk"
+          ]
+        },
+        {
+          "hint": "Party",
+          "plausible_words": [
+            "Exclusion",
+            "Inclusion",
+            "Small talk",
+            "Peer pressure"
+          ]
+        },
+        {
+          "hint": "Expectations",
+          "plausible_words": [
+            "Social norms",
+            "Conformity",
+            "Etiquette"
+          ]
+        },
+        {
+          "hint": "Stories",
+          "plausible_words": [
+            "Reputation",
+            "Gossip",
+            "First impression"
+          ]
+        },
+        {
+          "hint": "Tension",
+          "plausible_words": [
+            "Conflict",
+            "Competition",
+            "Peer pressure"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dating",
+      "associations": [
+        {
+          "hint": "Butterflies",
+          "plausible_words": [
+            "Crush",
+            "First date",
+            "Blind date",
+            "Meeting the parents"
+          ]
+        },
+        {
+          "hint": "Nerves",
+          "plausible_words": [
+            "First date",
+            "Blind date",
+            "Meeting the parents",
+            "Proposal"
+          ]
+        },
+        {
+          "hint": "Signals",
+          "plausible_words": [
+            "Flirting",
+            "Crush",
+            "Holding hands",
+            "Pet name"
+          ]
+        },
+        {
+          "hint": "Messages",
+          "plausible_words": [
+            "Long-distance relationship",
+            "Dating app",
+            "Love letter",
+            "Flirting"
+          ]
+        },
+        {
+          "hint": "Closure",
+          "plausible_words": [
+            "Breakup",
+            "Heartbreak",
+            "Reconciliation"
+          ]
+        },
+        {
+          "hint": "Calendar",
+          "plausible_words": [
+            "Anniversary",
+            "First date",
+            "Double date",
+            "Honeymoon"
+          ]
+        },
+        {
+          "hint": "Commitment",
+          "plausible_words": [
+            "Proposal",
+            "Engagement",
+            "Shared home"
+          ]
+        },
+        {
+          "hint": "Introductions",
+          "plausible_words": [
+            "Blind date",
+            "First date",
+            "Meeting the parents",
+            "Matchmaking"
+          ]
+        },
+        {
+          "hint": "Affection",
+          "plausible_words": [
+            "Love letter",
+            "Holding hands",
+            "Cuddling",
+            "Pet name"
+          ]
+        },
+        {
+          "hint": "Friends",
+          "plausible_words": [
+            "Matchmaking",
+            "Double date",
+            "Blind date"
+          ]
+        },
+        {
+          "hint": "Table",
+          "plausible_words": [
+            "Double date",
+            "First date",
+            "Blind date",
+            "Meeting the parents"
+          ]
+        },
+        {
+          "hint": "Travel",
+          "plausible_words": [
+            "Honeymoon",
+            "Long-distance relationship",
+            "Meeting the parents"
+          ]
+        },
+        {
+          "hint": "Promise",
+          "plausible_words": [
+            "Engagement",
+            "Proposal",
+            "Commitment"
+          ]
+        },
+        {
+          "hint": "Comfort",
+          "plausible_words": [
+            "Cuddling",
+            "Shared home",
+            "Reconciliation",
+            "Couples counseling"
+          ]
+        },
+        {
+          "hint": "Apology",
+          "plausible_words": [
+            "Reconciliation",
+            "Breakup",
+            "Couples counseling"
+          ]
+        },
+        {
+          "hint": "Future",
+          "plausible_words": [
+            "Commitment",
+            "Proposal",
+            "Engagement",
+            "Shared home"
+          ]
+        },
+        {
+          "hint": "Values",
+          "plausible_words": [
+            "Compatibility",
+            "Commitment",
+            "Couples counseling"
+          ]
+        },
+        {
+          "hint": "Healing",
+          "plausible_words": [
+            "Heartbreak",
+            "Breakup",
+            "Reconciliation",
+            "Couples counseling"
+          ]
+        },
+        {
+          "hint": "Routine",
+          "plausible_words": [
+            "Shared home",
+            "Long-distance relationship",
+            "Couples counseling"
+          ]
+        },
+        {
+          "hint": "Listening",
+          "plausible_words": [
+            "Couples counseling",
+            "Reconciliation",
+            "Compatibility"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "puberty",
+      "associations": [
+        {
+          "hint": "Milestone",
+          "plausible_words": [
+            "Puberty",
+            "Menstruation",
+            "Growth spurt",
+            "Voice change",
+            "Breast development"
+          ]
+        },
+        {
+          "hint": "Cycle",
+          "plausible_words": [
+            "Menstruation",
+            "Ovulation",
+            "Ovaries",
+            "Uterus",
+            "Hormones"
+          ]
+        },
+        {
+          "hint": "Blood",
+          "plausible_words": [
+            "Erection",
+            "Menstruation",
+            "Penis",
+            "Uterus"
+          ]
+        },
+        {
+          "hint": "Hormones",
+          "plausible_words": [
+            "Ovaries",
+            "Testes",
+            "Pituitary gland",
+            "Testosterone",
+            "Estrogen",
+            "Hormones"
+          ]
+        },
+        {
+          "hint": "Reproduction",
+          "plausible_words": [
+            "Sperm",
+            "Ovaries",
+            "Testes",
+            "Fallopian tubes",
+            "Uterus"
+          ]
+        },
+        {
+          "hint": "Adolescence",
+          "plausible_words": [
+            "Breast development",
+            "Body hair",
+            "Growth spurt",
+            "Voice change",
+            "Acne",
+            "Puberty"
+          ]
+        },
+        {
+          "hint": "Growth",
+          "plausible_words": [
+            "Body hair",
+            "Growth spurt",
+            "Breast development",
+            "Puberty"
+          ]
+        },
+        {
+          "hint": "Skin",
+          "plausible_words": [
+            "Acne",
+            "Sweat",
+            "Body hair",
+            "Scrotum",
+            "Vulva",
+            "Penis"
+          ]
+        },
+        {
+          "hint": "Hygiene",
+          "plausible_words": [
+            "Sweat",
+            "Body odor",
+            "Acne",
+            "Body hair"
+          ]
+        },
+        {
+          "hint": "Signals",
+          "plausible_words": [
+            "Hormones",
+            "Pituitary gland",
+            "Ovaries",
+            "Testes"
+          ]
+        },
+        {
+          "hint": "Glands",
+          "plausible_words": [
+            "Testosterone",
+            "Estrogen",
+            "Pituitary gland",
+            "Testes",
+            "Ovaries"
+          ]
+        },
+        {
+          "hint": "Sensitive",
+          "plausible_words": [
+            "Vulva",
+            "Penis",
+            "Breast development"
+          ]
+        },
+        {
+          "hint": "Pelvis",
+          "plausible_words": [
+            "Vagina",
+            "Uterus",
+            "Ovaries",
+            "Fallopian tubes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health",
+      "associations": [
+        {
+          "hint": "Protection",
+          "plausible_words": [
+            "Condom",
+            "HPV vaccination",
+            "Dental dam",
+            "Contraception"
+          ]
+        },
+        {
+          "hint": "Planning",
+          "plausible_words": [
+            "Contraception",
+            "Fertility",
+            "Pregnancy",
+            "Prenatal care"
+          ]
+        },
+        {
+          "hint": "Comfort",
+          "plausible_words": [
+            "Lubricant",
+            "Menstrual pad",
+            "Period underwear",
+            "Tampon"
+          ]
+        },
+        {
+          "hint": "Pharmacy",
+          "plausible_words": [
+            "Pregnancy test",
+            "Condom",
+            "Birth control pill",
+            "Emergency contraception",
+            "Menstrual pad"
+          ]
+        },
+        {
+          "hint": "Clinic",
+          "plausible_words": [
+            "IUD",
+            "Contraceptive implant",
+            "Cervical screening",
+            "STI screening",
+            "Sexual health clinic"
+          ]
+        },
+        {
+          "hint": "Prevention",
+          "plausible_words": [
+            "HPV vaccination",
+            "Condom",
+            "Cervical screening",
+            "Dental dam"
+          ]
+        },
+        {
+          "hint": "Testing",
+          "plausible_words": [
+            "STI screening",
+            "Pregnancy test",
+            "HIV",
+            "Cervical screening"
+          ]
+        },
+        {
+          "hint": "Appointments",
+          "plausible_words": [
+            "Prenatal care",
+            "Cervical screening",
+            "HPV vaccination",
+            "STI screening"
+          ]
+        },
+        {
+          "hint": "Hormones",
+          "plausible_words": [
+            "Menopause",
+            "Fertility",
+            "Pregnancy",
+            "Birth control pill",
+            "Contraceptive implant",
+            "Contraceptive patch"
+          ]
+        },
+        {
+          "hint": "Schedule",
+          "plausible_words": [
+            "Birth control pill",
+            "Contraceptive patch",
+            "HPV vaccination",
+            "Prenatal care"
+          ]
+        },
+        {
+          "hint": "Routine",
+          "plausible_words": [
+            "Contraceptive patch",
+            "Birth control pill",
+            "Menstrual pad",
+            "Period underwear"
+          ]
+        },
+        {
+          "hint": "Timing",
+          "plausible_words": [
+            "Emergency contraception",
+            "Pregnancy test",
+            "Fertility",
+            "Birth control pill"
+          ]
+        },
+        {
+          "hint": "Wrapper",
+          "plausible_words": [
+            "Dental dam",
+            "Condom",
+            "Tampon",
+            "Menstrual pad"
+          ]
+        },
+        {
+          "hint": "Bathroom",
+          "plausible_words": [
+            "Menstrual pad",
+            "Tampon",
+            "Menstrual cup",
+            "Period underwear"
+          ]
+        },
+        {
+          "hint": "Appointment",
+          "plausible_words": [
+            "Sexual health clinic",
+            "STI screening",
+            "Cervical screening",
+            "HPV vaccination",
+            "Prenatal care"
+          ]
+        },
+        {
+          "hint": "Checkups",
+          "plausible_words": [
+            "Pregnancy",
+            "Prenatal care",
+            "Fertility",
+            "Sexual health clinic"
+          ]
+        },
+        {
+          "hint": "Conversation",
+          "plausible_words": [
+            "Sexual health counseling",
+            "Sexual health clinic",
+            "Fertility",
+            "Prenatal care"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "consent",
+      "associations": [
+        {
+          "hint": "Conversation",
+          "plausible_words": [
+            "Consent",
+            "Check-in",
+            "Clarification",
+            "Communication"
+          ]
+        },
+        {
+          "hint": "Comfort",
+          "plausible_words": [
+            "Boundaries",
+            "Personal space",
+            "Unwanted touch"
+          ]
+        },
+        {
+          "hint": "Curtain",
+          "plausible_words": [
+            "Privacy",
+            "Personal space",
+            "Boundaries"
+          ]
+        },
+        {
+          "hint": "Choice",
+          "plausible_words": [
+            "Refusal",
+            "Consent",
+            "Changing your mind",
+            "Bodily autonomy"
+          ]
+        },
+        {
+          "hint": "Listening",
+          "plausible_words": [
+            "Respect",
+            "Active listening",
+            "Communication"
+          ]
+        },
+        {
+          "hint": "Questions",
+          "plausible_words": [
+            "Communication",
+            "Clarification",
+            "Check-in",
+            "Consent"
+          ]
+        },
+        {
+          "hint": "Distance",
+          "plausible_words": [
+            "Personal space",
+            "Boundaries",
+            "Unwanted touch"
+          ]
+        },
+        {
+          "hint": "Decisions",
+          "plausible_words": [
+            "Bodily autonomy",
+            "Consent",
+            "Refusal",
+            "Changing your mind"
+          ]
+        },
+        {
+          "hint": "Threat",
+          "plausible_words": [
+            "Coercion",
+            "Manipulation",
+            "Power imbalance"
+          ]
+        },
+        {
+          "hint": "Reassurance",
+          "plausible_words": [
+            "Check-in",
+            "Communication",
+            "Active listening",
+            "Respect"
+          ]
+        },
+        {
+          "hint": "Uncertainty",
+          "plausible_words": [
+            "Changing your mind",
+            "Hesitation",
+            "Clarification"
+          ]
+        },
+        {
+          "hint": "Attention",
+          "plausible_words": [
+            "Active listening",
+            "Respect",
+            "Check-in",
+            "Communication"
+          ]
+        },
+        {
+          "hint": "Trust",
+          "plausible_words": [
+            "Confidentiality",
+            "Privacy",
+            "Respect",
+            "Image sharing"
+          ]
+        },
+        {
+          "hint": "Voice",
+          "plausible_words": [
+            "Assertiveness",
+            "Refusal",
+            "Communication"
+          ]
+        },
+        {
+          "hint": "Discomfort",
+          "plausible_words": [
+            "Unwanted touch",
+            "Boundaries",
+            "Personal space",
+            "Hesitation"
+          ]
+        },
+        {
+          "hint": "Judgment",
+          "plausible_words": [
+            "Intoxication",
+            "Changing your mind",
+            "Accountability"
+          ]
+        },
+        {
+          "hint": "Authority",
+          "plausible_words": [
+            "Power imbalance",
+            "Coercion",
+            "Manipulation"
+          ]
+        },
+        {
+          "hint": "Pause",
+          "plausible_words": [
+            "Silence",
+            "Hesitation",
+            "Changing your mind"
+          ]
+        },
+        {
+          "hint": "Camera",
+          "plausible_words": [
+            "Image sharing",
+            "Privacy",
+            "Consent",
+            "Boundaries"
+          ]
+        },
+        {
+          "hint": "Support",
+          "plausible_words": [
+            "Bystander intervention",
+            "Active listening",
+            "Respect",
+            "Accountability"
+          ]
+        },
+        {
+          "hint": "Consequences",
+          "plausible_words": [
+            "Accountability",
+            "Coercion",
+            "Manipulation",
+            "Power imbalance"
+          ]
+        },
+        {
+          "hint": "Guilt",
+          "plausible_words": [
+            "Manipulation",
+            "Coercion",
+            "Refusal"
+          ]
+        }
+      ]
+    }
+  ]
+}

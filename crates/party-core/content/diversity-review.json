@@ -1,0 +1,99 @@
+{
+  "revision": 1,
+  "concepts": {
+    "cake": ["Cake", "Birthday cake"]
+  },
+  "semantic": {
+    "noodle-dishes": ["Noodles", "Pasta"],
+    "breakfast-batter": ["Pancakes", "Waffle"],
+    "cold-straw-drinks": ["Bubble tea", "Smoothie"],
+    "hot-drink-ritual": ["Coffee", "Mug", "Kettle", "Cafe"],
+    "spatial-maps": ["Map", "Compass", "Itinerary"],
+    "passenger-rail": ["Train", "Train station", "Train ticket"],
+    "passenger-flight": ["Airplane", "Airport", "Boarding pass"],
+    "motorboats": ["Cruise", "Ferry", "Speedboat"],
+    "household-sleep": ["Pillow", "Blanket", "Oversleeping"],
+    "plucked-strings": ["Guitar", "Harp"],
+    "group-singing": ["Karaoke", "Choir", "Duet"],
+    "large-felines": ["Lion", "Tiger"],
+    "equine": ["Horse", "Zebra"],
+    "water-surf": ["Ocean", "Beach", "Surfing"],
+    "flowing-water": ["River", "Waterfall", "Geyser"],
+    "eruptions": ["Volcano", "Geyser"],
+    "weather-precipitation": ["Rain", "Hail", "Thunder"],
+    "screen-capture": ["Screenshot", "Photography", "Photographer"],
+    "computer-printing": ["Printer", "Printer jam"],
+    "desk-computer": ["Laptop", "Keyboard", "Mouse"],
+    "phone-messages": ["Group chat", "Wrong group chat", "Accidental reply-all"],
+    "fallen-energy": ["Dead phone battery", "Power outage"],
+    "snow-board": ["Skiing", "Snowboarding"],
+    "racket-small-ball": ["Tennis", "Table tennis", "Badminton"],
+    "hands-on-fabric": ["Knitting", "Sewing", "Embroidery"],
+    "paper-folding": ["Origami", "Gift wrapping"],
+    "emergency-response": ["Fire station", "Firefighter", "Police station"],
+    "sky-gazing": ["Telescope", "Stargazing", "Constellation"],
+    "flight-space": ["Spaceship", "Rocket", "Space station"],
+    "startled-feeling": ["Fear", "Surprise", "Awe"],
+    "frustrated-feeling": ["Frustration", "Anger", "Disappointment"],
+    "memory-lapse": ["Forgetfulness", "Tip-of-the-tongue"],
+    "group-dynamics": ["Conformity", "Peer pressure"],
+    "proposal-ring": ["Proposal", "Engagement"],
+    "setting-personal-limits": ["Boundaries", "Personal space", "Refusal"]
+  },
+  "classic": {
+    "woodworking": ["Carpenter", "Woodworking"],
+    "baking-preparation": ["Baking", "Bakery", "Baker"],
+    "cafe-order": ["Restaurant", "Cafe"]
+  },
+  "act_it": {
+    "handheld-camera": ["Photography", "Photographer", "Sightseeing", "Image sharing"],
+    "typing": ["Laptop", "Keyboard", "Programmer", "Search engine"],
+    "steering": ["Road trip", "Rental car", "Bus", "Traffic jam"],
+    "tooth-gesture": ["Toothbrush", "Dentist", "Food stuck in teeth"],
+    "strumming": ["Guitar", "Musician"],
+    "screen-swipe": ["Smartphone", "Tablet", "Dating app"],
+    "suitcase-roll": ["Suitcase", "Airport", "Lost luggage"],
+    "hands-as-wings": ["Butterfly", "Airplane", "Dragon"],
+    "drink-from-cup": ["Mug", "Coffee", "Cafe", "Spilled coffee"],
+    "wind-up-swing": ["Baseball", "Cricket", "Piñata"]
+  },
+  "sound_only": {
+    "telephone": ["Smartphone", "Ringtone", "Phone ringing in a meeting", "Video call"],
+    "deep-growl": ["Lion", "Tiger", "Bear", "Dragon", "Zoo"],
+    "electric-buzz": ["Vacuum cleaner", "Hair dryer", "Electric shaver", "Salon", "Computer fan", "Dentist"],
+    "emergency-siren": ["Fire station", "Firefighter", "Police station"],
+    "aircraft-jet": ["Airport", "Pilot", "Airplane", "Rocket"],
+    "car-engine": ["Road trip", "Rental car", "Mechanic", "Motorcycle"],
+    "boat-horn": ["Cruise", "Ferry"],
+    "train-horn": ["Train", "Train station"],
+    "broad-wave": ["Ocean", "Beach", "Surfing"],
+    "slow-water-sounds": ["River", "Lake", "Leaking roof"],
+    "low-rumble": ["Thunder", "Volcano", "Avalanche"],
+    "sharp-pop": ["Fireworks", "Confetti", "Diwali", "Popcorn"],
+    "clinking": ["Toast", "Mug", "Restaurant"],
+    "crowd-cheer": ["Concert", "Stadium", "Graduation"],
+    "digital-beep": ["Supermarket", "Hospital", "Metal detecting", "Error alert"],
+    "melody": ["Song", "Melody", "Lullaby", "Karaoke", "Soundtrack"],
+    "wood-rasp": ["Woodworking", "Carpenter"],
+    "short-camera-click": ["Photography", "Photographer"],
+    "paper-rollers": ["Printer", "Printer jam"],
+    "short-gasp": ["Surprise", "Fear", "Awe"],
+    "long-sigh": ["Relief", "Disappointment", "Frustration"]
+  },
+  "aliases": {},
+  "fallback_hints": {
+    "classic": {
+      "Cake": ["Sweet"],
+      "Key": ["Entrance"],
+      "Clock": ["Routine", "Morning"],
+      "Laptop": ["Desktop"]
+    },
+    "act_it": {},
+    "sound_only": {
+      "Key": ["Doorway"],
+      "Smartphone": ["Incoming", "Audio"],
+      "Road trip": ["Journey", "Packing"],
+      "Dolphin": ["Water"]
+    }
+  }
+}
