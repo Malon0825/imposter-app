@@ -33,7 +33,14 @@ export interface RoundRevealStage {
   shuffled?: boolean;
 }
 
-export type RoundOutcome = "correct" | "wrong" | "escaped" | "caught";
+export type RoundOutcome = "correct" | "wrong" | "escaped" | "caught" | "spotted";
+
+export type CastRole = "imposter" | "accomplice" | "detective" | "judge" | "decoy" | "gambler";
+
+export interface CastPicks {
+  accomplice: string | null;
+  decoy: string | null;
+}
 
 export interface RoundVerdict {
   imposter_id: string;
@@ -42,6 +49,7 @@ export interface RoundVerdict {
   /** The viewer's own result; everyone else's opens with the recap. */
   my_outcome?: RoundOutcome | null;
   my_delta?: number | null;
+  my_role?: CastRole | null;
 }
 
 export interface PerformedClue {
@@ -81,7 +89,9 @@ export interface View {
     max_stake: number;
     my_stake: number | null;
     original_vote: string | null;
-    reading_streak: number;
+    /** 5 for a Gambler's top tier, otherwise 3. */
+    top_payout?: number;
+    my_picks?: CastPicks | null;
   };
   clue_turn: number;
   clues: { player_id: string; turn: number; text: string }[];
@@ -102,10 +112,19 @@ export interface View {
     selected_topic: string | null;
   } | null;
   players: Player[];
-  private_role: { imposter: boolean; clue: string; definition?: string } | null;
+  private_role: {
+    imposter: boolean;
+    clue: string;
+    definition?: string;
+    role?: CastRole;
+    imposter_id?: string | null;
+    cleared_id?: string | null;
+  } | null;
   role_ready: boolean;
   ready_count: number;
   starting_id: string | null;
+  /** Discussion only: this round's speaking order, first speaker first. */
+  speaking_order?: string[] | null;
   vote_count: number;
   my_vote: string | null;
   candidates: string[];
@@ -124,12 +143,25 @@ export interface View {
       before: number;
       base: number;
       bet: number;
-      streak: number;
       bluff: number;
+      bonus?: number;
+      voided?: boolean;
+      fine?: number;
       penalty: number;
       after: number;
     };
     imposter_bonus: number;
+    cast?: {
+      roles: Record<string, CastRole>;
+      decoy_word: string;
+      my_role: CastRole | null;
+      bait_decoy: boolean;
+      decoy_voted: boolean;
+      accomplice_caught: boolean;
+      decoy_caught: boolean;
+      pair_bonus: boolean;
+      judge_tiebreak: boolean;
+    } | null;
     outcomes: {
       player_id: string;
       outcome: RoundOutcome | null;

@@ -334,11 +334,6 @@
 .score-breakdown dd.terra {
   color: var(--terra);
 }
-.result-content > .reading-streak,
-.recap-details > .reading-streak {
-  font-size: 15px;
-  margin-top: 6px;
-}
 .personal-score {
   display: flex;
   align-items: baseline;
@@ -3845,3 +3840,76 @@ strong .player-connection-label {
   .screen-lobby:has(.round-rules-summary) .player-row { min-height: 64px; padding-block: 6px; }
 }
 @media (prefers-reduced-motion: reduce) { .rule-switch::after { transition: none; } }
+
+/* Full Cast: public role lineup, private role intel, crew picks. */
+.cast-lineup { width: 100%; margin: 18px 0 6px; padding: 14px 14px 6px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+.cast-lineup h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; font-size: 15px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.cast-lineup ul { list-style: none; margin: 0; padding: 0; }
+.cast-lineup li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-top: 1px solid var(--line); }
+.cast-lineup li:first-child { border-top: 0; }
+.cast-lineup li > span:last-child { display: grid; gap: 2px; min-width: 0; }
+.cast-lineup strong { font-size: 17px; }
+.cast-lineup small { color: var(--muted); font-size: 14px; line-height: 1.35; }
+.cast-icon { flex: 0 0 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; background: rgba(214, 245, 107, .14); color: var(--lime); }
+.cast-lineup li.imposter .cast-icon { background: rgba(217, 134, 114, .16); color: var(--terra); }
+.cast-lineup .compact { margin: 6px 0 8px; }
+.cast-badge { display: inline-flex; align-items: center; gap: 7px; }
+.cast-badge.civilian { background: var(--lime); color: var(--bg); }
+.role-intel { margin: 16px auto 0; max-width: 340px; padding: 12px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--line); text-align: center; font-size: 16px; line-height: 1.45; }
+.role-intel b { font-weight: 800; }
+.crew-ballot { display: grid; gap: 6px; margin-top: 18px; }
+.pick-chips { border-top: 1px solid var(--line); padding-top: 16px; margin-top: 18px; }
+.crew-ballot .pick-chips:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.pick-chips .bet-heading { margin-bottom: 4px; }
+.pick-chips .compact { font-size: 15px; margin: 4px 0 10px; line-height: 1.45; }
+.pick-chip-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.pick-chip-list button { min-height: 48px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--muted); background: transparent; color: var(--ink); font-size: 17px; font-weight: 650; max-width: 100%; overflow-wrap: anywhere; }
+.pick-chip-list button.selected { background: var(--lime); border-color: var(--lime); color: var(--bg); }
+.pick-chip-list button:disabled { opacity: .35; }
+.bet-options.gambler { grid-template-columns: 1.2fr 1fr 1fr 1.35fr; }
+.bet-options.gambler button { font-size: 18px; }
+.bet-target { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0 4px; }
+.bet-target button { min-height: 48px; border-radius: 12px; border: 1px solid var(--line); background: transparent; color: var(--ink); font-size: 15px; font-weight: 650; }
+.bet-target button.selected { border-color: var(--lime); color: var(--lime); box-shadow: inset 0 0 0 1px var(--lime); }
+.cast-callouts { list-style: none; width: 100%; margin: 0 0 22px; padding: 0; display: grid; gap: 8px; }
+.cast-callouts li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 12px; background: var(--surface); font-size: 15px; line-height: 1.35; }
+.cast-callouts li svg { flex-shrink: 0; color: var(--muted); }
+.cast-callouts li.good svg { color: var(--lime); }
+.cast-callouts li.bad svg { color: var(--terra); }
+.result-pair.round-flow-word:has(> div + div) { grid-template-columns: 1fr 1fr; }
+/* Longer role names stay on one line inside the fixed-height role heading. */
+.role-heading .role-title.cast-title { font-size: clamp(23px, 7.2vw, 34px); white-space: nowrap; }
+/* Full Cast ballots: role headings, cleared player, locked picks. */
+.pick-chips h2 { display: flex; align-items: center; gap: 8px; }
+.pick-chips h2 svg { color: var(--muted); flex-shrink: 0; }
+.cleared-tag { margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: rgba(214, 245, 107, .16); color: var(--lime); font-size: 13px; font-weight: 800; vertical-align: middle; }
+.vote-risk { color: var(--terra); font-weight: 650; }
+.locked-picks { display: grid; gap: 8px; width: min(100%, 300px); margin: 4px auto 8px; }
+.locked-picks > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-radius: 12px; background: var(--surface); }
+.locked-picks dt { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+.locked-picks dd { margin: 0; font-weight: 800; color: var(--terra); }
+/* Personal result: your outcome first, the party's on tap. */
+.personal-result { width: 100%; }
+.personal-result-head { display: grid; justify-items: center; gap: 12px; text-align: center; margin: 18px 0 26px; }
+.personal-result-head h1 { margin: 0; }
+.personal-result-head .role-badge { margin: 0; }
+.personal-result-head .round-points.muted { color: var(--muted); }
+.score-breakdown dd.muted { color: var(--muted); }
+/* Discussion: numbered speaking order, the opener marked. */
+.players-list.speaking .player-row { gap: 12px; }
+.speak-order { flex: 0 0 26px; height: 26px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--line); color: var(--muted); font-size: 14px; font-weight: 800; }
+.speak-order.first { background: var(--lime); border-color: var(--lime); color: var(--bg); }
+.starts-tag { margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: rgba(214, 245, 107, .16); color: var(--lime); font-size: 13px; font-weight: 800; vertical-align: middle; }
+.speak-order { align-self: center; }
+.starts-tag { align-self: flex-start; width: fit-content; margin: 4px 0 0; }
+/* Full Cast role moment: character, side, name, goal. */
+.role-stage { position: relative; display: grid; justify-items: center; text-align: center; padding-top: 4px; isolation: isolate; }
+.role-stage-glow { position: absolute; z-index: -1; top: 0; left: 0; right: 0; margin: 0 auto; width: min(118%, 470px); aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(217, 134, 114, .4), transparent 64%); pointer-events: none; }
+.role-stage.civilian .role-stage-glow { background: radial-gradient(circle, rgba(214, 245, 107, .24), transparent 64%); }
+.role-stage-art { width: min(100%, 380px); height: min(44dvh, 380px); object-fit: contain; filter: drop-shadow(0 18px 28px rgba(0, 0, 0, .5)); user-select: none; }
+.role-stage-side { margin: 6px 0 2px; font-size: 13px; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--terra); }
+.role-stage.civilian .role-stage-side { color: var(--lime); }
+.role-stage-name { margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: clamp(54px, 17vw, 78px); line-height: 1.02; letter-spacing: .5px; text-transform: uppercase; }
+.role-stage-goal { margin: 10px 0 4px; font-size: 21px; font-weight: 750; }
+.role-stage-power { margin: 0; max-width: 320px; font-size: 16px; line-height: 1.4; color: var(--muted); }
+.role-stage { flex: 1; align-content: center; }

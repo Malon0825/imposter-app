@@ -39,14 +39,36 @@ fn play_to_vote(g: &mut Game) {
         act(g, &id, "role_ready", Value::Null).unwrap();
     }
     act(g, &host, "open_vote", Value::Null).unwrap();
-    // Deterministic role assignment for rule tests; production still uses the
-    // weighted assignment tested independently across all supported sizes.
-    g.round.imposter = g.players[1].id.clone();
+    // Deterministic roles for flow tests; production still uses the weighted
+    // deal, tested on its own across all supported sizes.
+    let imposter = g.players[1].id.clone();
+    g.force_imposter(&imposter);
 }
 fn vote(g: &mut Game, who: usize, target: usize, stake: u32) -> GameResult<()> {
     let id = g.players[who].id.clone();
     let target = g.players[target].id.clone();
-    act(g, &id, "vote", json!({"player_id": target, "stake": stake}))
+    let mut ballot = json!({"player_id": target, "stake": stake});
+    // From five players up the Imposter and the Detective must name names.
+    if let Some(cast) = &g.round.cast {
+        let others = |skip: &str| -> Vec<String> {
+            g.round
+                .roster
+                .iter()
+                .filter(|p| **p != id && p.as_str() != skip)
+                .cloned()
+                .collect()
+        };
+        match cast.roles.get(&id) {
+            Some(Role::Imposter) if !cast::bait_decoy(g.round.roster.len()) => {
+                let picks = others("");
+                ballot["accomplice_id"] = json!(picks[0]);
+                ballot["decoy_id"] = json!(picks[1]);
+            }
+            Some(Role::Detective) => ballot["accomplice_id"] = json!(others(&target)[0]),
+            _ => {}
+        }
+    }
+    act(g, &id, "vote", ballot)
 }
 fn caught(g: &mut Game, stake: u32) {
     for i in 0..g.players.len() {
@@ -135,7 +157,13 @@ fn affordable_stakes_and_maximum_are_enforced_for_three_to_twelve_players() {
                     for i in 1..size {
                         vote(&mut g, i, if i == 1 { 0 } else { 1 }, 0).unwrap();
                     }
-                    assert_eq!(g.players[0].points, balance + 1 + stake as i32);
+                    // Player 0 holds a Gambler seat at every size but five,
+                    // where the lineup is all specials and they take the Decoy:
+                    // +1 more for the caught imposter, and no top-tier bet.
+                    let decoy = size == 5;
+                    let won = if stake == 3 && !decoy { 5 } else { stake as i32 };
+                    let bonus = i32::from(decoy);
+                    assert_eq!(g.players[0].points, balance + 1 + bonus + won);
                 } else {
                     assert!(g.round.original.is_empty());
                     assert!(g.round.stakes.is_empty());
@@ -222,7 +250,6 @@ fn wrong_bet_and_report_floor_at_zero_without_changing_punishment_rules() {
     deal(&mut g);
     g.players[0].points = 2;
     let host = g.host.clone();
-    g.reading_streaks.insert(host.clone(), 2);
     g.pending_reports.insert(host.clone(), 0);
     vote(&mut g, 0, 2, 2).unwrap();
     vote(&mut g, 1, 2, 0).unwrap();
@@ -230,7 +257,6 @@ fn wrong_bet_and_report_floor_at_zero_without_changing_punishment_rules() {
     vote(&mut g, 3, 2, 0).unwrap();
     assert_eq!(g.players[0].points, 0);
     assert_eq!(g.players[0].earned, -2);
-    assert_eq!(g.reading_streaks[&host], 0);
     assert!(g.round.queue.contains(&host));
     let score = &g.round.scores[&host];
     assert_eq!(
@@ -242,42 +268,15 @@ fn wrong_bet_and_report_floor_at_zero_without_changing_punishment_rules() {
 }
 
 #[test]
-fn every_third_read_awards_once_imposter_and_abandoned_rounds_preserve_streak() {
-    let mut g = lobby(4);
-    deal(&mut g);
-    let host = g.host.clone();
-    for read in 1..=6 {
-        caught(&mut g, 0);
-        assert_eq!(g.reading_streaks[&host], read);
-        assert_eq!(g.round.scores[&host].streak, i32::from(read % 3 == 0));
-        g.resolve(false);
-        assert_eq!(g.reading_streaks[&host], read);
-        if read != 6 {
-            next(&mut g);
-        }
-    }
-    assert_eq!(g.players[0].points, 8);
-    next(&mut g);
-    act(&mut g, &host, "abandon", Value::Null).unwrap();
-    assert_eq!(g.reading_streaks[&host], 6);
-    deal(&mut g);
-    g.round.imposter = host.clone();
-    for i in 0..4 {
-        vote(&mut g, i, if i == 0 { 1 } else { 0 }, 0).unwrap();
-    }
-    assert_eq!(g.reading_streaks[&host], 6);
-}
-
-#[test]
-fn maximum_civilian_award_is_five_and_perfect_bluff_is_three() {
+fn maximum_gambler_award_is_six_and_perfect_bluff_is_three() {
     let mut g = lobby(4);
     deal(&mut g);
     let host = g.host.clone();
     g.players[0].points = 3;
-    g.reading_streaks.insert(host.clone(), 2);
     caught(&mut g, 3);
-    assert_eq!(g.players[0].earned, 5);
-    assert_eq!(g.players[0].points, 8);
+    // The Gambler's top tier: +1 for the read and +5 on a 3-point risk.
+    assert_eq!(g.players[0].earned, 6);
+    assert_eq!(g.players[0].points, 9);
     next(&mut g);
     for (i, target) in [2, 2, 0, 2].into_iter().enumerate() {
         vote(&mut g, i, target, 0).unwrap();
@@ -297,7 +296,13 @@ fn runoff_changes_neither_original_accusation_nor_bet_and_scores_once() {
     deal(&mut g);
     g.players[0].points = 3;
     let host = g.host.clone();
-    g.reading_streaks.insert(host.clone(), 2);
+    // The Judge's tiebreak would settle this round before a runoff, so move
+    // their seat to a player whose ballot does not name the imposter.
+    if let Some(cast) = &mut g.round.cast {
+        let (third, fourth) = (g.players[2].id.clone(), g.players[3].id.clone());
+        cast.roles.insert(third, Role::Decoy);
+        cast.roles.insert(fourth, Role::Judge);
+    }
     for (i, target) in [1, 0, 1, 0].into_iter().enumerate() {
         vote(&mut g, i, target, if i == 0 { 3 } else { 0 }).unwrap();
     }
@@ -309,11 +314,11 @@ fn runoff_changes_neither_original_accusation_nor_bet_and_scores_once() {
     }
     assert_eq!(g.round.accused.as_ref(), Some(&host));
     assert_eq!(g.round.stakes[&host], 3);
-    assert_eq!(g.players[0].points, 8);
+    assert_eq!(g.players[0].points, 9); // Gambler: +1 read, +5 on the top bet.
     assert_eq!(g.players[1].points, 2); // One original accusation denies perfect bluff.
     assert_eq!(g.players[2].points, 1); // Original correct guess still counts.
     g.resolve(true);
-    assert_eq!(g.players[0].points, 8);
+    assert_eq!(g.players[0].points, 9);
 }
 
 #[test]
@@ -323,7 +328,7 @@ fn target_checks_after_penalties_and_settles_all_players_before_choosing_winners
         g.target_score = target;
         deal(&mut g);
         g.players[0].points = target - 1;
-        g.players[2].points = target - 2;
+        g.players[2].points = target - 3;
         let host = g.host.clone();
         g.pending_reports.insert(host.clone(), 0);
         caught(&mut g, 0);
@@ -333,8 +338,8 @@ fn target_checks_after_penalties_and_settles_all_players_before_choosing_winners
         g.players[0].points = target - 1;
         g.players[2].points = target - 1;
         caught(&mut g, 3);
-        assert_eq!(g.players[0].points, target + 3);
-        assert_eq!(g.players[2].points, target);
+        assert_eq!(g.players[0].points, target + 5); // Gambler top tier.
+        assert_eq!(g.players[2].points, target + 1); // The Judge's correct vote pays 2.
         assert_eq!(g.session_winners, vec![host.clone()]);
         assert!(act(&mut g, &host, "next", Value::Null).is_err());
         finish(&mut g);
@@ -377,7 +382,7 @@ fn shared_win_and_restart_clear_session_state_preserving_connections_and_fairnes
     assert!(!g.session_started);
     assert!(g.session_winners.is_empty());
     assert!(g.players.iter().all(|p| p.points == 0 && p.earned == 0));
-    assert!(g.reading_streaks.is_empty() && g.pending_reports.is_empty());
+    assert!(g.pending_reports.is_empty());
     assert!(g.round.stakes.is_empty() && g.round.scores.is_empty() && !g.round.committed);
     assert_eq!(g.imposter_turns, history);
     assert_eq!(g.deck, used);
@@ -401,17 +406,15 @@ fn shared_win_and_restart_clear_session_state_preserving_connections_and_fairnes
 }
 
 #[test]
-fn abandoning_a_wager_changes_neither_balance_nor_streak_or_pending_reports() {
+fn abandoning_a_wager_changes_neither_balance_nor_pending_reports() {
     let mut g = lobby(4);
     deal(&mut g);
     let host = g.host.clone();
     g.players[0].points = 3;
-    g.reading_streaks.insert(host.clone(), 2);
     g.pending_reports.insert(host.clone(), 0);
     vote(&mut g, 0, 1, 3).unwrap();
     act(&mut g, &host, "abandon", Value::Null).unwrap();
     assert_eq!(g.players[0].points, 3);
-    assert_eq!(g.reading_streaks[&host], 2);
     assert_eq!(g.pending_reports[&host], 0);
     assert!(g.round.stakes.is_empty());
     deal(&mut g);

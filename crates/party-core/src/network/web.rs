@@ -1345,8 +1345,15 @@ mod tests {
         }
         let result = crate::network::tests::wait_phase(&host, "results").await;
         assert_eq!(result["result"]["escaped"], false);
+        let roles = &result["result"]["cast"]["roles"];
         for p in result["players"].as_array().unwrap() {
-            assert_eq!(p["points"], if p["id"] == imposter { 0 } else { 1 });
+            // A caught imposter scores nothing; the Judge's correct vote pays two.
+            let expected = match (p["id"] == imposter, &roles[p["id"].as_str().unwrap()]) {
+                (true, _) => 0,
+                (_, role) if role == "judge" => 2,
+                _ => 1,
+            };
+            assert_eq!(p["points"], expected, "{p}");
         }
         host.send(command(round, "report", json!([])))
             .await

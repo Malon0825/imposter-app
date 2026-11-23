@@ -45,6 +45,9 @@ fn index() -> &'static Index {
 pub(crate) struct Candidate {
     pub word: &'static Word,
     pub hint: &'static str,
+    /// Other words the same hint fits, with a different concept, still in this
+    /// round's pool. Full Cast deals one of them to the Decoy.
+    pub decoys: Vec<&'static Word>,
 }
 
 pub(crate) type Topics = BTreeMap<String, Vec<Candidate>>;
@@ -209,9 +212,18 @@ fn viable_hints(mode: GameMode, mut pool: Vec<&'static Word>) -> Vec<Candidate> 
                             .len()
                             >= 3
                     })?;
+                let concept = &index().words[&word.word_id].concept;
+                let decoys = hint
+                    .candidates
+                    .iter()
+                    .filter(|id| remaining.contains(id.as_str()))
+                    .filter(|id| &index().words[*id].concept != concept)
+                    .filter_map(|id| pool.iter().copied().find(|w| &w.word_id == id))
+                    .collect();
                 Some(Candidate {
                     word,
                     hint: &hint.text,
+                    decoys,
                 })
             })
             .collect();
@@ -268,6 +280,7 @@ mod tests {
         let candidate = Candidate {
             word: word(name),
             hint: "fixture",
+            decoys: vec![],
         };
         deck.deals.push(deal(
             &candidate,

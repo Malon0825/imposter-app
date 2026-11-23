@@ -1,4 +1,5 @@
 use crate::{
+    cast::{self, Cast, Picks, Role},
     content::{self, GameMode},
     history::Deck,
     selection,
@@ -36,8 +37,13 @@ pub struct ScoreBreakdown {
     pub before: i32,
     pub base: i32,
     pub bet: i32,
-    pub streak: i32,
     pub bluff: i32,
+    /// Full Cast extras: pair bonus, decoy catch, and the decoy's caught-imposter point.
+    pub bonus: i32,
+    /// Full Cast: spotted this round, so no gains (a lost bet still counts).
+    pub voided: bool,
+    /// Full Cast: the accomplice voted for the Detective (−1).
+    pub fine: i32,
     pub penalty: i32,
     pub after: i32,
 }
@@ -68,6 +74,8 @@ pub struct Round {
     definition: String,
     pub hint: String,
     pub starting: String,
+    /// The round's speaking order, starting player first.
+    pub order: Vec<String>,
     pub acknowledged: HashSet<String>,
     pub original: BTreeMap<String, String>,
     pub stakes: BTreeMap<String, u32>,
@@ -83,6 +91,10 @@ pub struct Round {
     pub turn: usize,
     pub choice: Option<String>,
     pub giver: Option<String>,
+    cast: Option<Cast>,
+    picks: BTreeMap<String, Picks>,
+    cast_facts: Option<cast::Facts>,
+    judge_tiebreak: bool,
 }
 #[derive(Clone, Debug)]
 pub struct Game {
@@ -102,13 +114,17 @@ pub struct Game {
     pub target_score: i32,
     pub session_started: bool,
     pub session_winners: Vec<String>,
-    reading_streaks: BTreeMap<String, u32>,
     pending_reports: BTreeMap<String, u32>,
     // Party-only selection history, deliberately excluded from per-player views.
     imposter_turns: BTreeMap<String, u64>,
     rule_turns: BTreeMap<GameMode, u64>,
     last_rule: Option<GameMode>,
     last_imposter: Option<String>,
+    /// Who spoke first last round; they never open the next one.
+    last_starting: Option<String>,
+    /// Full Cast seats held per role (the imposter uses `imposter_turns`).
+    role_turns: BTreeMap<(Role, String), u64>,
+    last_roles: BTreeMap<String, Role>,
     processed: HashSet<String>,
     replacement: bool,
     restart_notice: Option<&'static str>,
@@ -123,6 +139,17 @@ pub struct Action {
     pub kind: String,
     #[serde(default)]
     pub value: Value,
+}
+/// A fresh random speaking order each round. Whoever opened the previous
+/// round never opens this one: they swap with a random later speaker.
+fn speaking_order(roster: &[String], last_first: Option<&str>, rng: &mut impl rand::Rng) -> Vec<String> {
+    let mut order = roster.to_vec();
+    order.shuffle(rng);
+    if order.len() > 1 && order.first().map(String::as_str) == last_first {
+        let other = rng.gen_range(1..order.len());
+        order.swap(0, other);
+    }
+    order
 }
 pub fn clean_name(s: &str) -> GameResult<String> {
     let s = ComposingNormalizer::new_nfc().normalize(s.trim());
@@ -171,12 +198,14 @@ impl Game {
             target_score: 15,
             session_started: false,
             session_winners: vec![],
-            reading_streaks: BTreeMap::new(),
             pending_reports: BTreeMap::new(),
             imposter_turns: BTreeMap::new(),
             rule_turns: BTreeMap::new(),
             last_rule: None,
             last_imposter: None,
+            last_starting: None,
+            role_turns: BTreeMap::new(),
+            last_roles: BTreeMap::new(),
             processed: HashSet::new(),
             replacement: false,
             restart_notice: None,
@@ -234,39 +263,6 @@ impl Game {
             .map(|p| p.id.clone())
             .ok_or_else(|| "Your place is no longer available. Join the party again.".into())
     }
-    fn imposter_weights(&self) -> Vec<(&str, f64)> {
-        let eligible: Vec<_> = self
-            .players
-            .iter()
-            .filter(|p| !p.left && p.connected && self.round.roster.contains(&p.id))
-            .collect();
-        let minimum = eligible
-            .iter()
-            .map(|p| self.imposter_turns.get(&p.id).copied().unwrap_or(0))
-            .min()
-            .unwrap_or(0);
-        eligible
-            .into_iter()
-            .map(|p| {
-                let turns = self.imposter_turns.get(&p.id).copied().unwrap_or(0);
-                // One extra turn reduces weight to 1/4; two extra turns to 1/9.
-                // Bound the gap so even very long parties retain meaningful odds.
-                let gap = turns.saturating_sub(minimum).min(15) as f64;
-                let recent = if self.last_imposter.as_deref() == Some(p.id.as_str()) {
-                    0.5
-                } else {
-                    1.0
-                };
-                (p.id.as_str(), recent / (1.0 + gap).powi(2))
-            })
-            .collect()
-    }
-    fn choose_imposter(&self, rng: &mut impl rand::Rng) -> GameResult<String> {
-        self.imposter_weights()
-            .choose_weighted(rng, |(_, weight)| *weight)
-            .map(|(id, _)| (*id).to_owned())
-            .map_err(|_| "No connected players are available for this round.".into())
-    }
     fn rule_weights(&self, feasible: &[GameMode]) -> Vec<(GameMode, f64)> {
         // A rule that has never been feasible starts level with the least aired
         // one, so it is preferred without flooding the next several rounds.
@@ -291,6 +287,84 @@ impl Game {
         let turns = self.rule_turns.entry(rule).or_default();
         *turns = turns.saturating_add(1);
         self.last_rule = Some(rule);
+    }
+    /// One seat's weight in the deal: the fewer turns a player has had in this
+    /// role, the likelier they are to draw it next.
+    fn role_weight(&self, role: Role, id: &str) -> f64 {
+        let roster = &self.round.roster;
+        if role == Role::Imposter {
+            let turns = |p: &str| self.imposter_turns.get(p).copied().unwrap_or(0);
+            let minimum = roster.iter().map(|p| turns(p)).min().unwrap_or(0);
+            return cast::weight(turns(id), minimum, self.last_imposter.as_deref() == Some(id));
+        }
+        let minimum = roster
+            .iter()
+            .filter_map(|p| self.role_turns.get(&(role, p.clone())).copied())
+            .min()
+            .unwrap_or(0);
+        // Someone never dealt into Full Cast starts level with the group, like
+        // a late arrival's imposter history.
+        let turns = self.role_turns.get(&(role, id.into())).copied().unwrap_or(minimum);
+        cast::weight(turns, minimum, self.last_roles.get(id) == Some(&role))
+    }
+    /// The imposter rotation on its own. The deal draws every seat jointly
+    /// (see `cast::assign`); these isolate the curve the draw is weighted by.
+    #[cfg(test)]
+    fn imposter_weights(&self) -> Vec<(&str, f64)> {
+        self.players
+            .iter()
+            .filter(|p| !p.left && p.connected && self.round.roster.contains(&p.id))
+            .map(|p| (p.id.as_str(), self.role_weight(Role::Imposter, &p.id)))
+            .collect()
+    }
+    #[cfg(test)]
+    fn choose_imposter(&self, rng: &mut impl rand::Rng) -> GameResult<String> {
+        self.imposter_weights()
+            .choose_weighted(rng, |(_, weight)| *weight)
+            .map(|(id, _)| (*id).to_owned())
+            .map_err(|_| "No connected players are available for this round.".into())
+    }
+    /// Tests pin who the imposter is; the dealt cast follows them, with the
+    /// other seats filled from the back of the roster.
+    #[cfg(test)]
+    pub(crate) fn force_imposter(&mut self, id: &str) {
+        let ids = self.round.roster.clone();
+        if let Some(cast) = &mut self.round.cast {
+            let mut roles: BTreeMap<String, Role> =
+                ids.iter().map(|p| (p.clone(), Role::Gambler)).collect();
+            roles.insert(id.to_string(), Role::Imposter);
+            let mut seats = ids.iter().rev().filter(|p| p.as_str() != id);
+            for role in cast::specials(ids.len()).iter().filter(|r| **r != Role::Imposter) {
+                if let Some(p) = seats.next() {
+                    roles.insert(p.clone(), *role);
+                }
+            }
+            cast.cleared = ids
+                .iter()
+                .find(|p| matches!(roles[*p], Role::Judge | Role::Decoy | Role::Gambler))
+                .cloned()
+                .unwrap_or_default();
+            cast.roles = roles;
+        }
+        self.round.imposter = id.to_string();
+    }
+    fn record_cast(&mut self, roles: &BTreeMap<String, Role>) {
+        for role in [Role::Accomplice, Role::Detective, Role::Judge, Role::Decoy, Role::Gambler] {
+            let minimum = roles
+                .keys()
+                .filter_map(|p| self.role_turns.get(&(role, p.clone())).copied())
+                .min()
+                .unwrap_or(0);
+            for p in roles.keys() {
+                self.role_turns.entry((role, p.clone())).or_insert(minimum);
+            }
+        }
+        for (p, role) in roles {
+            if let Some(turns) = self.role_turns.get_mut(&(*role, p.clone())) {
+                *turns = turns.saturating_add(1);
+            }
+        }
+        self.last_roles = roles.clone();
     }
     fn record_imposter(&mut self, id: &str) {
         let turns = self.imposter_turns.entry(id.into()).or_default();
@@ -414,7 +488,6 @@ impl Game {
                 self.session_number = next_number;
                 self.session_started = false;
                 self.session_winners.clear();
-                self.reading_streaks.clear();
                 self.pending_reports.clear();
                 for p in &mut self.players {
                     p.points = 0;
@@ -554,8 +627,33 @@ impl Game {
                     .ok_or(NO_FRESH_TOPICS)?;
                 let deal =
                     selection::deal(candidate, &self.deck, &self.id, self.round.id, topic, mode);
-                let imposter = self.choose_imposter(&mut rng)?;
-                let starting = self.round.roster.choose(&mut rng).unwrap().clone();
+                let cast = {
+                    let roster = self.round.roster.clone();
+                    // Above four the decoy word shares the imposter's hint group:
+                    // Wallet's decoy may talk about keys while the imposter only
+                    // knows "Pocket". Below that the decoy holds the real word.
+                    let decoy = if cast::bait_decoy(roster.len()) {
+                        None
+                    } else {
+                        Some(candidate.decoys.choose(&mut rng).copied().ok_or(NO_FRESH_TOPICS)?)
+                    };
+                    let roles = cast::assign(&roster, |role, id| self.role_weight(role, id), &mut rng)
+                        .ok_or("You need at least 3 players to start.")?;
+                    let clear: Vec<_> = roles
+                        .iter()
+                        .filter(|(_, r)| !matches!(r, Role::Imposter | Role::Accomplice | Role::Detective))
+                        .map(|(id, _)| id.clone())
+                        .collect();
+                    Cast {
+                        cleared: clear.choose(&mut rng).cloned().unwrap_or_default(),
+                        roles,
+                        decoy_word: decoy.map(|d| d.word.clone()).unwrap_or_default(),
+                        decoy_definition: decoy.map(|d| d.definition.clone()).unwrap_or_default(),
+                    }
+                };
+                let imposter = cast.holder(Role::Imposter).to_owned();
+                let order = speaking_order(&self.round.roster, self.last_starting.as_deref(), &mut rng);
+                let starting = order[0].clone();
                 self.round.word_id = Some(deal.word.clone());
                 self.round.word = candidate.word.word.clone();
                 self.round.definition = candidate.word.definition.clone();
@@ -566,8 +664,12 @@ impl Game {
                 // Charge the turn when cards are dealt, including abandoned
                 // rounds. Action deduplication prevents retry double-counting.
                 self.record_imposter(&imposter);
+                self.record_cast(&cast.roles);
+                self.round.cast = Some(cast);
                 self.round.imposter = imposter;
+                self.last_starting = Some(starting.clone());
                 self.round.starting = starting;
+                self.round.order = order;
                 self.round.clue_turn = 1;
                 self.round.deal_error = None;
                 self.phase = "roles".into();
@@ -700,6 +802,11 @@ impl Game {
                         return Err("Your bet cannot exceed your available points.".into());
                     }
                 }
+                let picks = if is_runoff {
+                    None
+                } else {
+                    self.cast_picks(actor, target, &action.value)?
+                };
                 let votes = if is_runoff {
                     &mut self.round.runoff
                 } else {
@@ -709,6 +816,9 @@ impl Game {
                     return Err("Your vote is already locked.".into());
                 }
                 votes.insert(actor.into(), target.into());
+                if let Some(picks) = picks {
+                    self.round.picks.insert(actor.into(), picks);
+                }
                 let all_voted = votes.len() == self.round.roster.len();
                 if !is_runoff {
                     self.round.stakes.insert(actor.into(), stake);
@@ -1144,7 +1254,7 @@ impl Game {
             return;
         }
         self.round.roster.retain(|p| p != id);
-        if self.round.roster.len() < 3 {
+        if self.round.roster.len() < cast::MIN_PLAYERS {
             self.to_lobby();
             return;
         }
@@ -1174,6 +1284,111 @@ impl Game {
             self.phase = "punishment".into();
         }
     }
+    /// Validates the extra Full Cast ballot fields for the voter's role.
+    fn cast_picks(&self, actor: &str, accused: &str, value: &Value) -> GameResult<Option<Picks>> {
+        let field = |key: &str| value.get(key).and_then(Value::as_str);
+        let (accomplice, decoy) = (field("accomplice_id"), field("decoy_id"));
+        let not_yours = || Err("That pick isn't part of your role.".to_string());
+        let Some(cast) = &self.round.cast else {
+            return if accomplice.or(decoy).is_some() { not_yours() } else { Ok(None) };
+        };
+        let in_round = |id: &str| id != actor && self.round.roster.iter().any(|p| p == id);
+        // Below five there is no accomplice to name and the decoy holds the
+        // real word, so the imposter's ballot is a plain vote.
+        if cast::bait_decoy(self.round.roster.len()) {
+            return if accomplice.or(decoy).is_some() { not_yours() } else { Ok(None) };
+        }
+        match cast.roles.get(actor) {
+            Some(Role::Imposter) => {
+                let (Some(a), Some(d)) = (accomplice, decoy) else {
+                    return Err("Pick your accomplice and the decoy.".into());
+                };
+                if !in_round(a) || !in_round(d) || a == d {
+                    return Err("Pick two different players.".into());
+                }
+                Ok(Some(Picks {
+                    accomplice: Some(a.into()),
+                    decoy: Some(d.into()),
+                }))
+            }
+            Some(Role::Detective) => {
+                if decoy.is_some() {
+                    return not_yours();
+                }
+                // Both reads are required; the bet rides on the accomplice pick.
+                let Some(a) = accomplice else {
+                    return Err("Pick the accomplice too.".into());
+                };
+                if !in_round(a) || a == accused {
+                    return Err("Pick someone other than your imposter pick as the accomplice.".into());
+                }
+                Ok(Some(Picks {
+                    accomplice: Some(a.into()),
+                    decoy: None,
+                }))
+            }
+            _ if accomplice.or(decoy).is_some() => not_yours(),
+            _ => Ok(None),
+        }
+    }
+    fn score_full_cast(&mut self, escaped: bool, perfect_bluff: bool) {
+        let Some(cast) = self.round.cast.clone() else {
+            return;
+        };
+        let picked = |role: Role, pick: fn(&Picks) -> Option<&String>| {
+            self.round.picks.get(cast.holder(role)).and_then(pick).map(String::as_str)
+        };
+        let facts = cast::Facts {
+            escaped,
+            perfect_bluff,
+            accomplice_caught: picked(Role::Detective, |p| p.accomplice.as_ref())
+                == Some(cast.holder(Role::Accomplice)),
+            decoy_caught: picked(Role::Imposter, |p| p.decoy.as_ref()) == Some(cast.holder(Role::Decoy)),
+            pair_named: picked(Role::Imposter, |p| p.accomplice.as_ref())
+                == Some(cast.holder(Role::Accomplice)),
+            bait_decoy: cast::bait_decoy(self.round.roster.len()),
+            // Only ballots that count toward the verdict can bait the Decoy.
+            decoy_voted: self.round.original.iter().any(|(voter, target)| {
+                target == cast.holder(Role::Decoy)
+                    && !(self.streamlined() && voter == &self.round.imposter)
+            }),
+            decoy_convicted: self.round.accused.as_deref() == Some(cast.holder(Role::Decoy)),
+        };
+        for p in &mut self.players {
+            let Some(&role) = cast.roles.get(&p.id) else {
+                continue;
+            };
+            let correct = self.round.original.get(&p.id) == Some(&self.round.imposter);
+            let stake = self.round.stakes.get(&p.id).copied().unwrap_or(0);
+            let side_pick = role == Role::Detective && facts.accomplice_caught;
+            // Voting blind is risky for the accomplice: naming the Detective costs 1.
+            let voted_detective = role == Role::Accomplice
+                && self.round.original.get(&p.id).map(String::as_str) == Some(cast.holder(Role::Detective));
+            let award = cast::award(role, &facts, correct, side_pick, stake, voted_detective);
+            p.earned = award.total();
+            let before = p.points;
+            p.points = (p.points + p.earned).max(0);
+            self.round.scores.insert(
+                p.id.clone(),
+                ScoreBreakdown {
+                    before,
+                    base: award.base,
+                    bet: award.bet,
+                    bluff: award.bluff,
+                    bonus: award.bonus,
+                    voided: award.voided,
+                    fine: award.fine,
+                    after: p.points,
+                    ..Default::default()
+                },
+            );
+            // Each role decides its own loss.
+            if award.lost {
+                self.round.queue.push(p.id.clone());
+            }
+        }
+        self.round.cast_facts = Some(facts);
+    }
     fn resolve(&mut self, runoff: bool) {
         let streamlined = self.streamlined();
         let votes = if runoff {
@@ -1181,19 +1396,33 @@ impl Game {
         } else {
             &self.round.original
         };
+        // The Judge's doubled ballot waits for a room it cannot decide alone;
+        // until then they hold the tiebreak and nothing else.
+        let judge = self.round.cast.as_ref().map(|c| c.holder(Role::Judge).to_owned());
+        let doubled = self.round.roster.len() >= cast::JUDGE_DOUBLE_FROM;
         let mut counts: BTreeMap<String, usize> = BTreeMap::new();
         for (actor, v) in votes {
             if streamlined && actor == &self.round.imposter {
                 continue;
             }
-            *counts.entry(v.clone()).or_default() += 1;
+            *counts.entry(v.clone()).or_default() +=
+                if doubled && judge.as_ref() == Some(actor) { 2 } else { 1 };
         }
         let max = counts.values().copied().max().unwrap_or(0);
-        let tied: Vec<_> = counts
+        let mut tied: Vec<_> = counts
             .into_iter()
             .filter(|(_, n)| *n == max)
             .map(|(id, _)| id)
             .collect();
+        // The Judge breaks a tie only by catching the imposter; any other tie
+        // still lets the imposter escape.
+        let tiebreak = tied.len() > 1
+            && tied.contains(&self.round.imposter)
+            && judge.and_then(|j| votes.get(&j)) == Some(&self.round.imposter);
+        if tiebreak {
+            tied = vec![self.round.imposter.clone()];
+        }
+        self.round.judge_tiebreak = tiebreak;
         if !streamlined && tied.len() > 1 && !runoff {
             self.round.candidates = tied;
             self.phase = "runoff".into();
@@ -1221,49 +1450,7 @@ impl Game {
                 .map(|p| (p.id.clone(), p.points))
                 .collect();
         }
-        for p in &mut self.players {
-            if !self.round.roster.contains(&p.id) {
-                continue;
-            }
-            let was_imposter = p.id == self.round.imposter;
-            let correct = self.round.original.get(&p.id) == Some(&self.round.imposter);
-            let base = if was_imposter {
-                if imposter_escaped {
-                    2
-                } else {
-                    0
-                }
-            } else {
-                i32::from(correct)
-            };
-            let mut score = ScoreBreakdown {
-                before: p.points,
-                base,
-                ..Default::default()
-            };
-            if was_imposter {
-                score.bluff = i32::from(perfect_bluff);
-                if streamlined {
-                    let stake = self.round.stakes.get(&p.id).copied().unwrap_or(0) as i32;
-                    score.bet = if imposter_escaped { stake } else { -stake };
-                }
-            } else {
-                let stake = self.round.stakes.get(&p.id).copied().unwrap_or(0) as i32;
-                score.bet = if correct { stake } else { -stake };
-                let streak = self.reading_streaks.entry(p.id.clone()).or_default();
-                *streak = if correct { streak.saturating_add(1) } else { 0 };
-                score.streak = i32::from(correct && *streak % 3 == 0);
-            }
-            p.earned = score.base + score.bet + score.streak + score.bluff;
-            p.points = (p.points + p.earned).max(0);
-            score.after = p.points;
-            self.round.scores.insert(p.id.clone(), score);
-            // Drink/Dare depends on the original outcome, not points wagered
-            // or deductions. Neither bets nor reports add punishment turns.
-            if base == 0 {
-                self.round.queue.push(p.id.clone());
-            }
-        }
+        self.score_full_cast(imposter_escaped, perfect_bluff);
         // Apply the previous completed round's reports only after this round's
         // normal scoring. Abandoned rounds never drain these pending penalties.
         for (id, source_round) in std::mem::take(&mut self.pending_reports) {
@@ -1314,7 +1501,18 @@ impl Game {
             json!({"stage":stage,"remaining_ms":deadline.saturating_duration_since(now).as_millis(),"total_ms":duration.as_millis(),"shuffled":self.phase == "rule_reveal" && self.round.random_at_start})
         });
         let escaped = self.round.accused.as_ref() != Some(&self.round.imposter);
+        let facts = self.round.cast_facts.unwrap_or_default();
+        let role_of = |id: &str| self.round.cast.as_ref().and_then(|c| c.roles.get(id).copied());
         let outcome = |id: &str| -> Option<&'static str> {
+            match role_of(id) {
+                Some(Role::Accomplice) if facts.accomplice_caught => return Some("spotted"),
+                Some(Role::Decoy) if facts.decoy_caught => return Some("spotted"),
+                // The bait Decoy went too far and took the fall themselves.
+                Some(Role::Decoy) if facts.decoy_convicted => return Some("spotted"),
+                // The accomplice shares the imposter's fate.
+                Some(Role::Accomplice) => return Some(if escaped { "escaped" } else { "caught" }),
+                _ => {}
+            }
             if id == self.round.imposter {
                 Some(if escaped { "escaped" } else { "caught" })
             } else {
@@ -1328,7 +1526,7 @@ impl Game {
         // else's waits for the recap.
         let verdict = (reveal.as_ref().is_some_and(|v| v["stage"] == "verdict")).then(|| json!({
             "imposter_id":self.round.imposter,"escaped":escaped,"tied":self.round.accused.is_none(),
-            "my_outcome":outcome(actor),"my_delta":delta(actor)
+            "my_outcome":outcome(actor),"my_delta":delta(actor),"my_role":role_of(actor)
         }));
         let outcomes: Vec<Value> = self
             .round
@@ -1358,6 +1556,17 @@ impl Game {
             && self.round.roster.iter().any(|id| id == actor)
             && me.is_some_and(|p| !p.left);
         let private_role = roles.then(|| {
+            if let Some(cast) = &self.round.cast {
+                let role = cast.roles.get(actor).copied();
+                return match role {
+                    Some(Role::Imposter) => json!({"role":role,"imposter":true,"clue":self.round.hint}),
+                    // The bait Decoy holds the real word, so their card is the usual one.
+                    Some(Role::Decoy) if !cast.decoy_word.is_empty() => json!({"role":role,"imposter":false,"clue":cast.decoy_word,"definition":cast.decoy_definition}),
+                    _ => json!({"role":role,"imposter":false,"clue":self.round.word,"definition":self.round.definition,
+                        "imposter_id":(role == Some(Role::Accomplice)).then_some(&self.round.imposter),
+                        "cleared_id":(role == Some(Role::Detective)).then_some(&cast.cleared)}),
+                };
+            }
             if actor == self.round.imposter {
                 json!({"imposter":true,"clue":self.round.hint})
             } else {
@@ -1387,7 +1596,8 @@ impl Game {
           "rule_change_pending":host && self.round.rule.is_some() && self.deck.random_rules != self.round.random_at_start,
           "deck_status":deck_status,
           "score_session":{"number":self.session_number,"target":self.target_score,"started":self.session_started,"complete":!staged && !self.session_winners.is_empty(),"winner_ids":if staged {&[][..]}else{&self.session_winners}},
-          "betting":{"eligible":roles && (self.streamlined() || actor!=self.round.imposter),"max_stake":if roles && (self.streamlined() || actor!=self.round.imposter) {me.map(|p|p.points.clamp(0,3)).unwrap_or(0)}else{0},"my_stake":self.round.stakes.get(actor),"original_vote":self.round.original.get(actor),"reading_streak":if staged {0}else{self.reading_streaks.get(actor).copied().unwrap_or(0)}},
+          "betting":{"eligible":roles && (self.streamlined() || actor!=self.round.imposter),"max_stake":if roles && (self.streamlined() || actor!=self.round.imposter) {me.map(|p|p.points.clamp(0,3)).unwrap_or(0)}else{0},"my_stake":self.round.stakes.get(actor),"original_vote":self.round.original.get(actor),
+            "top_payout":if role_of(actor) == Some(Role::Gambler) {5}else{3},"my_picks":self.round.picks.get(actor)},
           "topic_vote":if !self.round.topic_voters.is_empty() && !["lobby","rule_reveal"].contains(&self.phase.as_str()) {Some(json!({
             "my_topics":self.round.topic_ballots.get(actor), "submitted_ids":self.round.topic_ballots.keys().collect::<Vec<_>>(),
             "player_ids":self.round.topic_voters,"available_topics":self.round.topic_pool,
@@ -1399,9 +1609,12 @@ impl Game {
           "private_role":private_role,
           "clue_turn":self.round.clue_turn,"clues":self.round.clues.iter().flat_map(|(player_id, turns)| turns.iter().map(move |(turn, text)| json!({"player_id":player_id,"turn":turn,"text":text}))).collect::<Vec<_>>(),
           "performed":self.round.performed.iter().flat_map(|(player_id, turns)| turns.iter().map(move |turn| json!({"player_id":player_id,"turn":turn}))).collect::<Vec<_>>(),
-          "role_ready":self.round.acknowledged.contains(actor),"ready_count":self.round.acknowledged.len(),"starting_id":if self.phase=="discussion" {Some(&self.round.starting)}else{None},
+          "role_ready":self.round.acknowledged.contains(actor),"ready_count":self.round.acknowledged.len(),"starting_id":if self.phase=="discussion" {Some(&self.round.starting)}else{None},"speaking_order":if self.phase=="discussion" {Some(&self.round.order)}else{None},
           "vote_count":votes.len(),"my_vote":votes.get(actor),"candidates":if self.phase=="runoff" {self.round.candidates.clone()}else{vec![]},
-          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"definition":self.round.definition,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0),"outcomes":outcomes}))}else{None},
+          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"definition":self.round.definition,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0),"outcomes":outcomes,
+            "cast":self.round.cast.as_ref().map(|c| json!({"roles":c.roles,"decoy_word":c.decoy_word,"my_role":c.roles.get(actor),
+              "bait_decoy":facts.bait_decoy,"decoy_voted":facts.decoy_voted,
+              "accomplice_caught":facts.accomplice_caught,"decoy_caught":facts.decoy_caught,"pair_bonus":facts.pair_bonus(),"judge_tiebreak":self.round.judge_tiebreak}))}))}else{None},
           "reporting":if self.phase=="reporting" || (self.streamlined() && self.phase=="results") {Some(json!({"my_reports":self.round.reports.get(actor),"submitted_count":self.round.reports.len(),"total":self.round.roster.len(),"majority":self.round.roster.len()/2+1,"player_ids":self.round.roster}))}else{None},
           "punishment":if self.phase=="punishment" {Some(json!({"player_id":current,"giver_id":self.round.giver,"choice":self.round.choice,"turn":self.round.turn+1,"total":self.round.queue.len()}))}else{None}})
     }
@@ -1410,6 +1623,10 @@ impl Game {
 #[cfg(test)]
 #[path = "scoring_tests.rs"]
 mod scoring_tests;
+
+#[cfg(test)]
+#[path = "cast_tests.rs"]
+mod cast_tests;
 
 #[cfg(test)]
 mod tests {
@@ -1469,6 +1686,26 @@ mod tests {
     }
 
     #[test]
+    fn speaking_order_is_a_fresh_shuffle_that_never_repeats_the_opener() {
+        let roster: Vec<String> = (0..6).map(|i| format!("p{i}")).collect();
+        let mut rng = rand::thread_rng();
+        let mut last: Option<String> = None;
+        let mut openers = BTreeMap::new();
+        for _ in 0..3000 {
+            let order = speaking_order(&roster, last.as_deref(), &mut rng);
+            let mut sorted = order.clone();
+            sorted.sort();
+            assert_eq!(sorted, roster, "every player speaks once");
+            assert_ne!(Some(&order[0]), last.as_ref(), "same opener twice in a row");
+            *openers.entry(order[0].clone()).or_insert(0) += 1;
+            last = Some(order[0].clone());
+        }
+        // Everyone opens rounds, about a sixth of the time each.
+        assert!(openers.values().all(|n| (400..=600).contains(n)), "{openers:?}");
+        assert_eq!(speaking_order(&roster[..1], Some("p0"), &mut rng), vec!["p0".to_string()]);
+    }
+
+    #[test]
     fn streamlined_catches_at_every_party_size_and_masks_the_score_until_recap() {
         for size in 3..=12 {
             let mut game = Game::new("Round flow", "Alex", "Wi-Fi").unwrap();
@@ -1482,7 +1719,7 @@ mod tests {
             let host = game.host.clone();
             action(&mut game, &host, "start", Value::Null).unwrap();
             finish_topics(&mut game);
-            game.round.imposter = host.clone();
+            game.force_imposter(&host);
             let civilians = game.round.roster[1..].to_vec();
             game.phase = "voting".into();
             assert!(action(
@@ -1493,16 +1730,12 @@ mod tests {
             )
             .is_err());
             for id in &civilians {
-                action(&mut game, id, "vote", json!({"player_id":host,"stake":1})).unwrap();
+                let ballot = with_picks(&game, id, json!({"player_id":host,"stake":1}));
+                action(&mut game, id, "vote", ballot).unwrap();
             }
             assert_eq!(game.phase, "voting");
-            action(
-                &mut game,
-                &host,
-                "vote",
-                json!({"player_id":civilians[0],"stake":3}),
-            )
-            .unwrap();
+            let ballot = with_picks(&game, &host, json!({"player_id":civilians[0],"stake":3}));
+            action(&mut game, &host, "vote", ballot).unwrap();
             assert_eq!(game.phase, "result_reveal");
             let suspense = game.view(&host);
             assert!(suspense["result"].is_null() && suspense["verdict"].is_null());
@@ -1527,7 +1760,7 @@ mod tests {
     fn dummy_vote_does_not_break_a_tie_and_skip_preserves_the_deck_and_scores() {
         let mut game = party();
         let [host, a, b, c]: [String; 4] = game.round.roster.clone().try_into().unwrap();
-        game.round.imposter = host.clone();
+        game.force_imposter(&host);
         game.players[0].points = 3;
         game.phase = "voting".into();
         for (voter, target, stake) in [(&host, &b, 3), (&a, &host, 0), (&b, &c, 0), (&c, &b, 0)] {
@@ -1561,7 +1794,6 @@ mod tests {
         let old_id = game.round.id;
         game.phase = "voting".into();
         game.pending_reports.insert(a.clone(), old_id - 1);
-        let streak = game.reading_streaks[&a];
         action(&mut game, &a, "vote", json!({"player_id":host,"stake":1})).unwrap();
         assert!(action(&mut game, &a, "skip_round", json!(false)).is_err());
         action(&mut game, &host, "skip_round", json!(false)).unwrap();
@@ -1571,7 +1803,6 @@ mod tests {
         assert_eq!(game.deck.deals.len(), played);
         assert_eq!(game.players[0].points, 8);
         assert_eq!(game.players[1].points, 1);
-        assert_eq!(game.reading_streaks[&a], streak);
         assert_eq!(game.pending_reports.get(&a), Some(&(old_id - 1)));
         assert!(game.view(&a)["private_role"].is_null());
         assert!(game
@@ -1593,7 +1824,7 @@ mod tests {
     fn each_player_sees_their_own_outcome_before_everyone_elses() {
         let mut game = party();
         let [host, a, b, c]: [String; 4] = game.round.roster.clone().try_into().unwrap();
-        game.round.imposter = host.clone();
+        game.force_imposter(&host);
         game.phase = "voting".into();
         for (voter, target) in [(&a, &host), (&b, &host), (&c, &a), (&host, &b)] {
             action(&mut game, voter, "vote", json!(target)).unwrap();
@@ -1642,7 +1873,7 @@ mod tests {
             for stake in 0..=3 {
                 let mut game = party();
                 let [host, a, b, c]: [String; 4] = game.round.roster.clone().try_into().unwrap();
-                game.round.imposter = host.clone();
+                game.force_imposter(&host);
                 game.players[0].points = stake as i32;
                 game.phase = "voting".into();
                 assert!(action(&mut game, &host, "vote", json!({"player_id":a,"stake":stake + 1})).is_err());
@@ -1665,7 +1896,7 @@ mod tests {
         let moved_on = "The party has moved on. Your screen will update.";
         let mut game = party();
         let [host, a, b, c]: [String; 4] = game.round.roster.clone().try_into().unwrap();
-        game.round.imposter = host.clone();
+        game.force_imposter(&host);
         game.phase = "voting".into();
         for voter in [&a, &b, &c] {
             action(&mut game, voter, "vote", json!(&host)).unwrap();
@@ -1714,7 +1945,7 @@ mod tests {
         action(&mut game, &host, "start", Value::Null).unwrap();
         finish_topics(&mut game);
         let stale_round = game.round.id;
-        game.round.imposter = host.clone();
+        game.force_imposter(&host);
         game.phase = "voting".into();
         for voter in [&a, &b, &c] {
             action(&mut game, voter, "vote", json!(&host)).unwrap();
@@ -1847,9 +2078,33 @@ mod tests {
             assert_eq!(game.round.rule, Some(GameMode::Classic));
         }
     }
+    /// Adds the picks a role owes with its ballot from five players up.
+    fn with_picks(g: &Game, voter: &str, mut value: Value) -> Value {
+        let Some(cast) = &g.round.cast else { return value };
+        let others: Vec<String> = g
+            .round
+            .roster
+            .iter()
+            .filter(|p| p.as_str() != voter)
+            .cloned()
+            .collect();
+        match cast.roles.get(voter) {
+            Some(Role::Imposter) if !cast::bait_decoy(g.round.roster.len()) => {
+                value["accomplice_id"] = json!(others[0]);
+                value["decoy_id"] = json!(others[1]);
+            }
+            Some(Role::Detective) => {
+                let accused = value["player_id"].as_str().unwrap_or_default().to_string();
+                value["accomplice_id"] = json!(others.iter().find(|p| **p != accused).unwrap());
+            }
+            _ => {}
+        }
+        value
+    }
     fn ballots(g: &mut Game, targets: [usize; 4]) {
         g.phase = "voting".into();
-        g.round.imposter = g.players[1].id.clone();
+        let second = g.players[1].id.clone();
+                g.force_imposter(&second);
         for (i, t) in targets.iter().enumerate() {
             let id = g.players[i].id.clone();
             let v = g.players[*t].id.clone();
@@ -2236,7 +2491,7 @@ mod tests {
     #[test]
     fn reports_allow_multiple_targets_and_apply_once_after_next_scoring() {
         let mut g = party();
-        ballots(&mut g, [2, 2, 1, 0]);
+        ballots(&mut g, [2, 0, 1, 2]);
         open_reports(&mut g);
         let ids = g.players.iter().map(|p| p.id.clone()).collect::<Vec<_>>();
         let scores = g.players.iter().map(|p| p.points).collect::<Vec<_>>();
@@ -2262,13 +2517,13 @@ mod tests {
         next_round(&mut g);
         assert!(g.round.reports.is_empty());
         assert_eq!(g.players[0].points, 0);
-        ballots(&mut g, [2, 2, 1, 0]);
+        ballots(&mut g, [2, 0, 1, 2]);
         assert_eq!(
             g.players.iter().map(|p| p.points).collect::<Vec<_>>(),
-            vec![0, 4, 1, 0]
+            vec![0, 4, 3, 0]
         );
         let view = g.view(&ids[2]);
-        assert_eq!(view["result"]["earned"], 1);
+        assert_eq!(view["result"]["earned"], 2);
         assert_eq!(view["result"]["report_penalty"], 1);
         assert_eq!(view["result"]["report_round"], source_round);
         assert!(
@@ -2298,10 +2553,13 @@ mod tests {
                     finish_topics(&mut g);
                 }
                 g.phase = "voting".into();
-                g.round.imposter = g.players[1].id.clone();
+                let second = g.players[1].id.clone();
+                g.force_imposter(&second);
                 let ids = g.players.iter().map(|p| p.id.clone()).collect::<Vec<_>>();
                 for (i, id) in ids.iter().enumerate() {
-                    action(&mut g, id, "vote", json!(ids[if i == 1 { 0 } else { 1 }])).unwrap();
+                    let ballot = json!({"player_id": ids[if i == 1 { 0 } else { 1 }], "stake": 0});
+                    let ballot = with_picks(&g, id, ballot);
+                    action(&mut g, id, "vote", ballot).unwrap();
                 }
                 open_reports(&mut g);
                 assert_eq!(g.view(&ids[0])["reporting"]["majority"], 3);
@@ -2471,11 +2729,13 @@ mod tests {
     #[test]
     fn escaping_imposter_and_correct_civilian_both_score() {
         let mut g = party();
-        ballots(&mut g, [2, 2, 1, 0]);
+        // Two ballots land on the Judge, so the imposter walks even though the
+        // Judge read them right: +2 for the Judge, +2 for the escape.
+        ballots(&mut g, [2, 0, 1, 2]);
         assert_eq!(g.phase, "results");
         assert_eq!(
             g.players.iter().map(|p| p.points).collect::<Vec<_>>(),
-            vec![0, 2, 1, 0]
+            vec![0, 2, 2, 0]
         );
         assert_eq!(g.round.queue.len(), 2);
     }
@@ -2485,7 +2745,7 @@ mod tests {
         ballots(&mut g, [1, 0, 1, 2]);
         assert_eq!(
             g.players.iter().map(|p| p.points).collect::<Vec<_>>(),
-            vec![1, 0, 1, 0]
+            vec![1, 0, 2, 0] // The Judge's correct vote pays two.
         );
     }
     #[test]
@@ -2494,7 +2754,22 @@ mod tests {
         // ponytail: the shipped flow gives a tie to the imposter and never
         // enters a runoff. Delete this with the runoff code.
         g.legacy_test_flow = true;
-        ballots(&mut g, [1, 0, 1, 0]);
+        g.phase = "voting".into();
+        let second = g.players[1].id.clone();
+        g.force_imposter(&second);
+        // The Judge's tiebreak would settle this before a runoff, so hand the
+        // seat to a player whose ballot does not name the imposter.
+        if let Some(cast) = &mut g.round.cast {
+            let (third, fourth) = (g.players[2].id.clone(), g.players[3].id.clone());
+            cast.roles.insert(third, Role::Decoy);
+            cast.roles.insert(fourth, Role::Judge);
+        }
+        for (i, t) in [1, 0, 1, 0].iter().enumerate() {
+            let id = g.players[i].id.clone();
+            let v = g.players[*t].id.clone();
+            action(&mut g, &id, "vote", json!(v)).unwrap();
+        }
+        settle(&mut g);
         assert_eq!(g.phase, "runoff");
         for (i, t) in [1, 0, 1, 0].iter().enumerate() {
             let id = g.players[i].id.clone();

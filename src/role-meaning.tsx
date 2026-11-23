@@ -3,18 +3,18 @@ import { motion, useReducedMotion } from "motion/react";
 import { PawStamp } from "./illustrations";
 import { MOTION } from "./motion";
 
-export function RoleClue({ clue, imposter = false }: { clue: string; imposter?: boolean }) {
+export function RoleClue({ clue, imposter = false, label }: { clue: string; imposter?: boolean; label?: string }) {
   const size = clue.length > 14 ? "long-word" : clue.length > 5 ? "medium-word" : "";
   return (
     <>
-      <p>{imposter ? "Your starting hint" : "Your secret word"}</p>
+      <p>{label ?? (imposter ? "Your starting hint" : "Your secret word")}</p>
       <strong className={`secret-word ${size}`}>{clue}</strong>
       <PawStamp />
     </>
   );
 }
 
-export function RoleMeaning({ word, definition }: { word: string; definition: string }) {
+export function RoleMeaning({ word, definition, label }: { word: string; definition: string; label?: string }) {
   const [meaning, setMeaning] = useState(false);
   const swipeStart = useRef<{ id: number; x: number; y: number } | null>(null);
   const panelId = useId();
@@ -60,7 +60,7 @@ export function RoleMeaning({ word, definition }: { word: string; definition: st
               <div className="role-definition">{definition}</div>
             </>
           ) : (
-            <RoleClue clue={word} />
+            <RoleClue clue={word} label={label} />
           )}
         </motion.div>
       </div>

@@ -27,6 +27,7 @@ import type {
   DeviceStatus,
   Player,
   RecoveryData,
+  CastRole,
   RoundOutcome,
   RoundVerdict,
   SessionData,
@@ -36,6 +37,7 @@ import type {
 import { Icon } from "./icons";
 import { ROUND_RULES, RandomRulesSwitch, RuleArt, RuleIndicator, RuleReveal } from "./round-rules";
 import { RoleClue, RoleMeaning } from "./role-meaning";
+import { baitDecoy, CAST, CAST_ORDER, CastLineup, castCopy, PickChips, RoleBadge, RoleIntel, RoleStage, specials } from "./full-cast";
 import {
   MOTION,
   useDelayedBusy,
@@ -97,13 +99,25 @@ const OUTCOME_HEADLINE: Record<RoundOutcome, string> = {
   wrong: "You guessed wrong",
   escaped: "You escaped",
   caught: "You were caught",
+  spotted: "You were spotted",
 };
 const OUTCOME_CHIP: Record<RoundOutcome, string> = {
   correct: "Got it",
   wrong: "Wrong",
   escaped: "Escaped",
   caught: "Caught",
+  spotted: "Spotted",
 };
+const outcomeHeadline = (o: RoundOutcome, role?: CastRole | null, bait?: boolean) =>
+  role === "accomplice" && o === "caught"
+    ? "Your imposter was caught"
+    : role === "accomplice" && o === "spotted"
+      ? "The Detective spotted you"
+      : role === "decoy" && o === "spotted"
+        ? bait
+          ? "The room convicted you"
+          : "The imposter spotted you"
+        : OUTCOME_HEADLINE[o];
 const goodOutcome = (o: RoundOutcome | null | undefined) =>
   o === "correct" || o === "escaped";
 const recapItem = {
@@ -723,6 +737,13 @@ export default function App() {
   const [editWifi, setEditWifi] = useState(false);
   const [vote, setVote] = useState("");
   const [bet, setBet] = useState(0);
+  // Full Cast ballot extras: the imposter names both; the detective may name an accomplice.
+  const [accomplicePick, setAccomplicePick] = useState<string | null>(null);
+  const [decoyPick, setDecoyPick] = useState<string | null>(null);
+  // The round whose party results this player has opened, after their own.
+  const [roomSeen, setRoomSeen] = useState<number | null>(null);
+  // The round whose Full Cast role screen this player has moved past.
+  const [roleSeen, setRoleSeen] = useState<number | null>(null);
   const [targetScore, setTargetScore] = useState(15);
   const [clueEditor, setClueEditor] = useState<{
     round: number;
@@ -1075,6 +1096,8 @@ export default function App() {
     setRevealed(false);
     setVote("");
     setBet(0);
+    setAccomplicePick(null);
+    setDecoyPick(null);
     setReportTargets([]);
     setReportOpen(false);
     setSkipRule(null);
@@ -1538,9 +1561,14 @@ export default function App() {
     </span>
   );
   function playersList(showClues = false) {
+    // Discussion lists players in the round's speaking order, first speaker on top.
+    const order = showClues ? view?.speaking_order ?? null : null;
+    const players = order
+      ? [...activePlayers].sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id))
+      : activePlayers;
     return (
-      <div className="players-list">
-        {activePlayers.map((p, i) => (
+      <div className={`players-list ${order ? "speaking" : ""}`}>
+        {players.map((p, i) => (
           <motion.div
             className="player-row"
             key={p.id}
@@ -1549,11 +1577,13 @@ export default function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.22, delay: i * 0.035 }}
           >
+            {order && <span className={`speak-order ${i === 0 ? "first" : ""}`}>{i + 1}</span>}
             <Avatar player={p} mine={p.id === view?.host_id} />
             <div className="player-details">
               <strong>
                 {p.name}
                 {showClues && p.id === view?.my_id ? " · You" : ""}
+                {order && i === 0 && <span className="starts-tag">Starts</span>}
                 {!p.connected && (
                   <span className="player-connection-label">Disconnected</span>
                 )}
@@ -2044,8 +2074,8 @@ export default function App() {
                 "Civilians can optionally bet up to 3 of their own points. Correct: gain the bet plus +1. Wrong: lose the bet. Your balance stays at 0 or above.",
               ],
               [
-                "Build a streak",
-                "Every third consecutive correct civilian read earns +1. Imposter rounds keep your streak. An imposter earns +2 for escaping, plus +1 if nobody originally voted for them.",
+                "Everyone has a role",
+                "Three players: Imposter, Decoy, Gambler. The Judge joins at four, the Accomplice and Detective at five, and every player after that is another Gambler. Each role scores its own way, and over a session everyone takes their turn at each one.",
               ],
               [
                 "Race to the target",
@@ -2814,7 +2844,11 @@ export default function App() {
               {view.is_host && (
                 <p className="compact">
                   {activePlayers.length} player
-                  {activePlayers.length === 1 ? "" : "s"} · 1 imposter
+                  {activePlayers.length === 1 ? "" : "s"} ·{" "}
+                  {/* Gamblers count as one role, when the size deals any. */}
+                  {specials(activePlayers.length).length +
+                    Number(activePlayers.length >= 3 && activePlayers.length > specials(activePlayers.length).length)}{" "}
+                  roles
                 </p>
               )}
             </div>
@@ -2848,6 +2882,7 @@ export default function App() {
           </button>
 
           {playersList()}
+          {activePlayers.length >= 3 && <CastLineup players={activePlayers.length} />}
           {activePlayers.length < 3 && (
             <p className="muted compact lobby-tip">
               Invite {3 - activePlayers.length} more player
@@ -2989,22 +3024,43 @@ export default function App() {
                 </p>,
               )}
             </>
+          ) : revealed && view.private_role?.role && !reviewingCard && roleSeen !== view.round_id ? (
+            // Full Cast: the role lands first, so players can plan their act
+            // before the word or hint.
+            <>
+              <RoleStage role={view.private_role.role} players={activePlayers.length} />
+              {footer(
+                <Button onClick={() => setRoleSeen(view.round_id)}>
+                  {view.private_role.imposter
+                    ? "See my hint"
+                    : view.private_role.role === "decoy" && !baitDecoy(activePlayers.length)
+                      ? "See my decoy word"
+                      : "See my word"}
+                </Button>,
+              )}
+            </>
           ) : (
             <>
               <div className={`role-heading ${revealed ? "revealed" : ""}`}>
-                {revealed && view.private_role?.imposter && (
+                {revealed && view.private_role?.role ? (
+                  <RoleBadge role={view.private_role.role} />
+                ) : revealed && view.private_role?.imposter && (
                   <span className="role-badge">IMPOSTER</span>
                 )}
-                <h1 className="role-title">
+                <h1 className={`role-title ${revealed && view.private_role?.role ? "cast-title" : ""}`}>
                   {revealed
-                    ? view.private_role?.imposter
-                      ? "You are the imposter"
-                      : "You are a civilian"
+                    ? view.private_role?.role
+                      ? CAST[view.private_role.role].title
+                      : view.private_role?.imposter
+                        ? "You are the imposter"
+                        : "You are a civilian"
                     : "For your eyes only."}
                 </h1>
               </div>
               <motion.div
                 className={`role-flip ${view.private_role?.imposter ? "is-imposter" : ""}`}
+                // After the role screen the card still flips in, rather than appearing turned.
+                initial={view.private_role?.role ? { rotateY: 0 } : false}
                 animate={{ rotateY: revealed ? 180 : 0 }}
                 transition={{
                   duration: reduced ? 0 : MOTION.roleReveal,
@@ -3022,6 +3078,7 @@ export default function App() {
                         key={view.round_id}
                         word={view.private_role.clue}
                         definition={view.private_role.definition}
+                        label={view.private_role.role === "decoy" && !baitDecoy(activePlayers.length) ? "Your decoy word" : undefined}
                       />
                     ) : (
                       <RoleClue
@@ -3032,8 +3089,19 @@ export default function App() {
                   )}
                 </div>
               </motion.div>
+              {revealed && view.private_role?.role && (
+                <RoleIntel
+                  role={view.private_role.role}
+                  name={playerName}
+                  players={activePlayers.length}
+                  imposterId={view.private_role.imposter_id ?? undefined}
+                  clearedId={view.private_role.cleared_id ?? undefined}
+                />
+              )}
               <p className="muted center role-reminder">
-                {revealed
+                {revealed && view.private_role?.role
+                  ? castCopy(view.private_role.role, activePlayers.length).reminder
+                  : revealed
                   ? view.private_role?.imposter
                     ? "Blend in. Keep them guessing."
                     : "Give a clue. Don’t say the word."
@@ -3114,11 +3182,11 @@ export default function App() {
             </div>
           )}
           <div className="clue-board-heading">
-            <h2>Clues by turn</h2>
+            <h2>{view.speaking_order ? "Speaking order" : "Clues by turn"}</h2>
             <p className="muted compact">
               {nonverbal
                 ? "Marking a turn is optional."
-                : "Optional · clears next round."}
+                : "Clues optional · clear next round."}
             </p>
           </div>
           {playersList(true)}
@@ -3161,6 +3229,24 @@ export default function App() {
       );
     if (view.phase === "voting") {
       const choices = activePlayers.filter((p) => p.id !== view.my_id);
+      const castRole = view.private_role?.role;
+      // The imposter's dummy accusation is their accomplice pick, where the
+      // size deals an accomplice at all.
+      const crewBallot = castRole === "imposter" && !baitDecoy(activePlayers.length);
+      const detective = castRole === "detective";
+      const cleared = detective ? view.private_role?.cleared_id ?? null : null;
+      const myPicks = view.betting.my_picks;
+      const topPayout = view.betting.top_payout ?? 3;
+      const stakeLabel = (stake: number) =>
+        stake === 0 ? "No bet" : topPayout > 3 ? (stake === 3 ? `+${topPayout}/−3` : `±${stake}`) : String(stake);
+      const betTitle = castRole ? CAST[castRole].bet : view.private_role?.imposter ? "Bet on your escape" : "Confidence bet";
+      const win = (stake: number) => (stake === 3 ? topPayout : stake);
+      const ready = crewBallot
+        ? !!accomplicePick && !!decoyPick
+        : detective
+          ? !!vote && !!accomplicePick
+          : !!vote;
+      const heading = crewBallot ? "Find your crew" : castRole === "accomplice" ? "Who takes the fall?" : "Who is the imposter?";
       return (
         <>
           <Header
@@ -3183,19 +3269,29 @@ export default function App() {
               <div className="center-stage locked">
                 <LockedVoteArt />
                 <h1>Your vote is locked</h1>
-                <p>
-                  You voted for{" "}
-                  <b className="terra">{playerName(view.my_vote)}</b>.
-                </p>
+                {crewBallot && myPicks ? (
+                  <dl className="locked-picks">
+                    <div><dt><Icon name="people" size={18} />Accomplice</dt><dd>{playerName(myPicks.accomplice)}</dd></div>
+                    <div><dt><Icon name="shuffle" size={18} />Decoy</dt><dd>{playerName(myPicks.decoy)}</dd></div>
+                  </dl>
+                ) : detective && myPicks?.accomplice ? (
+                  <dl className="locked-picks">
+                    <div><dt><Icon name="eye" size={18} />Imposter</dt><dd>{playerName(view.my_vote)}</dd></div>
+                    <div><dt><Icon name="people" size={18} />Accomplice</dt><dd>{playerName(myPicks.accomplice)}</dd></div>
+                  </dl>
+                ) : (
+                  <p>
+                    You voted for{" "}
+                    <b className="terra">{playerName(view.my_vote)}</b>.
+                  </p>
+                )}
                 <p className="muted vote-progress">
                   {view.vote_count} of {activePlayers.length} votes received.
                 </p>
                 {view.betting.my_stake !== null && (
                   <p className="muted compact">
-                    {view.private_role?.imposter ? "Escape bet: " : "Confidence bet: "}
-                    {view.betting.my_stake
-                      ? `${view.betting.my_stake} point${view.betting.my_stake === 1 ? "" : "s"}`
-                      : "No bet"}
+                    {betTitle}:{" "}
+                    {view.betting.my_stake ? stakeLabel(view.betting.my_stake) : "No bet"}
                   </p>
                 )}
                 <ProgressDots
@@ -3235,30 +3331,57 @@ export default function App() {
             </>
           ) : (
             <>
-              <h1>Who is the imposter?</h1>
-              <p className="muted">
-                {view.private_role?.imposter
-                  ? "Your vote is a dummy vote. It won’t count toward the tally."
-                  : "Your vote stays private."}
+              <h1>{heading}</h1>
+              <p className={`muted ${castRole === "accomplice" ? "vote-risk" : ""}`}>
+                {castRole
+                  ? castCopy(castRole, activePlayers.length).vote
+                  : view.private_role?.imposter
+                    ? "Your vote is a dummy vote. It won’t count toward the tally."
+                    : "Your vote stays private."}
               </p>
               {!!view.clues?.length && (
                 <p className="muted compact clue-readonly">
                   Clues from all turns · read-only
                 </p>
               )}
+              {crewBallot ? (
+                <div className="crew-ballot">
+                  <PickChips
+                    icon="people"
+                    title="Your accomplice?"
+                    players={choices}
+                    value={accomplicePick}
+                    exclude={[decoyPick]}
+                    disabled={busy}
+                    onPick={setAccomplicePick}
+                  />
+                  <PickChips
+                    icon="shuffle"
+                    title="The decoy?"
+                    players={choices}
+                    value={decoyPick}
+                    exclude={[accomplicePick]}
+                    disabled={busy}
+                    onPick={setDecoyPick}
+                  />
+                </div>
+              ) : (
               <div className="ballot-list">
                 {choices.map((p) => (
                   <motion.button
                     whileTap={
-                      p.id === view.my_id || reduced
+                      p.id === view.my_id || p.id === cleared || reduced
                         ? undefined
                         : { scale: 0.985 }
                     }
                     transition={MOTION.press}
                     className={`ballot-row ${vote === p.id ? "selected" : ""}`}
-                    disabled={busy || p.id === view.my_id}
+                    disabled={busy || p.id === view.my_id || p.id === cleared}
                     key={p.id}
-                    onClick={() => setVote(p.id)}
+                    onClick={() => {
+                      setVote(p.id);
+                      if (accomplicePick === p.id && detective) setAccomplicePick(null);
+                    }}
                     aria-pressed={vote === p.id}
                   >
                     <Avatar player={p} mine={p.id === view.host_id} />
@@ -3266,6 +3389,7 @@ export default function App() {
                       <strong>
                         {p.name}
                         {p.id === view.my_id ? " · You" : ""}
+                        {p.id === cleared && <span className="cleared-tag">Cleared</span>}
                         {!p.connected && (
                           <span className="player-connection-label">
                             Disconnected
@@ -3284,22 +3408,34 @@ export default function App() {
                   </motion.button>
                 ))}
               </div>
+              )}
+              {detective && (
+                <PickChips
+                  icon="people"
+                  title="Who’s the accomplice?"
+                  players={choices}
+                  value={accomplicePick}
+                  exclude={[vote, cleared]}
+                  disabled={busy}
+                  onPick={setAccomplicePick}
+                />
+              )}
               {view.betting.eligible && (
                 <section
                   className="confidence-bet"
                   aria-labelledby="bet-heading"
                 >
                   <div className="bet-heading">
-                    <h2 id="bet-heading">{view.private_role?.imposter ? "Bet on your escape" : "Confidence bet"}</h2>
+                    <h2 id="bet-heading">{betTitle}</h2>
                     <span className="muted">Optional</span>
                   </div>
                   <p className="muted compact">
-                    Your balance: {me?.points ?? 0} points
+                    Your balance: {me?.points ?? 0} point{me?.points === 1 ? "" : "s"}
                   </p>
                   <div
-                    className="bet-options"
+                    className={`bet-options ${topPayout > 3 ? "gambler" : ""}`}
                     role="group"
-                    aria-label={view.private_role?.imposter ? "Bet on your escape" : "Confidence bet"}
+                    aria-label={betTitle}
                   >
                     {[0, 1, 2, 3].map((stake) => (
                       <motion.button
@@ -3309,7 +3445,7 @@ export default function App() {
                         aria-label={
                           stake === 0
                             ? "No bet"
-                            : `Bet ${stake} point${stake === 1 ? "" : "s"}`
+                            : `Bet ${stake} point${stake === 1 ? "" : "s"} to win ${win(stake)}`
                         }
                         aria-describedby="bet-outcome"
                         disabled={
@@ -3319,7 +3455,7 @@ export default function App() {
                         whileTap={reduced ? undefined : { scale: 0.975 }}
                         transition={MOTION.press}
                       >
-                        {stake === 0 ? "No bet" : stake}
+                        {stakeLabel(stake)}
                         {stake > view.betting.max_stake && (
                           <Icon name="lock" size={14} />
                         )}
@@ -3331,23 +3467,19 @@ export default function App() {
                     className="muted compact"
                     aria-live="polite"
                   >
-                    {view.private_role?.imposter
-                      ? "Escape to win your bet. Get caught and lose it."
-                      : bet > 0
-                        ? `Correct: +${bet} · Wrong: −${bet}. A correct vote also earns +1.`
-                        : "No points at risk. A correct vote earns +1."}
+                    {castRole
+                      ? bet > 0
+                        ? `Win +${win(bet)} · Lose −${bet}`
+                        : "No points at risk."
+                      : view.private_role?.imposter
+                        ? "Escape to win your bet. Get caught and lose it."
+                        : bet > 0
+                          ? `Correct: +${bet} · Wrong: −${bet}. A correct vote also earns +1.`
+                          : "No points at risk. A correct vote earns +1."}
                   </p>
                   {view.betting.max_stake === 0 && (
                     <p className="muted compact">
                       Earn points before placing a bet.
-                    </p>
-                  )}
-                  {view.betting.reading_streak > 0 && (
-                    <p className="muted compact">
-                      Reading streak: {view.betting.reading_streak} ·{" "}
-                      {view.betting.reading_streak % 3 === 2
-                        ? "Next correct read earns +1 extra."
-                        : "Every third correct read earns +1 extra."}
                     </p>
                   )}
                 </section>
@@ -3355,18 +3487,23 @@ export default function App() {
               {footer(
                 <>
                   <Button
-                    disabled={busy || view.paused || !vote}
+                    disabled={busy || view.paused || !ready}
                     onClick={() =>
                       execute(() =>
                         act(
                           "vote",
-                          { player_id: vote, stake: view.betting.eligible ? bet : 0 },
+                          {
+                            player_id: crewBallot ? accomplicePick : vote,
+                            stake: view.betting.eligible ? bet : 0,
+                            ...(crewBallot && { accomplice_id: accomplicePick, decoy_id: decoyPick }),
+                            ...(detective && { accomplice_id: accomplicePick }),
+                          },
                           view.round_id,
                         ),
                       )
                     }
                   >
-                    {!view.private_role?.imposter && view.betting.eligible && bet > 0
+                    {bet > 0 && view.betting.eligible
                       ? `Lock vote · Bet ${bet}`
                       : "Confirm vote"}
                   </Button>
@@ -3386,7 +3523,7 @@ export default function App() {
         <>
           <Header title={`Round ${view.round_id} · Results`} back={askLeave} />
           {verdict && mine ? (
-            // Everyone looks at their own result first; the room's opens next.
+            // Everyone looks at their own result first; the room's opens later.
             <div className="personal-stage center-stage" aria-live="polite">
               <motion.span
                 className={`result-disc ${goodOutcome(mine) ? "win" : ""}`}
@@ -3401,7 +3538,7 @@ export default function App() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.32, ease: MOTION.easeOut, delay: enter ? 0.12 : 0 }}
               >
-                {OUTCOME_HEADLINE[mine]}
+                {outcomeHeadline(mine, verdict.my_role, baitDecoy(activePlayers.length))}
               </motion.h1>
               {verdict.my_delta != null && (
                 <div className={`round-points ${verdict.my_delta > 0 ? "lime" : "terra"}`}>
@@ -3409,7 +3546,6 @@ export default function App() {
                   {Math.abs(verdict.my_delta) === 1 ? "point" : "points"}
                 </div>
               )}
-              <p className="muted">Everyone’s results are next.</p>
             </div>
           ) : verdict ? (
             <div className="verdict-stage center-stage" aria-live="polite">
@@ -3430,7 +3566,130 @@ export default function App() {
       const r = view.result;
       const score = r.score;
       const win = score.base > 0;
+      const cast = r.cast;
+      const myRole = cast?.my_role ?? null;
+      const mine = r.outcomes.find((o) => o.player_id === view.my_id)?.outcome ?? null;
+      const roleName = (id: string) =>
+        cast?.roles[id] ? CAST[cast.roles[id]].name : id === r.imposter_id ? "Imposter" : "Civilian";
+      const rank = (id: string) =>
+        cast?.roles[id] ? CAST_ORDER.indexOf(cast.roles[id]) : Number(id !== r.imposter_id);
+      // Role extras that actually paid this round; a caught imposter gains nothing.
+      const bonusRows: [string, boolean][] = !cast || score.voided
+        ? []
+        : myRole === "imposter"
+          ? [["Found your accomplice", r.escaped && cast.pair_bonus], ["Spotted the decoy", r.escaped && cast.decoy_caught]]
+          : myRole === "accomplice"
+            ? [["Your imposter found you", cast.pair_bonus]]
+            : myRole === "detective"
+              ? [["Spotted the accomplice", cast.accomplice_caught]]
+              : myRole === "decoy"
+                ? cast.bait_decoy
+                  ? [["They came for you", cast.decoy_voted]]
+                  : [["Imposter caught", !r.escaped]]
+                : [];
       const net = score.after - score.before;
+      const betLabel = myRole ? CAST[myRole].bet : r.was_imposter ? "Escape bet" : "Confidence bet";
+      const showRoom = roomSeen === view.round_id || !mine;
+      if (!showRoom) {
+        // Your own result first, with room to take it in; the party's follows on tap.
+        return (
+          <>
+            <Header
+              notice={connectionStatus}
+              back={askLeave}
+              title={`Round ${view.round_id} · You`}
+              right={hostHeaderActions}
+            />
+            <motion.div
+              className="personal-result"
+              initial={reduced ? false : "hidden"}
+              animate="shown"
+              variants={{ shown: { transition: { staggerChildren: 0.09 } } }}
+            >
+              <motion.div variants={recapItem} className="personal-result-head">
+                <span className={`result-disc ${goodOutcome(mine) ? "win" : ""}`}>
+                  <Icon name={goodOutcome(mine) ? "check" : "x"} size={42} />
+                </span>
+                {myRole && <RoleBadge role={myRole} />}
+                <h1>{outcomeHeadline(mine, myRole, cast?.bait_decoy)}</h1>
+                <div className={`round-points ${net > 0 ? "lime" : net < 0 ? "terra" : "muted"}`}>
+                  {net === 0 ? "0" : signed(net)} {Math.abs(net) === 1 ? "point" : "points"}
+                </div>
+              </motion.div>
+              <motion.div variants={recapItem} className="recap-details">
+                <dl className="score-breakdown">
+                  {!score.voided && <div>
+                    <dt>
+                      {r.was_imposter
+                        ? r.escaped ? "Escaped" : "Caught"
+                        : myRole === "accomplice"
+                          ? r.escaped ? "Imposter escaped" : "Imposter caught"
+                          : <>Voted {playerName(r.my_vote)}{myRole === "judge" ? " ×2" : ""}</>}
+                    </dt>
+                    <dd className={score.base ? "" : "muted"}>{signed(score.base)}</dd>
+                  </div>}
+                  {score.voided && (
+                    <div>
+                      <dt>Spotted · no gains</dt>
+                      <dd className="terra">0</dd>
+                    </div>
+                  )}
+                  {bonusRows.filter(([, paid]) => paid).map(([label]) => (
+                    <div key={label}>
+                      <dt>{label}</dt>
+                      <dd>+1</dd>
+                    </div>
+                  ))}
+                  {!!score.bluff && (
+                    <div>
+                      <dt>Nobody voted for you</dt>
+                      <dd>+{score.bluff}</dd>
+                    </div>
+                  )}
+                  {(!r.was_imposter || view.betting.my_stake) ? (
+                    <div>
+                      <dt>{betLabel}</dt>
+                      <dd className={score.bet < 0 ? "terra" : score.bet ? "" : "muted"}>
+                        {score.bet ? signed(score.bet) : view.betting.my_stake ? "0" : "No bet"}
+                      </dd>
+                    </div>
+                  ) : null}
+                  {!!score.fine && (
+                    <div>
+                      <dt>Voted the Detective</dt>
+                      <dd className="terra">−{score.fine}</dd>
+                    </div>
+                  )}
+                  {r.report_round !== null && (
+                    <div>
+                      <dt>Reports · Round {r.report_round}</dt>
+                      <dd className="terra">
+                        {score.penalty ? `−${score.penalty}` : "0 · at zero"}
+                      </dd>
+                    </div>
+                  )}
+                </dl>
+                <div className="personal-score">
+                  <span>Your score</span>
+                  <strong>
+                    <span className="muted">{score.before}</span> →{" "}
+                    <span className={net < 0 ? "terra" : "lime"}>
+                      {score.after}
+                    </span>
+                  </strong>
+                </div>
+                <SessionProgress
+                  score={score.after}
+                  target={view.score_session.target}
+                />
+              </motion.div>
+            </motion.div>
+            {footer(
+              <Button onClick={() => setRoomSeen(view.round_id)}>See the room</Button>,
+            )}
+          </>
+        );
+      }
       return (
         <>
           <Header
@@ -3458,8 +3717,8 @@ export default function App() {
             >
               <h2 id="everyone-results-title">Everyone’s results</h2>
               {[...r.outcomes]
-                // The imposter leads, then the room in its usual order.
-                .sort((x, y) => Number(y.player_id === r.imposter_id) - Number(x.player_id === r.imposter_id))
+                // The imposter leads (then the cast in role order), then the room in its usual order.
+                .sort((x, y) => rank(x.player_id) - rank(y.player_id))
                 .map((o) => {
                   const good = goodOutcome(o.outcome);
                   const me = o.player_id === view.my_id;
@@ -3469,7 +3728,7 @@ export default function App() {
                       <div className="player-details">
                         <strong>{playerName(o.player_id)}</strong>
                         <span>
-                          {o.player_id === r.imposter_id ? "Imposter" : "Civilian"}
+                          {roleName(o.player_id)}
                           {me ? " · You" : ""}
                         </span>
                       </div>
@@ -3488,96 +3747,45 @@ export default function App() {
                   );
                 })}
             </motion.section>
-            {/* The breakdown, word and meaning land together as the last step. */}
-            <motion.div variants={recapItem} className="recap-details">
-            <p>
-              {r.was_imposter ? (
-                r.escaped ? (
-                  score.bluff ? (
-                    "Nobody voted for you on the original ballot."
-                  ) : (
-                    "You escaped the group vote."
-                  )
-                ) : (
-                  "The room found its imposter."
-                )
-              ) : (
-                <>
-                  You voted for{" "}
-                  <b className={win ? "lime" : "terra"}>
-                    {playerName(r.my_vote)}
-                  </b>
-                  .
-                </>
-              )}
-            </p>
-            <dl className="score-breakdown">
-              <div>
-                <dt>{r.was_imposter ? r.escaped ? "Escaped" : "Caught" : "Correct vote"}</dt>
-                <dd>{signed(score.base)}</dd>
-              </div>
-              {(!r.was_imposter || view.betting.my_stake) ? (
-                <div>
-                  <dt>{r.was_imposter ? "Escape bet" : "Confidence bet"}</dt>
-                  <dd className={score.bet < 0 ? "terra" : ""}>
-                    {signed(score.bet)}
-                  </dd>
-                </div>
-              ) : null}
-              {!!score.streak && (
-                <div>
-                  <dt>Reading streak</dt>
-                  <dd>+{score.streak}</dd>
-                </div>
-              )}
-              {!!score.bluff && (
-                <div>
-                  <dt>Perfect-bluff bonus</dt>
-                  <dd>+{score.bluff}</dd>
-                </div>
-              )}
-              {r.report_round !== null && (
-                <div>
-                  <dt>Reports · Round {r.report_round}</dt>
-                  <dd className="terra">
-                    {score.penalty ? `−${score.penalty}` : "0 · at zero"}
-                  </dd>
-                </div>
-              )}
-            </dl>
-            {!r.was_imposter && (
-              <p className="muted compact reading-streak">
-                {win ? (
-                  <>
-                    {view.betting.reading_streak} correct read
-                    {view.betting.reading_streak === 1 ? "" : "s"} in a row.
-                    {score.streak
-                      ? " +1 streak bonus!"
-                      : " Every third earns +1 extra."}
-                  </>
-                ) : (
-                  "Reading streak reset."
+            {cast && (
+              <motion.ul variants={recapItem} className="cast-callouts" aria-label="Role moments">
+                {cast.judge_tiebreak && <li><Icon name="shield" size={18} />The Judge broke the tie.</li>}
+                {Object.values(cast.roles).includes("accomplice") && (
+                  <li className={cast.accomplice_caught ? "good" : ""}>
+                    <Icon name="search" size={18} />
+                    {cast.accomplice_caught
+                      ? `The Detective spotted ${playerName(Object.keys(cast.roles).find((id) => cast.roles[id] === "accomplice"))}.`
+                      : "The accomplice stayed hidden."}
+                  </li>
                 )}
-              </p>
+                {cast.bait_decoy ? (
+                  <li className={cast.roles[r.accused_id ?? ""] === "decoy" ? "bad" : cast.decoy_voted ? "good" : ""}>
+                    <Icon name="shuffle" size={18} />
+                    {cast.roles[r.accused_id ?? ""] === "decoy"
+                      ? "The room convicted the decoy."
+                      : cast.decoy_voted ? "The decoy drew a vote." : "Nobody took the decoy’s bait."}
+                  </li>
+                ) : (
+                  <li className={cast.decoy_caught ? "bad" : ""}>
+                    <Icon name="shuffle" size={18} />
+                    {cast.decoy_caught ? "The imposter spotted the decoy." : "The decoy blended in."}
+                  </li>
+                )}
+                {cast.pair_bonus && <li className="bad"><Icon name="people" size={18} />The imposter found their accomplice.</li>}
+              </motion.ul>
             )}
-            <div className="personal-score">
-              <span>Your score</span>
-              <strong>
-                <span className="muted">{score.before}</span> →{" "}
-                <span className={net < 0 ? "terra" : "lime"}>
-                  {score.after}
-                </span>
-              </strong>
-            </div>
-            <SessionProgress
-              score={score.after}
-              target={view.score_session.target}
-            />
+            <motion.div variants={recapItem} className="recap-details">
             <div className="result-pair round-flow-word">
               <div>
                 <small>Secret word:</small>
                 <strong>{r.word}</strong>
               </div>
+              {cast?.decoy_word && (
+                <div>
+                  <small>Decoy word:</small>
+                  <strong>{cast.decoy_word}</strong>
+                </div>
+              )}
             </div>
             {r.definition && (
               <details className="result-definition" key={view.round_id}>
