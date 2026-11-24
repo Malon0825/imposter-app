@@ -1,4 +1,10 @@
 async function checkPrivateCardRecall(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const assert = (value, message) => {
     if (!value) throw Error(message);
@@ -34,6 +40,7 @@ async function checkPrivateCardRecall(page) {
     await p
       .getByRole("button", { name: "Reveal my role", exact: true })
       .click();
+    await passRoleStage(p);
     await p.locator(".secret-word").waitFor();
   };
   const open = async (p) => {
@@ -142,6 +149,10 @@ async function checkPrivateCardRecall(page) {
       player.imposter =
         (await p
           .getByRole("heading", { name: "You are the imposter", exact: true })
+          .count()) === 1;
+      player.judge =
+        (await p
+          .getByRole("heading", { name: "You are the judge", exact: true })
           .count()) === 1;
       await p
         .getByRole("button", { name: "Hide & ready", exact: true })
@@ -256,9 +267,15 @@ async function checkPrivateCardRecall(page) {
       .getByRole("heading", { name: "Who sounds suspicious?", exact: true })
       .waitFor();
     await act("open_vote");
+    // Everyone votes a neighbour, a three-way tie among the counted ballots.
+    // The Judge would break it toward the imposter, so run the ring the other
+    // way when the Judge sits just before the imposter.
+    const n = players.length;
+    const at = (i) => players[((i % n) + n) % n];
+    const step = players.some((pl, i) => pl.judge && at(i + 1).imposter) ? -1 : 1;
     for (const [i, player] of players.entries()) {
       const p = player.page,
-        target = players[(i + 1) % players.length];
+        target = at(i + step);
       await p.locator(".ballot-row").filter({ hasText: target.name }).click();
       await open(p);
       await reveal(p);
@@ -310,6 +327,11 @@ async function checkPrivateCardRecall(page) {
     );
     const expectedDefinition = players.find((p) => !p.imposter).definition;
     for (const player of players) {
+      // Each phone shows its own result before the room's results.
+      await player.page.bringToFront();
+      const room = player.page.getByRole("button", { name: "See the room", exact: true });
+      await room.or(player.page.getByText("Word meaning", { exact: true })).first().waitFor();
+      if (await room.count()) await room.click();
       await player.page.getByText("Word meaning", { exact: true }).click();
       assert(
         (await player.page.locator(".result-definition p").innerText()) === expectedDefinition,

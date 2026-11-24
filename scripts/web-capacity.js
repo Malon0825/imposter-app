@@ -1,4 +1,10 @@
 async function checkBrowserCapacity(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const call = async (method, body = {}) => {
     const r = await page.request.post(`${base}/api/${method}`, {
@@ -89,15 +95,30 @@ async function checkBrowserCapacity(page) {
     await g.page
       .getByRole("button", { name: "Reveal my role", exact: true })
       .click();
+    await passRoleStage(g.page);
     await g.page
       .getByRole("button", { name: "Hide & ready", exact: true })
       .click();
   }
   await act("role_ready");
   await act("open_vote");
-  await act("vote", guests[0].id);
+  // Full Cast at twelve: the imposter names a crew, the Detective adds an
+  // accomplice pick and cannot vote the player they cleared.
+  const hostRole = (await call("state", { session_id: host.session_id })).private_role.role;
+  const hostVote = { player_id: guests[0].id, stake: 0 };
+  if (hostRole === "imposter") Object.assign(hostVote, { accomplice_id: guests[0].id, decoy_id: guests[1].id });
+  if (hostRole === "detective") hostVote.accomplice_id = guests[1].id;
+  await act("vote", hostVote);
   for (const [i, g] of guests.entries()) {
-    await g.page.locator(".ballot-row").filter({ hasText: "Alex" }).click();
+    if (await g.page.getByRole("heading", { name: "Find your crew", exact: true }).count()) {
+      await g.page.getByRole("group", { name: "Your accomplice?" }).locator("button:not([disabled])").first().click();
+      await g.page.getByRole("group", { name: "The decoy?" }).locator("button:not([disabled])").first().click();
+    } else {
+      const alex = g.page.locator(".ballot-row").filter({ hasText: "Alex" });
+      await (await alex.isDisabled() ? g.page.locator(".ballot-row:not([disabled])").first() : alex).click();
+      const sidePick = g.page.getByRole("group", { name: "Who’s the accomplice?" });
+      if (await sidePick.count()) await sidePick.locator("button:not([disabled])").last().click();
+    }
     await g.page
       .getByRole("button", { name: "Confirm vote", exact: true })
       .click();

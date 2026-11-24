@@ -1,4 +1,10 @@
 async function smokeGame(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const names = ["Alex", "Sam", "Mia", "Ben"];
   for (const old of page.context().pages())
@@ -101,11 +107,14 @@ async function smokeGame(page) {
     }
     let imp = -1;
     const civilian = [];
+    roles = [];
     for (let i = 0; i < pages.length; i++) {
       const p = pages[i];
       await p
         .getByRole("button", { name: "Reveal my role", exact: true })
         .click();
+      await passRoleStage(p);
+      roles[i] = (await p.locator(".cast-badge").textContent()).trim();
       if (
         await p
           .getByRole("heading", { name: "You are the imposter", exact: true })
@@ -149,6 +158,7 @@ async function smokeGame(page) {
       if (i === 1) {
         await p.getByText("Report submitted.", { exact: true }).waitFor();
         await p.reload();
+        await seeTheRoom(p);
         await p.getByText("Report submitted.", { exact: true }).waitFor();
         await p.screenshot({ path: "output/playwright/reports-submitted.png" });
       }
@@ -208,6 +218,27 @@ async function smokeGame(page) {
     }
     throw Error("Punishment did not finish");
   };
+  let roles = [];
+  // The host's own view of the settled round: what every row should show.
+  const hostState = () =>
+    page.evaluate(async () => {
+      const saved = JSON.parse(sessionStorage.getItem("imposter.session.v1"));
+      const r = await fetch("/api/state", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "X-Imposter-Dev": "1" },
+        body: JSON.stringify({ session_id: saved.session_id }),
+      });
+      return r.json();
+    });
+  // Each phone shows its own result first; the room's list follows.
+  const seeTheRoom = async (p) => {
+    // A background tab polls slowly; bring it up so the reveal arrives in time.
+    await p.bringToFront();
+    const see = p.getByRole("button", { name: "See the room", exact: true });
+    await see.or(p.locator(".everyone-results")).first().waitFor({ timeout: 15000 });
+    if (await see.count()) await see.click();
+    await p.locator(".everyone-results").waitFor({ timeout: 15000 });
+  };
   const imp = await readRoles(1);
   await page.waitForTimeout(1200);
   await page.screenshot({ path: "output/playwright/discussion.png" });
@@ -233,15 +264,19 @@ async function smokeGame(page) {
       await p.screenshot({ path: "output/playwright/vote-locked.png" });
     }
   }
-  await page.locator(".everyone-results").waitFor({ timeout: 15000 });
+  await seeTheRoom(page);
   await page.waitForTimeout(1200);
   await page.screenshot({ path: "output/playwright/results.png" });
+  // Points per role are covered by the Rust tests; here every phone must show
+  // exactly what the host settled.
+  const settled = await hostState();
   for (let i = 0; i < 4; i++) {
-    const expected = i === imp ? 2 : i === correct ? 1 : 0;
-    await pages[i].locator(".everyone-results").waitFor({ timeout: 15000 });
+    await seeTheRoom(pages[i]);
+    const id = settled.players.find((pl) => pl.name === names[i]).id;
+    const delta = settled.result.outcomes.find((o) => o.player_id === id).delta;
     const text = (await pages[i].locator(".outcome-row.is-me .outcome-delta").innerText()).trim();
-    if (text !== (expected ? `+${expected}` : "0"))
-      throw Error(`Wrong points for ${names[i]}: ${text}`);
+    if (text !== (delta > 0 ? `+${delta}` : `${delta}`))
+      throw Error(`Wrong points for ${names[i]} (${roles[i]}): ${text}, host says ${delta}`);
   }
   await finishPunishment(true);
   await page
@@ -252,9 +287,12 @@ async function smokeGame(page) {
   await page.getByRole("button", { name: "Next round", exact: true }).click();
   const imp2 = await readRoles(2);
   await page.getByRole("button", { name: "Open voting", exact: true }).click();
-  // Three civilians on three different suspects is the 1-1-1 tie: the dummy
-  // ballot is discarded, nobody is accused, and the imposter escapes.
-  const civilians = [0, 1, 2, 3].filter((i) => i !== imp2);
+  // Three counted ballots on three different suspects is the 1-1-1 tie: the
+  // imposter's ballot is discarded, nobody is accused, and the imposter escapes.
+  // The Judge goes first so their ballot misses the imposter and cannot break it.
+  const civilians = [0, 1, 2, 3]
+    .filter((i) => i !== imp2)
+    .sort((a, b) => (roles[b] === "JUDGE") - (roles[a] === "JUDGE"));
   const tie = [];
   tie[civilians[0]] = civilians[1];
   tie[civilians[1]] = civilians[2];
@@ -265,20 +303,22 @@ async function smokeGame(page) {
     await p.locator(".ballot-row").filter({ hasText: names[tie[i]] }).click();
     await p.getByRole("button", { name: "Confirm vote", exact: true }).click();
   }
+  // The deduction lands on the reported player's own result, before the room.
+  await page.getByText("Reports · Round 1", { exact: true }).waitFor({ timeout: 15000 });
+  await page.screenshot({ path: "output/playwright/report-deduction.png" });
+  for (let i = 1; i < 4; i++) {
+    await pages[i].bringToFront();
+    await pages[i].locator(".personal-stage, .personal-result, .everyone-results").first().waitFor({ timeout: 15000 });
+    if (await pages[i].getByText("Reports · Round 1", { exact: true }).count())
+      throw Error("A player below the report majority received a deduction");
+  }
+  for (const p of pages) await seeTheRoom(p);
   await page
     .getByText("No one was accused.", { exact: true })
     .first()
     .waitFor({ timeout: 15000 });
   await page.waitForTimeout(1200);
   await page.screenshot({ path: "output/playwright/tie-escape.png" });
-  await page
-    .getByText("Reports · Round 1", { exact: true })
-    .waitFor();
-  await page.screenshot({ path: "output/playwright/report-deduction.png" });
-  for (let i = 1; i < 4; i++) {
-    if (await pages[i].getByText("Reports · Round 1", { exact: true }).count())
-      throw Error("A player below the report majority received a deduction");
-  }
   await finishPunishment(false);
   await page.getByRole("button", { name: "End party", exact: true }).click();
   await page

@@ -1,4 +1,10 @@
 async function roundRulesSmoke(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const contexts = [];
   const errors = [];
@@ -170,6 +176,7 @@ async function roundRulesSmoke(page) {
     const cards = await Promise.all(players.map(snapshot));
     for (const session of players) await act(session, round, "role_ready");
     await button(guest, "Reveal my role").click();
+    await passRoleStage(guest);
     const guestImposter =
       (await guest
         .getByRole("heading", { name: "You are the imposter", exact: true })

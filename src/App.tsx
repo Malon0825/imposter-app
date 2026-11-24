@@ -37,7 +37,7 @@ import type {
 import { Icon } from "./icons";
 import { ROUND_RULES, RandomRulesSwitch, RuleArt, RuleIndicator, RuleReveal } from "./round-rules";
 import { RoleClue, RoleMeaning } from "./role-meaning";
-import { baitDecoy, CAST, CAST_ORDER, CastLineup, castCopy, PickChips, RoleBadge, RoleIntel, RoleStage, specials } from "./full-cast";
+import { baitDecoy, CAST, CAST_ORDER, CastLineup, castCopy, judgeDoubles, PickChips, RoleBadge, RoleIntel, RoleStage, specials } from "./full-cast";
 import {
   MOTION,
   useDelayedBusy,
@@ -3624,7 +3624,7 @@ export default function App() {
                         ? r.escaped ? "Escaped" : "Caught"
                         : myRole === "accomplice"
                           ? r.escaped ? "Imposter escaped" : "Imposter caught"
-                          : <>Voted {playerName(r.my_vote)}{myRole === "judge" ? " ×2" : ""}</>}
+                          : <>Voted {playerName(r.my_vote)}{myRole === "judge" && judgeDoubles(activePlayers.length) ? " ×2" : ""}</>}
                     </dt>
                     <dd className={score.base ? "" : "muted"}>{signed(score.base)}</dd>
                   </div>}

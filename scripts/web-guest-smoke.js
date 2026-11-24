@@ -1,4 +1,10 @@
 async function smokeBrowserGuests(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const assert = (value, message) => {
     if (!value) throw Error(message);
@@ -215,6 +221,7 @@ async function smokeBrowserGuests(page) {
       await p
         .getByRole("button", { name: "Reveal my role", exact: true })
         .click();
+      await passRoleStage(p);
       await p.waitForTimeout(550);
       await p.screenshot({
         path: `output/playwright/web-guest-${guest.name.toLowerCase()}-role.png`,
@@ -236,6 +243,7 @@ async function smokeBrowserGuests(page) {
       await p
         .getByRole("button", { name: "Reveal my role", exact: true })
         .click();
+      await passRoleStage(p);
       await p
         .getByRole("button", { name: "Hide & ready", exact: true })
         .click();
@@ -286,12 +294,20 @@ async function smokeBrowserGuests(page) {
       !result.result.escaped,
       "Mixed voting did not catch the imposter",
     );
+    // Everyone named the imposter: a correct read pays +1, the Judge's +2.
+    const castRoles = result.result.cast.roles;
     for (const p of result.players)
-      assert(p.points === (p.id === imposter ? 0 : 1), "Incorrect score");
+      assert(
+        p.points === (p.id === imposter ? 0 : castRoles[p.id] === "judge" ? 2 : 1),
+        `Incorrect score for the ${castRoles[p.id]}: ${p.points}`,
+      );
     await act(host, "report", []);
     await act(native, "report", []);
     // Guests leave the report sheet unopened, which counts as no report.
     for (const g of guests) {
+      // Each phone shows its own result before the room's, where reports live.
+      await g.page.bringToFront();
+      await g.page.getByRole("button", { name: "See the room", exact: true }).click();
       await g.page
         .getByRole("button", { name: "Report a rule violation", exact: true })
         .waitFor();

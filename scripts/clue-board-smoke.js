@@ -1,4 +1,10 @@
 async function clueBoardSmoke(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const assert = (v, m) => {
     if (!v) throw Error(m);
@@ -136,6 +142,7 @@ async function clueBoardSmoke(page) {
       await p
         .getByRole("button", { name: "Reveal my role", exact: true })
         .click();
+      await passRoleStage(p);
       await p
         .getByRole("button", { name: "Hide & ready", exact: true })
         .click();

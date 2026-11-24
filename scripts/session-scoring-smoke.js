@@ -1,4 +1,10 @@
 async function sessionScoringSmoke(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const assert = (ok, message) => {
     if (!ok) throw Error(message);
@@ -99,7 +105,12 @@ async function sessionScoringSmoke(page) {
   const nativeView = (s) => call("state", { session_id: s.session_id });
   const finish = async () => {
     await waitPhase(page, "results");
-    await page.getByRole("button", { name: "Continue", exact: true }).click();
+    // The host reads their own result first, then the room's, where Continue lives.
+    const room = page.getByRole("button", { name: "See the room", exact: true });
+    const next = page.getByRole("button", { name: "Continue", exact: true });
+    await room.or(next).first().waitFor();
+    if (await room.count()) await room.click();
+    await next.click();
     let v = await state();
     while (v.phase === "punishment")
       v = await act(host, "skip", v.punishment.turn);
@@ -134,6 +145,7 @@ async function sessionScoringSmoke(page) {
     await guest
       .getByRole("button", { name: "Reveal my role", exact: true })
       .click();
+    await passRoleStage(guest);
     await guest
       .getByRole("button", { name: "Hide & ready", exact: true })
       .click();
@@ -174,9 +186,8 @@ async function sessionScoringSmoke(page) {
       await guest
         .getByRole("button", {
           name: stake
-            ? `Bet ${stake} point${stake === 1 ? "" : "s"}`
-            : "No bet",
-          exact: true,
+            ? new RegExp(`^Bet ${stake} point${stake === 1 ? "" : "s"}`)
+            : /^No bet$/,
         })
         .click();
     let dropped = false;
@@ -290,8 +301,7 @@ async function sessionScoringSmoke(page) {
           assert(
             (await guest
               .getByRole("button", {
-                name: `Bet ${n} point${n === 1 ? "" : "s"}`,
-                exact: true,
+                name: new RegExp(`^Bet ${n} point${n === 1 ? "" : "s"}`),
               })
               .isDisabled()) ===
               n > mine.points,
@@ -299,7 +309,7 @@ async function sessionScoringSmoke(page) {
           );
         if (civilianReads === 3) {
           await guest
-            .getByRole("button", { name: "Bet 2 points", exact: true })
+            .getByRole("button", { name: /^Bet 2 points/ })
             .click();
           await capture(guest, "bet");
           await guest.setViewportSize({ width: 320, height: 640 });
@@ -308,14 +318,11 @@ async function sessionScoringSmoke(page) {
         }
       } else {
         await guest
-          .getByText(
-            "Your vote is a dummy vote. It won’t count toward the tally.",
-            { exact: true },
-          )
+          .getByText("Escape to keep your points.", { exact: true })
           .waitFor();
         assert(
           (await guest
-            .getByRole("group", { name: "Bet on your escape", exact: true })
+            .getByRole("group", { name: "Escape bet", exact: true })
             .count()) === 1,
           "The imposter is missing the escape bet",
         );
@@ -340,13 +347,16 @@ async function sessionScoringSmoke(page) {
       const scored = await guestState();
       assert(scored.result.score.after >= 0, "Negative balance");
       if (civilianReads === 3 && !gv.private_role.imposter) {
+        // Each role's base and bonus are covered by the Rust tests; the bet
+        // must settle on top of them.
+        const sc = scored.result.score;
         assert(
-          scored.result.score.streak === 1 &&
-            scored.result.score.bet === 2 &&
-            scored.result.score.after === 6,
-          "Streak + bet total is incorrect",
+          sc.bet === 2 &&
+            sc.after ===
+              sc.before + sc.base + sc.bet + sc.bluff + (sc.bonus || 0) - (sc.fine || 0) - sc.penalty,
+          "Bet total is incorrect",
         );
-        await capture(guest, "streak-result");
+        await capture(guest, "bet-result");
       }
       final = await finish();
       if (final.phase === "session_complete") break;
@@ -386,11 +396,7 @@ async function sessionScoringSmoke(page) {
       "Party identity or stale result after reset",
     );
     await waitPhase(guest, "lobby");
-    assert(
-      (await guestState()).my_id === guestId &&
-        (await guestState()).betting.reading_streak === 0,
-      "Player identity/streak reset incorrect",
-    );
+    assert((await guestState()).my_id === guestId, "Player identity reset incorrect");
     await capture(page, "fresh-session");
     // Earn one point, then lose a one-point bet: real server, same browser player.
     let earned = false,
@@ -408,13 +414,10 @@ async function sessionScoringSmoke(page) {
       await waitPhase(guest, "results");
       const r = (await guestState()).result;
       if (wrong) {
+        // A Judge's read pays +2, so the balance before may be above one.
         assert(
-          r.score.bet === -1 && r.score.after === 0 && r.score.before === 1,
-          "Failed bet did not settle to zero",
-        );
-        assert(
-          (await guestState()).betting.reading_streak === 0,
-          "Wrong bet did not reset streak",
+          r.score.bet === -1 && r.score.after === Math.max(0, r.score.before - 1 - r.score.penalty),
+          "Failed bet did not settle",
         );
         await capture(guest, "lost-bet");
         lost = true;
@@ -460,7 +463,7 @@ async function sessionScoringSmoke(page) {
         "private stakes",
         "lost-response recovery",
         "closed-tab QR reconnect",
-        "third-read bonus",
+        "bet on a third read",
         "zero floor",
         "session completion",
         "final scores survive reload",
