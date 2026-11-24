@@ -42,8 +42,6 @@ pub struct ScoreBreakdown {
     pub bonus: i32,
     /// Full Cast: spotted this round, so no gains (a lost bet still counts).
     pub voided: bool,
-    /// Full Cast: the accomplice voted for the Detective (−1).
-    pub fine: i32,
     pub penalty: i32,
     pub after: i32,
 }
@@ -1361,10 +1359,7 @@ impl Game {
             let correct = self.round.original.get(&p.id) == Some(&self.round.imposter);
             let stake = self.round.stakes.get(&p.id).copied().unwrap_or(0);
             let side_pick = role == Role::Detective && facts.accomplice_caught;
-            // Voting blind is risky for the accomplice: naming the Detective costs 1.
-            let voted_detective = role == Role::Accomplice
-                && self.round.original.get(&p.id).map(String::as_str) == Some(cast.holder(Role::Detective));
-            let award = cast::award(role, &facts, correct, side_pick, stake, voted_detective);
+            let award = cast::award(role, &facts, correct, side_pick, stake);
             p.earned = award.total();
             let before = p.points;
             p.points = (p.points + p.earned).max(0);
@@ -1377,7 +1372,6 @@ impl Game {
                     bluff: award.bluff,
                     bonus: award.bonus,
                     voided: award.voided,
-                    fine: award.fine,
                     after: p.points,
                     ..Default::default()
                 },

@@ -190,22 +190,18 @@ pub struct Award {
     pub bluff: i32,
     pub bonus: i32,
     pub voided: bool,
-    /// The accomplice's −1 for voting the Detective; it never voids gains.
-    pub fine: i32,
     /// Joins the Drink/Dare queue.
     pub lost: bool,
 }
 
 /// `correct`: the player's accusation named the imposter. `side_pick`: the
 /// detective's accomplice pick was right; their stake always rides on it.
-/// `voted_detective`: the accomplice's ballot named the Detective.
 pub fn award(
     role: Role,
     facts: &Facts,
     correct: bool,
     side_pick: bool,
     stake: u32,
-    voted_detective: bool,
 ) -> Award {
     let s = stake as i32;
     let settle = |won: bool| if won { s } else { -s };
@@ -228,7 +224,6 @@ pub fn award(
             bonus: i32::from(facts.pair_bonus()),
             // A team bet: it rides on the imposter escaping.
             bet: settle(facts.escaped),
-            fine: i32::from(voted_detective),
             voided: facts.accomplice_caught,
             lost: facts.accomplice_caught || !facts.escaped,
             ..Default::default()
@@ -284,7 +279,7 @@ pub fn award(
 
 impl Award {
     pub fn total(&self) -> i32 {
-        self.base + self.bet + self.bluff + self.bonus - self.fine
+        self.base + self.bet + self.bluff + self.bonus
     }
 }
 
@@ -395,49 +390,45 @@ mod tests {
         let caught = Facts { escaped: false, pair_named: true, decoy_caught: true, ..Default::default() };
         // Imposter best: escape, perfect bluff, pair, decoy, bet 3.
         let best = Facts { perfect_bluff: true, decoy_caught: true, ..escape };
-        assert_eq!(award(Role::Imposter, &best, false, false, 3, false).total(), 8);
+        assert_eq!(award(Role::Imposter, &best, false, false, 3).total(), 8);
         // A caught imposter gains nothing, not even the decoy catch, and loses the bet.
-        let a = award(Role::Imposter, &caught, false, false, 3, false);
+        let a = award(Role::Imposter, &caught, false, false, 3);
         assert_eq!((a.base, a.bonus, a.bet, a.lost, a.total()), (0, 0, -3, true, -3));
         // Accomplice: escape +1, pair +1, and a team bet on the escape.
-        assert_eq!(award(Role::Accomplice, &escape, false, false, 3, false).total(), 5);
-        let a = award(Role::Accomplice, &caught, false, false, 2, false);
+        assert_eq!(award(Role::Accomplice, &escape, false, false, 3).total(), 5);
+        let a = award(Role::Accomplice, &caught, false, false, 2);
         assert_eq!((a.base, a.bonus, a.bet, a.lost), (0, 0, -2, true));
         // Spotted: the won bet is cancelled; a lost bet still costs.
         let spotted = Facts { accomplice_caught: true, ..escape };
-        let a = award(Role::Accomplice, &spotted, false, false, 3, false);
+        let a = award(Role::Accomplice, &spotted, false, false, 3);
         assert_eq!((a.total(), a.voided, a.lost), (0, true, true));
         let spotted_caught = Facts { accomplice_caught: true, ..caught };
-        assert_eq!(award(Role::Accomplice, &spotted_caught, false, false, 3, false).total(), -3);
-        // Voting the Detective costs 1 and never voids the gains.
-        let a = award(Role::Accomplice, &escape, false, false, 3, true);
-        assert_eq!((a.total(), a.voided), (4, false));
-        assert_eq!(award(Role::Accomplice, &spotted_caught, false, false, 3, true).total(), -4);
+        assert_eq!(award(Role::Accomplice, &spotted_caught, false, false, 3).total(), -3);
         // Spotting the accomplice cancels the imposter's pair bonus too.
-        assert_eq!(award(Role::Imposter, &spotted, false, false, 0, false).bonus, 0);
+        assert_eq!(award(Role::Imposter, &spotted, false, false, 0).bonus, 0);
         // Detective: two reads; the bet always rides on the accomplice pick.
-        assert_eq!(award(Role::Detective, &caught, true, true, 3, false).total(), 5);
-        assert_eq!(award(Role::Detective, &caught, true, false, 3, false).total(), -2);
-        assert_eq!(award(Role::Detective, &caught, false, true, 3, false).total(), 4);
+        assert_eq!(award(Role::Detective, &caught, true, true, 3).total(), 5);
+        assert_eq!(award(Role::Detective, &caught, true, false, 3).total(), -2);
+        assert_eq!(award(Role::Detective, &caught, false, true, 3).total(), 4);
         // Judge +2.
-        assert_eq!(award(Role::Judge, &caught, true, false, 3, false).total(), 5);
-        assert_eq!(award(Role::Judge, &escape, false, false, 3, false).total(), -3);
+        assert_eq!(award(Role::Judge, &caught, true, false, 3).total(), 5);
+        assert_eq!(award(Role::Judge, &escape, false, false, 3).total(), -3);
         // Decoy +1 vote, +1 when the imposter is caught; spotted voids gains.
-        assert_eq!(award(Role::Decoy, &Facts::default(), true, false, 3, false).total(), 5);
+        assert_eq!(award(Role::Decoy, &Facts::default(), true, false, 3).total(), 5);
         let spotted_decoy = Facts { decoy_caught: true, ..Facts::default() };
-        assert_eq!(award(Role::Decoy, &spotted_decoy, true, false, 3, false).total(), 0);
-        let a = award(Role::Decoy, &Facts { decoy_caught: true, escaped: true, ..Default::default() }, false, false, 2, false);
+        assert_eq!(award(Role::Decoy, &spotted_decoy, true, false, 3).total(), 0);
+        let a = award(Role::Decoy, &Facts { decoy_caught: true, escaped: true, ..Default::default() }, false, false, 2);
         assert_eq!((a.total(), a.lost), (-2, true));
         // Bait Decoy: +1 vote, +1 for drawing a ballot, nothing if convicted.
         let bait = Facts { bait_decoy: true, decoy_voted: true, ..Facts::default() };
-        assert_eq!(award(Role::Decoy, &bait, true, false, 2, false).total(), 4);
+        assert_eq!(award(Role::Decoy, &bait, true, false, 2).total(), 4);
         let convicted = Facts { escaped: true, decoy_convicted: true, ..bait };
-        let a = award(Role::Decoy, &convicted, false, false, 2, false);
+        let a = award(Role::Decoy, &convicted, false, false, 2);
         assert_eq!((a.total(), a.voided, a.lost), (-2, true, true));
         // Gambler tiers: ±1, ±2, +5/−3.
         for (stake, win, lose) in [(0, 1, 0), (1, 2, -1), (2, 3, -2), (3, 6, -3)] {
-            assert_eq!(award(Role::Gambler, &caught, true, false, stake, false).total(), win);
-            assert_eq!(award(Role::Gambler, &caught, false, false, stake, false).total(), lose);
+            assert_eq!(award(Role::Gambler, &caught, true, false, stake).total(), win);
+            assert_eq!(award(Role::Gambler, &caught, false, false, stake).total(), lose);
         }
     }
 }

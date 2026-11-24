@@ -260,7 +260,7 @@ fn escape_scores_follow_each_role_and_queue_each_loser_once() {
 }
 
 #[test]
-fn spotted_accomplice_gains_nothing_and_the_fine_still_bites() {
+fn spotted_accomplice_gains_nothing_but_a_lost_bet_still_costs() {
     let mut g = party(6);
     deal(&mut g);
     for p in &mut g.players {
@@ -271,9 +271,9 @@ fn spotted_accomplice_gains_nothing_and_the_fine_still_bites() {
         (&acc, json!({"player_id":det,"stake":3})),
         (&det, json!({"player_id":imp,"stake":3,"accomplice_id":acc})),
     ]);
-    // Spotted, imposter caught, and voted the Detective: −3 bet, −1 fine.
+    // Spotted and the imposter caught: no gains, and the −3 bet still costs.
     let s = &g.round.scores[&acc];
-    assert!(s.voided && s.after == 0 && s.bet == -3 && s.fine == 1);
+    assert!(s.voided && s.after == 0 && s.bet == -3);
     // A caught imposter gains nothing, but the decoy they named still gains nothing too.
     let s = &g.round.scores[&imp];
     assert_eq!((s.base, s.bonus, s.after), (0, 0, 3));
@@ -315,7 +315,7 @@ fn party_weights_rotate_every_role_and_never_lock_anyone_out() {
 }
 
 #[test]
-fn accomplice_voting_the_detective_costs_one_without_voiding_gains() {
+fn accomplice_can_vote_the_detective_for_free() {
     let mut g = party(6);
     deal(&mut g);
     for p in &mut g.players {
@@ -328,6 +328,6 @@ fn accomplice_voting_the_detective_costs_one_without_voiding_gains() {
     ballot(&mut g, &gambler, &[(&acc, json!({"player_id":det,"stake":2}))]);
     assert_ne!(g.round.accused.as_deref(), Some(imp.as_str()));
     let s = &g.round.scores[&acc];
-    // Escape +1, pair +1, team bet +2, fine −1.
-    assert_eq!((s.base, s.bonus, s.bet, s.fine, s.voided, s.after), (1, 1, 2, 1, false, 6));
+    // Escape +1, pair +1, team bet +2, and no cost for naming the Detective.
+    assert_eq!((s.base, s.bonus, s.bet, s.voided, s.after), (1, 1, 2, false, 7));
 }

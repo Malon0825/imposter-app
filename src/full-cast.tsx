@@ -30,7 +30,7 @@ export const CAST: Record<CastRole, {
     title: "You are the accomplice",
     power: "Knows the word and the imposter. Wins with the escape.",
     reminder: "Wink once. Don’t let the Detective see.",
-    vote: "Voting the Detective: −1",
+    vote: "Your vote stays private.",
     bet: "Escape bet",
     goal: "Help the imposter escape.",
   },

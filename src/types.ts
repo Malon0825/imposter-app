@@ -146,7 +146,6 @@ export interface View {
       bluff: number;
       bonus?: number;
       voided?: boolean;
-      fine?: number;
       penalty: number;
       after: number;
     };

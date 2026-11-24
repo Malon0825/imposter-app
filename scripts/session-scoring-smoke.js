@@ -353,7 +353,7 @@ async function sessionScoringSmoke(page) {
         assert(
           sc.bet === 2 &&
             sc.after ===
-              sc.before + sc.base + sc.bet + sc.bluff + (sc.bonus || 0) - (sc.fine || 0) - sc.penalty,
+              sc.before + sc.base + sc.bet + sc.bluff + (sc.bonus || 0) - sc.penalty,
           "Bet total is incorrect",
         );
         await capture(guest, "bet-result");

@@ -3339,7 +3339,7 @@ export default function App() {
                   <p>Careful: an odd vote can give you away.</p>
                 </div>
               )}
-              <p className={`muted ${castRole === "accomplice" ? "vote-risk" : ""}`}>
+              <p className="muted">
                 {castRole
                   ? castCopy(castRole, activePlayers.length).vote
                   : view.private_role?.imposter
@@ -3661,12 +3661,6 @@ export default function App() {
                       </dd>
                     </div>
                   ) : null}
-                  {!!score.fine && (
-                    <div>
-                      <dt>Voted the Detective</dt>
-                      <dd className="terra">−{score.fine}</dd>
-                    </div>
-                  )}
                   {r.report_round !== null && (
                     <div>
                       <dt>Reports · Round {r.report_round}</dt>
