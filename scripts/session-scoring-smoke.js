@@ -126,6 +126,9 @@ async function sessionScoringSmoke(page) {
       await guest
         .getByRole("button", { name: "I’m ready", exact: true })
         .click();
+      // The guest's tap is a request of its own; start only once it lands.
+      for (let i = 0; i < 50 && !(await state()).players.every((p) => p.left || p.ready); i++)
+        await page.waitForTimeout(200);
       await act(host, "start");
     }
     await waitPhase(page, "topic_voting");
@@ -353,7 +356,7 @@ async function sessionScoringSmoke(page) {
         assert(
           sc.bet === 2 &&
             sc.after ===
-              sc.before + sc.base + sc.bet + sc.bluff + (sc.bonus || 0) - (sc.fine || 0) - sc.penalty,
+              sc.before + sc.base + sc.bet + sc.bluff + (sc.bonus || 0) - sc.penalty,
           "Bet total is incorrect",
         );
         await capture(guest, "bet-result");

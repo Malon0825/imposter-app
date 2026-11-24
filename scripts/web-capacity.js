@@ -110,6 +110,8 @@ async function checkBrowserCapacity(page) {
   if (hostRole === "detective") hostVote.accomplice_id = guests[1].id;
   await act("vote", hostVote);
   for (const [i, g] of guests.entries()) {
+    // Wait for the ballot itself, or the crew check below can run too early.
+    await g.page.locator(".ballot-row, .crew-ballot").first().waitFor();
     if (await g.page.getByRole("heading", { name: "Find your crew", exact: true }).count()) {
       await g.page.getByRole("group", { name: "Your accomplice?" }).locator("button:not([disabled])").first().click();
       await g.page.getByRole("group", { name: "The decoy?" }).locator("button:not([disabled])").first().click();

@@ -3883,7 +3883,9 @@ strong .player-connection-label {
 .pick-chips h2 { display: flex; align-items: center; gap: 8px; }
 .pick-chips h2 svg { color: var(--muted); flex-shrink: 0; }
 .cleared-tag { margin-left: 8px; padding: 2px 8px; border-radius: 999px; background: rgba(214, 245, 107, .16); color: var(--lime); font-size: 13px; font-weight: 800; vertical-align: middle; }
-.vote-risk { color: var(--terra); font-weight: 650; }
+.vote-tip { display: grid; gap: 4px; width: min(100%, 340px); margin: 4px auto 6px; padding: 12px 14px; border-radius: 12px; background: var(--surface); text-align: left; font-size: 14px; line-height: 1.4; }
+.vote-tip b { font-weight: 750; }
+.vote-tip p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.4; }
 .locked-picks { display: grid; gap: 8px; width: min(100%, 300px); margin: 4px auto 8px; }
 .locked-picks > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-radius: 12px; background: var(--surface); }
 .locked-picks dt { display: flex; align-items: center; gap: 8px; color: var(--muted); }

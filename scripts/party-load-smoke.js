@@ -40,7 +40,7 @@ async function partyLoadSmoke(page, options = {}) {
       const response = await page.request.post(`${inviteOrigin}/guest/join`, {
         headers: {
           "X-Imposter-Client": "web-v1",
-          "X-Imposter-Gameplay": "full-cast-v1",
+          "X-Imposter-Gameplay": "full-cast-v2",
           Origin: inviteOrigin,
         },
         data: {
@@ -70,7 +70,7 @@ async function partyLoadSmoke(page, options = {}) {
           const response = await page.request.post(`${inviteOrigin}/guest/state`, {
             headers: {
               "X-Imposter-Client": "web-v1",
-              "X-Imposter-Gameplay": "full-cast-v1",
+              "X-Imposter-Gameplay": "full-cast-v2",
               "X-Imposter-Party": partyId,
               "X-Imposter-Controller": player.controller,
               Authorization: `Bearer ${player.credentials.token}`,

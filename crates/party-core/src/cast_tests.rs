@@ -260,7 +260,7 @@ fn escape_scores_follow_each_role_and_queue_each_loser_once() {
 }
 
 #[test]
-fn spotted_accomplice_gains_nothing_and_the_fine_still_bites() {
+fn spotted_accomplice_gains_nothing_but_a_lost_bet_still_costs() {
     let mut g = party(6);
     deal(&mut g);
     for p in &mut g.players {
@@ -271,9 +271,9 @@ fn spotted_accomplice_gains_nothing_and_the_fine_still_bites() {
         (&acc, json!({"player_id":det,"stake":3})),
         (&det, json!({"player_id":imp,"stake":3,"accomplice_id":acc})),
     ]);
-    // Spotted, imposter caught, and voted the Detective: −3 bet, −1 fine.
+    // Spotted and the imposter caught: no gains, and the −3 bet still costs.
     let s = &g.round.scores[&acc];
-    assert!(s.voided && s.after == 0 && s.bet == -3 && s.fine == 1);
+    assert!(s.voided && s.after == 0 && s.bet == -3);
     // A caught imposter gains nothing, but the decoy they named still gains nothing too.
     let s = &g.round.scores[&imp];
     assert_eq!((s.base, s.bonus, s.after), (0, 0, 3));
@@ -315,7 +315,7 @@ fn party_weights_rotate_every_role_and_never_lock_anyone_out() {
 }
 
 #[test]
-fn accomplice_voting_the_detective_costs_one_without_voiding_gains() {
+fn accomplice_can_vote_the_detective_for_free() {
     let mut g = party(6);
     deal(&mut g);
     for p in &mut g.players {
@@ -328,6 +328,225 @@ fn accomplice_voting_the_detective_costs_one_without_voiding_gains() {
     ballot(&mut g, &gambler, &[(&acc, json!({"player_id":det,"stake":2}))]);
     assert_ne!(g.round.accused.as_deref(), Some(imp.as_str()));
     let s = &g.round.scores[&acc];
-    // Escape +1, pair +1, team bet +2, fine −1.
-    assert_eq!((s.base, s.bonus, s.bet, s.fine, s.voided, s.after), (1, 1, 2, 1, false, 6));
+    // Escape +1, pair +1, team bet +2, and no cost for naming the Detective.
+    assert_eq!((s.base, s.bonus, s.bet, s.voided, s.after), (1, 1, 2, false, 7));
+}
+
+/// Random ballots, picks and bets at every size, checked against the rules
+/// as the README states them. The expected verdict and scores below are
+/// rebuilt from those rules, not taken from `cast::award`.
+#[test]
+fn random_rounds_score_by_the_written_rules() {
+    use rand::{rngs::StdRng, Rng, SeedableRng};
+    use std::collections::BTreeSet;
+    let mut rng = StdRng::seed_from_u64(0x1A_05_7E);
+    for size in 3..=12 {
+        for _ in 0..150 {
+            let mut g = party(size);
+            deal(&mut g);
+            let cast = g.round.cast.clone().unwrap();
+            let roster = g.round.roster.clone();
+            let role = |id: &str| cast.roles[id];
+            let holder = |r: Role| cast.roles.iter().find(|(_, x)| **x == r).map(|(id, _)| id.clone());
+            let imp = g.round.imposter.clone();
+            for p in &mut g.players {
+                p.points = rng.gen_range(0..8);
+            }
+            let before: BTreeMap<String, i32> = g.players.iter().map(|p| (p.id.clone(), p.points)).collect();
+            let small = cast::bait_decoy(size);
+
+            // Cast random, valid ballots. Lean towards the imposter so both
+            // verdicts come up often.
+            let mut votes: BTreeMap<String, String> = BTreeMap::new();
+            let mut stakes: BTreeMap<String, u32> = BTreeMap::new();
+            let (mut acc_pick, mut decoy_pick, mut det_pick) = (None, None, None);
+            for id in &roster {
+                let others: Vec<&String> = roster.iter().filter(|p| *p != id).collect();
+                let target = if *id != imp && rng.gen_bool(0.45) { imp.clone() } else { others[rng.gen_range(0..others.len())].clone() };
+                let stake = rng.gen_range(0..=before[id].clamp(0, 3) as u32);
+                let mut v = json!({"player_id":target,"stake":stake});
+                match role(id) {
+                    Role::Imposter if !small => {
+                        let a = others[rng.gen_range(0..others.len())].clone();
+                        let rest: Vec<&&String> = others.iter().filter(|p| ***p != a).collect();
+                        let d = (*rest[rng.gen_range(0..rest.len())]).clone();
+                        v["accomplice_id"] = json!(a);
+                        v["decoy_id"] = json!(d);
+                        acc_pick = Some(a);
+                        decoy_pick = Some(d);
+                    }
+                    Role::Detective => {
+                        let rest: Vec<&&String> = others.iter().filter(|p| ***p != target).collect();
+                        let a = (*rest[rng.gen_range(0..rest.len())]).clone();
+                        v["accomplice_id"] = json!(a);
+                        det_pick = Some(a);
+                    }
+                    _ => {}
+                }
+                act(&mut g, id, "vote", v).unwrap();
+                votes.insert(id.clone(), target);
+                stakes.insert(id.clone(), stake);
+            }
+            settle(&mut g);
+
+            // Verdict: the imposter's ballot never counts; the Judge's counts
+            // twice from six; a tie convicts only when the Judge voted for the
+            // imposter and the imposter is among the tied.
+            let judge = holder(Role::Judge);
+            let mut tally: BTreeMap<&String, usize> = BTreeMap::new();
+            for (voter, t) in &votes {
+                if *voter == imp { continue; }
+                *tally.entry(t).or_default() += if size >= 6 && Some(voter) == judge.as_ref() { 2 } else { 1 };
+            }
+            let top = *tally.values().max().unwrap();
+            let tied: Vec<&String> = tally.iter().filter(|(_, n)| **n == top).map(|(t, _)| *t).collect();
+            let accused = if tied.len() == 1 {
+                Some(tied[0].clone())
+            } else if tied.contains(&&imp) && judge.as_ref().and_then(|j| votes.get(j)) == Some(&imp) {
+                Some(imp.clone())
+            } else {
+                None
+            };
+            assert_eq!(g.round.accused, accused, "size={size} votes={votes:?}");
+            let escaped = accused.as_ref() != Some(&imp);
+
+            let acc = holder(Role::Accomplice);
+            let decoy = holder(Role::Decoy).unwrap();
+            let spotted_acc = acc.is_some() && det_pick == acc;
+            let spotted_decoy = decoy_pick.as_ref() == Some(&decoy);
+            let pair = escaped && acc.is_some() && acc_pick == acc && !spotted_acc;
+            let bluff = escaped && !votes.values().any(|t| *t == imp);
+            let decoy_voted = votes.iter().any(|(v, t)| *t == decoy && *v != imp);
+            let decoy_convicted = accused.as_ref() == Some(&decoy);
+
+            let mut queue = BTreeSet::new();
+            for id in &roster {
+                let s = stakes[id] as i32;
+                let right = votes[id] == imp;
+                let bet = |won: bool| if won { s } else { -s };
+                // (gains before any void, bet, voided, lost)
+                let (gains, bet, voided, lost) = match role(id) {
+                    Role::Imposter => (
+                        if escaped { 2 + i32::from(bluff) + i32::from(pair) + i32::from(spotted_decoy && !small) } else { 0 },
+                        bet(escaped), false, !escaped),
+                    Role::Accomplice => (i32::from(escaped) + i32::from(pair), bet(escaped), spotted_acc, spotted_acc || !escaped),
+                    Role::Detective => (i32::from(right) + i32::from(spotted_acc), bet(spotted_acc), false, !right),
+                    Role::Judge => (if right { 2 } else { 0 }, bet(right), false, !right),
+                    Role::Decoy if small => (i32::from(right) + i32::from(decoy_voted), bet(right), decoy_convicted, !right || decoy_convicted),
+                    Role::Decoy => (i32::from(right) + i32::from(!escaped), bet(right), spotted_decoy, !right || spotted_decoy),
+                    Role::Gambler => (i32::from(right), if right && s == 3 { 5 } else { bet(right) }, false, !right),
+                };
+                let total = if voided { bet.min(0) } else { gains + bet };
+                let want = (before[id] + total).max(0);
+                let got = &g.round.scores[id];
+                assert_eq!(
+                    (got.after, got.voided),
+                    (want, voided),
+                    "size={size} role={:?} escaped={escaped} stake={s} right={right} picks={acc_pick:?}/{decoy_pick:?}/{det_pick:?}",
+                    role(id)
+                );
+                assert!(g.players.iter().find(|p| p.id == *id).unwrap().points >= 0);
+                if lost { queue.insert(id.clone()); }
+            }
+            let got: BTreeSet<String> = g.round.queue.iter().cloned().collect();
+            assert_eq!(got, queue, "Drink or Dare queue, size={size}");
+            assert_eq!(got.len(), g.round.queue.len(), "nobody queued twice");
+        }
+    }
+}
+
+/// Whole sessions at every size: random rounds through Drink or Dare and the
+/// standings until someone reaches the target, then a fresh session. Points
+/// carry over exactly, every round deals the right lineup, and the flow never
+/// gets stuck.
+#[test]
+fn random_sessions_run_to_a_winner_at_every_size() {
+    use rand::{rngs::StdRng, Rng, SeedableRng};
+    use std::collections::BTreeSet;
+    let mut rng = StdRng::seed_from_u64(0x5E55);
+    for size in 3..=12 {
+        let mut g = party(size);
+        let host = g.host.clone();
+        act(&mut g, &host, "session_target", json!(10)).unwrap();
+        let mut held: BTreeMap<String, BTreeSet<Role>> = BTreeMap::new();
+        for session in 0..2 {
+            deal(&mut g);
+            let mut rounds = 0;
+            loop {
+                rounds += 1;
+                assert!(rounds <= 80, "size={size}: no winner after 80 rounds");
+                let cast = g.round.cast.clone().unwrap();
+                let mut lineup: Vec<Role> = cast.roles.values().copied().collect();
+                lineup.sort();
+                let mut want: Vec<Role> = cast::specials(size).to_vec();
+                want.resize(size, Role::Gambler);
+                want.sort();
+                assert_eq!(lineup, want, "size={size} round={rounds}");
+                for (id, r) in &cast.roles {
+                    held.entry(id.clone()).or_default().insert(*r);
+                }
+                let before: BTreeMap<String, i32> = g.players.iter().map(|p| (p.id.clone(), p.points)).collect();
+                let roster = g.round.roster.clone();
+                let imp = g.round.imposter.clone();
+                for id in &roster {
+                    let others: Vec<&String> = roster.iter().filter(|p| *p != id).collect();
+                    let target = if *id != imp && rng.gen_bool(0.5) { imp.clone() } else { others[rng.gen_range(0..others.len())].clone() };
+                    let stake = rng.gen_range(0..=before[id].clamp(0, 3));
+                    let mut v = json!({"player_id":target,"stake":stake});
+                    match cast.roles[id] {
+                        Role::Imposter if !cast::bait_decoy(size) => {
+                            v["accomplice_id"] = json!(others[0]);
+                            v["decoy_id"] = json!(others[1]);
+                        }
+                        Role::Detective => {
+                            v["accomplice_id"] = json!(others.iter().find(|p| ***p != target).unwrap());
+                        }
+                        _ => {}
+                    }
+                    act(&mut g, id, "vote", v).unwrap();
+                }
+                settle(&mut g);
+                for p in &g.players {
+                    let s = &g.round.scores[&p.id];
+                    assert_eq!(s.before, before[&p.id]);
+                    assert_eq!(p.points, s.after);
+                    assert_eq!(p.points, (before[&p.id] + p.earned).max(0));
+                    assert!(p.points >= 0);
+                }
+                act(&mut g, &host, "punish", Value::Null).unwrap();
+                let mut turns = 0;
+                while g.phase == "punishment" {
+                    turns += 1;
+                    let turn = g.round.turn as u64 + 1;
+                    act(&mut g, &host, "skip", json!(turn)).unwrap();
+                }
+                assert_eq!(turns, g.round.queue.len(), "every queued player gets one turn");
+                if g.phase == "session_complete" {
+                    let top = g.players.iter().map(|p| p.points).max().unwrap();
+                    assert!(top >= 10);
+                    for w in &g.session_winners {
+                        assert_eq!(g.players.iter().find(|p| p.id == *w).unwrap().points, top);
+                    }
+                    act(&mut g, &host, "new_session", Value::Null).unwrap();
+                    assert_eq!(g.phase, "lobby");
+                    assert!(g.players.iter().all(|p| p.points == 0), "session {session} reset");
+                    break;
+                }
+                assert_eq!(g.phase, "rankings");
+                act(&mut g, &host, "next", Value::Null).unwrap();
+                assert_eq!(g.phase, "topic_voting", "size={size}: next round should open topic voting");
+                let topic = g.round.topic_pool.first().unwrap().clone();
+                for id in g.round.roster.clone() {
+                    act(&mut g, &id, "topic_vote", json!([topic])).unwrap();
+                }
+                act(&mut g, &host, "begin_round", Value::Null).unwrap();
+                for id in g.round.roster.clone() {
+                    act(&mut g, &id, "role_ready", Value::Null).unwrap();
+                }
+                act(&mut g, &host, "open_vote", Value::Null).unwrap();
+            }
+        }
+        // Over two sessions, nobody is stuck with one role.
+        assert!(held.values().all(|roles| roles.len() >= 2), "size={size} roles held: {held:?}");
+    }
 }
