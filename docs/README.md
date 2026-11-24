@@ -6,14 +6,7 @@ Local preview: `python -m http.server 8799 --directory docs`, then open `http://
 
 ## Publish with GitHub Pages
 
-The intended address is **https://malon0825.github.io/imposter-app/**. GitHub Pages is not enabled yet: the connected `ItsMark-SE` account has push access but no repository admin/maintain permission, and the create-Pages API returned HTTP 404.
-
-The repository owner can activate the completed site:
-
-1. Open [Settings → Pages](https://github.com/Malon0825/imposter-app/settings/pages).
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select **main** and **/docs**, then **Save**.
-4. Wait for the Pages deployment to finish. The address above will then serve this page; later changes under `docs/` publish automatically.
+The site is live at **https://malon0825.github.io/imposter-app/**. GitHub Pages deploys from the `main` branch's `/docs` folder (Settings → Pages → Deploy from a branch), with HTTPS enforced. Every change merged into `docs/` on `main` publishes automatically within a few minutes.
 
 The `.nojekyll` file keeps deployment static. Relative asset paths work at the repository's `/imposter-app/` URL. The app and APK do not depend on this public website for offline gameplay.
 
