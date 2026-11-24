@@ -3332,6 +3332,13 @@ export default function App() {
           ) : (
             <>
               <h1>{heading}</h1>
+              {castRole === "accomplice" && (
+                <div className="vote-tip">
+                  <b>Your vote counts like anyone’s.</b>
+                  <p>If the imposter and someone else look neck and neck, your vote on the other player can tip it so the imposter escapes.</p>
+                  <p>Careful: an odd vote can give you away.</p>
+                </div>
+              )}
               <p className={`muted ${castRole === "accomplice" ? "vote-risk" : ""}`}>
                 {castRole
                   ? castCopy(castRole, activePlayers.length).vote
