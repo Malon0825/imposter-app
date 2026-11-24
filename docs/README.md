@@ -1,8 +1,8 @@
 # IMPOSTER website
 
-A single-page app tour and Android download page, based on the user's HTML reference. Static HTML, CSS, and progressive JavaScript; no build step, analytics, accounts, or external font service. Downloads point directly to the signed **v1.1.0** APK and checksum in GitHub Releases.
+A single-page app tour and Android download page, based on the user's HTML reference. Static HTML, CSS, and progressive JavaScript; no build step, analytics, accounts, or external font service. Download buttons resolve the newest GitHub release's `*-android.apk` (and its `.sha256`) through the public releases API on page load; the static hrefs point at v1.2.1 as the no-JavaScript fallback. A new release needs no site change as long as its APK keeps the `imposter-<version>-android.apk` name.
 
-Local preview: `http://127.0.0.1:1428/docs/` while `npm run dev` is running. The site also works with any static file server serving this directory.
+Local preview: `python -m http.server 8799 --directory docs`, then open `http://localhost:8799/`.
 
 ## Publish with GitHub Pages
 
@@ -19,13 +19,9 @@ The `.nojekyll` file keeps deployment static. Relative asset paths work at the r
 
 ## Screenshots
 
-These are captures of the actual app interface with sample players, not the proposal boards. The 24 native-layout captures were refreshed from the current production React components using `scripts/visual-capture.js`. Their native command responses are isolated demonstration fixtures; they are not proof of physical camera/router behavior. The two browser landing captures come from the production guest flow against the real Rust host.
+All captures are the actual app with sample players. Round screens (`cast-*`, `round-*`, `turn-*`, `rule-*`) are Full Cast captures from `scripts/full-cast-smoke.js` and the Full Cast host-flow run. Setup and joining screens (`01`–`08`, `17`, `22`) come from `scripts/visual-capture.js`; they did not change with Full Cast. All app screens are WebP at 390×844. The 1.2.1 changes (the Accomplice's vote note and the removed Detective fine) appear only on the Accomplice's ballot, which the site doesn't show, so no capture needed refreshing. The two browser landing captures come from the production guest flow against the real Rust host.
 
-<img src="screens/11-civilian.png" width="240" alt="Actual civilian role screen showing Dog"> <img src="screens/12-imposter.png" width="240" alt="Actual imposter role screen showing the hint Paws">
-
-<img src="screens/browser-mia-join.png" width="240" alt="Actual browser guest landing"> <img src="screens/browser-ben-join.png" width="240" alt="Actual Android browser landing with app handoff">
-
-The website displays all six native screen flows plus both browser joining screens. Clicking a screen opens an accessible full-size preview; without JavaScript it opens the original PNG. Galleries scroll with touch or keyboard, help uses native disclosures, and reduced-motion preferences disable entrance effects.
+<img src="screens/cast-imposter.webp" width="200" alt="Imposter role reveal"> <img src="screens/round-detective-card.webp" width="200" alt="Detective card showing Butterfly">
 
 ## Verification
 
