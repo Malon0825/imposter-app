@@ -1,4 +1,10 @@
 async function topicVotingSmoke(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const assert = (value, message) => {
     if (!value) throw Error(message);
@@ -262,6 +268,7 @@ async function topicVotingSmoke(page) {
       await g.page
         .getByRole("button", { name: "Reveal my role", exact: true })
         .click();
+      await passRoleStage(g.page);
       const imp = await g.page
         .getByRole("heading", { name: "You are the imposter", exact: true })
         .count();
@@ -269,6 +276,7 @@ async function topicVotingSmoke(page) {
         my_id: g.id,
         private_role: {
           imposter: !!imp,
+          role: (await g.page.locator(".cast-badge").textContent()).trim().toLowerCase(),
           clue: await g.page.locator(".secret-word").innerText(),
         },
       });
@@ -280,11 +288,11 @@ async function topicVotingSmoke(page) {
       states.filter((s) => s.private_role.imposter).length === 1,
       "Incorrect role distribution",
     );
-    const word = states.find((s) => !s.private_role.imposter).private_role.clue;
+    // From five players the Decoy holds a related word on purpose.
+    const holders = states.filter((s) => !s.private_role.imposter && s.private_role.role !== "decoy");
+    const word = holders[0].private_role.clue;
     assert(
-      states
-        .filter((s) => !s.private_role.imposter)
-        .every((s) => s.private_role.clue === word),
+      holders.every((s) => s.private_role.clue === word),
       "Civilian words differ",
     );
     const imposter = states.find((s) => s.private_role.imposter).my_id;
@@ -294,16 +302,33 @@ async function topicVotingSmoke(page) {
     );
     for (const s of [host, ...natives]) await act(s, "role_ready");
     await act(host, "open_vote");
-    for (const s of [host, ...natives])
-      await act(
-        s,
-        "vote",
-        s.credentials.player_id === imposter ? guests[0].id : imposter,
-      );
+    // From five players the imposter names their crew and the Detective names
+    // the accomplice alongside the suspect.
+    const everyone = selected.players.map((p) => p.id);
+    const others = (id) => everyone.filter((x) => x !== id);
+    for (const s of [host, ...natives]) {
+      const me = s.credentials.player_id;
+      const role = states.find((st) => st.my_id === me).private_role.role;
+      const target = me === imposter ? guests[0].id : imposter;
+      const value = { player_id: target, stake: 0 };
+      if (role === "imposter") {
+        value.accomplice_id = target;
+        value.decoy_id = others(me).find((x) => x !== target);
+      }
+      if (role === "detective") value.accomplice_id = others(me).find((x) => x !== target);
+      await act(s, "vote", value);
+    }
     for (const g of guests) {
       const target = g.id === imposter ? host.credentials.player_id : imposter;
       const name = selected.players.find((p) => p.id === target).name;
-      await g.page.locator(".ballot-row").filter({ hasText: name }).click();
+      if (await g.page.getByRole("heading", { name: "Find your crew", exact: true }).count()) {
+        await g.page.getByRole("group", { name: "Your accomplice?" }).locator("button:not([disabled])").first().click();
+        await g.page.getByRole("group", { name: "The decoy?" }).locator("button:not([disabled])").first().click();
+      } else {
+        await g.page.locator(".ballot-row").filter({ hasText: name }).click();
+        const sidePick = g.page.getByRole("group", { name: "Who’s the accomplice?" });
+        if (await sidePick.count()) await sidePick.locator("button:not([disabled])").last().click();
+      }
       await g.page
         .getByRole("button", { name: "Confirm vote", exact: true })
         .click();
@@ -312,8 +337,9 @@ async function topicVotingSmoke(page) {
     assert(!result.result.escaped, "Round did not finish correctly");
     for (const s of [host, ...natives]) await act(s, "report", []);
     await act(host, "punish");
-    const punishment = await call("state", { session_id: host.session_id });
-    await act(host, "skip", punishment.punishment.turn);
+    // Every role that lost its round takes a turn; skip them all.
+    for (let v = await call("state", { session_id: host.session_id }); v.phase === "punishment"; v = await call("state", { session_id: host.session_id }))
+      await act(host, "skip", v.punishment.turn);
     await act(host, "next");
     await page
       .getByRole("heading", { name: "What should we play?", exact: true })

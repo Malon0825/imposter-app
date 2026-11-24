@@ -1,4 +1,10 @@
 async function roundFlowSmoke(hostPage) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const origin = new URL(hostPage.url()).origin;
   const browser = hostPage.context().browser();
   const contexts = [];
@@ -92,23 +98,28 @@ async function roundFlowSmoke(hostPage) {
     await chooseTopics(false);
 
     let imposter;
+    let judge;
     for (const player of players) {
       await button(player.page, "Reveal my role").click();
+      await passRoleStage(player.page);
       const privateTitle = await player.page.locator(".role-title").innerText();
       if (privateTitle === "You are the imposter") imposter = player;
+      if (privateTitle === "You are the judge") judge = player;
       await button(player.page, "Hide & ready").click();
     }
     assert(imposter, "No imposter role was shown");
     await button(hostPage, "Open voting").click();
-    const civilians = players.filter((player) => player !== imposter);
-    await imposter.page.getByText("Your vote is a dummy vote. It won’t count toward the tally.").waitFor();
-    assert(await imposter.page.getByRole("button", { name: "Bet 1 point", exact: true }).isDisabled(), "Zero-balance escape bet was enabled");
+    // The Judge breaks a tie toward the imposter, so seat them where their
+    // ballot misses: last, voting with the other civilian on the same suspect.
+    const civilians = players.filter((player) => player !== imposter && player !== judge).concat(judge);
+    await imposter.page.getByText("Escape to keep your points.").waitFor();
+    assert(await imposter.page.getByRole("button", { name: /^Bet 1 point/ }).isDisabled(), "Zero-balance escape bet was enabled");
     await capture(imposter.page, "imposter-ballot");
     const pick = async (player, target) => {
       await player.page.locator(".ballot-row").filter({ hasText: target.name }).click();
       await button(player.page, "Confirm vote").click();
     };
-    // Count three distinct civilian targets. The dummy would break the tie if counted.
+    // Count three distinct targets. The imposter's ballot would break the tie if counted.
     const firstBallots = [[imposter, civilians[1]], [civilians[0], imposter], [civilians[1], civilians[2]]];
     for (const [index, [player, target]] of firstBallots.entries()) {
       await pick(player, target);
@@ -128,7 +139,13 @@ async function roundFlowSmoke(hostPage) {
       player.page.locator(".personal-stage").getByRole("heading", { name, exact: true }).waitFor({ timeout: 8000 });
     await Promise.all([personal(civilians[0], "You got it"), personal(imposter, "You escaped")]);
     await capture(imposter.page, "personal-escape");
-    await hostPage.locator(".everyone-results").waitFor();
+    // Every phone moves on from its own result to the room's.
+    for (const player of players) {
+      await player.page.bringToFront();
+      await button(player.page, "See the room").click();
+      await player.page.locator(".everyone-results").waitFor();
+    }
+    await hostPage.bringToFront();
     await hostPage.getByText("No one was accused.", { exact: true }).first().waitFor();
     await capture(hostPage, "tie-verdict");
     await button(hostPage, "Continue").waitFor();
@@ -209,7 +226,7 @@ async function roundFlowSmoke(hostPage) {
     }
     assert(seen.size === total, `Expected six filtered ballots, saw ${[...seen].join(", ")}`);
     assert(revealed.size === total, `Expected six rule reveals, saw ${[...revealed].join(", ")}`);
-    return { passed: true, rules: [...seen], checks: ["mixed native and browser guests", "automatic tie draw", "durable automatic deal", "cancel and confirm skip", "fixed Classic reveal", "private dummy ballot", "civilian tie escape", "personal scoring", "report sheet", "direct randomized repeat", "six filtered rule ballots", "six rule reveal cards"] };
+    return { passed: true, rules: [...seen], checks: ["mixed native and browser guests", "automatic tie draw", "durable automatic deal", "cancel and confirm skip", "fixed Classic reveal", "uncounted imposter ballot", "tie escape past the Judge", "personal scoring", "report sheet", "direct randomized repeat", "six filtered rule ballots", "six rule reveal cards"] };
   } finally {
     for (const context of contexts) await context.close().catch(() => {});
     await call("close", { session_id: host.session_id }).catch(() => {});

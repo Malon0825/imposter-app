@@ -1,4 +1,10 @@
 async function checkReconnect(page) {
+  // Full Cast shows the role on its own screen before the card, once per round per tab.
+  const passRoleStage = async (p) => {
+    const see = p.getByRole("button", { name: /^See my/ });
+    await see.or(p.locator(".role-heading.revealed")).first().waitFor();
+    if (await see.count()) await see.click();
+  };
   const base = new URL(page.url()).origin;
   const assert = (value, message) => {
     if (!value) throw Error(message);
@@ -151,6 +157,7 @@ async function checkReconnect(page) {
     await observer
       .getByRole("button", { name: "Reveal my role", exact: true })
       .click();
+    await passRoleStage(observer);
     await observer
       .getByRole("button", { name: "Hide my role", exact: true })
       .click();
@@ -201,12 +208,14 @@ async function checkReconnect(page) {
     await guest
       .getByRole("button", { name: "Reveal my role", exact: true })
       .click();
+    await passRoleStage(guest);
     await guest
       .getByRole("button", { name: "Hide & ready", exact: true })
       .click();
     await observer
       .getByRole("button", { name: "Reveal my role", exact: true })
       .click();
+    await passRoleStage(observer);
     await observer
       .getByRole("button", { name: "Hide & ready", exact: true })
       .click();
