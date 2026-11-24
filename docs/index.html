@@ -13,8 +13,8 @@
   <link rel="canonical" href="https://malon0825.github.io/imposter-app/">
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
   <link rel="preload" href="assets/fonts/anton-latin.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="styles.css">
-  <script src="site.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=1.2.1">
+  <script src="site.js?v=1.2.1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -29,14 +29,14 @@
       <div class="hero">
         <div class="hero-copy">
           <p class="tag">Someone is bluffing.</p>
-          <p class="sub">One room. One secret.<br>Trust no one.</p>
-          <p class="hero-description">A secret word on every phone. A convincing liar in every round. Find your imposter before they fool the room.</p>
-          <div class="actions"><a class="btn primary" href="https://github.com/Malon0825/imposter-app/releases/download/v1.2.0/imposter-1.2.0-android.apk">Download for Android <span aria-hidden="true">↓</span></a><a class="text-link" href="#how">How to play <span aria-hidden="true">↗</span></a></div>
-          <p class="download-meta">v1.2.0 <span>·</span> Android 8+ <span>·</span> Free</p>
+          <p class="sub">One room. One secret. <br>Trust no one.</p>
+          <p class="hero-description">A secret role on every phone. An imposter, their accomplice, a detective and a judge in the room. Find the liar before they fool everyone.</p>
+          <div class="actions"><a class="btn primary" data-latest-apk href="https://github.com/Malon0825/imposter-app/releases/download/v1.2.1/imposter-1.2.1-android.apk">Download for Android <span aria-hidden="true">↓</span></a><a class="text-link" href="#how">How to play <span aria-hidden="true">↗</span></a></div>
+          <p class="download-meta"><span data-latest-version>v1.2.1</span> <span>·</span> Android 8+ <span>·</span> Free</p>
         </div>
-        <div class="hero-visual" aria-label="Real app screenshots showing a hidden role and a civilian's secret word">
-          <div class="hero-phone back-phone"><img src="screens/10-role-concealed.png" width="390" height="750" alt="Imposter app: tap to reveal your private role" fetchpriority="high"></div>
-          <div class="hero-phone front-phone"><img src="screens/11-civilian.png" width="390" height="750" alt="Imposter app: a civilian's secret word is Dog" fetchpriority="high"></div>
+        <div class="hero-visual" aria-label="Real app screenshots: the imposter's role reveal and the detective's secret word">
+          <div class="hero-phone back-phone"><img src="screens/cast-imposter.webp" width="390" height="844" alt="Imposter app: the Imposter role reveal, Escape the vote" fetchpriority="high"></div>
+          <div class="hero-phone front-phone"><img src="screens/round-detective-card.webp" width="390" height="844" alt="Imposter app: the detective's secret word is Butterfly" fetchpriority="high"></div>
           <span class="photo-note">Actual app. Very suspicious friends.</span>
         </div>
       </div>
@@ -46,25 +46,25 @@
   <main id="main">
     <section id="how" class="surface-section">
       <div class="wrap">
-        <div class="section-heading reveal"><p class="eyebrow">01 / The game</p><h2>Read the room.<br>Find the liar.</h2><p class="lead">Everyone gets the same secret word. Except one player, who knows they're the imposter and only gets a hint.</p></div>
+        <div class="section-heading reveal"><p class="eyebrow">01 / The game</p><h2>Read the room.<br>Find the liar.</h2><p class="lead">Everyone gets a secret role. Most of the room shares one word. The imposter only gets a hint, and the rest of the cast has a plan of their own.</p></div>
         <ol class="steps">
           <li><span class="num" aria-hidden="true">1</span><div><h3>Same room. Same Wi-Fi.</h3><p>One Android phone hosts. Everyone scans its QR to join on their own phone, through a browser or the Android app. Internet isn't needed for the game.</p></div></li>
-          <li><span class="num" aria-hidden="true">2</span><div><h3>Keep your role to yourself.</h3><p>Tap to reveal your word or your imposter hint. Hide it, mark ready, and put on your best innocent face.</p></div></li>
+          <li><span class="num" aria-hidden="true">2</span><div><h3>Keep your role to yourself.</h3><p>Tap to reveal your role and your word, or your imposter hint. Hide it, mark ready, and put on your best innocent face.</p></div></li>
           <li><span class="num" aria-hidden="true">3</span><div><h3>Give a clue. Raise an eyebrow.</h3><p>Take turns giving clues without saying the word. Talk it out face to face, for as long as you like. The host opens voting when everyone's ready.</p></div></li>
-          <li><span class="num" aria-hidden="true">4</span><div><h3>Make your secret vote count.</h3><p>Everyone casts a private ballot. The player with the most votes is accused. A tie gets one runoff; another tie lets the imposter escape.</p></div></li>
+          <li><span class="num" aria-hidden="true">4</span><div><h3>Make your secret vote count.</h3><p>Everyone casts a private ballot; the imposter's own vote never counts. The player with the most votes is accused. A tie lets the imposter escape, unless the Judge voted for the imposter.</p></div></li>
           <li><span class="num" aria-hidden="true">5</span><div><h3>Face the room. Then go again.</h3><p>Everyone who lost the round takes a Drink, Dare, or Skip turn, one at a time. For a dare, the app names a friend to invent it. Check the rankings and play another round.</p></div></li>
         </ol>
       </div>
     </section>
     <section id="scoring">
       <div class="wrap score reveal">
-        <div><p class="eyebrow">02 / Bragging rights</p><h2>A little trust.<br>A lot at stake.</h2><p class="lead">Scores add up across rounds. The host calls the last round; the highest total gets the bragging rights.</p></div>
-        <div class="points"><div class="point"><b>+1</b><div><h3>You saw through it.</h3><p>Your vote named the imposter. The Judge earns +2, and the Gambler's top bet pays +5.</p></div></div><div class="point escape"><b>+2</b><div><h3>You fooled the room.</h3><p>The imposter escaped the vote. Their accomplice wins with them.</p></div></div><p class="score-note">Everyone holds a secret role: Imposter, Decoy, Judge, Accomplice, Detective or Gambler. The cast grows from three players to twelve, and the same friend can still be the imposter twice in a row.</p></div>
+        <div><p class="eyebrow">02 / Bragging rights</p><h2>A little trust.<br>A lot at stake.</h2><p class="lead">Scores add up across rounds. The first to the session target, 10 to 30 points, takes the bragging rights. Bet up to three points on your read.</p></div>
+        <div class="points"><div class="point"><b>+1</b><div><h3>You saw through it.</h3><p>Your vote named the imposter. The Judge earns +2, and the Gambler's top bet pays +5.</p></div></div><div class="point escape"><b>+2</b><div><h3>You fooled the room.</h3><p>The imposter escaped the vote. Their accomplice wins with them.</p></div></div><p class="score-note">Everyone holds a secret role: Imposter, Decoy, Judge, Accomplice, Detective or Gambler. The cast grows from three players to twelve, and the same friend can still be the imposter twice in a row.</p><p class="score-note">The Accomplice's vote counts like anyone's. In a close vote, it can tip the room onto someone else and let the imposter escape.</p></div>
       </div>
     </section>
     <section class="topics-section">
       <div class="wrap">
-        <p class="eyebrow">03 / Set the mood</p><h2>From everyday to<br>“wait, what was that clue?”</h2><p class="lead">23 topic packs. 552 word-and-hint pairs. Everyone votes for topics before each round; tied leaders have equal random chances. Sensitive packs stay opt-in.</p>
+        <p class="eyebrow">03 / Set the mood</p><h2>From everyday to<br>“wait, what was that clue?”</h2><p class="lead">23 topic packs. 581 word-and-hint pairs. Everyone votes for topics before each round; tied leaders have equal random chances. Sensitive packs stay opt-in.</p>
         <div class="topics" aria-label="Sample topic packs"><span>Everyday</span><span>Food</span><span>Animals</span><span>Psychology</span><span>Relationships <small>Opt-in</small></span><span>Sex education <small>Opt-in</small></span><span>Consent <small>Opt-in</small></span></div>
         <div class="features"><div><h3>A secret on every screen.</h3><p>Your role starts concealed on your own device. Reveal it when you're ready, then hide it before the clues begin.</p></div><div><h3>Built for being together.</h3><p>The host runs the party over local Wi-Fi. Friends can mix installed Android apps and browsers in one game.</p></div><div><h3>Your turn. Your choice.</h3><p>Drink, Dare, or Skip. A soft drink counts. Dares happen between friends, away from the app, and skipping never costs points.</p></div></div>
       </div>
@@ -72,66 +72,76 @@
     <section id="screens" class="surface-section">
       <div class="wrap">
         <div class="section-heading"><p class="eyebrow">04 / Inside the app</p><h2>The whole night.<br>Screen by screen.</h2><p class="lead">Real captures from the app, using a sample party. Scroll each row on smaller screens. Tap any screen for a closer look.</p></div>
-        <article class="flow"><div class="flow-heading"><span class="flow-index">01—04</span><div><h3>Bring everyone together.</h3><p>Host a party, set up background hosting, and watch the lobby fill.</p></div></div>
+        <article class="flow"><div class="flow-heading"><span class="flow-index">01—04</span><div><h3>Bring everyone together.</h3><p>Host a party, set up background hosting, and watch the cast fill the lobby.</p></div></div>
           <div class="screen-row" tabindex="0" role="group" aria-label="Host party screenshots">
-            <figure><a class="screen-link" href="screens/01-welcome.png"><img src="screens/01-welcome.png" width="390" height="750" loading="lazy" alt="Welcome screen with Host party and Join party actions"></a><figcaption>01 · Welcome</figcaption></figure>
-            <figure><a class="screen-link" href="screens/02-create.png"><img src="screens/02-create.png" width="390" height="750" loading="lazy" alt="Create a party with a name and shared Wi-Fi label"></a><figcaption>02 · Create a party</figcaption></figure>
-            <figure><a class="screen-link" href="screens/03-host-setup.png"><img src="screens/03-host-setup.png" width="390" height="750" loading="lazy" alt="Background hosting setup with battery settings"></a><figcaption>03 · Keep it connected</figcaption></figure>
-            <figure><a class="screen-link" href="screens/04-host-lobby.png"><img src="screens/04-host-lobby.png" width="390" height="750" loading="lazy" alt="Host lobby with player readiness and the invitation QR"></a><figcaption>04 · Host lobby</figcaption></figure>
+            <figure><a class="screen-link" href="screens/01-welcome.webp"><img src="screens/01-welcome.webp" width="390" height="844" loading="lazy" alt="Welcome screen with Host party and Join party actions"></a><figcaption>01 · Welcome</figcaption></figure>
+            <figure><a class="screen-link" href="screens/02-create.webp"><img src="screens/02-create.webp" width="390" height="844" loading="lazy" alt="Create a party with a name and shared Wi-Fi label"></a><figcaption>02 · Create a party</figcaption></figure>
+            <figure><a class="screen-link" href="screens/03-host-setup.webp"><img src="screens/03-host-setup.webp" width="390" height="844" loading="lazy" alt="Background hosting setup with battery settings"></a><figcaption>03 · Keep it connected</figcaption></figure>
+            <figure><a class="screen-link" href="screens/cast-lobby.webp"><img src="screens/cast-lobby.webp" width="390" height="844" loading="lazy" alt="Host lobby with five ready players and tonight's cast of roles"></a><figcaption>04 · Host lobby</figcaption></figure>
           </div>
         </article>
         <article class="flow"><div class="flow-heading"><span class="flow-index">05—08</span><div><h3>Find your people.</h3><p>Scan inside the Android app, check the connection, and take your place.</p></div></div>
           <div class="screen-row" tabindex="0" role="group" aria-label="Native Android joining screenshots">
-            <figure><a class="screen-link" href="screens/05-scan.png"><img src="screens/05-scan.png" width="390" height="750" loading="lazy" alt="Native invitation scanning screen"></a><figcaption>05 · Scan an invitation</figcaption></figure>
-            <figure><a class="screen-link" href="screens/06-wifi.png"><img src="screens/06-wifi.png" width="390" height="750" loading="lazy" alt="Check the connection to the host's Wi-Fi"></a><figcaption>06 · Same Wi-Fi</figcaption></figure>
-            <figure><a class="screen-link" href="screens/07-identity.png"><img src="screens/07-identity.png" width="390" height="750" loading="lazy" alt="Choose your player name before joining"></a><figcaption>07 · Pick your name</figcaption></figure>
-            <figure><a class="screen-link" href="screens/08-guest-lobby.png"><img src="screens/08-guest-lobby.png" width="390" height="750" loading="lazy" alt="Guest lobby with readiness control and other players"></a><figcaption>08 · Ready up</figcaption></figure>
+            <figure><a class="screen-link" href="screens/05-scan.webp"><img src="screens/05-scan.webp" width="390" height="844" loading="lazy" alt="Native invitation scanning screen"></a><figcaption>05 · Scan an invitation</figcaption></figure>
+            <figure><a class="screen-link" href="screens/06-wifi.webp"><img src="screens/06-wifi.webp" width="390" height="844" loading="lazy" alt="Check the connection to the host's Wi-Fi"></a><figcaption>06 · Same Wi-Fi</figcaption></figure>
+            <figure><a class="screen-link" href="screens/07-identity.webp"><img src="screens/07-identity.webp" width="390" height="844" loading="lazy" alt="Choose your player name before joining"></a><figcaption>07 · Pick your name</figcaption></figure>
+            <figure><a class="screen-link" href="screens/08-guest-lobby.webp"><img src="screens/08-guest-lobby.webp" width="390" height="844" loading="lazy" alt="Guest lobby with readiness control and other players"></a><figcaption>08 · Ready up</figcaption></figure>
           </div>
         </article>
-        <article class="flow"><div class="flow-heading"><span class="flow-index">09—12</span><div><h3>One word. Two very different stories.</h3><p>Choose topics, reveal privately, and keep your face under control.</p></div></div>
+        <article class="flow"><div class="flow-heading"><span class="flow-index">09—14</span><div><h3>Meet the cast.</h3><p>Every player holds a secret role. The lineup grows with the room, from three players to twelve.</p></div></div>
+          <div class="screen-row cast-row" tabindex="0" role="group" aria-label="Role reveal screenshots">
+            <figure><a class="screen-link" href="screens/cast-imposter.webp"><img src="screens/cast-imposter.webp" width="390" height="844" loading="lazy" alt="Imposter role reveal: escape the vote"></a><figcaption>09 · Imposter</figcaption></figure>
+            <figure><a class="screen-link" href="screens/cast-accomplice.webp"><img src="screens/cast-accomplice.webp" width="390" height="844" loading="lazy" alt="Accomplice role reveal: help the imposter escape"></a><figcaption>10 · Accomplice</figcaption></figure>
+            <figure><a class="screen-link" href="screens/cast-decoy.webp"><img src="screens/cast-decoy.webp" width="390" height="844" loading="lazy" alt="Decoy role reveal: blend in, don't get spotted"></a><figcaption>11 · Decoy</figcaption></figure>
+            <figure><a class="screen-link" href="screens/cast-detective.webp"><img src="screens/cast-detective.webp" width="390" height="844" loading="lazy" alt="Detective role reveal: catch the imposter and the accomplice"></a><figcaption>12 · Detective</figcaption></figure>
+            <figure><a class="screen-link" href="screens/cast-judge.webp"><img src="screens/cast-judge.webp" width="390" height="844" loading="lazy" alt="Judge role reveal: catch the imposter, ties are yours"></a><figcaption>13 · Judge</figcaption></figure>
+            <figure><a class="screen-link" href="screens/cast-gambler.webp"><img src="screens/cast-gambler.webp" width="390" height="844" loading="lazy" alt="Gambler role reveal: catch the imposter, bet big"></a><figcaption>14 · Gambler</figcaption></figure>
+          </div>
+        </article>
+        <article class="flow"><div class="flow-heading"><span class="flow-index">15—18</span><div><h3>One word. Very different stories.</h3><p>Vote on topics, reveal privately, and keep your face under control.</p></div></div>
           <div class="screen-row" tabindex="0" role="group" aria-label="Topics and private roles screenshots">
-            <figure><a class="screen-link" href="screens/09-topics.png"><img src="screens/09-topics.png" width="390" height="750" loading="lazy" alt="Topic selection with Animals and other packs"></a><figcaption>09 · Choose topics</figcaption></figure>
-            <figure><a class="screen-link" href="screens/10-role-concealed.png"><img src="screens/10-role-concealed.png" width="390" height="750" loading="lazy" alt="Concealed private role card before revealing"></a><figcaption>10 · Keep it private</figcaption></figure>
-            <figure><a class="screen-link" href="screens/11-civilian.png"><img src="screens/11-civilian.png" width="390" height="750" loading="lazy" alt="Civilian role card showing the word Dog"></a><figcaption>11 · The civilian</figcaption></figure>
-            <figure><a class="screen-link" href="screens/12-imposter.png"><img src="screens/12-imposter.png" width="390" height="750" loading="lazy" alt="Imposter role card showing the starting hint Paws"></a><figcaption>12 · The imposter</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-topic-vote.webp"><img src="screens/round-topic-vote.webp" width="390" height="844" loading="lazy" alt="Topic vote with Everyday, Food, Animals and other packs"></a><figcaption>15 · Vote on topics</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-concealed.webp"><img src="screens/round-concealed.webp" width="390" height="844" loading="lazy" alt="Concealed private role card before revealing"></a><figcaption>16 · For your eyes only</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-imposter-card.webp"><img src="screens/round-imposter-card.webp" width="390" height="844" loading="lazy" alt="Imposter card showing the starting hint Garden"></a><figcaption>17 · The imposter</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-detective-card.webp"><img src="screens/round-detective-card.webp" width="390" height="844" loading="lazy" alt="Detective card showing the secret word Butterfly and a cleared player"></a><figcaption>18 · The detective</figcaption></figure>
           </div>
         </article>
-        <article class="flow"><div class="flow-heading"><span class="flow-index">13—16</span><div><h3>Trust your instinct.</h3><p>Talk it out, lock your secret ballot, and find out who fooled whom.</p></div></div>
+        <article class="flow"><div class="flow-heading"><span class="flow-index">19—22</span><div><h3>Trust your instinct.</h3><p>Trade clues, lock your secret ballot, and find out who fooled whom.</p></div></div>
           <div class="screen-row" tabindex="0" role="group" aria-label="Voting and results screenshots">
-            <figure><a class="screen-link" href="screens/13-discussion.png"><img src="screens/13-discussion.png" width="390" height="750" loading="lazy" alt="Face-to-face discussion screen with host voting control"></a><figcaption>13 · Give your clues</figcaption></figure>
-            <figure><a class="screen-link" href="screens/14-ballot.png"><img src="screens/14-ballot.png" width="390" height="750" loading="lazy" alt="Private ballot with a player selected"></a><figcaption>14 · Cast your vote</figcaption></figure>
-            <figure><a class="screen-link" href="screens/15-vote-locked.png"><img src="screens/15-vote-locked.png" width="390" height="750" loading="lazy" alt="Your vote is locked while the remaining players vote"></a><figcaption>15 · Ballot locked</figcaption></figure>
-            <figure><a class="screen-link" href="screens/16-results.png"><img src="screens/16-results.png" width="390" height="750" loading="lazy" alt="Personal round result after the imposter escaped"></a><figcaption>16 · The truth comes out</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-clue-board.webp"><img src="screens/round-clue-board.webp" width="390" height="844" loading="lazy" alt="Clue board with clue turns and the Open voting control"></a><figcaption>19 · Give your clues</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-ballot.webp"><img src="screens/round-ballot.webp" width="390" height="844" loading="lazy" alt="Detective's ballot naming the imposter and the accomplice, with an optional bet"></a><figcaption>20 · Cast your vote</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-your-result.webp"><img src="screens/round-your-result.webp" width="390" height="844" loading="lazy" alt="Personal result: the detective got it, plus five points"></a><figcaption>21 · Your result</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-the-room.webp"><img src="screens/round-the-room.webp" width="390" height="844" loading="lazy" alt="Everyone's results: the imposter escaped"></a><figcaption>22 · The room</figcaption></figure>
           </div>
         </article>
-        <article class="flow"><div class="flow-heading"><span class="flow-index">17—20</span><div><h3>Time to face the room.</h3><p>One player at a time. A drink, a human-given dare, or a guilt-free skip.</p></div></div>
-          <div class="screen-row" tabindex="0" role="group" aria-label="Punishment turns and rankings screenshots">
-            <figure><a class="screen-link" href="screens/17-choose.png"><img src="screens/17-choose.png" width="390" height="750" loading="lazy" alt="Choose Drink, Dare, or Skip for your punishment turn"></a><figcaption>17 · Your choice</figcaption></figure>
-            <figure><a class="screen-link" href="screens/18-dare.png"><img src="screens/18-dare.png" width="390" height="750" loading="lazy" alt="Sam is selected to invent Alex's dare in person"></a><figcaption>18 · A friend sets the dare</figcaption></figure>
-            <figure><a class="screen-link" href="screens/19-drink.png"><img src="screens/19-drink.png" width="390" height="750" loading="lazy" alt="The next player's drink turn"></a><figcaption>19 · Pass the turn</figcaption></figure>
-            <figure><a class="screen-link" href="screens/20-rankings.png"><img src="screens/20-rankings.png" width="390" height="750" loading="lazy" alt="Cumulative rankings and points earned in the round"></a><figcaption>20 · Settle the score</figcaption></figure>
+        <article class="flow"><div class="flow-heading"><span class="flow-index">23—26</span><div><h3>Time to face the room.</h3><p>One player at a time. A drink, a human-given dare, or a guilt-free skip.</p></div></div>
+          <div class="screen-row" tabindex="0" role="group" aria-label="Punishment turns and standings screenshots">
+            <figure><a class="screen-link" href="screens/17-choose.webp"><img src="screens/17-choose.webp" width="390" height="844" loading="lazy" alt="Choose Drink, Dare, or Skip for your punishment turn"></a><figcaption>23 · Your choice</figcaption></figure>
+            <figure><a class="screen-link" href="screens/turn-loser.webp"><img src="screens/turn-loser.webp" width="390" height="844" loading="lazy" alt="Kai's turn to choose their fate"></a><figcaption>24 · Your turn</figcaption></figure>
+            <figure><a class="screen-link" href="screens/turn-dare-giver.webp"><img src="screens/turn-dare-giver.webp" width="390" height="844" loading="lazy" alt="Jo gives Kai a dare in person"></a><figcaption>25 · A friend sets the dare</figcaption></figure>
+            <figure><a class="screen-link" href="screens/turn-standings.webp"><img src="screens/turn-standings.webp" width="390" height="844" loading="lazy" alt="Session standings racing to 15 points"></a><figcaption>26 · Settle the score</figcaption></figure>
           </div>
         </article>
-        <article class="flow"><div class="flow-heading"><span class="flow-index">21—24</span><div><h3>Keep the party moving.</h3><p>A second vote for ties, reconnecting, final standings, and help along the way.</p></div></div>
-          <div class="screen-row" tabindex="0" role="group" aria-label="Runoff reconnecting final rankings and help screenshots">
-            <figure><a class="screen-link" href="screens/21-runoff.png"><img src="screens/21-runoff.png" width="390" height="750" loading="lazy" alt="Runoff voting between tied players"></a><figcaption>21 · Break the tie</figcaption></figure>
-            <figure><a class="screen-link" href="screens/22-reconnecting.png"><img src="screens/22-reconnecting.png" width="390" height="750" loading="lazy" alt="Reconnecting screen after losing contact with the host"></a><figcaption>22 · Find your way back</figcaption></figure>
-            <figure><a class="screen-link" href="screens/23-final.png"><img src="screens/23-final.png" width="390" height="750" loading="lazy" alt="Final rankings at the end of the party"></a><figcaption>23 · Bragging rights</figcaption></figure>
-            <figure><a class="screen-link" href="screens/24-help.png"><img src="screens/24-help.png" width="390" height="750" loading="lazy" alt="How to play and scoring help inside the app"></a><figcaption>24 · A little help</figcaption></figure>
+        <article class="flow"><div class="flow-heading"><span class="flow-index">27—30</span><div><h3>Keep the party moving.</h3><p>A surprise rule before some rounds, host controls, and a way back if a phone drops.</p></div></div>
+          <div class="screen-row" tabindex="0" role="group" aria-label="Round rules, host controls and reconnecting screenshots">
+            <figure><a class="screen-link" href="screens/rule-shuffle.webp"><img src="screens/rule-shuffle.webp" width="390" height="844" loading="lazy" alt="Choosing this round's rule"></a><figcaption>27 · Random round rules</figcaption></figure>
+            <figure><a class="screen-link" href="screens/rule-revealed.webp"><img src="screens/rule-revealed.webp" width="390" height="844" loading="lazy" alt="This round: Classic, give a spoken clue"></a><figcaption>28 · The rule is set</figcaption></figure>
+            <figure><a class="screen-link" href="screens/round-settings.webp"><img src="screens/round-settings.webp" width="390" height="844" loading="lazy" alt="Round settings sheet with pause, skip and random rules"></a><figcaption>29 · Host controls</figcaption></figure>
+            <figure><a class="screen-link" href="screens/22-reconnecting.webp"><img src="screens/22-reconnecting.webp" width="390" height="844" loading="lazy" alt="Reconnecting screen after losing contact with the host"></a><figcaption>30 · Find your way back</figcaption></figure>
           </div>
         </article>
       </div>
     </section>
     <section id="browser">
       <div class="wrap browser-layout">
-        <div><p class="eyebrow">New in 1.1.0</p><h2>One host.<br>Everyone's invited.</h2><p class="lead">Only the Android host needs the app. iPhone and Android friends can open the invitation in their chosen browser. Installed Android players can use Imposter's scanner instead.</p><p class="lead">The host serves the entire game over your shared Wi-Fi. No public game server. No accounts. No internet needed after installation.</p><a class="text-link" href="#download">Get the preview <span aria-hidden="true">↗</span></a><p class="browser-note">Physical iPhone and shared-router checks are still pending. Browser play uses unencrypted local HTTP; use Wi-Fi you trust. This website is the download page—join a game using your host's local QR.</p></div>
+        <div><p class="eyebrow">05 / Play anywhere</p><h2>One host.<br>Everyone's invited.</h2><p class="lead">Only the Android host needs the app. iPhone and Android friends can open the invitation in their chosen browser. Installed Android players can use Imposter's scanner instead.</p><p class="lead">The host serves the entire game over your shared Wi-Fi. No public game server. No accounts. No internet needed after installation.</p><a class="text-link" href="#download">Get the app <span aria-hidden="true">↗</span></a><p class="browser-note">Physical iPhone and shared-router checks are still pending. Browser play uses unencrypted local HTTP; use Wi-Fi you trust. This website is the download page—join a game using your host's local QR.</p></div>
         <div class="browser-screens"><figure><a class="screen-link" href="screens/browser-mia-join.png"><img src="screens/browser-mia-join.png" width="393" height="852" loading="lazy" alt="Browser guest landing page with Continue in browser"></a><figcaption>Join in a browser</figcaption></figure><figure><a class="screen-link" href="screens/browser-ben-join.png"><img src="screens/browser-ben-join.png" width="360" height="740" loading="lazy" alt="Android browser landing page with Open in Imposter and Continue in browser"></a><figcaption>Or open the Android app</figcaption></figure></div>
       </div>
     </section>
     <section id="download" class="surface-section">
       <div class="wrap download-layout">
-        <div><p class="eyebrow">Your next game night</p><h2>Find your imposter.</h2><p class="lead">Download the host app. Gather 3–12 friends.<br>Try to keep a straight face.</p><div class="actions"><a class="btn primary" href="https://github.com/Malon0825/imposter-app/releases/download/v1.2.0/imposter-1.2.0-android.apk">Download v1.2.0 APK <span aria-hidden="true">↓</span></a><a class="text-link" href="https://github.com/Malon0825/imposter-app/releases/tag/v1.2.0">Release notes <span aria-hidden="true">↗</span></a></div><p class="download-meta">Android 8+ · ARM64 · Offline browser preview</p><a class="checksum-link" href="https://github.com/Malon0825/imposter-app/releases/download/v1.2.0/imposter-1.2.0-android.apk.sha256">Download checksum</a></div>
-        <div class="install-help"><h3>Before your first round</h3><details><summary>How do I install the Android app?</summary><p>Download the APK on your Android phone, open it, and allow installation from your browser when Android asks. Version 1.2.0 uses the same signing key as 1.0.0 and 1.1.0, so it updates your existing installation.</p></details><details><summary>Can iPhone friends play?</summary><p>Yes, through the browser guest flow. Connect to the host's Wi-Fi before scanning the party QR, then open the link in your preferred browser. The 1.1.0 flow passed automated WebKit checks; physical iPhone testing is still pending.</p></details><details><summary>Do we need an internet connection?</summary><p>Only to download the host app. Once installed, gameplay runs on the host's local Wi-Fi network. Connect every phone to the same reachable router. Some guest Wi-Fi networks isolate devices and prevent joining. Keep the host app available throughout the game.</p></details><details><summary>Is there a stable version?</summary><p><a href="https://github.com/Malon0825/imposter-app/releases/tag/v1.0.0">Version 1.0.0</a> is the stable native-only release. Each player needs the Android app for that version. Use 1.2.0 for mixed app and browser play.</p></details></div>
+        <div><p class="eyebrow">Your next game night</p><h2>Find your imposter.</h2><p class="lead">Download the host app. Gather 3–12 friends.<br>Try to keep a straight face.</p><div class="actions"><a class="btn primary" data-latest-apk href="https://github.com/Malon0825/imposter-app/releases/download/v1.2.1/imposter-1.2.1-android.apk"><span>Download <span data-latest-version>v1.2.1</span> APK</span> <span aria-hidden="true">↓</span></a><a class="text-link" data-latest-notes href="https://github.com/Malon0825/imposter-app/releases/latest">Release notes <span aria-hidden="true">↗</span></a></div><p class="download-meta">Android 8+ · ARM64 · Free</p><p class="download-meta">New in 1.2.1: the Accomplice can tip a close vote, with no cost for voting the Detective. Update every Android phone; browser guests need nothing new.</p><a class="checksum-link" data-latest-sha href="https://github.com/Malon0825/imposter-app/releases/download/v1.2.1/imposter-1.2.1-android.apk.sha256">Download checksum</a></div>
+        <div class="install-help"><h3>Before your first round</h3><details><summary>How do I install the Android app?</summary><p>Download the APK on your Android phone, open it, and allow installation from your browser when Android asks. Every release uses the same signing key, so a new download updates your existing installation.</p></details><details><summary>Can iPhone friends play?</summary><p>Yes, through the browser guest flow. Connect to the host's Wi-Fi before scanning the party QR, then open the link in your preferred browser. The 1.1.0 flow passed automated WebKit checks; physical iPhone testing is still pending.</p></details><details><summary>Do we need an internet connection?</summary><p>Only to download the host app. Once installed, gameplay runs on the host's local Wi-Fi network. Connect every phone to the same reachable router. Some guest Wi-Fi networks isolate devices and prevent joining. Keep the host app available throughout the game.</p></details><details><summary>Is there a stable version?</summary><p><a href="https://github.com/Malon0825/imposter-app/releases/tag/v1.0.0">Version 1.0.0</a> is the stable native-only release. Each player needs the Android app for that version. Use the latest release for mixed app and browser play.</p></details></div>
       </div>
     </section>
   </main>
