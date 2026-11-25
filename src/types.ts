@@ -83,7 +83,8 @@ export interface StoryPlay {
 export interface CardsView {
   on: boolean;
   active: boolean;
-  draw: { remaining_ms: number | null; total_ms: number; decided: string[] } | null;
+  /** The draw window: who decided, and who is done (skipped, or drew and tapped Continue). */
+  draw: { decided: string[]; ready: string[] } | null;
   drew: string[];
   plays: {
     seq: number;

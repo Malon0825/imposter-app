@@ -7,6 +7,7 @@ import { play as playSound } from "../sound";
 import { Stamp, Type } from "../theme";
 import type { CastRole, View } from "../types";
 import { CardBack, CardFace } from "./Card";
+import { flyCard } from "./fx";
 import { CardTextSwitch, type Who } from "./Round";
 import { ability, card, FIT_LABEL, needsPlayer, needsRole, needsTwo, tipFor, type CardInfo, type Rating } from "./catalog";
 
@@ -216,6 +217,9 @@ export function HandSheet({
     const tierWord = info.tier === "golden" ? "GOLDEN" : info.tier === "rare" ? "Rare" : "Common";
     return (
       <>
+        <div className="pc-confirm-card">
+          <CardFace id={info.id} width={120} />
+        </div>
         <div className="pc-confirm-head">
           <h2>Play {info.name}?</h2>
           {fit && <span className={`pc-fit ${fit}`}>{FIT_LABEL[fit]}</span>}
@@ -236,12 +240,15 @@ export function HandSheet({
             className="button primary"
             disabled={busy}
             onClick={async () => {
+              const from = document.querySelector(".pc-confirm-card .pc-card");
+              const flight = READS.has(info.id) ? null : flyCard(from, document.querySelector(".pc-plays ul") ?? document.querySelector(".appbar"), info.tier);
+              if (flight) onClose();
               await send("play_card", { card: info.id, player_id: step.player, second_id: step.second, role: step.role });
               playSound("file");
+              await flight;
               // A private read stays open on its file; anything else closes so
               // you see the room react.
               if (READS.has(info.id)) setStep({ kind: "list" });
-              else onClose();
             }}
           >
             Play card

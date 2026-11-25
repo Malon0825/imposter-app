@@ -4695,3 +4695,70 @@ img.topic-emblem { object-fit: contain; }
 .pc-story h4 { font-size: 12px; margin: 6px 0 2px; color: #5b4a2c; }
 .pc-story p { font-size: 13px; line-height: 1.4; margin: 0 0 4px; }
 @media (max-width: 360px) { .pc-story .col { column-count: 1; } }
+
+/* ==========================================================================
+   Game motion (src/cards/fx.ts): the effects layer and the staged moments.
+   ========================================================================== */
+.fx-layer { position: fixed; inset: 0; z-index: 90; pointer-events: none; overflow: hidden; }
+
+/* the sealed draw: a stage over the whole screen */
+.pc-stage { position: fixed; inset: 0; z-index: 50; background: #060706f0; backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); display: flex; flex-direction: column; align-items: center; overflow: hidden; }
+.pc-stage-glow { position: absolute; left: 50%; top: 48%; width: 440px; height: 440px; border-radius: 50%; transform: translate(-50%, -50%); opacity: 0; pointer-events: none; }
+.pc-rays { position: absolute; left: 50%; top: 48%; width: 760px; height: 760px; translate: none; transform: translate(-50%, -50%); background: repeating-conic-gradient(from 0deg, #e9c46a3d 0 6deg, transparent 6deg 18deg); -webkit-mask: radial-gradient(circle, #000 12%, transparent 62%); mask: radial-gradient(circle, #000 12%, transparent 62%); opacity: 0; animation: none; pointer-events: none; }
+.pc-rays.golden { filter: brightness(1.9); }
+.pc-rays.rare { filter: hue-rotate(170deg) saturate(0.7) brightness(1.4); }
+.pc-stage-title { position: relative; margin-top: calc(56px + env(safe-area-inset-top, 0px)); text-align: center; min-height: 92px; }
+.pc-stage-title .type { display: block; }
+.pc-stage .pc-tier-word { margin: 2px 0 0; text-shadow: 0 0 22px currentColor; }
+.pc-hold { position: relative; margin-top: 8px; width: 242px; aspect-ratio: 5 / 7; border: 0; padding: 0; background: none; perspective: 1300px; cursor: pointer; }
+.pc-hold .pc-flip { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; }
+.pc-hold :is(.pc-flip-front, .pc-flip-rear-seal, .pc-flip-back) { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.pc-hold :is(.pc-flip-rear-seal, .pc-flip-back) { transform: rotateY(180deg); }
+.pc-hold .pc-flip-back { display: none; }
+.pc-hold .pc-flip.show-face .pc-flip-rear-seal { display: none; }
+.pc-hold .pc-flip.show-face .pc-flip-back { display: block; }
+.pc-seal { overflow: hidden; }
+.pc-seal.plain { background: #3c463e; box-shadow: 0 14px 40px #0008; }
+.pc-shine { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, transparent 38%, #fffae166 50%, transparent 62%); background-size: 250% 100%; background-position: 160% 0; mix-blend-mode: screen; pointer-events: none; }
+.pc-stage-foot { position: relative; width: min(100%, 420px); padding: 14px 24px calc(22px + env(safe-area-inset-bottom, 0px)); margin-top: auto; display: grid; gap: 10px; text-align: center; }
+.pc-hint { display: inline-flex; align-items: center; justify-content: center; gap: 8px; margin: 0; font-weight: 700; font-size: 17px; animation: pc-blink 1.4s ease-in-out infinite; }
+.pc-hint .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 10px var(--gold); }
+.pc-stage.rare .pc-hint .dot { background: var(--foil-a); box-shadow: 0 0 10px var(--foil-a); }
+.pc-stage.common .pc-hint .dot { background: var(--ink); box-shadow: 0 0 10px var(--ink); }
+@keyframes pc-blink { 50% { opacity: 0.45; } }
+.pc-deck.small { height: 120px; }
+.pc-table li.ready span { color: var(--lime); }
+
+/* the Golden takeover */
+.pc-takeover { position: fixed; inset: 0; z-index: 70; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; text-align: center; background: #080b09e6; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); pointer-events: none; overflow: hidden; }
+.pc-takeover-glow { position: absolute; left: 50%; top: 46%; width: 460px; height: 460px; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, #e9c46a99, transparent 62%); opacity: 0; }
+.pc-takeover .pc-rays { top: 46%; }
+.pc-takeover-card { position: relative; rotate: -4deg; }
+.pc-takeover-word { position: relative; opacity: 0; margin: 0; font-family: Anton, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(44px, 14vw, 60px); line-height: 1.05; color: var(--gold); text-shadow: 0 0 24px #e9c46a99; background: none; -webkit-background-clip: initial; background-clip: initial; }
+
+/* Common and Rare banners, and clash stamps */
+.pc-banner { translate: none; transform: translate(-50%, 0); }
+.pc-banner.rare { background: #1a2226; }
+.pc-banner-chip { display: inline-flex; rotate: 6deg; }
+.pc-banner-stamp .stamp { opacity: 0; }
+
+/* the results replay */
+.pc-replay ol { cursor: pointer; }
+.pc-replay-card { position: relative; flex: none; transform-style: preserve-3d; opacity: 0; }
+.pc-replay li.dealt .pc-replay-card { opacity: 1; }
+.pc-replay-cover { position: absolute; inset: 0; }
+.pc-replay li.shown .pc-replay-cover { display: none; }
+.pc-replay-text { opacity: 0; }
+.pc-replay li.shown .pc-replay-text { opacity: 1; }
+.pc-replay li > .stamp { opacity: 0; }
+.pc-replay li.shown > .stamp { opacity: 1; }
+.pc-replay ol.instant .pc-replay-card, .pc-replay ol.instant .pc-replay-text, .pc-replay ol.instant li > .stamp { opacity: 1; }
+.pc-replay ol.instant .pc-replay-cover { display: none; }
+.pc-paid-holder .stamp { opacity: 0; }
+.pc-bounty .pc-paid-holder .pc-paid { position: absolute; right: 12px; top: 10px; }
+@media (prefers-reduced-motion: reduce) {
+  .pc-hint { animation: none; }
+  .pc-banner-stamp .stamp, .pc-paid-holder .stamp { opacity: 1; }
+}
+.pc-confirm-card { display: flex; justify-content: center; margin: 2px 0 10px; }
+.pc-card.hand { font-size: calc(var(--w) / 11); }

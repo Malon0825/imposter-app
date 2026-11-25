@@ -131,11 +131,16 @@ fn drawing_costs_three_counts_a_paid_draw_and_deals_when_everyone_decided() {
     act(&mut g, &b, "skip_draw", Value::Null).unwrap();
     g.advance_reveals(Instant::now());
     assert_eq!(g.phase, "draw", "still waiting for the others");
+    // Once everyone has decided, roles are dealt; the drawer still reading
+    // their card isn't rushed and follows when they tap Continue.
     for id in g.round.roster.clone() {
         let _ = act(&mut g, &id, "skip_draw", Value::Null);
     }
     g.advance_reveals(Instant::now());
     assert_eq!(g.phase, "roles");
+    assert!(!g.round.cards.ready.contains(&a));
+    act(&mut g, &a, "draw_ready", Value::Null).unwrap();
+    assert!(g.round.cards.ready.contains(&a));
     // Everyone sees who drew; only the drawer sees what.
     let other = g.view(&b);
     assert_eq!(other["cards"]["drew"], json!([a]));
@@ -144,7 +149,7 @@ fn drawing_costs_three_counts_a_paid_draw_and_deals_when_everyone_decided() {
 }
 
 #[test]
-fn the_draw_window_closes_on_its_own() {
+fn the_host_can_deal_roles_past_someone_who_wandered_off() {
     let mut g = party();
     for p in &mut g.players {
         p.points = 5;
@@ -152,7 +157,12 @@ fn the_draw_window_closes_on_its_own() {
     to_topic(&mut g);
     let host = g.host.clone();
     act(&mut g, &host, "begin_round", Value::Null).unwrap();
-    g.advance_reveals(Instant::now() + power::DRAW_WINDOW + Duration::from_millis(1));
+    g.advance_reveals(Instant::now() + Duration::from_secs(600));
+    assert_eq!(g.phase, "draw", "nothing times out");
+    let guest = ids(&g)[2].clone();
+    assert!(act(&mut g, &guest, "deal_now", Value::Null).is_err(), "host only");
+    act(&mut g, &host, "deal_now", Value::Null).unwrap();
+    g.advance_reveals(Instant::now());
     assert_eq!(g.phase, "roles");
 }
 

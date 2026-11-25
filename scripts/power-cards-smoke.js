@@ -72,10 +72,12 @@ async function powerCardsSmoke(hostPage) {
     await Promise.all(pages.map((page) => page.getByRole("heading", { name: "Draw a power card?" }).waitFor({ timeout: 15000 })));
     await capture(hostTab, "01-draw-window");
     await button(hostTab, "Draw · 3 points").click();
-    await hostTab.getByRole("button", { name: "Tap the card to reveal it" }).waitFor();
+    // The card spins out, lands, ignites and idles sealed before it can be tapped.
+    await hostTab.locator(".pc-hint").waitFor({ timeout: 10000 });
     await capture(hostTab, "02-sealed");
-    await hostTab.getByRole("button", { name: "Tap the card to reveal it" }).click();
-    await hostTab.waitForTimeout(700);
+    // The sealed card idles (spins and floats), so it is never "stable" to Playwright.
+    await hostTab.getByRole("button", { name: "Tap the card to reveal it" }).click({ force: true });
+    await button(hostTab, "Add to my case file").waitFor({ timeout: 10000 });
     await capture(hostTab, "03-revealed");
     await button(hostTab, "Add to my case file").click();
     for (const page of pages.slice(1)) await button(page, "Skip").click();

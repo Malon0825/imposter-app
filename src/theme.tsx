@@ -2,7 +2,8 @@
 // approved system. Typewriter labels, rubber stamps, kraft paper, mugshots and
 // engraved art appear only where they carry meaning; buttons and body text
 // stay as they are.
-import type { ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
+import { centre, ring, shake } from "./cards/fx";
 import { motion, useReducedMotion } from "motion/react";
 
 /** App art from design/app-revamp-v1/art, converted by scripts/prepare-art.py. */
@@ -41,14 +42,28 @@ export function Stamp({
 }) {
   const reduced = useReducedMotion();
   const animate = slam && !reduced;
+  const ref = useRef<HTMLSpanElement>(null);
+  // On landing, the paper jolts and an ink ring spreads from the stamp.
+  useEffect(() => {
+    if (!animate) return;
+    const t = window.setTimeout(() => {
+      const el = ref.current;
+      if (!el?.isConnected) return;
+      shake(el.parentElement, 3, 220);
+      const [x, y] = centre(el);
+      ring(x, y, tone === "lime" ? "rgba(214,245,107,.7)" : tone === "ink" ? "rgba(244,241,232,.5)" : "rgba(196,80,58,.8)", 120, 420);
+    }, delay * 1000 + 230);
+    return () => window.clearTimeout(t);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   return (
     <motion.span
+      ref={ref}
       className={`stamp ${tone} ${className}`}
-      initial={animate ? { scale: 3, opacity: 0 } : false}
-      animate={{ scale: 1, opacity: 0.92 }}
+      initial={animate ? { scale: 3, opacity: 0, rotate: -34 } : false}
+      animate={{ scale: 1, opacity: 0.92, rotate: 0 }}
       transition={
         animate
-          ? { delay, type: "spring", stiffness: 520, damping: 22, mass: 0.8 }
+          ? { delay, duration: 0.24, ease: [0.55, 0, 1, 0.45] }
           : { duration: 0 }
       }
     >

@@ -57,13 +57,14 @@ import {
 import { play as playSound, playShared, setSound, soundOn, onSoundChange } from "./sound";
 import { HandButton, HandSheet, PlayableNudge } from "./cards/Hand";
 import { Announcements } from "./cards/Announce";
+import { DrawScreen } from "./cards/Draw";
+import { centre as fxCentre, flash as fxFlash, ring as fxRing, shake as fxShake, sparks as fxSparks } from "./cards/fx";
 import { BountyNote, CardsReplay, cardLineLabel, StandingTags, StoryOfTheNight, WantedPoster } from "./cards/Results";
 import {
   BallotCardSlot,
   ballotCardReady,
   CardTextSwitch,
   ColdFeet,
-  DrawScreen,
   LastWordScreen,
   PlaysStrip,
   PowerCardsSwitch,
@@ -1367,6 +1368,38 @@ export default function App() {
     if (view.phase === "session_complete")
       once(`celebrate-${view.score_session.number}`, () => playSound("celebrate"));
   }, [view]);
+  // Game feel on the round's big beats: the role card flips with a flash and
+  // a burst; your own result lands with sparks or a heavy thud.
+  useEffect(() => {
+    if (!revealed || view?.phase !== "roles") return;
+    const t = window.setTimeout(() => {
+      const card = document.querySelector(".role-flip");
+      const [x, y] = fxCentre(card);
+      const imposter = !!view?.private_role?.imposter;
+      fxFlash("#fff", 0.35, 240);
+      fxRing(x, y, imposter ? "#d98672" : "#f4f1e8", 420, 700);
+      fxSparks(x, y, { n: 22, c1: "#f4f1e8", c2: imposter ? "#d98672" : "#d6f56b", spread: 220, dur: 1000 });
+      fxShake(undefined, 4, 300);
+    }, 230);
+    return () => window.clearTimeout(t);
+  }, [revealed]); // eslint-disable-line react-hooks/exhaustive-deps
+  const resultBeat = view?.phase === "result_reveal" && view.verdict?.my_outcome ? `${view.round_id}-${view.verdict.my_outcome}` : null;
+  useEffect(() => {
+    if (!resultBeat || !view?.verdict?.my_outcome) return;
+    const good = goodOutcome(view.verdict.my_outcome);
+    const t = window.setTimeout(() => {
+      const [x, y] = fxCentre(document.querySelector(".outcome-art"));
+      if (good) {
+        fxSparks(x, y, { n: 36, c1: "#f4f1e8", c2: "#d6f56b", spread: 260, dur: 1200 });
+        fxRing(x, y, "#d6f56b", 420, 700);
+        fxShake(undefined, 5, 320);
+      } else {
+        fxRing(x, y, "#d98672", 360, 650);
+        fxShake(undefined, 8, 380);
+      }
+    }, 600);
+    return () => window.clearTimeout(t);
+  }, [resultBeat]); // eslint-disable-line react-hooks/exhaustive-deps
   const [sound, setSoundState] = useState(soundOn);
   useEffect(() => {
     const off = onSoundChange(setSoundState);
@@ -3071,7 +3104,15 @@ export default function App() {
           )}
         </>
       );
-    if (view.phase === "draw" && view.cards)
+    // A drawer still reading their card stays on it while the table moves on
+    // to roles; they follow when they tap Continue.
+    const drawPending =
+      !!view.cards?.active &&
+      view.phase === "roles" &&
+      !!view.cards.draw &&
+      view.cards.mine.hand.some((h) => h.new) &&
+      !view.cards.draw.ready.includes(view.my_id);
+    if ((view.phase === "draw" || drawPending) && view.cards)
       return (
         <>
           <Header

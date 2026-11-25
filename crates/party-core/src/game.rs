@@ -1025,6 +1025,11 @@ impl Game {
             }
             "draw" => self.draw_card(actor, true)?,
             "skip_draw" => self.draw_card(actor, false)?,
+            "draw_ready" => self.draw_ready(actor)?,
+            "deal_now" => {
+                self.require_host(actor)?;
+                self.deal_now()?;
+            }
             "play_card" => self.play_card(actor, &action.value)?,
             "change_bet" => self.change_bet(actor, &action.value)?,
             "clue_given" => {

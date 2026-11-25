@@ -1,7 +1,9 @@
 // Power cards after the vote: card lines in your breakdown, the round's
 // cards turned face up one by one, the Bounty, the Wanted poster on the
 // standings, and the Story of the night at the end of a session.
-import { motion, useReducedMotion } from "motion/react";
+import { useEffect, useRef } from "react";
+import { play as playSound } from "../sound";
+import { centre, EASE, flash, go, reducedMotion, sleep, sparks, stampSlam } from "./fx";
 import { Stamp, Type } from "../theme";
 import type { CardsView, PlayEffect, StoryPlay, View } from "../types";
 import { CardBack, CardFace } from "./Card";
@@ -59,22 +61,72 @@ export function outcome(p: { card: string; tier: string; real_tier?: string; can
 
 export function CardsReplay({ view, who }: { view: View; who: Who }) {
   const c = view.cards;
-  const reduced = useReducedMotion();
-  if (!c?.active || !c.plays.length || !c.plays[0].card) return null;
+  const list = useRef<HTMLOListElement>(null);
+  const skip = useRef(false);
+  const plays = c?.active && c.plays.length && c.plays[0].card ? c.plays : null;
+  // Dealt face down from the right, then each card flips, its outcome
+  // slides in and its stamp slams with a jolt. A tap shows everything.
+  useEffect(() => {
+    if (!plays || !list.current) return;
+    let live = true;
+    const rows = [...list.current.querySelectorAll<HTMLElement>(":scope > li")];
+    const showAll = () => rows.forEach((row) => row.classList.add("shown", "dealt"));
+    (async () => {
+      await sleep(250);
+      rows.forEach((row, i) =>
+        go(row.querySelector(".pc-replay-card"), [
+          { transform: "translateX(320px) rotate(25deg)", opacity: 0 },
+          { transform: "translateX(-6px) rotate(-3deg)", opacity: 1, offset: 0.8 },
+          { transform: "none", opacity: 1 },
+        ], { duration: 420, delay: i * 110 }),
+      );
+      rows.forEach((row) => row.classList.add("dealt"));
+      await sleep(420 + rows.length * 110 + 150);
+      for (const [i, row] of rows.entries()) {
+        if (!live || skip.current) return showAll();
+        const p = plays[i];
+        const holder = row.querySelector<HTMLElement>(".pc-replay-card");
+        go(holder, [{ transform: "rotateY(0)" }, { transform: "scale(1.1) rotateY(90deg)" }], { duration: 170, easing: EASE.in });
+        await sleep(170);
+        row.classList.add("shown");
+        go(holder, [{ transform: "scale(1.1) rotateY(-90deg)" }, { transform: "scale(1.04) rotateY(12deg)", offset: 0.7 }, { transform: "none" }], { duration: 260 });
+        await sleep(260);
+        const [x, y] = centre(holder);
+        if (p.real_tier === "golden") {
+          sparks(x, y, { n: 26, c1: "#f8e6a6", c2: "#e9c46a", spread: 140 });
+          flash("#e9c46a", 0.15, 220);
+        }
+        go(row.querySelector(".pc-replay-text"), [{ opacity: 0, transform: "translateX(-14px)" }, { opacity: 1, transform: "none" }], { duration: 280 });
+        await sleep(240);
+        const stamp = row.querySelector<HTMLElement>(".stamp");
+        if (stamp) await stampSlam(stamp, { tone: p.cancelled ? "rgba(196,80,58,.85)" : "rgba(244,241,232,.55)", jolt: p.card === "bluff-card" ? 7 : 4 });
+        if (p.card === "bluff-card" && p.tier === "golden") playSound("womp");
+        else playSound("stamp");
+        await sleep(p.card === "bluff-card" ? 520 : 380);
+      }
+    })();
+    return () => {
+      live = false;
+    };
+  }, [view.round_id, !!plays]); // eslint-disable-line react-hooks/exhaustive-deps
+  if (!plays) return null;
   return (
-    <section className="pc-replay" aria-labelledby="pc-replay-title">
+    <section className="pc-replay" aria-labelledby="pc-replay-title" onClick={() => {
+      skip.current = true;
+      list.current?.querySelectorAll(":scope > li").forEach((row) => row.classList.add("shown", "dealt"));
+    }}>
       <Type>Evidence review</Type>
       <h2 id="pc-replay-title">Cards this round</h2>
-      <ol>
-        {c.plays.map((p, i) => (
-          <motion.li
-            key={p.seq}
-            initial={reduced ? false : { opacity: 0, x: 40, rotateY: -80 }}
-            animate={{ opacity: 1, x: 0, rotateY: 0 }}
-            transition={{ delay: reduced ? 0 : 0.25 + i * 0.6, duration: 0.45 }}
-          >
-            <CardFace id={p.card!} size="hand" width={64} state={p.cancelled ? "spent" : "plain"} />
-            <div>
+      <ol ref={list} className={reducedMotion() ? "instant" : ""}>
+        {plays.map((p) => (
+          <li key={p.seq}>
+            <div className="pc-replay-card">
+              <CardFace id={p.card!} size="hand" width={64} state={p.cancelled ? "spent" : "plain"} />
+              <div className="pc-replay-cover">
+                <CardBack size="hand" width={64} />
+              </div>
+            </div>
+            <div className="pc-replay-text">
               <span className="pc-replay-who">
                 {who.avatar(p.player_id)}
                 <b>{who.name(p.player_id)}</b>
@@ -83,8 +135,10 @@ export function CardsReplay({ view, who }: { view: View; who: Who }) {
               <span className="pc-replay-name">{card(p.card!)?.name}</span>
               <span className="pc-replay-what">{outcome(p as Required<typeof p>, who)}</span>
             </div>
-            {p.verdict && <Stamp slam={!reduced} delay={reduced ? 0 : 0.5 + i * 0.6} tone={p.cancelled ? "red" : "ink"}>{p.verdict}</Stamp>}
-          </motion.li>
+            {(p.verdict || p.card === "bluff-card") && (
+              <Stamp tone={p.cancelled || p.card === "bluff-card" ? "red" : "ink"}>{p.card === "bluff-card" && !p.verdict ? "Bluff" : p.verdict}</Stamp>
+            )}
+          </li>
         ))}
       </ol>
     </section>
@@ -93,12 +147,23 @@ export function CardsReplay({ view, who }: { view: View; who: Who }) {
 
 export function BountyNote({ view }: { view: View }) {
   const paid = view.cards?.bounty_paid;
+  const stamp = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    if (!paid) return;
+    const t = window.setTimeout(() => {
+      stampSlam(stamp.current?.querySelector<HTMLElement>(".stamp") ?? null, { jolt: 6 });
+      playSound("coins");
+    }, 900);
+    return () => window.clearTimeout(t);
+  }, [paid, view.round_id]);
   if (!paid) return null;
   return (
     <div className="pc-bounty clipping">
       <Type>Bounty</Type>
       <span>The leader lost. <b>{signed(paid)}</b> to every Underdog.</span>
-      <Stamp slam className="pc-paid">Paid</Stamp>
+      <span ref={stamp} className="pc-paid-holder">
+        <Stamp className="pc-paid">Paid</Stamp>
+      </span>
     </div>
   );
 }

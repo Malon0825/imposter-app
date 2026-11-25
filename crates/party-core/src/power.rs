@@ -6,8 +6,6 @@ use super::*;
 use crate::cards::{self, Kind, Play, Target, Tier, Verdict, Window};
 use std::collections::BTreeSet;
 
-/// How long everyone has to draw or skip before roles are dealt.
-pub(crate) const DRAW_WINDOW: Duration = Duration::from_secs(10);
 /// How long a caught Imposter has to pick the real word.
 pub(crate) const LAST_WORD_WINDOW: Duration = Duration::from_secs(20);
 
@@ -74,7 +72,10 @@ pub(crate) struct CardRound {
     /// Power cards are on and the round has at least six players.
     pub active: bool,
     pub opened: bool,
-    pub draw_until: Option<Instant>,
+    /// Players done with their card: they skipped, or drew and tapped
+    /// Continue. Roles don't wait for this, only for everyone to decide; a
+    /// drawer still looking at their card follows the table when they're done.
+    pub ready: BTreeSet<String>,
     /// Who decided in the draw window: Some(card) drew it, None skipped.
     pub decided: BTreeMap<String, Option<String>>,
     pub leaders: BTreeSet<String>,
@@ -174,7 +175,6 @@ impl Game {
         self.round.cards.underdogs = underdogs;
         let anyone = self.round.roster.iter().any(|id| self.draw_price(id).is_some());
         if anyone {
-            self.round.cards.draw_until = Some(Instant::now() + DRAW_WINDOW);
             self.phase = "draw".into();
         }
         anyone
@@ -211,6 +211,7 @@ impl Game {
         }
         if !draw {
             self.round.cards.decided.insert(actor.into(), None);
+            self.round.cards.ready.insert(actor.into());
             return Ok(());
         }
         let price = self.draw_price(actor).ok_or("You can’t draw right now.")?;
@@ -225,11 +226,32 @@ impl Game {
         Ok(())
     }
 
-    /// The host loop deals once everyone has drawn or skipped, or time runs out.
-    pub(crate) fn draw_done(&self, now: Instant) -> bool {
-        self.phase == "draw"
-            && (self.round.roster.iter().all(|id| self.round.cards.decided.contains_key(id))
-                || self.round.cards.draw_until.is_some_and(|t| now >= t))
+    /// After drawing, a player takes their time with the card, then taps
+    /// Continue, even if the table has already moved on to roles.
+    pub(crate) fn draw_ready(&mut self, actor: &str) -> GameResult<()> {
+        self.require_phase(&["draw", "roles"])?;
+        if !self.round.cards.decided.contains_key(actor) {
+            return Err("Draw or skip first.".into());
+        }
+        self.round.cards.ready.insert(actor.into());
+        Ok(())
+    }
+
+    /// The host's way past someone who wandered off: whoever hasn't decided
+    /// skips, and roles are dealt.
+    pub(crate) fn deal_now(&mut self) -> GameResult<()> {
+        self.require_phase(&["draw"])?;
+        for id in self.round.roster.clone() {
+            self.round.cards.decided.entry(id.clone()).or_insert(None);
+            self.round.cards.ready.insert(id);
+        }
+        Ok(())
+    }
+
+    /// The host loop deals once every player has drawn or skipped. There is
+    /// no timer, and nobody waits for a drawer who is still reading their card.
+    pub(crate) fn draw_done(&self, _now: Instant) -> bool {
+        self.phase == "draw" && self.round.roster.iter().all(|id| self.round.cards.decided.contains_key(id))
     }
 
     fn played_by(&self, id: &str) -> Option<&PlayRec> {
@@ -818,10 +840,9 @@ impl Game {
         json!({
             "on": self.cards.on,
             "active": r.active,
-            "draw": (self.phase == "draw").then(|| json!({
-                "remaining_ms": r.draw_until.map(|t| t.saturating_duration_since(Instant::now()).as_millis()),
-                "total_ms": DRAW_WINDOW.as_millis(),
+            "draw": (self.phase == "draw" || self.phase == "roles").then(|| json!({
                 "decided": r.decided.keys().collect::<Vec<_>>(),
+                "ready": r.ready,
             })),
             "drew": r.decided.iter().filter(|(_, c)| c.is_some()).map(|(id, _)| id).collect::<Vec<_>>(),
             "plays": plays,
