@@ -70,16 +70,45 @@ def app_jobs() -> list[tuple[Path, Path, int]]:
     return jobs
 
 
+def broken(out: Path) -> bool:
+    """An empty or unreadable WebP: an interrupted write leaves one behind."""
+    try:
+        with Image.open(out) as im:
+            im.verify()
+        return False
+    except Exception:
+        return True
+
+
 def stale(src: Path, out: Path) -> bool:
-    return not out.exists() or out.stat().st_mtime < src.stat().st_mtime
+    return not out.exists() or out.stat().st_mtime < src.stat().st_mtime or broken(out)
+
+
+# Common and Rare art is a cut-out on a transparent square whose empty margin
+# varies from piece to piece, so some drawings looked small in the same frame.
+# Trim each to its drawing plus an even margin; the card then fits it whole.
+# Golden art is a round medallion and the back fills its card: leave those.
+TRIM_MARGIN = 0.03
+
+
+def trims(src: Path) -> bool:
+    return src.parent == CARD_SRC and src.stem.partition("-")[0] in ("common", "rare")
 
 
 def convert(src: Path, out: Path, width: int) -> None:
     with Image.open(src) as im:
         im = im.convert("RGBA" if "A" in im.getbands() else "RGB")
-        if im.width > width:
-            height = round(im.height * width / im.width)
-            im = im.resize((width, height), Image.LANCZOS)
+        if trims(src) and im.mode == "RGBA":
+            # Ignore faint haze so a stray near-clear pixel can't widen the box.
+            box = im.getchannel("A").point(lambda a: 255 if a > 8 else 0).getbbox()
+            if box:
+                pad = round(max(box[2] - box[0], box[3] - box[1]) * TRIM_MARGIN)
+                im = im.crop((max(0, box[0] - pad), max(0, box[1] - pad), min(im.width, box[2] + pad), min(im.height, box[3] + pad)))
+        # The longer side gets the target size, so a tall trimmed drawing
+        # keeps as much detail as a wide one.
+        if max(im.size) > width:
+            scale = width / max(im.size)
+            im = im.resize((round(im.width * scale), round(im.height * scale)), Image.LANCZOS)
         out.parent.mkdir(parents=True, exist_ok=True)
         im.save(out, "WEBP", quality=QUALITY, method=6)
 
@@ -96,6 +125,7 @@ def main() -> int:
         # Only missing files count here: after a clone, file times say nothing
         # about which side is newer.
         problems = [f"missing: {out.relative_to(ROOT)}" for _, out, _ in jobs if not out.exists()]
+        problems += [f"broken (empty or unreadable): {out.relative_to(ROOT)}" for _, out, _ in jobs if out.exists() and broken(out)]
         problems += [f"not from any source: {p.relative_to(ROOT)}" for p in extra]
     else:
         for src, out, width in todo:

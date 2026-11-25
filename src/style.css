@@ -4793,3 +4793,23 @@ img.topic-emblem { object-fit: contain; }
   .ballot-role-art { width: 116px; }
   .ballot-role-name { font-size: 30px; }
 }
+
+/* Rare: a step up you can see from across the table. A thicker silver-blue
+   foil with a soft glow, a frosted face with a halo behind the art, a slow
+   silver sheen, deep-blue ink for the name, and a foil RARE pill. Still
+   clearly below Golden (dark face, gold, round medallion). */
+.pc-card.rare { background: linear-gradient(135deg, #6f93ab, #e4eef3 22%, var(--foil-a) 44%, #f1f6f8 62%, #5f86a0 82%, #d6e5ec); box-shadow: 0 0 calc(var(--w) * 0.09) #8fb3c966, 0 10px 30px #0006; }
+.pc-card.rare .pc-face { inset: calc(var(--w) * 0.03); border-radius: calc(var(--w) * 0.05); background: radial-gradient(85% 55% at 50% 36%, #d3e3eb 0%, #e9eff0 48%, #f4f1e8 100%); box-shadow: inset 0 0 0 calc(var(--w) * 0.005 + 0.5px) #8fb3c9aa; }
+.pc-card.rare .pc-face::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 38%, #ffffff8c 49%, transparent 58%); background-size: 260% 100%; background-position: 100% 0; mix-blend-mode: soft-light; pointer-events: none; animation: pc-sheen 6s linear infinite; }
+.pc-card.rare .pc-art { background: radial-gradient(closest-side, #a9c6d655, transparent); }
+.pc-card.rare .pc-name { color: #1f3d52; }
+.pc-card.rare .pc-tier { color: #16303f; background: linear-gradient(135deg, #b9d1de, #eef5f8 45%, var(--foil-a)); padding: 0.3em 0.75em; border-radius: 1em; box-shadow: 0 0 0 1px #6f93ab66; }
+.pc-card.rare .pc-win { background: #8fb3c92e; color: #2c4f66; }
+.pc-card.rare .pc-ft { color: #2c4f66; opacity: 0.7; }
+@media (prefers-reduced-motion: reduce) { .pc-card.rare .pc-face::after { animation: none; } }
+/* "Playable now" stays lime on every tier (the tier chip colours must not win). */
+.pc-card .pc-win.now { background: var(--lime); color: #141916; }
+/* Art fits its box whatever its shape: trimmed drawings can be tall (a
+   microphone) or wide (a tape measure), and neither may push the card. */
+.pc-card:not(.golden) .pc-art { position: relative; }
+.pc-card:not(.golden) .pc-art img { position: absolute; inset: 5% 6%; width: 88%; height: 90%; object-fit: contain; }
