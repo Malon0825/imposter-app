@@ -1,6 +1,6 @@
 # IMPOSTER website
 
-A single-page app tour and Android download page, based on the user's HTML reference. Static HTML, CSS, and progressive JavaScript; no build step, analytics, accounts, or external font service. Download buttons resolve the newest GitHub release's `*-android.apk` (and its `.sha256`) through the public releases API on page load; the static hrefs point at v1.2.1 as the no-JavaScript fallback. A new release needs no site change as long as its APK keeps the `imposter-<version>-android.apk` name.
+A single-page app tour and Android download page, based on the user's HTML reference. Static HTML, CSS, and progressive JavaScript; no build step, analytics, accounts, or external font service. Download buttons resolve the newest GitHub release's `*-android.apk` (and its `.sha256`) through the public releases API on page load; the static hrefs point at v1.3.0 as the no-JavaScript fallback. A new release needs no site change as long as its APK keeps the `imposter-<version>-android.apk` name.
 
 Local preview: `python -m http.server 8799 --directory docs`, then open `http://localhost:8799/`.
 
@@ -12,10 +12,10 @@ The `.nojekyll` file keeps deployment static. Relative asset paths work at the r
 
 ## Screenshots
 
-All captures are the actual app with sample players. Round screens (`cast-*`, `round-*`, `turn-*`, `rule-*`) are Full Cast captures from `scripts/full-cast-smoke.js` and the Full Cast host-flow run. Setup and joining screens (`01`–`08`, `17`, `22`) come from `scripts/visual-capture.js`; they did not change with Full Cast. All app screens are WebP at 390×844. The 1.2.1 changes (the Accomplice's vote note and the removed Detective fine) appear only on the Accomplice's ballot, which the site doesn't show, so no capture needed refreshing. The two browser landing captures come from the production guest flow against the real Rust host.
+All captures are the actual app with sample players, in the 1.3 case-file theme, as WebP at 390×844. `scripts/site-capture.js` plays a 6-player round with random rules for the setup, cast, round, turn and rule screens; `scripts/cards-capture.js` supplies the power-card row (`cards-*`); `scripts/visual-capture.js`, opened at `/?capture=site&width=390&height=844`, supplies the joining screens (`02`–`08`, `17`, `22`). Then `python -I scripts/site-screens.py` converts them into `docs/screens/`. The two browser landing captures come from the production guest flow against the real Rust host.
 
 <img src="screens/cast-imposter.webp" width="200" alt="Imposter role reveal"> <img src="screens/round-detective-card.webp" width="200" alt="Detective card showing Butterfly">
 
 ## Verification
 
-Checked at 320, 360, 390, 768, 1024, 1280, and 1440 pixels: no page overflow, all images load, six complete screenshot rows, working versioned download links, keyboard gallery scrolling, image-dialog Escape/focus behavior, 20 repeated preview cycles, installation help, reduced motion, and the no-JavaScript fallback. The site uses the app's DM Sans and Anton fonts with their licenses beside the font files.
+Checked at 320, 360, 390, 768, 1024, 1280, and 1440 pixels: no page overflow, all images load, eight complete screenshot rows, working versioned download links, keyboard gallery scrolling, image-dialog Escape/focus behavior, 20 repeated preview cycles, installation help, reduced motion, and the no-JavaScript fallback. The site uses the app's DM Sans and Anton fonts with their licenses beside the font files.
