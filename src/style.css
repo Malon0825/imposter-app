@@ -4777,3 +4777,19 @@ img.topic-emblem { object-fit: contain; }
 .pc-classified > .type { padding-right: 104px; }
 /* The screen shake moves the app shell; the root clips it so the page never scrolls sideways. */
 #root { overflow-x: clip; }
+
+/* Ballot: your role as a dossier strip. The portrait peeks out above the
+   strip's top edge and is cut off at its bottom, clear of the ballot. */
+.ballot-role { position: relative; width: 100%; margin: 34px 0 10px; padding: 14px 132px 14px 16px; min-height: 106px; display: grid; align-content: center; gap: 2px; text-align: left; border-radius: 16px; border: 1px solid #2a312c; border-left: 4px solid var(--terra); background: linear-gradient(100deg, #1b201d 52%, rgba(217, 134, 114, .18)); isolation: isolate; }
+.ballot-role.civilian { border-left-color: var(--lime); background: linear-gradient(100deg, #1b201d 52%, rgba(214, 245, 107, .12)); }
+.ballot-role-art { position: absolute; z-index: -1; right: 0; bottom: 0; top: -38px; width: 136px; overflow: hidden; border-bottom-right-radius: 15px; pointer-events: none; }
+.ballot-role-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; filter: drop-shadow(0 10px 16px rgba(0, 0, 0, .45)); user-select: none; }
+.ballot-role-side { margin: 0; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--terra); }
+.ballot-role.civilian .ballot-role-side { color: var(--lime); }
+.ballot-role-name { margin: 0; font-family: Anton, sans-serif; font-weight: 400; font-size: 34px; line-height: 1.05; letter-spacing: .5px; text-transform: uppercase; }
+.ballot-role-vote { margin: 2px 0 0; font-size: 14px; line-height: 1.35; color: var(--muted); }
+@media (max-width: 375px) {
+  .ballot-role { padding-right: 116px; }
+  .ballot-role-art { width: 116px; }
+  .ballot-role-name { font-size: 30px; }
+}

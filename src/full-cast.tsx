@@ -257,3 +257,28 @@ export function RoleStage({ role, players }: { role: CastRole; players: number }
     </div>
   );
 }
+
+/**
+ * Your role on the ballot: a dossier strip with the role's portrait peeking
+ * out of its top-right corner, the side, the role name and how your vote
+ * works. It sits above the question and never covers the ballot.
+ */
+export function BallotRole({ role, players }: { role: CastRole; players: number }) {
+  const reduced = useReducedMotion();
+  const c = castCopy(role, players);
+  return (
+    <section className={`ballot-role ${c.side}`} aria-label={`Your role: ${c.name}`}>
+      <div className="ballot-role-art" aria-hidden="true">
+        <motion.img
+          src={`/art/full-cast/${role}.webp`}
+          alt=""
+          draggable={false}
+          {...(reduced ? {} : { initial: { opacity: 0, y: 18 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.45, ease: MOTION.easeOut } })}
+        />
+      </div>
+      <p className="ballot-role-side type">{c.side === "imposter" ? "Imposter side" : "Civilian side"}</p>
+      <h2 className="ballot-role-name">{c.name}</h2>
+      <p className="ballot-role-vote">{c.vote}</p>
+    </section>
+  );
+}

@@ -37,7 +37,7 @@ import type {
 import { Icon } from "./icons";
 import { ROUND_RULES, RandomRulesSwitch, RuleArt, RuleIndicator, RuleReveal } from "./round-rules";
 import { RoleClue, RoleMeaning } from "./role-meaning";
-import { baitDecoy, CAST, CAST_ORDER, CastLineup, castCopy, judgeDoubles, PickChips, RoleBadge, RoleIntel, RoleStage, specials } from "./full-cast";
+import { BallotRole, baitDecoy, CAST, CAST_ORDER, CastLineup, castCopy, judgeDoubles, PickChips, RoleBadge, RoleIntel, RoleStage, specials } from "./full-cast";
 import {
   MOTION,
   useDelayedBusy,
@@ -3518,6 +3518,7 @@ export default function App() {
             </>
           ) : (
             <>
+              {castRole && <BallotRole role={castRole} players={activePlayers.length} />}
               <h1>{heading}</h1>
               {castRole === "accomplice" && (
                 <div className="vote-tip">
@@ -3526,13 +3527,14 @@ export default function App() {
                   <p>Careful: an odd vote can give you away.</p>
                 </div>
               )}
-              <p className="muted">
-                {castRole
-                  ? castCopy(castRole, activePlayers.length).vote
-                  : view.private_role?.imposter
+              {/* With a role, the dossier strip above says how your vote works. */}
+              {!castRole && (
+                <p className="muted">
+                  {view.private_role?.imposter
                     ? "Your vote is a dummy vote. It won’t count toward the tally."
                     : "Your vote stays private."}
-              </p>
+                </p>
+              )}
               {!!view.clues?.length && (
                 <p className="muted compact clue-readonly">
                   Clues from all turns · read-only
