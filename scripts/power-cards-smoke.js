@@ -163,6 +163,8 @@ async function powerCardsSmoke(hostPage) {
       await cold.getByRole("group", { name: "Who’s the accomplice?" }).locator("button:not([disabled])").last().click();
     await cold.getByRole("button", { name: /^Bet 1 point/ }).click();
     await cold.locator(".pc-ballot-slot").getByRole("img", { name: "Cold Feet, common" }).click();
+    // Tapping a ballot card opens its details; choose it from there.
+    await cold.getByRole("button", { name: "Use it with my vote" }).click();
     await capture(cold, "07-ballot-card");
     await cold.getByRole("button", { name: /^(Lock vote|Confirm vote)/ }).click();
     await cold.getByRole("group", { name: /Cold Feet/ }).waitFor();

@@ -6,10 +6,10 @@ import { MotionSheet } from "../motion-ui";
 import { play as playSound } from "../sound";
 import { Stamp, Type } from "../theme";
 import type { CastRole, View } from "../types";
-import { CardBack, CardFace } from "./Card";
+import { CardBack, CardDetailBody, CardFace, fitOf } from "./Card";
 import { flyCard } from "./fx";
 import { CardTextSwitch, type Who } from "./Round";
-import { ability, card, FIT_LABEL, needsPlayer, needsRole, needsTwo, tipFor, type CardInfo, type Rating } from "./catalog";
+import { ability, card, FIT_LABEL, needsPlayer, needsRole, needsTwo, type CardInfo } from "./catalog";
 
 const READS = new Set(["word-count", "borrowed-hint", "master-key", "private-eye", "x-ray", "reshuffle", "wiretap"]);
 const ROLES: CastRole[] = ["imposter", "accomplice", "detective", "judge", "decoy", "gambler"];
@@ -43,11 +43,6 @@ export function PlayableNudge({ view, onOpen }: { view: View; onOpen: () => void
       <span className="lime">Open</span>
     </button>
   );
-}
-
-function fitOf(c: CardInfo, role?: CastRole | null): Rating | null {
-  if (!role || c.kind === "passive") return null;
-  return c.ratings?.[role] ?? null;
 }
 
 type Step = { kind: "list" } | { kind: "detail"; id: string } | { kind: "pick"; id: string } | { kind: "confirm"; id: string; player?: string; second?: string; role?: CastRole };
@@ -120,30 +115,9 @@ export function HandSheet({
     const info = card(step.id)!;
     const held = c.mine.hand.find((h) => h.id === step.id);
     if (step.kind === "detail") {
-      const fit = fitOf(info, role);
       return (
         <>
-          <div className="pc-detail-card">
-            <CardFace id={info.id} width={210} state={held?.playable ? "playable" : "plain"} />
-          </div>
-          <p className="pc-detail-fx">{ability(info)}</p>
-          {info.kind === "active" && (
-            <div className="tag pc-tag">
-              {role && <Type>As the {ROLE_NAME[role]}{fit ? ` · ${FIT_LABEL[fit]}` : ""}</Type>}
-              <span>{tipFor(info, role)}</span>
-            </div>
-          )}
-          {info.ratings && (
-            <ul className="pc-roles" aria-label="Who it suits">
-              {ROLES.map((r) => (
-                <li key={r} className={`${info.ratings![r]} ${r === role ? "you" : ""}`}>
-                  <img src={`/art/full-cast/${r}.webp`} alt="" />
-                  <span>{ROLE_NAME[r]}</span>
-                  <b>{info.ratings![r] === "cant" ? "Can’t" : info.ratings![r]}</b>
-                </li>
-              ))}
-            </ul>
-          )}
+          <CardDetailBody info={info} role={role} playable={held?.playable} />
           <div className="actions">
             {held?.playable && !info.windows.includes("ballot") ? (
               <button

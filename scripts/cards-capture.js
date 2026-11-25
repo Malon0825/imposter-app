@@ -184,6 +184,8 @@ async function cardsCapture(hostPage) {
       await ballot(d, names[imp]);
       await pages[d].getByRole("button", { name: /^Bet 1 point/ }).click();
       await pages[d].locator(".pc-ballot-slot").getByRole("img", { name: "Cold Feet, common" }).click();
+      // Tapping a ballot card opens its details; choose it from there.
+      await pages[d].getByRole("button", { name: "Use it with my vote" }).click();
       await pages[d].locator(".pc-ballot-slot").scrollIntoViewIfNeeded();
       await shot(pages[d], "15-ballot-card");
       await pages[d].getByRole("button", { name: /^(Lock vote|Confirm vote)/ }).click();

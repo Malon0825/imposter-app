@@ -4813,3 +4813,7 @@ img.topic-emblem { object-fit: contain; }
    microphone) or wide (a tape measure), and neither may push the card. */
 .pc-card:not(.golden) .pc-art { position: relative; }
 .pc-card:not(.golden) .pc-art img { position: absolute; inset: 5% 6%; width: 88%; height: 90%; object-fit: contain; }
+/* Card details: English on the card, the Filipino under it. */
+.pc-detail-fil { display: grid; gap: 2px; justify-items: center; text-align: center; margin: 4px auto 10px; max-width: 34ch; }
+.pc-detail-fil .type { font-size: 11px; color: var(--muted); }
+.pc-detail-fil .pc-detail-fx { margin: 0; }

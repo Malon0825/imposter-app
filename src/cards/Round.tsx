@@ -2,12 +2,14 @@
 // public effects, the ballot's card slot, Cold Feet, the Last Word, and the
 // host's switch. The hand itself lives in Hand.tsx.
 import { useEffect, useState, type ReactNode } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { createPortal } from "react-dom";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { MotionSheet } from "../motion-ui";
 import { MOTION } from "../motion";
 import { play as playSound } from "../sound";
 import { Stamp, Type } from "../theme";
 import type { CastRole, View } from "../types";
-import { CardBack, CardFace } from "./Card";
+import { CardBack, CardDetailBody, CardFace } from "./Card";
 import { card, cardLanguage, needsPlayer, onCardLanguage, setCardLanguage, type CardLanguage } from "./catalog";
 
 export interface Who {
@@ -157,6 +159,9 @@ export function BallotCardSlot({
   who: Who;
 }) {
   const c = view.cards;
+  // The card being read up close; tapping a card opens it, so nobody has to
+  // scroll back up to the hand to see what a card does.
+  const [peek, setPeek] = useState<string | null>(null);
   if (!c?.active) return null;
   const options = c.mine.hand.filter((h) => h.playable && card(h.id)?.windows.includes("ballot"));
   if (!options.length) return null;
@@ -178,8 +183,8 @@ export function BallotCardSlot({
               type="button"
               className={value?.id === h.id ? "selected" : ""}
               aria-pressed={value?.id === h.id}
-              disabled={needsStake}
-              onClick={() => onChange({ id: h.id })}
+              aria-label={`${card(h.id)?.name}: read and choose`}
+              onClick={() => setPeek(h.id)}
             >
               <CardFace id={h.id} size="hand" width={72} />
               {needsStake && <small>Place a bet</small>}
@@ -200,6 +205,37 @@ export function BallotCardSlot({
         </div>
       )}
       {chosen && <p className="muted compact">Everyone will see you played a {chosen.tier === "golden" ? "GOLDEN" : chosen.tier} card when your vote locks.</p>}
+      {/* At the page root: the ballot sits in an animated (transformed)
+          screen, which would pin a fixed sheet to itself, off-screen. */}
+      {createPortal(<AnimatePresence>
+        {peek && card(peek) && (
+          <MotionSheet key="ballot-card" labelledBy="pc-ballot-card-title" onDismiss={() => setPeek(null)} className="pc-hand-sheet case-sheet">
+            <button className="sheet-close icon-button" aria-label="Close the card" onClick={() => setPeek(null)}>
+              ×
+            </button>
+            <h2 id="pc-ballot-card-title" className="sr-only">{card(peek)!.name}</h2>
+            <CardDetailBody info={card(peek)!} role={view.private_role?.role ?? null} playable />
+            <div className="actions">
+              {value?.id === peek ? (
+                <button type="button" className="button outline" onClick={() => { onChange(null); setPeek(null); }}>
+                  Don’t use it
+                </button>
+              ) : card(peek)!.needs_bet && stake === 0 ? (
+                <button type="button" className="button outline" disabled>
+                  Place a bet to use it
+                </button>
+              ) : (
+                <button type="button" className="button primary" onClick={() => { onChange({ id: peek }); setPeek(null); }}>
+                  Use it with my vote
+                </button>
+              )}
+              <button type="button" className="button text" onClick={() => setPeek(null)}>
+                Back to my vote
+              </button>
+            </div>
+          </MotionSheet>
+        )}
+      </AnimatePresence>, document.body)}
     </section>
   );
 }
