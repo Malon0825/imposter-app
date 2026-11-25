@@ -111,9 +111,14 @@
             box.querySelector("iframe").style.transform = `scale(${sc})`;
           });
         };
+        // Sound follows the phone you play: only the big one is heard.
+        const sound = () =>
+          frames.forEach((box, j) => box.querySelector("iframe").contentWindow?.postMessage({ playtestSound: j === current }, "*"));
+        frames.forEach((box) => box.querySelector("iframe").addEventListener("load", sound));
         const focus = (i) => {
           current = i;
           layout();
+          sound();
         };
         window.addEventListener("resize", layout);
         layout();

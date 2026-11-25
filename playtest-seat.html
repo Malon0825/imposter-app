@@ -10,6 +10,7 @@
       const params = new URLSearchParams(location.hash.slice(1));
       sessionStorage.setItem("imposter.session.v1", params.get("session"));
       // Only one phone plays sound, or every shared sound plays seven times.
+      // The table then hands sound to whichever phone you bring up.
       localStorage.setItem("imposter.sound", params.get("sound") === "on" ? "on" : "off");
       location.replace("/");
     </script>

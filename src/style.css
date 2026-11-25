@@ -4357,6 +4357,8 @@ img.topic-emblem { object-fit: contain; }
 /* With the paw gone, the word sits in the middle of the card. */
 .role-back { justify-content: center; padding-top: 40px; }
 .role-back > p:first-of-type, .role-meaning-face > p:first-child { margin-top: 0; }
+/* The word (or hint) and its label sit in the middle of the card face, above Swipe for meaning. */
+.role-meaning-face { justify-content: center; }
 .complaint-sheet .reported-stamp { margin-left: auto; font-size: 10px; padding: 1px 6px; }
 .verdict-card .verdict-tie { font-size: 14px; color: #5b4a2c; margin-top: 2px; }
 /* A slammed stamp starts at 3x: keep that moment inside its own box so the page never scrolls sideways. */
