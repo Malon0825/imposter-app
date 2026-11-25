@@ -86,7 +86,7 @@ async function powerCardsSmoke(hostPage) {
     const views = await Promise.all(sessions.map((s) => call("state", { session_id: s.session_id })));
     const imposterIndex = views.findIndex((v) => v.private_role?.imposter);
     const civilians = [0, 1, 2, 3, 4, 5].filter((i) => i !== imposterIndex && views[i].private_role?.role !== "accomplice");
-    const [lateIdx, tipIdx, coldIdx] = civilians.slice(1, 4);
+    const [spotIdx, lateIdx, tipIdx, coldIdx] = civilians.slice(0, 4);
     // The real word, from someone who holds it (the Decoy's card shows a cousin word).
     const word = views.find((v) => v.private_role && !v.private_role.imposter && v.private_role.role !== "decoy").private_role.clue;
     const idOf = (i) => views[i].my_id;
@@ -96,6 +96,7 @@ async function powerCardsSmoke(hostPage) {
         [idOf(lateIdx)]: ["late-arrival"],
         [idOf(tipIdx)]: ["anonymous-tip"],
         [idOf(coldIdx)]: ["cold-feet"],
+        [idOf(spotIdx)]: ["spotlight"],
         [imposterId]: ["last-word"],
       },
     });
@@ -115,8 +116,11 @@ async function powerCardsSmoke(hostPage) {
     await button(late, "Play").click();
     await capture(late, "05-confirm");
     await button(late, "Play card").click();
-    await late.waitForTimeout(400);
-    checks.push("role-reveal card");
+    // Every phone gets the banner.
+    const watcher = pages[(lateIdx + 1) % pages.length];
+    await watcher.locator(".pc-banner").waitFor({ timeout: 5000 });
+    await capture(watcher, "11-banner");
+    checks.push("role-reveal card", "play banner");
     for (const [i, page] of pages.entries()) if (i !== lateIdx) await passRole(page);
 
     // Discussion window: the Anonymous Tip, which shows only once voting opens.
@@ -134,6 +138,20 @@ async function powerCardsSmoke(hostPage) {
     assert((await hostTab.getByText("Someone suspects").count()) === 0, "the tip waits for the vote");
     await capture(hostTab, "06-discussion");
     checks.push("discussion card");
+    // A Golden play takes over every phone.
+    const spot = pages[spotIdx];
+    const spotWatcher = pages[spotIdx === 0 ? 1 : 0];
+    await spot.getByRole("button", { name: /You can play a card now/ }).click();
+    await spot.getByRole("img", { name: "Spotlight, golden" }).click();
+    await button(spot, "Play").click();
+    await spot.locator(".pc-pick-list button").filter({ hasText: names[tipIdx] }).click();
+    await button(spot, "Play card").click();
+    await spotWatcher.locator(".pc-takeover").waitFor({ timeout: 5000 });
+    await spotWatcher.waitForTimeout(400);
+    await spotWatcher.screenshot({ path: `${out}/12-golden-takeover.png` });
+    await spotWatcher.locator(".pc-takeover").waitFor({ state: "detached", timeout: 6000 });
+    assert((await spotWatcher.getByText(/is on the (civilian|Imposter’s) side/).count()) === 1, "Spotlight is public");
+    checks.push("golden takeover");
     await button(hostTab, "Open voting").click();
 
     // Ballot window: Cold Feet rides with the vote, then the bet changes once.
@@ -180,6 +198,39 @@ async function powerCardsSmoke(hostPage) {
     checks.push("Last Word");
     await capture(imp, "10-imposter-result");
     void settled;
+
+    // The room: the round's cards turned face up.
+    await button(hostTab, "See the room").click();
+    await hostTab.locator(".pc-replay li").first().waitFor({ timeout: 10000 });
+    assert((await hostTab.locator(".pc-replay li").count()) === 4, "four cards in the replay");
+    await hostTab.waitForTimeout(3000);
+    await hostTab.locator(".pc-replay").scrollIntoViewIfNeeded();
+    await hostTab.screenshot({ path: `${out}/13-cards-this-round.png` });
+    checks.push("cards this round");
+
+    // Drink or Dare, then the standings with the Wanted poster.
+    await button(hostTab, "Continue").click();
+    for (let turn = 0; turn < pages.length; turn++) {
+      await hostTab.waitForTimeout(700);
+      let loser = null;
+      for (const page of pages) if (await button(page, "Drink").count()) loser = page;
+      if (!loser) break;
+      await button(loser, "Drink").click();
+      await button(loser, "Done").click();
+    }
+    await hostTab.locator(".standings").waitFor({ timeout: 15000 });
+    await capture(hostTab, "14-standings");
+    assert((await hostTab.locator(".pc-wanted").count()) === 1, "the leader is on a Wanted poster");
+    checks.push("standings");
+
+    // End the party: the Story of the night.
+    await button(hostTab, "End party").click();
+    await hostTab.getByRole("button", { name: "End party", exact: true }).last().click();
+    await button(hostTab, "Story of the night").click();
+    await hostTab.locator(".pc-story").waitFor();
+    await capture(hostTab, "15-story");
+    assert((await hostTab.getByText("Golden moments").count()) === 1, "the story has the Golden moment");
+    checks.push("story of the night");
     return { passed: true, checks };
   } catch (error) {
     for (const [i, context] of contexts.entries())

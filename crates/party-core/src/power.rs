@@ -31,6 +31,10 @@ pub(crate) struct CardSession {
     pub rain: BTreeSet<String>,
     /// Rounds scored this session (Underdogs start in round 3).
     pub rounds: u32,
+    /// Every card played this session, for the Story of the night.
+    pub story: Vec<Value>,
+    /// Points each player earned while an Underdog (the comeback headline).
+    pub comeback: BTreeMap<String, i32>,
 }
 
 #[derive(Clone, Debug)]
@@ -703,6 +707,61 @@ impl Game {
         cards::crown(&winners, &holders)
     }
 
+    /// What a play did, from the settled breakdowns: the points its card
+    /// moved to each player, and the owner's whole round.
+    fn play_effect(&self, p: &PlayRec) -> Value {
+        let moved: Vec<Value> = self
+            .round
+            .scores
+            .iter()
+            .flat_map(|(id, s)| {
+                s.cards
+                    .iter()
+                    .filter(|l| l.card == p.play.card && l.from == p.play.owner)
+                    .map(move |l| json!({"player_id": id, "points": l.points}))
+            })
+            .collect();
+        let owner = self.round.scores.get(&p.play.owner);
+        let claim_true = p.claim.map(|c| self.role_in_round(&p.play.owner) == Some(c));
+        json!({"moved": moved, "owner_total": owner.map(|s| s.after - s.before), "claim": p.claim, "claim_true": claim_true})
+    }
+
+    /// After a round settles: its plays join the session's story, and
+    /// Underdogs' gains count toward the comeback.
+    pub(crate) fn record_story(&mut self) {
+        if !self.round.cards.active {
+            return;
+        }
+        let round = self.cards.rounds + 1;
+        let entries: Vec<Value> = self
+            .round
+            .cards
+            .plays
+            .iter()
+            .map(|p| {
+                json!({"round": round, "player_id": p.play.owner, "card": p.play.card, "tier": p.shown,
+                       "real_tier": cards::tier_of(&p.play.card), "pick": p.play.pick, "cancelled": p.play.cancelled,
+                       "verdict": p.verdict, "effect": self.play_effect(p)})
+            })
+            .collect();
+        self.cards.story.extend(entries);
+        for id in self.round.cards.underdogs.clone() {
+            if let Some(s) = self.round.scores.get(&id) {
+                let gained = (s.after - s.before).max(0);
+                *self.cards.comeback.entry(id).or_default() += gained;
+            }
+        }
+    }
+
+    /// Who leads, who is an Underdog and the Bounty for the next round, from
+    /// the scores as they stand.
+    fn standing(&self) -> Value {
+        let scores: BTreeMap<String, i32> = self.players.iter().filter(|p| !p.left).map(|p| (p.id.clone(), p.points)).collect();
+        let leaders = cards::leaders(&scores);
+        let underdogs = cards::underdogs(&scores, self.target_score, self.cards.rounds + 1);
+        json!({"leaders": leaders, "underdogs": underdogs, "bounty": (!underdogs.is_empty()).then(|| self.cards.bounty.current(&leaders))})
+    }
+
     /// What this phone sees of power cards. Hands, odds and private reads go
     /// only to their owner; at results every play is shown in full.
     pub(crate) fn cards_view(&self, actor: &str, results: bool) -> Value {
@@ -733,7 +792,8 @@ impl Game {
             .map(|p| {
                 if results {
                     json!({"seq": p.play.seq, "player_id": p.play.owner, "tier": p.shown, "card": p.play.card,
-                           "real_tier": cards::tier_of(&p.play.card), "pick": p.play.pick, "cancelled": p.play.cancelled, "verdict": p.verdict})
+                           "real_tier": cards::tier_of(&p.play.card), "pick": p.play.pick, "cancelled": p.play.cancelled, "verdict": p.verdict,
+                           "effect": self.play_effect(p)})
                 } else {
                     json!({"seq": p.play.seq, "player_id": p.play.owner, "tier": p.shown})
                 }
@@ -749,6 +809,12 @@ impl Game {
         let last_word = (self.phase == "last_word" && actor == self.round.imposter)
             .then(|| r.last_word.as_ref().map(|lw| json!({"options": lw.options, "remaining_ms": lw.until.saturating_duration_since(Instant::now()).as_millis()})))
             .flatten();
+        let bounty_paid = results
+            .then(|| self.round.scores.values().flat_map(|s| s.cards.iter()).find(|l| l.card == "bounty").map(|l| l.points))
+            .flatten();
+        let story = ["session_complete", "ended"]
+            .contains(&self.phase.as_str())
+            .then(|| json!({"plays": self.cards.story, "comeback": self.cards.comeback}));
         json!({
             "on": self.cards.on,
             "active": r.active,
@@ -759,6 +825,9 @@ impl Game {
             })),
             "drew": r.decided.iter().filter(|(_, c)| c.is_some()).map(|(id, _)| id).collect::<Vec<_>>(),
             "plays": plays,
+            "bounty_paid": bounty_paid,
+            "standing": self.standing(),
+            "story": story,
             "stamps": r.stamps,
             "tips": tips,
             "claims": public_card("cover-story").map(|p| json!({"player_id": p.play.owner, "role": p.claim})).collect::<Vec<_>>(),

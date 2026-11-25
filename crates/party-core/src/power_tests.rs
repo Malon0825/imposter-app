@@ -425,6 +425,11 @@ fn card_awards_land_in_the_score_breakdown() {
     let s = &g.round.scores[&judge];
     assert_eq!(s.cards, vec![cards::Line { card: "on-the-record".into(), from: judge.clone(), points: 2 }]);
     assert_eq!(s.after, 2 + 2, "Judge +2 for the read, +2 for the record");
+    // The play joins the session's story with what it did.
+    assert_eq!(g.cards.story.len(), 1);
+    assert_eq!(g.cards.story[0]["effect"]["moved"], json!([{"player_id": judge, "points": 2}]));
+    let view = g.view(&host);
+    assert_eq!(view["cards"]["standing"]["leaders"], json!([judge]));
 }
 
 #[test]

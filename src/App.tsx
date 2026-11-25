@@ -56,6 +56,8 @@ import {
 } from "./motion-ui";
 import { play as playSound, playShared, setSound, soundOn, onSoundChange } from "./sound";
 import { HandButton, HandSheet, PlayableNudge } from "./cards/Hand";
+import { Announcements } from "./cards/Announce";
+import { BountyNote, CardsReplay, cardLineLabel, StandingTags, StoryOfTheNight, WantedPoster } from "./cards/Results";
 import {
   BallotCardSlot,
   ballotCardReady,
@@ -90,6 +92,7 @@ type Page =
   | "topics"
   | "session_setup"
   | "help"
+  | "story"
   | null;
 const errorText = (error: unknown) => {
   if (typeof error === "string") return error;
@@ -2081,6 +2084,14 @@ export default function App() {
           )}
         </>
       );
+    if (page === "story" && view?.cards?.story)
+      return (
+        <>
+          <Header title="Story of the night" back={() => nav(null, -1)} />
+          <StoryOfTheNight view={view} who={who} />
+          {footer(<Button kind="outline" onClick={() => nav(null, -1)}>Back to the standings</Button>)}
+        </>
+      );
     if (page === "help")
       return (
         <>
@@ -3800,6 +3811,12 @@ export default function App() {
                       <dd>+1</dd>
                     </div>
                   ))}
+                  {(score.cards ?? []).map((line, i) => (
+                    <div key={`card-${i}`} className="card-line">
+                      <dt>{cardLineLabel(line, view.my_id, who)}</dt>
+                      <dd className={line.points < 0 ? "terra" : ""}>{signed(line.points)}</dd>
+                    </div>
+                  ))}
                   {!!score.bluff && (
                     <div>
                       <dt>Nobody voted for you</dt>
@@ -3864,6 +3881,8 @@ export default function App() {
                 !reduced && visible,
               )}
             </motion.div>
+            <BountyNote view={view} />
+            <CardsReplay view={view} who={who} />
             <motion.section
               variants={recapItem}
               className="everyone-results"
@@ -4207,6 +4226,7 @@ export default function App() {
               target={view.score_session.target}
             />
           )}
+          {!final && <WantedPoster view={view} who={who} />}
           <div className="standings">
             {sorted.map((p) => {
               const rank = sorted.findIndex((x) => x.points === p.points) + 1;
@@ -4223,7 +4243,10 @@ export default function App() {
                   </span>
                   <Avatar player={p} mine={p.id === view.host_id} />
                   <div className="player-details">
-                    <strong className={winning ? "lime" : ""}>{p.name}</strong>
+                    <strong className={winning ? "lime" : ""}>
+                      {p.name}
+                      <StandingTags cards={view.cards} id={p.id} />
+                    </strong>
                     <span>
                       {p.left
                         ? "Left party"
@@ -4266,11 +4289,19 @@ export default function App() {
           )}
           {footer(
             ended ? (
-              <Button disabled={busy} onClick={() => execute(close)}>
-                Back to home
-              </Button>
+              <>
+                {!!view.cards?.story?.plays.length && (
+                  <Button onClick={() => nav("story")}>Story of the night</Button>
+                )}
+                <Button kind={view.cards?.story?.plays.length ? "outline" : "primary"} disabled={busy} onClick={() => execute(close)}>
+                  Back to home
+                </Button>
+              </>
             ) : view.is_host ? (
               <>
+                {complete && !!view.cards?.story?.plays.length && (
+                  <Button onClick={() => nav("story")}>Story of the night</Button>
+                )}
                 {!complete && kickoffToggle}
                 <Button
                   disabled={busy}
@@ -4283,10 +4314,15 @@ export default function App() {
                 </Button>
               </>
             ) : (
-              <p className="muted center">
-                Waiting for {playerName(view.host_id)} to{" "}
-                {complete ? "start the next session" : "choose the next round"}.
-              </p>
+              <>
+                {complete && !!view.cards?.story?.plays.length && (
+                  <Button onClick={() => nav("story")}>Story of the night</Button>
+                )}
+                <p className="muted center">
+                  Waiting for {playerName(view.host_id)} to{" "}
+                  {complete ? "start the next session" : "choose the next round"}.
+                </p>
+              </>
             ),
           )}
         </>
@@ -4321,6 +4357,7 @@ export default function App() {
           {screen()}
         </ScreenTransition>
       </AnimatePresence>
+      {view?.cards?.active && !page && <Announcements view={view} who={who} />}
       <AnimatePresence>
         {error && (
           <motion.div

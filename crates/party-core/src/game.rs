@@ -1597,6 +1597,7 @@ impl Game {
             // Cardboard Crown breaks a tie for first.
             self.session_winners = self.crown_winners(winners);
         }
+        self.record_story();
         self.cards.rounds += 1;
         self.round.queue.shuffle(&mut rand::thread_rng());
         self.round.committed = true;

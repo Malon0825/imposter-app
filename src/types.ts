@@ -61,6 +61,25 @@ export type CardTier = "common" | "rare" | "golden";
 export type CardVerdict = "blocked" | "sustained" | "overruled" | "vetoed" | "pierced";
 
 /** Power cards as this phone sees them (see crates/party-core/src/power.rs). */
+export interface PlayEffect {
+  moved: { player_id: string; points: number }[];
+  owner_total: number | null;
+  claim: CastRole | null;
+  claim_true: boolean | null;
+}
+
+export interface StoryPlay {
+  round: number;
+  player_id: string;
+  card: string;
+  tier: CardTier;
+  real_tier: CardTier;
+  pick: string | null;
+  cancelled: boolean;
+  verdict: CardVerdict | null;
+  effect: PlayEffect;
+}
+
 export interface CardsView {
   on: boolean;
   active: boolean;
@@ -76,7 +95,14 @@ export interface CardsView {
     pick?: string | null;
     cancelled?: boolean;
     verdict?: CardVerdict | null;
+    effect?: PlayEffect;
   }[];
+  /** Results: what each Underdog got from the Bounty, if it paid. */
+  bounty_paid?: number | null;
+  /** The next round's leaders, Underdogs and Bounty, from the scores now. */
+  standing?: { leaders: string[]; underdogs: string[]; bounty: number | null };
+  /** Session complete: every card played this session. */
+  story?: { plays: StoryPlay[]; comeback: Record<string, number> } | null;
   stamps: { verdict: CardVerdict; by: string | null; on: string | null; bluff: boolean }[];
   tips: string[];
   claims: { player_id: string; role: CastRole }[];
@@ -194,6 +220,8 @@ export interface View {
       bluff: number;
       bonus?: number;
       voided?: boolean;
+      /** Power cards: points moved by cards, the Bounty and Robin Hood. */
+      cards?: { card: string; from: string; points: number }[];
       penalty: number;
       after: number;
     };
