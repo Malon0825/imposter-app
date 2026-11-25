@@ -15,7 +15,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Give your clue last in the first clue turn.",
+        "en": "You give your clue last in the first turn.",
         "fil": "Ikaw ang huling magbibigay ng clue sa unang ikot."
       },
       "ratings": {
@@ -45,7 +45,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Give your clue first in the first clue turn.",
+        "en": "You give your clue first in the first turn.",
         "fil": "Ikaw ang unang magbibigay ng clue sa unang ikot."
       },
       "ratings": {
@@ -75,7 +75,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Pick a player. They owe one more clue: their name sits at the top of the clue board until they give it.",
+        "en": "Pick a player. They must give one more clue before the vote.",
         "fil": "Pumili ng player. Utang niya ang isa pang clue. Nasa tuktok ng clue board ang pangalan niya hanggang maibigay niya ’yon."
       },
       "ratings": {
@@ -105,7 +105,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Name a suspect. When voting opens, everyone sees 'Someone suspects Ben'. Your name stays hidden.",
+        "en": "Pick a suspect. When voting starts, everyone sees that someone suspects them. Your name stays secret.",
         "fil": "Pumili ng suspek. Pagbukas ng botohan, makikita ng lahat ang “May naghihinala kay Ben.” Lihim kung sino ka."
       },
       "ratings": {
@@ -135,7 +135,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Show everyone your vote and lock it now. Get 2 points if you picked the Imposter.",
+        "en": "Show everyone your vote now. You can't change it. Voted for the Imposter? Get 2 points.",
         "fil": "Ipakita sa lahat ang boto mo at i-lock na ito ngayon. May 2 puntos ka kung Imposter ang binoto mo."
       },
       "ratings": {
@@ -170,7 +170,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "See how many letters the real word has. Only you see the number. Only the Imposter and the Decoy can play it.",
+        "en": "See how many letters the real word has. Only the Imposter or Decoy can use it.",
         "fil": "Ilang letra ang totoong salita? Ikaw lang ang makakakita ng bilang. Imposter o Decoy lang ang puwedeng gumamit nito."
       },
       "ratings": {
@@ -200,7 +200,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Claim any role on everyone's screen. Results show whether it was true.",
+        "en": "Say you are any role. Everyone sees it. Results show if it was true.",
         "fil": "Pumili ng role na aangkinin mo. Sa screen ng lahat lalabas ang claim mo. Sa resulta malalaman kung totoo."
       },
       "ratings": {
@@ -233,7 +233,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Name a backup suspect. If your vote is wrong and your backup is the Imposter, you score as if you were right and skip Drink/Dare. Your bet still settles as usual.",
+        "en": "Pick a backup suspect. Your vote was wrong but your backup is the Imposter? You count as right. Your bet still loses.",
         "fil": "Pumili ng backup na suspek. Mali ang boto mo pero Imposter ang backup mo? May puntos ka na parang tama ang boto mo, at ligtas ka sa Drink/Dare. Gaya pa rin ng dati ang panalo o talo sa taya mo."
       },
       "ratings": {
@@ -263,7 +263,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Swap this card for a free draw now, at the normal odds, Golden included. The new card can be played from next round.",
+        "en": "Swap this card for a free new draw. You can use the new card next round.",
         "fil": "Ipalit ito sa libreng bunot ngayon. Gaya ng dati ang tsansa sa bawat tier, pati Golden. Magagamit mo ang nabunot simula sa susunod na round."
       },
       "ratings": {
@@ -291,7 +291,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": true,
       "text": {
-        "en": "After you vote, you can change your bet once, until the last ballot locks.",
+        "en": "After you vote, you can change your bet one time.",
         "fil": "Pagkaboto mo, puwede mong palitan ang taya mo nang isang beses bago ma-lock ang huling boto."
       },
       "ratings": {
@@ -321,7 +321,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Announce a fake play under your name. Its tier is rolled like a real draw, so it can look Golden. Nothing else happens.",
+        "en": "Pretend to play a card. It may look Common, Rare or Golden. Nothing else happens.",
         "fil": "Magkunwaring gumamit ng baraha. Pangalan mo ang lalabas. Gaya ng sa totoong bunot ang tsansa ng bawat tier, kaya puwedeng magmukhang Golden. Hanggang doon lang ’yon."
       },
       "ratings": {
@@ -369,7 +369,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Earned nothing (or less) this round? Your next round's lost bet costs nothing.",
+        "en": "Got 0 points or less this round? Next round, losing your bet costs nothing.",
         "fil": "Zero o mas mababa ang puntos na nakuha mo ngayong round? Sa susunod na round, walang bawas kung matalo ang taya mo."
       }
     },
@@ -387,7 +387,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Get 2 points if your vote named the Imposter and no counted vote named you.",
+        "en": "You voted for the Imposter and nobody voted for you? Get 2 points.",
         "fil": "May 2 puntos ka kung Imposter ang binoto mo at walang binilang na boto laban sa iyo."
       }
     },
@@ -405,7 +405,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Tied for the highest score when the session ends? You win alone.",
+        "en": "Tied for first when the game ends? You win alone.",
         "fil": "Tabla kayo sa unang puwesto sa dulo ng session? Ikaw lang ang panalo."
       }
     },
@@ -423,7 +423,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Pick two other players. Secretly see whether each one is on the civilian side or the Imposter's side.",
+        "en": "Pick two players. Secretly see if each one is on the good side or the Imposter's side.",
         "fil": "Pumili ng dalawang ibang player. Ikaw lang ang makakakita kung sa mga sibilyan o sa Imposter kampi ang bawat isa."
       },
       "ratings": {
@@ -455,7 +455,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Take a secret look at the hint the Imposter got. The Imposter can't play it.",
+        "en": "Secretly see the Imposter's hint.",
         "fil": "Palihim na silipin ang hint na nakuha ng Imposter. Bawal ito sa Imposter."
       },
       "ratings": {
@@ -487,7 +487,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Your counted vote counts twice (a Judge's counts three times). The Imposter can't play it.",
+        "en": "Your vote counts twice. A Judge's vote counts three times.",
         "fil": "Kung kasama sa bilangan ang boto mo, doble ang bilang nito. Triple kung Judge ka. Bawal ito sa Imposter."
       },
       "ratings": {
@@ -520,7 +520,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Get 3 points if the room accuses you. The Imposter can't play it. It pays even if your other gains are cancelled.",
+        "en": "The room votes you out? Get 3 points. You keep them no matter what.",
         "fil": "May 3 puntos ka kung ikaw ang pagbibintangan ng grupo. Bawal ito sa Imposter. Sa iyo pa rin ang 3 kahit makansela ang iba mong nakuhang puntos ngayong round."
       },
       "ratings": {
@@ -550,7 +550,7 @@
       "needs_bet": true,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Your bet pays double and costs double this round. A Gambler's top tier pays +10 and costs 6.",
+        "en": "Your bet wins double or loses double.",
         "fil": "Doble ang panalo at talo sa taya mo ngayong round. Sa pinakamataas na taya ng Gambler, dagdag 10 puntos kung panalo, bawas 6 kung talo."
       },
       "ratings": {
@@ -580,7 +580,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Caught as the Imposter? Pick the real word from three. If you're right, you and your Accomplice score as if you escaped.",
+        "en": "Caught as the Imposter? Pick the real word from three. Right? You and your Accomplice score as if you escaped.",
         "fil": "Nahuli kang Imposter? Piliin ang totoong salita sa tatlo. Kung tama ka, ikaw at ang Accomplice mo ay parehong makakakuha ng puntos na parang nakatakas ka."
       }
     },
@@ -598,7 +598,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Stay out of Drink/Dare this round? Get 4 points.",
+        "en": "No Drink or Dare for you this round? Get 4 points.",
         "fil": "Hindi ka napasama sa Drink/Dare ngayong round? May 4 puntos ka."
       }
     },
@@ -616,7 +616,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Secretly predict who the room will accuse. Get 3 points if you're right and your side wins the round.",
+        "en": "Secretly guess who the room will vote out. Right, and your side wins? Get 3 points.",
         "fil": "Palihim na hulaan kung sino ang pagbibintangan ng grupo. May 3 puntos ka kung tama ka at panalo ang panig mo ngayong round."
       },
       "ratings": {
@@ -646,7 +646,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Pick a player. Their vote isn't counted, but it still scores for them. Everyone sees 'One vote was vetoed'. A Golden Ballot can't be vetoed.",
+        "en": "Pick a player. Their vote won't count. Everyone sees a vote was cancelled. A Golden Ballot can't be cancelled.",
         "fil": "Pumili ng player. May puntos pa rin siya gaya ng dati, pero labas sa bilangan ang boto niya. Kita ng lahat ang “May isang botong VETOED.” Ligtas ang Golden Ballot sa veto."
       },
       "ratings": {
@@ -708,7 +708,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Object to another player's card this round. If it was Common, it's cancelled. Anything higher is overruled. Everyone sees the verdict.",
+        "en": "Object to someone's card. Common? It's cancelled. Rare or Golden? It stays.",
         "fil": "Tutulan ang baraha ng ibang player ngayong round. Common? SUSTAINED. Kanselado ang baraha. Rare o Golden? OVERRULED ang pagtutol mo. Kita ng lahat ang hatol."
       },
       "ratings": {
@@ -738,7 +738,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Pick a player. You'll see their vote the moment they lock it.",
+        "en": "Pick a player. See who they vote for as soon as they vote.",
         "fil": "Pumili ng player. Pagka-lock niya ng boto, makikita mo agad kung sino ang binoto niya."
       },
       "ratings": {
@@ -773,7 +773,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Secretly read the real word. Only the Imposter and the Decoy can play it.",
+        "en": "Secretly see the real word. Only the Imposter or Decoy can use it.",
         "fil": "Palihim na silipin ang totoong salita. Imposter o Decoy lang ang puwedeng gumamit nito."
       },
       "ratings": {
@@ -803,7 +803,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Pick another player. Secretly see their exact role.",
+        "en": "Pick a player. Secretly see their exact role.",
         "fil": "Pumili ng ibang player. Ikaw lang ang makakakita ng eksaktong role niya."
       },
       "ratings": {
@@ -833,7 +833,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Make your vote count as four votes. Even the Imposter can vote with this card.",
+        "en": "Your vote counts four times. Even the Imposter can use it.",
         "fil": "Gawing apat ang bilang ng boto mo. Kahit Imposter, puwedeng bumoto gamit ito."
       },
       "ratings": {
@@ -864,7 +864,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Win your round to raise your score to the leader's score at the start of this round. The leader can't play it.",
+        "en": "Win this round and your score jumps up to the leader's. The leader can't use it.",
         "fil": "Manalo ka sa round para mapantayan ang puntos ng nangunguna noong simula ng round. Hindi ito magagamit ng nangunguna."
       },
       "ratings": {
@@ -892,7 +892,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Triple every point you earn from your role and your bet this round.",
+        "en": "Every point you win this round is tripled. Losses stay the same.",
         "fil": "Triple ang bawat puntos na makukuha mo sa role at taya mo ngayong round."
       },
       "ratings": {
@@ -922,7 +922,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "If you lose this round, turn it into a personal win and get 5 points.",
+        "en": "Lose this round? You win instead and get 5 points.",
         "fil": "Kung matalo ka ngayong round, magiging panalo iyon para sa iyo at may 5 puntos ka."
       },
       "ratings": {
@@ -955,7 +955,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Secretly switch to the Imposter's side this round. Get 4 points if the Imposter escapes. Your bet rides on the escape too. Your own role doesn't score.",
+        "en": "Secretly join the Imposter's team. They escape? Get 4 points. They're caught? You lose.",
         "fil": "Palihim kang kakampi sa Imposter ngayong round. Kung makatakas siya, may 4 na puntos ka. Sa pagtakas niya nakasalalay ang taya mo. Walang puntos mula sa sarili mong role."
       },
       "ratings": {
@@ -985,7 +985,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Pick a player. Everyone sees whether they're on the civilian side or the Imposter's side.",
+        "en": "Pick a player. Everyone sees if they are on the good side or the Imposter's side.",
         "fil": "Pumili ng player. Makikita ng lahat kung sa mga sibilyan o sa Imposter siya kampi."
       },
       "ratings": {
@@ -1015,7 +1015,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Pick a player. You also get every point they earn this round.",
+        "en": "Pick a player. You also get every point they win this round.",
         "fil": "Pumili ng player. Bawat puntos na makuha niya ngayong round, makukuha mo rin."
       },
       "ratings": {
@@ -1045,7 +1045,7 @@
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Every leader loses 5 points. Every Underdog gets 2. With no Underdogs, you get the 5 instead. A leader can't play it.",
+        "en": "The leader loses 5 points. Every Underdog gets 2. No Underdogs? You get the 5.",
         "fil": "Bawas 5 puntos sa bawat nangunguna. Dagdag 2 sa bawat Underdog. Kung walang Underdog, sa iyo ang 5. Bawal ito sa nangunguna."
       },
       "ratings": {
