@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "motion/react";
+import { Stamp } from "./theme";
 import { Icon } from "./icons";
 import { MOTION } from "./motion";
 import type { CastRole, Player } from "./types";
@@ -246,7 +247,8 @@ export function RoleStage({ role, players }: { role: CastRole; players: number }
         draggable={false}
         {...(reduced ? {} : { initial: { opacity: 0, y: 40, scale: 0.92 }, animate: { opacity: 1, y: 0, scale: 1 }, transition: { duration: 0.55, ease: MOTION.easeOut, delay: 0.05 } })}
       />
-      <motion.p className="role-stage-side" {...rise(0.25)}>
+      <Stamp className="role-stage-stamp" slam delay={0.6}>Classified</Stamp>
+      <motion.p className="role-stage-side type" {...rise(0.25)}>
         {c.side === "imposter" ? "Imposter side" : "Civilian side"}
       </motion.p>
       <motion.h1 className="role-stage-name" {...rise(0.32)}>{c.name}</motion.h1>

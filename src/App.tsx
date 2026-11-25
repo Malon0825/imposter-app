@@ -54,12 +54,12 @@ import {
   ScreenTransition,
   SelectionCheck,
 } from "./motion-ui";
+import { play as playSound, playShared, setSound, soundOn, onSoundChange } from "./sound";
+import { Art, BookingPhoto, CardBacks, Mugshot, Stamp, TopicEmblem, Type, cardArt } from "./theme";
 import {
   Confetti,
-  ConnectionIllustration,
   DareArrow,
   Rays,
-  TopicArt,
 } from "./illustrations";
 
 type Page =
@@ -118,6 +118,13 @@ const outcomeHeadline = (o: RoundOutcome, role?: CastRole | null, bait?: boolean
           ? "The room convicted you"
           : "The imposter spotted you"
         : OUTCOME_HEADLINE[o];
+const OUTCOME_STAMP: Record<RoundOutcome, string> = {
+  correct: "Correct",
+  wrong: "Wrong",
+  escaped: "Escaped",
+  caught: "Caught",
+  spotted: "Spotted",
+};
 const goodOutcome = (o: RoundOutcome | null | undefined) =>
   o === "correct" || o === "escaped";
 const recapItem = {
@@ -161,18 +168,7 @@ function Avatar({
   );
 }
 function Cards({ className = "" }: { className?: string }) {
-  return (
-    <img
-      className={`cards-art ${className}`}
-      src={
-        className.includes("discussion-art")
-          ? "/art/discussion-cards.png"
-          : "/art/secret-cards.png"
-      }
-      alt="Three secret cards with watchful eyes"
-      draggable={false}
-    />
-  );
+  return <CardBacks className={`cards-art ${className}`} />;
 }
 function Button({
   children,
@@ -197,7 +193,14 @@ function Button({
       transition={MOTION.press}
       className={`button ${kind} ${className}`}
       disabled={disabled}
-      onClick={onClick}
+      onClick={
+        onClick &&
+        (() => {
+          onClick();
+          // After the tap's own work, so creating audio never delays a transition.
+          window.setTimeout(() => playSound("tap"), 0);
+        })
+      }
     >
       {children}
     </motion.button>
@@ -231,22 +234,6 @@ function Header({
     </>
   );
 }
-function ConnectionArt({ broken = false }: { broken?: boolean }) {
-  return (
-    <div className={`connection-art ${broken ? "broken" : ""}`}>
-      <ConnectionIllustration broken={broken} />
-    </div>
-  );
-}
-function CoffeeCup() {
-  return (
-    <div className="cup-art" aria-hidden="true">
-      <Rays className="cup-rays" />
-      <img src="/art/ceramic-cup.png" alt="" draggable={false} />
-    </div>
-  );
-}
-
 function TopicVoting({
   view,
   busy,
@@ -442,20 +429,7 @@ function TopicVoting({
                         </SelectionCheck>
                       </span>
                     )}
-                    <TopicArt
-                      name={
-                        "vote-" +
-                        (rule === "sound_only" && t.id === "travel"
-                          ? "suitcase"
-                          : rule === "sound_only" && t.id === "sports"
-                            ? "football"
-                            : t.id === "nature"
-                              ? "nature"
-                              : t.id === "health"
-                                ? "education"
-                                : t.icon)
-                      }
-                    />
+                    <TopicEmblem id={t.id} />
                     <strong>{t.name}</strong>
                   </motion.button>
                 ))}
@@ -552,16 +526,7 @@ function TopicVoting({
                 const t = view.catalog.find((t) => t.id === id)!;
                 return (
                   <div className="topic-leader" key={id}>
-                    <TopicArt
-                      name={
-                        "vote-" +
-                        (t.id === "nature"
-                          ? "nature"
-                          : t.id === "health"
-                            ? "education"
-                            : t.icon)
-                      }
-                    />
+                    <TopicEmblem id={t.id} />
                     <div>
                       <strong>{t.name}</strong>
                       <span>{countLabel(id)}</span>
@@ -622,6 +587,7 @@ function TopicVoting({
       ) : chosen ? (
         <>
           <div className="topic-chosen-heading">
+            <Type>Tonight’s case</Type>
             <h1>{chosen.name} it is.</h1>
             <p className="muted">The topic for this round.</p>
           </div>
@@ -634,23 +600,8 @@ function TopicVoting({
               ease: MOTION.easeOut,
             }}
           >
-            <span className="topic-chosen-seal">
-              <SelectionCheck>
-                <CheckStroke size={30} />
-              </SelectionCheck>
-            </span>
-            <TopicArt
-              name={
-                "vote-" +
-                (chosen.id === "nature"
-                  ? "nature"
-                  : chosen.id === "health"
-                    ? "education"
-                    : chosen.icon === "pizza"
-                      ? "pizza-card"
-                      : chosen.icon)
-              }
-            />
+            <Stamp className="topic-chosen-stamp" slam delay={0.25}>Chosen</Stamp>
+            <span className="topic-emblem-frame"><TopicEmblem id={chosen.id} /></span>
             <h2>{chosen.name}</h2>
             <p>
               {countLabel(chosen.id)} ·{" "}
@@ -1347,6 +1298,48 @@ export default function App() {
     person(id)?.name || "Player";
   const me = person(view?.my_id);
   const activePlayers = view?.players.filter((p) => !p.left) || [];
+  // Shared sound beats: each plays once per round on every phone, from the
+  // same moment the host already times for the screens.
+  const sounded = useRef(new Set<string>());
+  useEffect(() => {
+    if (!view) return;
+    const once = (key: string, fn: () => void) => {
+      if (sounded.current.has(key)) return;
+      sounded.current.add(key);
+      fn();
+    };
+    const round = view.round_id;
+    const beat = view.reveal;
+    const elapsed = beat ? beat.total_ms - beat.remaining_ms : 0;
+    const voters = view.players.filter((p) => !p.left).length;
+    if (view.phase === "rule_reveal" && beat?.stage === "shuffle")
+      once(`riffle-${round}`, () => playShared("riffle", elapsed));
+    if (view.phase === "result_reveal" && beat?.stage === "suspense")
+      once(`suspense-${round}`, () => playShared("suspense", elapsed));
+    if (view.phase === "result_reveal" && beat?.stage === "verdict" && view.verdict) {
+      const { escaped, my_outcome } = view.verdict;
+      once(`verdict-${round}`, () => {
+        if (elapsed > 300) return;
+        playSound(escaped ? "escape" : "gavel");
+        // Your own result lands a beat after the room's verdict sound.
+        if (my_outcome)
+          window.setTimeout(() => playSound(goodOutcome(my_outcome) ? "win" : "lose"), 700);
+      });
+    }
+    if (view.phase === "voting" && view.my_vote && view.vote_count >= voters - 2 && view.vote_count < voters)
+      once(`heartbeat-${round}`, () => playSound("heartbeat"));
+    if (view.phase === "punishment" && view.punishment && !view.punishment.choice)
+      once(`drumroll-${round}-${view.punishment.turn}`, () => playSound("drumroll"));
+    if (view.phase === "session_complete")
+      once(`celebrate-${view.score_session.number}`, () => playSound("celebrate"));
+  }, [view]);
+  const [sound, setSoundState] = useState(soundOn);
+  useEffect(() => {
+    const off = onSoundChange(setSoundState);
+    return () => {
+      off();
+    };
+  }, []);
   const disconnectedPlayers = activePlayers.filter((p) => !p.connected);
   const connectionPaused =
     !!view?.paused && !!view.pause_reason?.includes("disconnected");
@@ -1650,8 +1643,8 @@ export default function App() {
             ) : !p.connected ? (
               <span className="connection-dot offline" />
             ) : view?.phase === "lobby" && p.ready ? (
-              <span className="ready-mark">
-                <Icon name="check" size={17} />
+              <span className="ready-mark" aria-label="Ready">
+                <Stamp tone="lime" slam>Ready</Stamp>
               </span>
             ) : null}
             {view?.is_host && p.id !== view.my_id && view.phase === "lobby" && (
@@ -1776,17 +1769,24 @@ export default function App() {
       animate={{ rotateY: 0, opacity: 1, x: 0, rotate: 0, scale: 1 }}
       transition={{ duration: enter ? MOTION.roleReveal : 0, ease: MOTION.easeOut }}
     >
-      {!verdict.escaped && <Rays className={enter ? "verdict-burst" : ""} />}
-      <Avatar player={person(verdict.imposter_id)} large />
-      <p className="verdict-role">IMPOSTER</p>
-      <h1>{verdict.tied && <>It’s a tie.<br /></>}{playerName(verdict.imposter_id)} {verdict.escaped ? "escaped." : "was caught"}</h1>
-      {verdict.tied && <p>No one was accused.</p>}
+      <Type className="verdict-label">The verdict</Type>
+      <div className="verdict-body">
+        <Avatar player={person(verdict.imposter_id)} large />
+        <div>
+          <h1>{verdict.tied && <>It’s a tie.<br /></>}{playerName(verdict.imposter_id)} {verdict.escaped ? "escaped." : "was caught"}</h1>
+          <p className="verdict-role">Imposter</p>
+          {verdict.tied && <p className="verdict-tie">No one was accused.</p>}
+        </div>
+      </div>
+      <Stamp tone="red" slam={enter} delay={0.45} className="verdict-stamp">
+        {verdict.escaped ? "Escaped" : "Guilty"}
+      </Stamp>
     </motion.div>
   );
   const reconnect = () => (
     <>
       <div className="center-stage reconnecting-content">
-        <ConnectionArt broken />
+        <Art name="a4-reconnecting" className="reconnect-art" />
         <h1>Hold that thought.</h1>
         <p>
           Reconnecting to{" "}
@@ -2003,7 +2003,7 @@ export default function App() {
         <>
           <Header title="Reconnect" back={() => nav("web_join")} />
           <div className="center-stage">
-            <ConnectionArt />
+            <Art name="a2-connected" className="reconnect-art" />
             <h1>
               {recovery ? "Check with your host." : "Your place is waiting."}
             </h1>
@@ -2051,69 +2051,86 @@ export default function App() {
     if (page === "help")
       return (
         <>
-          <Header back={() => nav(returnPage, -1)} />
-          <div className="help-heading">
-            <h1>Trust your clues.</h1>
-            <Cards />
-          </div>
-          <p className="muted">How to play IMPOSTER.</p>
-          <ol className="help-list">
-            {[
-              ["Join the same Wi-Fi", "Be in the same room."],
+          <Header title="Field guide" back={() => nav(returnPage, -1)} />
+          <Art name="a12-field-guide" className="guide-art" />
+          <h1>How to play</h1>
+          <div className="field-guide">
+            {(
               [
-                "Check your private role",
-                "Civilians see the word. The imposter gets a hint.",
-              ],
-              [
-                "Give clues. Spot the imposter.",
-                "Classic uses spoken clues. Act It uses silent movements without spelling or mouthing words. Sound Only uses sounds you make yourself, with no words, lyrics, gestures, or recordings. Talk normally when you discuss suspicions.",
-              ],
-              ["Vote in secret", "Everyone votes at the same time."],
-              [
-                "Back your read",
-                "Civilians can optionally bet up to 3 of their own points. Correct: gain the bet plus +1. Wrong: lose the bet. Your balance stays at 0 or above.",
-              ],
-              [
-                "Everyone has a role",
-                "Three players: Imposter, Decoy, Gambler. The Judge joins at four, the Accomplice and Detective at five, and every player after that is another Gambler. Each role scores its own way, and over a session everyone takes their turn at each one.",
-              ],
-              [
-                "Race to the target",
-                "The host chooses 10–30 points. Highest final score wins when someone reaches the target; tied leaders share the win. A new session resets everyone to 0.",
-              ],
-              [
-                "Report or skip",
-                "After each round, report rule-breaking or skip. A majority deducts up to 1 point after the following round, with a minimum balance of 0. Reports clear when a session ends.",
-              ],
-              [
-                "Drink or Dare. Check rankings.",
-                "Keep playing to find a new word.",
-              ],
-            ].map(([title, copy], i) => (
-              <li key={title}>
-                <span className="step-number">{i + 1}</span>
-                <div>
-                  <strong>{title}</strong>
-                  <p>{copy}</p>
-                </div>
-              </li>
+                [
+                  "The game",
+                  "One imposter has a hint, not the word. Clue, argue, vote.",
+                  [
+                    "Join the same Wi-Fi and be in the same room.",
+                    "Check your private role. Civilians see the word. The imposter gets a hint.",
+                    "Give clues. Classic uses spoken clues. Act It uses silent movements without spelling or mouthing words. Sound Only uses sounds you make yourself, with no words, lyrics, gestures, or recordings. Talk normally when you discuss suspicions.",
+                    "Vote in secret. Everyone votes at the same time.",
+                  ],
+                ],
+                [
+                  "The cast",
+                  "Everyone has a role, dealt by history. Each scores its own way.",
+                  [
+                    "Three players: Imposter, Decoy, Gambler. The Judge joins at four, the Accomplice and Detective at five, and every player after that is another Gambler.",
+                    "Over a session everyone takes their turn at each role.",
+                  ],
+                ],
+                [
+                  "Scoring",
+                  "Back your read with your own points. First to the target wins.",
+                  [
+                    "Civilians can optionally bet up to 3 of their own points. Correct: gain the bet plus +1. Wrong: lose the bet. Your balance stays at 0 or above.",
+                    "The host chooses 10–30 points. Highest final score wins when someone reaches the target; tied leaders share the win. A new session resets everyone to 0.",
+                    "After each round, report rule-breaking or skip. A majority deducts up to 1 point after the following round, with a minimum balance of 0. Reports clear when a session ends.",
+                  ],
+                ],
+                [
+                  "Drink or Dare",
+                  "Lose the round, face the sentence.",
+                  [
+                    "Everyone who lost the round chooses Drink or Dare. Non-alcoholic is welcome.",
+                    "Then check the standings and keep playing to find a new word.",
+                  ],
+                ],
+              ] as [string, string, string[]][]
+            ).map(([title, summary, detail], i) => (
+              <details className="guide-entry" key={title}>
+                <summary>
+                  <Type className="guide-no">{String(i + 1).padStart(2, "0")}</Type>
+                  <span>
+                    <strong>{title}</strong>
+                    <small>{summary}</small>
+                  </span>
+                  <Icon name="chevron" size={20} />
+                </summary>
+                <ul>
+                  {detail.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ul>
+              </details>
             ))}
-          </ol>
-          <div className="scoring-note">
-            <Icon name="trophy" />
-            <span>
-              <b>+1</b> correct guess
-              <br />
-              <b>+2</b> imposter escape
-            </span>
           </div>
-          {footer(<Button onClick={() => nav(returnPage, -1)}>Got it</Button>)}
+          <div className="round-settings-toggle guide-sound">
+            <strong>Sound on this phone</strong>
+            <button
+              type="button"
+              className="rule-switch"
+              role="switch"
+              aria-label="Sound"
+              aria-checked={sound}
+              onClick={() => setSound(!sound)}
+            />
+          </div>
+          {footer(<Button kind="outline" onClick={() => nav(returnPage, -1)}>Close</Button>)}
         </>
       );
     if (page === "home" || (!view && !page))
       return (
         <>
           <div className="welcome">
+            <Type className="case-no">Case No. 1.3</Type>
+            <Art name="a1-welcome" className="welcome-cast" />
             <h1 className="wordmark">IMPOSTER</h1>
             <motion.div
               className="welcome-float"
@@ -2128,10 +2145,10 @@ export default function App() {
                 ease: "easeInOut",
               }}
             >
-              <Cards />
+              <CardBacks />
             </motion.div>
             <h2>Someone is bluffing.</h2>
-            <p className="muted">One room. One secret. Trust no one.</p>
+            <Type className="welcome-tag">One room. One secret. Trust no one.</Type>
           </div>
           {footer(
             <>
@@ -2151,6 +2168,7 @@ export default function App() {
         <>
           <Header back={() => nav("home")} />
           <h1>Make it your party</h1>
+          <p className="muted">You’ll host from this phone.</p>
           <form
             className="fill-form"
             onSubmit={(e) => {
@@ -2159,8 +2177,11 @@ export default function App() {
               nav("host_setup");
             }}
           >
+            <div className="case-form">
+            <Stamp>New case</Stamp>
+            <Type>Case intake · Host</Type>
             <label>
-              Your name
+              <Type>Your name</Type>
               <input
                 autoComplete="nickname"
                 required
@@ -2171,7 +2192,7 @@ export default function App() {
               />
             </label>
             <label>
-              Party name
+              <Type>Party name</Type>
               <input
                 required
                 maxLength={28}
@@ -2187,6 +2208,7 @@ export default function App() {
             >
               <Icon name="wifi" />
               <div>
+                <Type>Network</Type>
                 <strong>
                   {status?.wifi
                     ? wifi || "Wi-Fi connected"
@@ -2224,6 +2246,7 @@ export default function App() {
                 )}
               </label>
             </ExpandSection>
+            </div>
             {footer(
               <Button
                 type="submit"
@@ -2249,7 +2272,7 @@ export default function App() {
             <br />
             connected
           </h1>
-          <ConnectionArt />
+          <Art name="a2-connected" className="setup-art" />
           <p className="setup-copy">
             Allow background usage so your party stays connected.
           </p>
@@ -2335,7 +2358,7 @@ export default function App() {
             {!scanning && (
               <div className="scan-idle">
                 <Icon name="qr" size={90} />
-                <p>Your host has the invitation.</p>
+                <Type>Point at the host’s invitation</Type>
               </div>
             )}
           </div>
@@ -2412,7 +2435,8 @@ export default function App() {
             Same Wi-Fi.
           </h1>
           <p className="muted">Connect to the host’s router before joining.</p>
-          <div className="setting-row spacious">
+          <Art name="a3-wifi" className="setup-art" />
+          <div className="setting-row">
             <Icon name="wifi" size={30} />
             <div>
               <strong>{label}</strong>
@@ -2488,9 +2512,10 @@ export default function App() {
             <br />
             we call you?
           </h1>
-          <div className="identity-avatar">
-            <Avatar player={{ id: "me", name: name || "?" }} large />
-          </div>
+          <BookingPhoto
+            initials={initials(name || "?")}
+            label={`${(name.trim() || "?").toUpperCase()} · ${(details?.name || "").toUpperCase()}`}
+          />
           <form
             className="fill-form"
             onSubmit={(e) => {
@@ -2514,8 +2539,8 @@ export default function App() {
               });
             }}
           >
-            <label>
-              Your name
+            <label className="booking-name">
+              <Type>Your name</Type>
               <input
                 required
                 maxLength={28}
@@ -2694,7 +2719,7 @@ export default function App() {
                         </SelectionCheck>
                       </span>
                     )}
-                    <TopicArt name={t.id === "health" ? "education" : t.icon} />
+                    <TopicEmblem id={t.id} />
                     <strong>{t.name}</strong>
                   </motion.button>
                 ))}
@@ -2738,8 +2763,9 @@ export default function App() {
             }
           />
           <div className="center-stage">
-            <ConnectionArt
-              broken={!!view.pause_reason?.includes("disconnect")}
+            <Art
+              name={view.pause_reason?.includes("disconnect") ? "a4-reconnecting" : "a2-connected"}
+              className="reconnect-art"
             />
             <h1>A little pause.</h1>
             <p className="muted">{view.pause_reason}</p>
@@ -2828,6 +2854,12 @@ export default function App() {
           />
           <div className="lobby-heading">
             <div>
+              <Type>
+                Case ·{" "}
+                {view.is_host
+                  ? `Cast of ${activePlayers.length}`
+                  : "The suspects"}
+              </Type>
               <h1>{view.name}</h1>
               <p className="network-line">
                 <Icon name="wifi" size={18} />
@@ -3008,7 +3040,10 @@ export default function App() {
           {view.role_ready && !reviewingCard ? (
             <>
               <div className="center-stage">
-                <Cards />
+                <div className="sealed-back">
+                  <CardBacks count={1} />
+                  <Stamp tone="lime" slam delay={0.2}>Sealed</Stamp>
+                </div>
                 <h1>Your secret is safe.</h1>
                 <p className="muted">
                   {view.ready_count} of {activePlayers.length} players ready
@@ -3068,10 +3103,15 @@ export default function App() {
                 }}
               >
                 <div className="role-front">
-                  <Cards />
-                  <Icon name="lock" size={34} />
+                  <CardBacks count={1} />
+                  <Stamp className="role-front-stamp">Top secret</Stamp>
                 </div>
                 <div className="role-back" aria-hidden={!revealed}>
+                  {revealed && view.private_role && (
+                    <Stamp className="role-back-stamp">
+                      {view.private_role.imposter ? "Forged" : "Eyes only"}
+                    </Stamp>
+                  )}
                   {revealed && view.private_role && (
                     !view.private_role.imposter && view.private_role.definition ? (
                       <RoleMeaning
@@ -3267,6 +3307,7 @@ export default function App() {
           {view.my_vote ? (
             <>
               <div className="center-stage locked">
+                <Type className="evidence-label">Evidence submitted</Type>
                 <LockedVoteArt />
                 <h1>Your vote is locked</h1>
                 {crewBallot && myPicks ? (
@@ -3373,7 +3414,7 @@ export default function App() {
                   />
                 </div>
               ) : (
-              <div className="ballot-list">
+              <div className="ballot-list lineup">
                 {choices.map((p) => (
                   <motion.button
                     whileTap={
@@ -3458,7 +3499,10 @@ export default function App() {
                         disabled={
                           busy || view.paused || stake > view.betting.max_stake
                         }
-                        onClick={() => setBet(stake)}
+                        onClick={() => {
+                          playSound("chip");
+                          setBet(stake);
+                        }}
                         whileTap={reduced ? undefined : { scale: 0.975 }}
                         transition={MOTION.press}
                       >
@@ -3496,8 +3540,8 @@ export default function App() {
                   <Button
                     disabled={busy || view.paused || !ready}
                     onClick={() =>
-                      execute(() =>
-                        act(
+                      execute(async () => {
+                        await act(
                           "vote",
                           {
                             player_id: crewBallot ? accomplicePick : vote,
@@ -3506,8 +3550,9 @@ export default function App() {
                             ...(detective && { accomplice_id: accomplicePick }),
                           },
                           view.round_id,
-                        ),
-                      )
+                        );
+                        playSound("seal");
+                      })
                     }
                   >
                     {bet > 0 && view.betting.eligible
@@ -3532,14 +3577,17 @@ export default function App() {
           {verdict && mine ? (
             // Everyone looks at their own result first; the room's opens later.
             <div className="personal-stage center-stage" aria-live="polite">
-              <motion.span
-                className={`result-disc ${goodOutcome(mine) ? "win" : ""}`}
-                initial={enter ? { scale: 0.6, opacity: 0 } : false}
+              <motion.div
+                className={`outcome-art ${goodOutcome(mine) ? "win" : ""}`}
+                initial={enter ? { scale: 0.8, opacity: 0 } : false}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={MOTION.select}
               >
-                <Icon name={goodOutcome(mine) ? "check" : "x"} size={42} />
-              </motion.span>
+                <Art name={`a8-${mine}`} />
+                <Stamp tone={goodOutcome(mine) ? "lime" : "red"} slam={enter} delay={0.35}>
+                  {OUTCOME_STAMP[mine]}
+                </Stamp>
+              </motion.div>
               <motion.h1
                 initial={enter ? { opacity: 0, y: 12 } : false}
                 animate={{ opacity: 1, y: 0 }}
@@ -3614,10 +3662,14 @@ export default function App() {
               variants={{ shown: { transition: { staggerChildren: 0.09 } } }}
             >
               <motion.div variants={recapItem} className="personal-result-head">
-                <span className={`result-disc ${goodOutcome(mine) ? "win" : ""}`}>
-                  <Icon name={goodOutcome(mine) ? "check" : "x"} size={42} />
-                </span>
-                {myRole && <RoleBadge role={myRole} />}
+                <div className="result-stamp-row">
+                  {mine && (
+                    <Stamp tone={goodOutcome(mine) ? "lime" : "red"}>
+                      {OUTCOME_STAMP[mine]}
+                    </Stamp>
+                  )}
+                  {myRole && <RoleBadge role={myRole} />}
+                </div>
                 <h1>{outcomeHeadline(mine, myRole, cast?.bait_decoy)}</h1>
                 <div className={`round-points ${net > 0 ? "lime" : net < 0 ? "terra" : "muted"}`}>
                   {net === 0 ? "0" : signed(net)} {Math.abs(net) === 1 ? "point" : "points"}
@@ -3844,9 +3896,9 @@ export default function App() {
             right={hostHeaderActions}
             notice={connectionStatus}
           />
-          <p className="muted center punishment-counter">
-            Turn {p.turn} of {p.total}
-          </p>
+          <Type className="center punishment-counter">
+            Sentencing · Turn {p.turn} of {p.total}
+          </Type>
           {!p.choice ? (
             <>
               <h1 className="center">
@@ -3868,23 +3920,25 @@ export default function App() {
               {footer(
                 mine ? (
                   <>
-                    <Button
-                      className="punishment-option"
-                      disabled={busy}
-                      onClick={() => send("choice", "drink")}
-                    >
-                      <Icon name="glass" size={34} />
-                      Drink
-                    </Button>
-                    <Button
-                      kind="outline"
-                      className="punishment-option"
-                      disabled={busy}
-                      onClick={() => send("choice", "dare")}
-                    >
-                      <Icon name="cards" size={34} />
-                      Dare
-                    </Button>
+                    <div className="punishment-tiles">
+                      <Button
+                        className="punishment-option"
+                        disabled={busy}
+                        onClick={() => send("choice", "drink")}
+                      >
+                        <Art name="a9-drink" />
+                        Drink
+                      </Button>
+                      <Button
+                        kind="outline"
+                        className="punishment-option"
+                        disabled={busy}
+                        onClick={() => send("choice", "dare")}
+                      >
+                        <Art name="a10-dare" />
+                        Dare
+                      </Button>
+                    </div>
                     <Button kind="text" disabled={busy} onClick={skip}>
                       Skip
                     </Button>
@@ -3914,15 +3968,13 @@ export default function App() {
                 {!giverMissing && <span> a dare.</span>}
               </h1>
               <div className="dare-pair">
-                <div>
+                <Mugshot caption="Dare giver">
                   <Avatar player={person(p.giver_id)} large />
-                  <span>Dare giver</span>
-                </div>
+                </Mugshot>
                 <DareArrow />
-                <div>
+                <Mugshot caption={mine ? "Your turn" : "Their turn"}>
                   <Avatar player={recipient} large mine={mine} />
-                  <span>{mine ? "Your turn" : "Their turn"}</span>
-                </div>
+                </Mugshot>
               </div>
               {!giverMissing && (
                 <p className="center">
@@ -3963,7 +4015,7 @@ export default function App() {
           ) : (
             <>
               <h1 className="center">{recipient?.name} chose Drink.</h1>
-              <CoffeeCup />
+              <Art name="a9-drink" className="drink-art" />
               <h2 className="center">Your drink, your choice.</h2>
               <p className="muted center">Non-alcoholic is welcome.</p>
               {footer(
@@ -4020,8 +4072,14 @@ export default function App() {
           )}
           {complete && (
             <div className="session-victory" aria-hidden="true">
-              <Icon name="trophy" size={76} />
+              <Art name="a11-trophy" />
+              <Stamp slam delay={0.5}>Case closed</Stamp>
             </div>
+          )}
+          {complete && (
+            <Type className="center victory-line">
+              First to {view.score_session.target} · Session {view.score_session.number}
+            </Type>
           )}
           <div className="rankings-heading">
             <h1>
@@ -4365,8 +4423,9 @@ export default function App() {
           </MotionSheet>
         )}
         {reportOpen && view?.phase === "results" && view.reporting && (
-          <MotionSheet key="report-round" labelledBy="report-round-title" busy={busy} onDismiss={() => setReportOpen(false)}>
+          <MotionSheet key="report-round" className="complaint-sheet" labelledBy="report-round-title" busy={busy} onDismiss={() => setReportOpen(false)}>
             <button className="sheet-close icon-button" aria-label="Close report" disabled={busy} onClick={() => setReportOpen(false)}><Icon name="x" /></button>
+            <Type>Complaint · Round {view.round_id}</Type>
             <h2 id="report-round-title">Report a rule violation</h2>
             <p className="muted">Select one or more players.</p>
             <div className="report-sheet-list" role="group" aria-label="Players to report">
@@ -4376,6 +4435,7 @@ export default function App() {
                   <span className={`report-sheet-check ${checked ? "checked" : ""}`}>{checked && <Icon name="check" size={16} />}</span>
                   <Avatar player={person(id)} />
                   <strong>{playerName(id)}</strong>
+                  {checked && <Stamp slam className="reported-stamp">Reported</Stamp>}
                 </button>;
               })}
             </div>

@@ -395,7 +395,7 @@ async function checkMotion(page) {
     .click();
   await page.waitForTimeout(450);
   await page.getByRole("button", { name: "How to play", exact: true }).click();
-  await page.getByRole("button", { name: "Got it", exact: true }).click();
+  await page.getByRole("button", { name: "Close", exact: true }).click();
   await page
     .getByRole("button", { name: "Reveal my role", exact: true })
     .waitFor();

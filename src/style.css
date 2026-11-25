@@ -3917,3 +3917,448 @@ strong .player-connection-label {
 .role-stage-goal { margin: 10px 0 4px; font-size: 21px; font-weight: 750; }
 .role-stage-power { margin: 0; max-width: 320px; font-size: 16px; line-height: 1.4; color: var(--muted); }
 .role-stage { flex: 1; align-content: center; }
+
+/* ==========================================================================
+   Noir case-file theme (design/app-revamp-v1). A layer on the approved
+   system: typewriter labels, stamps, kraft paper, mugshots, engraved art.
+   ========================================================================== */
+:root {
+  --kraft: #e8d9bc;
+  --kraft-dk: #cdb98f;
+  --ink-dk: #1d1a14;
+  --stamp: #c4503a;
+  --file: #2a2620;
+  --file-line: #4a4236;
+}
+.type {
+  font-family: var(--font-typewriter);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--kraft-dk);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+.stamp {
+  display: inline-block;
+  font-family: var(--font-typewriter);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  border: 2.5px solid currentColor;
+  border-radius: 6px;
+  padding: 3px 10px 2px;
+  rotate: -6deg;
+  opacity: 0.92;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.stamp.red { color: var(--stamp); }
+.stamp.lime { color: var(--lime); }
+.stamp.ink { color: #3b3326; }
+.app-art {
+  display: block;
+  max-width: 100%;
+  object-fit: contain;
+  user-select: none;
+}
+
+/* engraved card backs, fanned */
+.card-backs {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 150px;
+}
+.card-backs img {
+  width: 92px;
+  aspect-ratio: 5 / 7;
+  border-radius: 9px;
+  box-shadow: 0 10px 24px #0008;
+  rotate: var(--angle);
+  margin: 0 -18px;
+  user-select: none;
+}
+.card-backs.n3 img:nth-child(2) { translate: 0 -8px; z-index: 1; }
+.card-backs.n1 img { width: 150px; margin: 0; rotate: -4deg; }
+
+/* kraft intake form */
+.case-form {
+  position: relative;
+  background: var(--kraft);
+  color: var(--ink-dk);
+  border-radius: 10px;
+  padding: 16px 18px 18px;
+  box-shadow: 0 14px 30px #0006;
+  margin-top: 18px;
+}
+.case-form > .stamp { position: absolute; right: 14px; top: -12px; font-size: 13px; background: #e8d9bce6; rotate: 6deg; }
+.case-form .type { color: #5b4a2c; }
+.case-form label { color: #5b4a2c; }
+.case-form label > .type { display: block; }
+.case-form input,
+.case-form textarea {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--ink-dk);
+  border-radius: 0;
+  color: var(--ink-dk);
+  font-size: 20px;
+  font-weight: 700;
+  padding: 6px 0 5px;
+  min-height: 44px;
+}
+.case-form input::placeholder { color: #1d1a1459; font-weight: 600; }
+.case-form input:focus-visible { outline: none; border-bottom-color: #6b5a3a; box-shadow: 0 2px 0 #6b5a3a; }
+.case-form .setting-row {
+  background: transparent;
+  border: 0;
+  border-top: 1px dashed #1d1a1440;
+  border-radius: 0;
+  padding: 14px 0 0;
+  min-height: 0;
+  color: var(--ink-dk);
+}
+.case-form .setting-row .lime { color: #2f6b2f; font-weight: 700; }
+.case-form .setting-row .terra { color: #a8402e; font-weight: 700; }
+.case-form .wifi-label small { color: #5b4a2c; }
+.case-form .inline-link { color: var(--ink-dk); }
+
+/* booking photo (choose your name) */
+.booking {
+  position: relative;
+  width: 230px;
+  height: 250px;
+  margin: 12px auto 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: repeating-linear-gradient(transparent 0 25px, #e8d9bc29 25px 26px), #1d221e;
+  border: 1.5px solid #4a544c;
+}
+.booking-marks {
+  position: absolute;
+  right: 8px;
+  top: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-typewriter);
+  font-size: 10px;
+  color: #e8d9bc73;
+}
+.booking-face {
+  position: absolute;
+  left: 50%;
+  bottom: -20px;
+  translate: -50% 0;
+  width: 150px;
+  height: 150px;
+  border-radius: 50% 50% 30px 30px;
+  background: var(--muted);
+  color: #141916;
+  display: grid;
+  place-items: center;
+  padding-bottom: 20px;
+  font-size: 54px;
+  font-weight: 800;
+}
+.nameplate {
+  position: absolute;
+  left: 50%;
+  top: 84px;
+  translate: -50% 0;
+  rotate: -2deg;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: #141916;
+  color: var(--kraft);
+  border: 2px solid var(--kraft-dk);
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+/* mugshots (dare giver) */
+.mugshot { margin: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.mugshot-frame {
+  width: 112px;
+  height: 128px;
+  border: 2px solid var(--kraft-dk);
+  background: repeating-linear-gradient(transparent 0 15px, #e8d9bc33 15px 16px), #d9c9a6;
+  display: grid;
+  place-items: end center;
+  overflow: hidden;
+  border-radius: 3px;
+}
+.mugshot-frame .avatar { translate: 0 18px; width: 96px; height: 96px; font-size: 34px; }
+.mugshot figcaption {
+  border: 1.5px solid var(--kraft-dk);
+  padding: 3px 10px;
+  color: var(--kraft);
+  font-size: 11px;
+}
+
+/* front-page clipping (results verdict) */
+.clipping {
+  position: relative;
+  background: var(--kraft);
+  color: var(--ink-dk);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 14px 30px #0006;
+}
+.clipping .type { color: #5b4a2c; }
+
+/* outcome chips as small stamps */
+.res-stamp {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.res-stamp.ok { background: #2f3a18; color: var(--lime); }
+.res-stamp.bad { background: #d9867229; color: var(--terra); }
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp { transition: none; }
+}
+
+/* 01 welcome */
+.welcome { position: relative; }
+.welcome .case-no { position: absolute; right: 0; top: 0; font-size: 11px; }
+.welcome-cast { width: 100%; max-width: 350px; height: min(30dvh, 262px); margin: 18px auto 0; }
+.welcome .wordmark { position: relative; margin-top: -34px; line-height: 0.95; text-shadow: 0 6px 24px #0009; }
+.welcome .card-backs { height: min(17dvh, 132px); margin-top: 6px; }
+.welcome .card-backs img { width: min(22vw, 86px); }
+.welcome h2 { margin-top: 10px; font-size: clamp(24px, 7vw, 30px); }
+.welcome .welcome-tag { display: block; margin-top: 6px; font-size: 13px; white-space: normal; }
+
+/* 02 create: the intake form groups the fields */
+.screen-create .fill-form { margin-top: 0; gap: 0; }
+.case-form { display: flex; flex-direction: column; gap: 14px; }
+.case-form label { gap: 2px; font-size: 12px; }
+.case-form .setting-row strong { font-size: 17px; }
+.case-form .setting-row span { font-size: 15px; }
+.case-form .setting-row > div > .type { color: #5b4a2c; font-size: 11px; }
+.screen-create > p.muted { margin-top: 6px; font-size: 17px; }
+
+/* 03 battery, 07 wifi: engraved scene in place of the line art */
+.setup-art { width: 100%; height: min(26dvh, 220px); margin: 16px 0 8px; }
+.screen-wifi .setup-art { height: min(24dvh, 200px); }
+.screen-host_setup .setup-copy { margin-top: 6px; font-size: 19px; }
+
+/* 06 scan */
+.scan-idle .type { margin-top: 14px; font-size: 12px; }
+
+/* 08 identity: booking photo and an underlined name field */
+.screen-identity .fill-form { margin-top: 18px; gap: 18px; }
+.booking-name input {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid var(--kraft-dk);
+  border-radius: 0;
+  padding: 6px 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+.booking-name input:focus-visible { outline: none; border-bottom-color: var(--lime); }
+.screen-identity h1 { font-size: 32px; }
+
+/* Card backs take whatever height each screen gives the old card art. */
+.card-backs.cards-art { display: flex; height: auto; }
+.card-backs.cards-art img { height: 80%; width: auto; max-width: 38%; aspect-ratio: 5 / 7; margin: 0 -7%; }
+.card-backs.cards-art:is(.discussion-art, .help-heading *, .clue-discussion-heading *) img { border-radius: 6px; }
+.web-join-heading .card-backs.cards-art,
+.role-front .card-backs.cards-art,
+.center-stage .card-backs.cards-art,
+.discussion-art.card-backs,
+.help-heading .card-backs.cards-art,
+.boot .card-backs.cards-art { transform: none; }
+.web-join-heading .card-backs.cards-art { height: min(18vh, 140px); }
+.role-front .card-backs.cards-art { height: 100%; }
+.center-stage .card-backs.cards-art { height: 260px; }
+.discussion-art.card-backs { height: 135px; }
+.help-heading .card-backs.cards-art { height: 110px; }
+.boot .card-backs.cards-art { height: 190px; }
+.screen-discussion .clue-discussion-heading .discussion-art.card-backs { height: 78px; }
+.rule-shuffle .shuffle-backs { margin: 24px auto; }
+.rule-shuffle .shuffle-backs .card-backs { height: 260px; }
+.rule-shuffle .shuffle-backs .card-backs img { width: 140px; margin: 0 -40px; }
+
+/* 04/09 lobby: case board with READY stamps */
+.ready-mark { width: auto; height: auto; background: none; border-radius: 0; color: inherit; }
+.ready-mark .stamp { font-size: 10px; padding: 1px 6px; rotate: -4deg; }
+.lobby-heading .type { display: block; margin-bottom: 2px; }
+.case-form .inline-setting > div > .type { flex-basis: 100%; margin-bottom: -6px; }
+.case-form .inline-setting > div > .type:before { content: none; }
+
+/* 10/11 rule draw and reveal */
+.rule-shuffle .shuffle-note { display: block; text-align: center; margin-top: 8px; }
+.round-rule-card { position: relative; background: var(--ink); }
+.round-rule-card .rule-card-label { color: #6b5a3a; font-size: 12px; }
+.round-rule-card .rule-card-stamp { position: absolute; right: 14px; top: 12px; font-size: 11px; rotate: 6deg; }
+.rule-art-frame {
+  width: 100%;
+  margin: 8px 0 4px;
+  border-radius: 12px;
+  background: repeating-linear-gradient(45deg, #1d1a140d 0 7px, transparent 7px 14px);
+  display: grid;
+  place-items: center;
+  padding: 4px;
+}
+.rule-art { object-fit: contain; width: min(92%, 300px); }
+.round-rule-card h2 { font-family: Anton, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.5px; }
+.round-settings-rules .rule-art { width: 44px; height: 32px; }
+.round-settings-current .rule-art { height: 90px; }
+
+/* 12/13 topic emblems */
+img.topic-emblem { object-fit: contain; }
+.chosen-topic-card { position: relative; }
+.topic-chosen-stamp { position: absolute; left: 14px; top: 14px; font-size: 13px; rotate: -8deg; }
+.topic-emblem-frame { display: grid; place-items: center; border: 1.5px solid #1d1a1426; border-radius: 12px; padding: 8px; background: #1d1a140a; }
+.chosen-topic-card h2 { font-family: Anton, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.5px; }
+.topic-chosen-heading .type { display: block; text-align: center; }
+
+/* 16 role poster */
+.role-stage .role-stage-stamp { position: absolute; right: 6px; top: 18px; font-size: 13px; rotate: 8deg; z-index: 2; }
+.role-stage-side.type { font-weight: 400; letter-spacing: 0.08em; }
+.role-stage.civilian .role-stage-side.type { color: var(--lime); }
+
+/* 17 concealed card, 18/19 word and hint, 20 waiting */
+.role-front .card-backs { height: 100%; }
+.role-front .card-backs img { width: auto; height: 92%; max-width: 72%; rotate: 0deg; border-radius: 14px; }
+.role-front-stamp { position: absolute; left: 14%; bottom: 22%; font-size: 15px; rotate: -14deg; background: #141916cc; }
+.role-back { position: relative; }
+.role-back-stamp { position: absolute; right: 14px; top: 12px; font-size: 11px; rotate: 6deg; }
+.role-back > p:first-of-type,
+.role-meaning-face > p:first-child {
+  font-family: var(--font-typewriter);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 13px;
+  color: #6b5a3a;
+  margin-top: 34px;
+}
+.role-back .paw-stamp { display: none; }
+.role-meaning-toggle { font-family: var(--font-typewriter); text-transform: uppercase; letter-spacing: 0.04em; font-size: 12px; }
+.sealed-back { position: relative; display: grid; place-items: center; }
+.sealed-back .card-backs { height: 250px; }
+.sealed-back .card-backs img { width: 170px; rotate: 0deg; border-radius: 14px; }
+.sealed-back .stamp { position: absolute; right: 18%; top: 14%; font-size: 15px; rotate: 12deg; background: #141916cc; }
+
+/* 28 ballot line-up, 29 vote locked */
+.ballot-list.lineup {
+  border-radius: 14px;
+  padding: 6px 8px;
+  background: repeating-linear-gradient(to bottom, transparent 0 19px, #e8d9bc17 19px 20px), #181c19;
+}
+.center-stage.locked .evidence-label { display: block; margin-bottom: 10px; }
+.center-stage.locked .envelope { width: min(64vw, 250px); height: auto; }
+.center-stage.locked .envelope img { height: auto; }
+
+/* 30 personal beat: engraved outcome art with a stamp */
+.outcome-art { position: relative; display: grid; place-items: center; margin-bottom: 4px; }
+.outcome-art .app-art { width: min(58vw, 230px); aspect-ratio: 1; border-radius: 50%; filter: drop-shadow(0 16px 30px #0009); }
+.outcome-art .stamp { position: absolute; bottom: 4%; font-size: clamp(22px, 7vw, 30px); padding: 4px 14px 2px; background: #141916d9; rotate: -8deg; border-width: 3px; }
+.personal-stage h1 { margin-top: 8px; }
+/* 31 your result */
+.result-stamp-row { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.result-stamp-row .stamp { font-size: 18px; }
+/* 32 the verdict as a front-page clipping */
+.verdict-card {
+  justify-items: stretch;
+  text-align: left;
+  gap: 6px;
+  padding: 14px 16px 18px;
+  border-radius: 10px;
+  background: var(--kraft);
+  color: var(--ink-dk);
+  box-shadow: 0 14px 30px #0006;
+}
+.verdict-card.escaped { box-shadow: 0 14px 30px #0006; }
+.verdict-card .verdict-label { color: #5b4a2c; font-size: 11px; }
+.verdict-body { display: flex; align-items: center; gap: 14px; border-top: 3px double var(--ink-dk); padding-top: 10px; }
+.verdict-body .avatar.large { width: 76px; height: 76px; font-size: 26px; border-radius: 4px; flex: none; }
+.verdict-card h1 { font-family: Anton, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.3px; font-size: clamp(30px, 9vw, 38px); line-height: 1; }
+.verdict-card .verdict-role { color: #6b5a3a; font-weight: 600; letter-spacing: 0; margin-top: 4px; font-size: 14px; }
+.verdict-card .verdict-stamp { position: absolute; right: 12px; bottom: 10px; font-size: 13px; rotate: -10deg; }
+
+/* 35 Drink or Dare: two illustrated tiles */
+.punishment-counter { display: block; margin-top: 2px; }
+.punishment-tiles { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.punishment-tiles .punishment-option {
+  min-height: 0;
+  height: auto;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 10px 14px;
+  border-radius: 16px;
+  font-family: Anton, sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 30px;
+}
+.punishment-tiles .punishment-option.primary { background: #232b20; color: var(--ink); border: 1.5px solid var(--lime); }
+.punishment-tiles .punishment-option .app-art { width: 100%; height: min(24dvh, 190px); }
+/* 36 dare giver: mugshots */
+.dare-pair .mugshot-frame .avatar { width: 96px; height: 96px; font-size: 34px; }
+.dare-pair .mugshot-frame { width: 120px; height: 140px; }
+.drink-art { height: min(30dvh, 250px); margin: 18px auto; }
+/* 38 session complete */
+.session-victory { position: relative; display: grid; place-items: center; }
+.session-victory .app-art { width: min(52vw, 210px); }
+.session-victory .stamp { position: absolute; bottom: 8%; font-size: 17px; background: #141916d9; rotate: -8deg; }
+.victory-line { display: block; margin-bottom: 2px; }
+.screen-session_complete .rankings-heading h1 { font-family: Anton, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: 0.5px; font-size: clamp(40px, 13vw, 58px); line-height: 1; }
+
+/* 34 report: a kraft complaint form */
+.bottom-sheet.complaint-sheet { background: var(--kraft); color: var(--ink-dk); }
+.complaint-sheet .type { color: #5b4a2c; display: block; }
+.complaint-sheet .muted { color: #5b4a2c; }
+.complaint-sheet .sheet-close { color: var(--ink-dk); }
+.complaint-sheet .report-sheet-row { color: var(--ink-dk); border-color: #1d1a1426; background: transparent; }
+.complaint-sheet .report-sheet-check { border-color: var(--ink-dk); }
+.complaint-sheet .report-sheet-check.checked { background: transparent; color: var(--stamp); border-color: var(--stamp); }
+/* 40 reconnecting */
+.reconnect-art { width: min(80vw, 300px); height: min(26dvh, 210px); margin: 0 auto 8px; }
+
+/* 41 how to play: the field guide */
+.guide-art { width: 100%; height: min(22dvh, 170px); margin: 0 0 12px; }
+.screen-help h1 { font-size: 30px; }
+.field-guide { margin-top: 8px; border-top: 1px solid var(--line); }
+.guide-entry { border-bottom: 1px solid var(--line); }
+.guide-entry summary {
+  display: grid;
+  grid-template-columns: 26px 1fr 20px;
+  gap: 10px;
+  align-items: start;
+  padding: 14px 0;
+  cursor: pointer;
+  list-style: none;
+  min-height: 48px;
+}
+.guide-entry summary::-webkit-details-marker { display: none; }
+.guide-entry summary strong { display: block; font-size: 17px; }
+.guide-entry summary small { display: block; color: var(--muted); font-size: 14px; line-height: 1.4; margin-top: 2px; }
+.guide-entry summary > svg { color: var(--muted); margin-top: 3px; transition: rotate 0.2s var(--ease, ease); }
+.guide-entry[open] summary > svg { rotate: 90deg; }
+.guide-entry .guide-no { margin-top: 3px; }
+.guide-entry ul { margin: -4px 0 14px 36px; padding: 0 0 0 16px; color: var(--ink); font-size: 15px; line-height: 1.5; display: grid; gap: 6px; }
+/* With the paw gone, the word sits in the middle of the card. */
+.role-back { justify-content: center; padding-top: 40px; }
+.role-back > p:first-of-type, .role-meaning-face > p:first-child { margin-top: 0; }
+.complaint-sheet .reported-stamp { margin-left: auto; font-size: 10px; padding: 1px 6px; }
+.verdict-card .verdict-tie { font-size: 14px; color: #5b4a2c; margin-top: 2px; }
+/* A slammed stamp starts at 3x: keep that moment inside its own box so the page never scrolls sideways. */
+.player-row, .session-victory, .outcome-art, .role-stage, .sealed-back, .chosen-topic-card,
+.verdict-card, .report-sheet-row, .result-stamp-row, .round-rule-card { overflow-x: clip; }
