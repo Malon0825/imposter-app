@@ -31,9 +31,9 @@ All three are approved. The v11 sheet is the source of truth for rules. Where a 
 | 0.2 | Commit `design/app-revamp-v1`, `design/power-cards-v1`, `design/sound-v1` and `Power Card Review v11.xlsx` (or a CSV export of its Card review sheet) to the branch | They're untracked today |
 | 0.3 | WebP pipeline: `scripts/prepare-art.mjs` turns `design/*/art/*.png` into WebP at the sizes actually shown (cards 2× of 300px and 104px; app art 2× its slot). Output goes to `public/art/cards/` and `public/art/app/` | About 94 MB of PNG today; browser guests load everything from the host over Wi-Fi. Target: under 6 MB of art in `dist` |
 | 0.4 | Add `@fontsource/special-elite` | Typewriter labels, stamps, the newspaper |
-| 0.5 | **Decision: Filipino.** The app is English-only today. Recommended: a per-phone **Card language: English / Filipino** switch in My Cards. It changes card faces and the power-card section of How to play only; the rest of the app stays English | The v11 sheet carries Filipino for every card |
+| 0.5 | **Filipino (decided):** only each card's ability text is translated. A per-phone **Card text: English / Filipino** switch in My Cards changes the effect line on card faces, card detail and the confirm sheet. Card names, game words and the rest of the app, How to play included, stay English | Everyone reads English; a drunk player reads their mother tongue faster |
 
-These are not blocking. Astra is still delivering five Rare illustrations and the Filipino review (`ASTRA-V11.md`). Until they land, cards fall back to their line glyphs and the v11 Filipino text.
+Astra has delivered all five Rare illustrations. The Filipino review (`FILIPINO-REVIEW-V11.md`) is in progress and gets folded into `cards.json` in M6.
 
 ## 3. Card catalog: one source
 
@@ -49,7 +49,7 @@ Rust loads it with `include_str!`, and the UI imports the same file through Vite
 - every active card has six ratings;
 - a "Can't" rating appears exactly for the roles listed in `cant_play`.
 
-Generate the JSON once from the v11 workbook with a small script, `scripts/cards-from-sheet.py`. Rerun it when Astra's Filipino fixes come back.
+Generate the JSON once from the v11 workbook with a small script, `scripts/cards-from-sheet.py`. Rerun it after Astra's Filipino fixes are applied to the sheet.
 
 ## 4. Core: `party-core`
 
@@ -187,7 +187,7 @@ Build in this order, and finish each one's checks before starting the next. The 
 | M3 | Game integration: phases, actions, views, gameplay version bump | Rust round tests for draw → play → vote → last_word → results, the privacy test, and reconnect mid-draw (same hand, same deadline) |
 | M4 | Card UI: draw, hand, detail, confirm, private panels, ballot slot | New `scripts/power-cards-smoke.js` plays 6 phones through 3 rounds with each window type |
 | M5 | Announcements, stamps, results replay, standings, Story | Captures of every v11 stamp; a smoke covering Objection vs a Golden-looking Bluff (SUSTAINED) and Pocket Veto vs Golden Ballot (OVERRULED) |
-| M6 | Content polish: Astra's Rare art and Filipino fixes into `cards.json`, the Card language switch | The catalog test passes, and Filipino card faces fit two lines at 360px |
+| M6 | Content polish: Astra's Filipino fixes into `cards.json`, the Card text switch | The catalog test passes, and Filipino card faces fit two lines at 360px |
 | M7 | Release 1.3.0 | §9 |
 
 ## 7. Verification
@@ -223,5 +223,4 @@ Follow the global deploy rule:
 
 ## 10. Open decisions
 
-1. **Filipino:** the per-phone Card language switch (recommended), English only, or the whole app bilingual (out of scope for 1.3).
-2. **Power cards default:** off until the host turns it on, then remembered on that phone like random rules (recommended), or on whenever 6+ players are in the lobby.
+1. **Power cards default:** off until the host turns it on, then remembered on that phone like random rules (recommended), or on whenever 6+ players are in the lobby.

@@ -4,6 +4,8 @@
   background: #0e120f;
   font-synthesis: none;
   font-weight: 450;
+  /* Noir theme: labels, stamps and the newspaper only; body text stays DM Sans. */
+  --font-typewriter: "Special Elite", "Courier New", monospace;
   --bg: #141916;
   --surface: #1c211e;
   --ink: #f4f1e8;
