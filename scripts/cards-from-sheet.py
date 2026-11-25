@@ -111,7 +111,8 @@ def main() -> int:
     args = parser.parse_args()
     text = json.dumps(build(), ensure_ascii=False, indent=2) + "\n"
     if args.check:
-        current = OUT.read_text(encoding="utf-8") if OUT.exists() else ""
+        # Compare text, not bytes: Git may check the file out with CRLF.
+        current = OUT.read_text(encoding="utf-8").replace(chr(13) + chr(10), chr(10)) if OUT.exists() else ""
         if current != text:
             print(f"{OUT.relative_to(ROOT)} is out of date: run scripts/cards-from-sheet.py")
             return 1

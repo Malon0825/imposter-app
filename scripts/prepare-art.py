@@ -5,7 +5,7 @@ WebP at twice the size each piece is shown on a phone, so browser guests,
 who load everything from the host over Wi-Fi, download a few MB, not ~90.
 
     python scripts/prepare-art.py           # write what's missing or stale
-    python scripts/prepare-art.py --check   # fail if anything is missing, stale or over budget
+    python scripts/prepare-art.py --check   # fail if anything is missing, orphaned or over budget
 """
 from __future__ import annotations
 
@@ -93,7 +93,9 @@ def main() -> int:
     todo = [job for job in jobs if stale(job[0], job[1])]
     extra = [p for d in (CARD_OUT, APP_OUT) if d.exists() for p in d.glob("*.webp") if p not in wanted]
     if args.check:
-        problems = [f"missing or stale: {out.relative_to(ROOT)}" for _, out, _ in todo]
+        # Only missing files count here: after a clone, file times say nothing
+        # about which side is newer.
+        problems = [f"missing: {out.relative_to(ROOT)}" for _, out, _ in jobs if not out.exists()]
         problems += [f"not from any source: {p.relative_to(ROOT)}" for p in extra]
     else:
         for src, out, width in todo:
