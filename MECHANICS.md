@@ -20,7 +20,7 @@ Phases, in order. "Auto" means the host loop moves on by itself; "host" means th
 1. **`lobby`.** Everyone readies up. Host taps Start (`kickoff`).
 2. **`rule_reveal`** (only with Random rules on, or for a replacement round). Auto: a 1.25 s shuffle, then 3 s on the rule.
 3. **`topic_voting`.** Each player approves one or more topics. When all have voted, the top total wins; a tie is broken by one random draw. Auto.
-4. **`topic_chosen`.** Host taps Begin round (`begin_round`).
+4. **`topic_chosen`.** The chosen topic stays on screen for 3.5 s (`TOPIC_HOLD`, `topic_held`), then the host loop begins the round on its own (`begin_round`, from `network.rs`). If the deal fails, the host gets Retry deal.
 5. **`draw`** (power cards only, §6). No timer. The deal happens as soon as everyone has drawn or skipped. A player still reading their card taps Continue later, and the table doesn't wait for them. Host Deal now skips anyone undecided.
 6. **`roles`.** The deal (`deal`): word, cast, speaking order. Each player acknowledges; when all have, auto.
 7. **`discussion`.** Clues are given face to face. The optional clue board allows one clue of up to 60 characters per player per clue turn. The host can add clue turns. Host taps Open vote.

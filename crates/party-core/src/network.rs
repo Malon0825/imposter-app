@@ -436,7 +436,7 @@ impl Session {
                     continue;
                 }
                 game.advance_reveals(Instant::now());
-                if game.phase == "topic_chosen"
+                if game.topic_held(Instant::now())
                     && game.round.deal_error.is_none()
                     && game.active().iter().all(|p| p.connected)
                 {

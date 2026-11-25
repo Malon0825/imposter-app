@@ -21,6 +21,9 @@ pub type GameResult<T> = Result<T, String>;
 pub(crate) const NO_FRESH_TOPICS: &str = "No fresh topics are available with these round settings.";
 const RULE_SHUFFLE: Duration = Duration::from_millis(1250);
 const RULE_HOLD: Duration = Duration::from_secs(3);
+// The chosen topic stays on screen this long before the round is dealt
+// (or the power-card draw opens over it).
+const TOPIC_HOLD: Duration = Duration::from_millis(3500);
 const RESULT_BEAT: Duration = Duration::from_secs(1);
 // Each player reads their own outcome before everyone's results open.
 const PERSONAL_BEAT: Duration = Duration::from_secs(2);
@@ -64,6 +67,8 @@ pub struct Round {
     pub(crate) retry_word_id: Option<String>,
     reveal_at: Option<Instant>,
     reveal_landed: bool,
+    /// When the topic was chosen: the host loop deals after `TOPIC_HOLD`.
+    topic_chosen_at: Option<Instant>,
     pub(crate) deal_error: Option<String>,
     pub roster: Vec<String>,
     pub topic_voters: Vec<String>,
@@ -1144,6 +1149,11 @@ impl Game {
         Ok(())
     }
 
+    /// The host loop deals once the chosen topic has had its moment on screen.
+    pub(crate) fn topic_held(&self, now: Instant) -> bool {
+        self.phase == "topic_chosen" && self.round.topic_chosen_at.is_none_or(|at| now >= at + TOPIC_HOLD)
+    }
+
     pub(crate) fn advance_reveals(&mut self, now: Instant) {
         self.advance_cards(now);
         let Some(at) = self.round.reveal_at else {
@@ -1309,6 +1319,7 @@ impl Game {
         self.round.topic_counts = counts;
         if self.round.topic_leaders.len() == 1 {
             self.round.topic = self.round.topic_leaders.first().cloned();
+            self.round.topic_chosen_at = Some(Instant::now());
             self.phase = "topic_chosen".into();
         } else if self.streamlined() {
             self.choose_topic(&mut rand::thread_rng());
@@ -1320,6 +1331,7 @@ impl Game {
         // SliceRandom samples each tied topic once, independently of pack size,
         // catalog order, and approvals for lower-scoring topics.
         self.round.topic = self.round.topic_leaders.choose(rng).cloned();
+        self.round.topic_chosen_at = Some(Instant::now());
         self.phase = "topic_chosen".into();
     }
     fn remove_topic_voter(&mut self, id: &str) {
@@ -3063,6 +3075,10 @@ mod tests {
             action(&mut g, id, "topic_vote", ballot).unwrap();
         }
         assert_eq!(g.phase, "topic_chosen");
+        // The chosen topic gets its moment before the host loop deals.
+        let now = Instant::now();
+        assert!(!g.topic_held(now), "the topic reveal is not cut short");
+        assert!(g.topic_held(now + TOPIC_HOLD));
         assert_eq!(
             g.round.topic_counts,
             BTreeMap::from([
