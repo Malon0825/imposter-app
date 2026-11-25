@@ -391,9 +391,10 @@ pub struct Weights {
 }
 
 impl Weights {
-    /// A voter's counted weight. Golden Ballot is four in total, the Judge and
-    /// the Imposter included, and can't be vetoed. Otherwise the Imposter's
-    /// vote never counts and a vetoed vote counts zero.
+    /// A voter's counted weight. Golden Ballot is four in total, the Judge
+    /// included, and can't be vetoed. The Imposter can't play it: their ballot
+    /// names an accomplice pick, never a suspect. Otherwise the Imposter's vote
+    /// never counts and a vetoed vote counts zero.
     pub fn of(&self, voter: &str, imposter: &str) -> u32 {
         if self.golden.contains(voter) {
             return 4;

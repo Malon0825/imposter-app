@@ -743,7 +743,9 @@ impl Game {
                     // Underdogs may bet up to 3 whatever their balance.
                     self.check_stake(actor, stake)?;
                 }
-                if let Some(recorded) = self.recorded_vote(actor) {
+                // The Imposter's ballot names their accomplice pick and never
+                // counts, so their On the Record vote is only for show.
+                if let Some(recorded) = self.recorded_vote(actor).filter(|_| actor != self.round.imposter) {
                     if recorded != target {
                         return Err("Your vote is on the record. It can’t change.".into());
                     }

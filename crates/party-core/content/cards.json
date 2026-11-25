@@ -148,7 +148,7 @@
       },
       "when": "Commit when your read is strong and start a bandwagon.",
       "notes": {
-        "imposter": "your shown vote looks real but never counts."
+        "imposter": "your shown vote is cover. It never counts and doesn't lock your picks."
       }
     },
     {
@@ -828,16 +828,18 @@
         "ballot"
       ],
       "target": "none",
-      "cant_play": [],
+      "cant_play": [
+        "imposter"
+      ],
       "leader_cant_play": false,
       "needs_bet": false,
       "hidden_for_last_voter": false,
       "text": {
-        "en": "Your vote counts four times. Even the Imposter can use it.",
-        "fil": "Gawing apat ang bilang ng boto mo. Kahit Imposter, puwedeng bumoto gamit ito."
+        "en": "Your vote counts four times.",
+        "fil": "Gawing apat ang bilang ng boto mo."
       },
       "ratings": {
-        "imposter": "best",
+        "imposter": "cant",
         "accomplice": "best",
         "detective": "fine",
         "judge": "best",
@@ -846,7 +848,6 @@
       },
       "when": "Play in a close vote.",
       "notes": {
-        "imposter": "the one way your vote counts.",
         "judge": "4 in total, not 8."
       }
     },

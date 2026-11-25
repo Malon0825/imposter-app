@@ -264,10 +264,10 @@ fn tally_weights_the_judge_heavy_vote_and_golden_ballot() {
     // Judge with Heavy Vote: three.
     let w = Weights { judge: Some(s("j")), judge_doubles: true, heavy: set(&["j"]), ..Default::default() };
     assert_eq!(tally(&votes, "imp", &w).against["a"], 3);
-    // Golden Ballot: four in total, even for the Imposter.
-    let w = Weights { judge: Some(s("j")), judge_doubles: true, golden: set(&["imp", "j"]), ..Default::default() };
+    // Golden Ballot: four in total, the Judge included (4, not 8).
+    let w = Weights { judge: Some(s("j")), judge_doubles: true, golden: set(&["h", "j"]), ..Default::default() };
     let t = tally(&votes, "imp", &w);
-    assert_eq!((t.against["a"], t.against["c"]), (4, 5));
+    assert_eq!((t.against["a"], t.against["b"], t.against["c"]), (4, 4, 1));
 }
 
 #[test]

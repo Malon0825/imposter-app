@@ -233,6 +233,27 @@ fn a_role_that_cant_use_a_card_cant_play_it() {
     assert!(err.contains("role"), "{err}");
     let view = g.view(&imp);
     assert_eq!(view["cards"]["mine"]["hand"][0]["playable"], false);
+    // The Imposter's ballot names an accomplice pick, not a suspect, so a
+    // Golden Ballot would only pile four votes on their own teammate.
+    assert!(cards::cant_play("golden-ballot", Role::Imposter, false, 0).is_some());
+}
+
+#[test]
+fn the_imposters_on_the_record_is_for_show_and_leaves_their_picks_free() {
+    let mut g = party();
+    let imp = to_roles(&mut g);
+    to_discussion(&mut g);
+    let acc = role_of(&g, Role::Accomplice);
+    let shown = g.round.roster.iter().find(|p| **p != imp && **p != acc).unwrap().clone();
+    give(&mut g, &imp, "on-the-record");
+    act(&mut g, &imp, "play_card", json!({"card": "on-the-record", "player_id": shown})).unwrap();
+    let host = g.host.clone();
+    act(&mut g, &host, "open_vote", Value::Null).unwrap();
+    assert_eq!(g.view(&host)["cards"]["on_record"][0]["vote"], json!(shown));
+    // Their real ballot still names whoever they think the accomplice is.
+    let v = ballot(&g, &imp, &acc);
+    act(&mut g, &imp, "vote", v).unwrap();
+    assert_eq!(g.round.original[&imp], acc);
 }
 
 #[test]

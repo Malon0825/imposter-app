@@ -2167,7 +2167,7 @@ export default function App() {
                   "Power cards",
                   "Draw before roles. One card per round. Golden cards change everything.",
                   [
-                    "With 6 or more players and power cards on, everyone gets 10 seconds to draw or skip before roles. A draw costs 3 points; Underdogs draw free. Up to 4 paid draws a session.",
+                    "With 6 or more players and power cards on, everyone may draw or skip before roles, with no timer: when you're done you go on to your role. A draw costs 3 points; Underdogs draw free. Up to 4 paid draws a session.",
                     "Everyone sees who drew. When you play a card, everyone sees your name and its tier, never which card.",
                     "Play one active card per round, in its window: when you see your role, during the discussion, or on your ballot. Passive cards go off on their own if you played no active.",
                     "When two cards clash, Golden beats Rare and Rare beats Common. Same tier: the first one played wins.",

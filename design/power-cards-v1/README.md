@@ -57,7 +57,7 @@ One portrait card component in three sizes, ratio 5:7.
 The round already moves rule reveal → topic vote → roles → discussion → voting → results → reports → Drink/Dare → standings. Power cards add **one new phase** and otherwise layer onto existing screens.
 
 ```
-rule reveal → topic vote → topic chosen → DRAW (new, 10s) → roles → discussion → voting → results → …
+rule reveal → topic vote → topic chosen → DRAW (new, untimed) → roles → discussion → voting → results → …
                                             │                └────── hand + plays strip ──────┘
                                             └ Underdog badges, Golden chance, Free/3 pts
 ```
@@ -187,7 +187,7 @@ The 12 screens are built in HTML/CSS with the app's own colours, fonts and spaci
 
 ## 9. Theme and role guidance
 
-- **Role guidance.** Each held card shows how it fits the role you hold this round: **Good for you**, **Fine**, or **Weak for you**. The card detail adds your role's one-line tip on an evidence tag, plus a strip of all six roles rated Best, Fine or Worst. The confirm sheet repeats the fit. It's private like the rest of the hand, and it guides without blocking: a Weak play can still be a bluff. The data is the Role guide sheet (every card × 6 roles, a rating and a tip), which needs a full pass before implementation.
+- **Role guidance.** Each held card shows how it fits the role you hold this round: **Good for you**, **Fine**, or **Weak for you**. The card detail adds your role's one-line tip on an evidence tag, plus a strip of all six roles rated Best, Fine or Worst. The confirm sheet repeats the fit. It's private like the rest of the hand, and it guides without blocking: a Weak play can still be a bluff. The data is the Role guide sheet (every card × 6 roles, a rating and a tip). Rate cards against [ROLE-MECHANICS.md](ROLE-MECHANICS.md), which records what each role's ballot really does at a 6+ table.
 - **Noir case file.** A theme over the approved palette and layouts, used only where it carries meaning:
   - the hand is the round's case file, and tips are evidence tags;
   - private reads are CLASSIFIED files, and the ballot is a line-up;
