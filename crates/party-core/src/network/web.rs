@@ -645,6 +645,29 @@ async fn resume(
     host.seen.lock().await.insert(id, Instant::now());
     Json(result).into_response()
 }
+/// What a browser guest may send. Everything else (start, settings, deal
+/// now, pausing) belongs to the host app. The engine still checks that each
+/// action is this player's to take.
+const GUEST_ACTIONS: [&str; 17] = [
+    "ready",
+    "topic_vote",
+    "role_ready",
+    "clue",
+    "performed",
+    "vote",
+    "report",
+    "choice",
+    "done",
+    "skip",
+    "leave",
+    // Power cards
+    "draw",
+    "skip_draw",
+    "draw_ready",
+    "play_card",
+    "change_bet",
+    "last_word",
+];
 async fn browser_request(state: HostState, headers: HeaderMap, action: Option<Action>) -> Response {
     let Ok(host) = upgrade(&state) else {
         return error(StatusCode::GONE, "party_closed", "This party closed.");
@@ -698,21 +721,7 @@ async fn browser_request(state: HostState, headers: HeaderMap, action: Option<Ac
     game.connection(&id, true);
     host.seen.lock().await.insert(id.clone(), Instant::now());
     if let Some(action) = action {
-        if ![
-            "ready",
-            "topic_vote",
-            "role_ready",
-            "clue",
-            "performed",
-            "vote",
-            "report",
-            "choice",
-            "done",
-            "skip",
-            "leave",
-        ]
-        .contains(&action.kind.as_str())
-        {
+        if !GUEST_ACTIONS.contains(&action.kind.as_str()) {
             return error(
                 StatusCode::FORBIDDEN,
                 "host_only",
@@ -1221,6 +1230,67 @@ mod tests {
             .unwrap();
         assert!(!tls.status().is_success());
         assert_eq!(host.snapshot().await.unwrap()["phase"], "lobby");
+    }
+    #[tokio::test]
+    async fn browser_guests_draw_skip_and_play_power_cards() {
+        let host = host().await;
+        let invite = SharedInvitation::parse(&host.invitation()).unwrap();
+        let client = Client::new();
+        let mut guests = Vec::new();
+        for name in ["Mia", "Ben", "Sam", "Ivy", "Leo"] {
+            let controller = Uuid::new_v4().to_string();
+            guests.push((joined(&client, &invite, name, &controller).await, controller));
+        }
+        let send = |player: &Value, controller: &str, action: Action| {
+            request(
+                &client,
+                &invite,
+                "guest/action",
+                serde_json::to_value(action).unwrap(),
+                Some(player),
+                controller,
+            )
+            .send()
+        };
+        host.send(command(0, "power_cards", json!(true))).await.unwrap();
+        for (p, c) in &guests {
+            assert!(send(p, c, command(0, "ready", json!(true))).await.unwrap().status().is_success());
+        }
+        host.send(command(0, "start", Value::Null)).await.unwrap();
+        host.send(command(1, "topic_vote", json!(["food"]))).await.unwrap();
+        for (p, c) in &guests {
+            send(p, c, command(1, "topic_vote", json!(["food"]))).await.unwrap();
+        }
+        // Everyone can afford a draw, so the round opens on the draw.
+        host.send(command(1, "dev_cards", json!({"points": 3}))).await.unwrap();
+        host.send(command(1, "begin_round", Value::Null)).await.unwrap();
+        let round = host.snapshot().await.unwrap()["round_id"].as_u64().unwrap() as u32;
+        assert_eq!(host.snapshot().await.unwrap()["phase"], "draw");
+        let (mia, mia_c) = &guests[0];
+        let drew = send(mia, mia_c, command(round, "draw", Value::Null)).await.unwrap();
+        assert!(drew.status().is_success(), "{}", drew.text().await.unwrap());
+        let view: Value = send(mia, mia_c, command(round, "draw_ready", Value::Null))
+            .await
+            .unwrap()
+            .json()
+            .await
+            .unwrap();
+        assert_eq!(view["cards"]["mine"]["hand"].as_array().unwrap().len(), 1, "{view}");
+        for (p, c) in &guests[1..] {
+            let skipped = send(p, c, command(round, "skip_draw", Value::Null)).await.unwrap();
+            assert!(skipped.status().is_success(), "{}", skipped.text().await.unwrap());
+        }
+        host.send(command(round, "skip_draw", Value::Null)).await.unwrap();
+        // Playing a card, changing a bet and Last Word reach the engine: a
+        // refusal now is a game rule, never "host app only".
+        for kind in ["play_card", "change_bet", "last_word"] {
+            let reply = send(mia, mia_c, command(round, kind, json!({}))).await.unwrap();
+            assert_ne!(reply.status(), StatusCode::FORBIDDEN, "{kind}");
+        }
+        // Host-only card controls stay with the host.
+        let (ben, ben_c) = &guests[1];
+        let refused = send(ben, ben_c, command(round, "deal_now", Value::Null)).await.unwrap();
+        assert_eq!(refused.status(), StatusCode::FORBIDDEN);
     }
     #[tokio::test]
     async fn mixed_native_and_browser_players_complete_one_authoritative_game() {
