@@ -205,7 +205,7 @@ async function roundRulesSmoke(page) {
     stage = "change settings while paused";
     await page.getByRole("heading", { name: "A little pause." }).waitFor();
     await button(page, "Session settings").click();
-    await page.getByRole("switch").click();
+    await page.getByRole("switch", { name: "Random round rules" }).click();
     await page.getByText("Random rules are off from next round.").waitFor();
     assert((await snapshot(host)).paused, "Settings unpaused the round");
     await button(page, "Done").click();

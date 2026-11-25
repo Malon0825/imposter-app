@@ -1033,6 +1033,23 @@ impl Game {
                 self.clue_given(value);
             }
             "last_word" => self.answer_last_word(actor, &action.value)?,
+            // Debug builds only (smoke tests): set points and deal named cards.
+            #[cfg(debug_assertions)]
+            "dev_cards" => {
+                self.require_host(actor)?;
+                if let Some(points) = action.value.get("points").and_then(Value::as_i64) {
+                    for p in &mut self.players {
+                        p.points = points as i32;
+                    }
+                }
+                if let Some(give) = action.value.get("give").and_then(Value::as_object) {
+                    for (id, ids) in give {
+                        for card in ids.as_array().into_iter().flatten().filter_map(Value::as_str) {
+                            self.cards.hands.entry(id.clone()).or_default().push(power::Held { id: card.into(), from_round: 0 });
+                        }
+                    }
+                }
+            }
             _ => return Err("Unknown party action.".into()),
         }
         self.processed.insert(format!("{actor}:{}", action.id));
@@ -1607,6 +1624,8 @@ impl Game {
             json!({"stage":stage,"remaining_ms":deadline.saturating_duration_since(now).as_millis(),"total_ms":duration.as_millis(),"shuffled":self.phase == "rule_reveal" && self.round.random_at_start})
         });
         let escaped = self.round.accused.as_ref() != Some(&self.round.imposter);
+        // A right Last Word: the Imposter's side counts as escaped for themselves.
+        let side_escaped = escaped || self.round.cards.last_word_right == Some(true);
         let facts = self.round.cast_facts.unwrap_or_default();
         let role_of = |id: &str| self.round.cast.as_ref().and_then(|c| c.roles.get(id).copied());
         let outcome = |id: &str| -> Option<&'static str> {
@@ -1616,11 +1635,11 @@ impl Game {
                 // The bait Decoy went too far and took the fall themselves.
                 Some(Role::Decoy) if facts.decoy_convicted => return Some("spotted"),
                 // The accomplice shares the imposter's fate.
-                Some(Role::Accomplice) => return Some(if escaped { "escaped" } else { "caught" }),
+                Some(Role::Accomplice) => return Some(if side_escaped { "escaped" } else { "caught" }),
                 _ => {}
             }
             if id == self.round.imposter {
-                Some(if escaped { "escaped" } else { "caught" })
+                Some(if side_escaped { "escaped" } else { "caught" })
             } else {
                 // A civilian's own ballot decides their result, even on a tie.
                 let vote = self.round.original.get(id)?;
@@ -1718,7 +1737,7 @@ impl Game {
           "performed":self.round.performed.iter().flat_map(|(player_id, turns)| turns.iter().map(move |turn| json!({"player_id":player_id,"turn":turn}))).collect::<Vec<_>>(),
           "role_ready":self.round.acknowledged.contains(actor),"ready_count":self.round.acknowledged.len(),"starting_id":if self.phase=="discussion" {Some(&self.round.starting)}else{None},"speaking_order":if self.phase=="discussion" {Some(&self.round.order)}else{None},
           "vote_count":votes.len(),"my_vote":votes.get(actor),"candidates":if self.phase=="runoff" {self.round.candidates.clone()}else{vec![]},
-          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"definition":self.round.definition,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0),"outcomes":outcomes,
+          "result":if results {Some(json!({"imposter_id":self.round.imposter,"word":self.round.word,"definition":self.round.definition,"accused_id":self.round.accused,"escaped":self.round.accused.as_ref()!=Some(&self.round.imposter),"my_vote":self.round.original.get(actor),"earned":me.map(|p|p.earned).unwrap_or(0),"was_imposter":actor==self.round.imposter,"last_word":self.round.cards.last_word_right,"report_penalty":self.round.scores.get(actor).map(|s|s.penalty).unwrap_or(0),"report_round":self.round.report_penalties.get(actor),"score":self.round.scores.get(actor),"imposter_bonus":self.round.scores.get(&self.round.imposter).map(|s|s.bluff).unwrap_or(0),"outcomes":outcomes,
             "cast":self.round.cast.as_ref().map(|c| json!({"roles":c.roles,"decoy_word":c.decoy_word,"my_role":c.roles.get(actor),
               "bait_decoy":facts.bait_decoy,"decoy_voted":facts.decoy_voted,
               "accomplice_caught":facts.accomplice_caught,"decoy_caught":facts.decoy_caught,"pair_bonus":facts.pair_bonus(),"judge_tiebreak":self.round.judge_tiebreak}))}))}else{None},

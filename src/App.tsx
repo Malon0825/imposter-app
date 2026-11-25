@@ -55,6 +55,20 @@ import {
   SelectionCheck,
 } from "./motion-ui";
 import { play as playSound, playShared, setSound, soundOn, onSoundChange } from "./sound";
+import { HandButton, HandSheet, PlayableNudge } from "./cards/Hand";
+import {
+  BallotCardSlot,
+  ballotCardReady,
+  CardTextSwitch,
+  ColdFeet,
+  DrawScreen,
+  LastWordScreen,
+  PlaysStrip,
+  PowerCardsSwitch,
+  PublicNotes,
+  type BallotCard,
+  type Who,
+} from "./cards/Round";
 import { Art, BookingPhoto, CardBacks, Mugshot, Stamp, TopicEmblem, Type, cardArt } from "./theme";
 import {
   Confetti,
@@ -706,12 +720,17 @@ export default function App() {
   const [revealRequested, setRevealed] = useState(false);
   const revealRound = useRef<number | null>(null);
   const revealed = revealRequested && revealRound.current === view?.round_id;
+  // Power cards: the hand sheet, the card sent with a vote, and the host's
+  // OK to open the vote while a clue is still owed.
+  const [handOpen, setHandOpen] = useState(false);
+  const [ballotCard, setBallotCard] = useState<BallotCard | null>(null);
+  const [confirmOpenVote, setConfirmOpenVote] = useState(false);
   // Block screenshots only while a private card is face up. Browsers cannot
   // block them at all, so this is the installed app only.
   useEffect(() => {
     if (native)
-      device(revealed ? "secureScreen" : "allowScreenshots").catch(() => {});
-  }, [revealed]);
+      device(revealed || handOpen ? "secureScreen" : "allowScreenshots").catch(() => {});
+  }, [revealed, handOpen]);
   const reviewRound = useRef<number | null>(null);
   const [qr, setQr] = useState("");
   const [showQr, setShowQr] = useState(false);
@@ -1047,6 +1066,8 @@ export default function App() {
     setRevealed(false);
     setVote("");
     setBet(0);
+    setBallotCard(null);
+    setConfirmOpenVote(false);
     setAccomplicePick(null);
     setDecoyPick(null);
     setReportTargets([]);
@@ -1078,6 +1099,8 @@ export default function App() {
       if (document.hidden) {
         document.documentElement.setAttribute("data-private-concealed", "");
         setRevealed(false);
+        // The hand is private like the role card: it reopens only on a tap.
+        setHandOpen(false);
       } else {
         refreshDevice();
       }
@@ -1086,6 +1109,7 @@ export default function App() {
     const conceal = () => {
       document.documentElement.setAttribute("data-private-concealed", "");
       setRevealed(false);
+      setHandOpen(false);
     };
     window.addEventListener("pagehide", conceal);
     hide();
@@ -1297,6 +1321,13 @@ export default function App() {
   const playerName = (id: string | null | undefined) =>
     person(id)?.name || "Player";
   const me = person(view?.my_id);
+  const who: Who = {
+    name: playerName,
+    avatar: (id) => <Avatar player={person(id)} mine={id === view?.my_id} />,
+  };
+  const handButton = view?.cards?.on ? (
+    <HandButton view={view} onOpen={() => setHandOpen(true)} />
+  ) : null;
   const activePlayers = view?.players.filter((p) => !p.left) || [];
   // Shared sound beats: each plays once per round on every phone, from the
   // same moment the host already times for the screens.
@@ -1701,12 +1732,14 @@ export default function App() {
   ) : undefined;
   const hostHeaderActions = view?.is_host ? (
     <div className="party-header-actions">
+      {handButton}
       {settingsButton}
       {invitationButton}
     </div>
   ) : undefined;
   const roundHeaderActions = (
     <div className="party-header-actions">
+      {handButton}
       {view?.private_role && (view.phase !== "roles" || view.role_ready) && (
         <button
           className="icon-button"
@@ -2085,6 +2118,24 @@ export default function App() {
                   ],
                 ],
                 [
+                  "Power cards",
+                  "Draw before roles. One card per round. Golden cards change everything.",
+                  [
+                    "With 6 or more players and power cards on, everyone gets 10 seconds to draw or skip before roles. A draw costs 3 points; Underdogs draw free. Up to 4 paid draws a session.",
+                    "Everyone sees who drew. When you play a card, everyone sees your name and its tier, never which card.",
+                    "Play one active card per round, in its window: when you see your role, during the discussion, or on your ballot. Passive cards go off on their own if you played no active.",
+                    "When two cards clash, Golden beats Rare and Rare beats Common. Same tier: the first one played wins.",
+                  ],
+                ],
+                [
+                  "Underdogs & Bounty",
+                  "Fall behind and draws are free. Take down the leader for the Bounty.",
+                  [
+                    "From round 3, anyone a third of the target or more behind the leader is an Underdog: free draws, bets up to 3 whatever your points, and +1 on a winning bet. Lose a bet you couldn’t cover and you drink.",
+                    "When the leader loses a round, every Underdog gets the Bounty: +1, growing by 1 each round the leader survives, up to +3.",
+                  ],
+                ],
+                [
                   "Drink or Dare",
                   "Lose the round, face the sentence.",
                   [
@@ -2111,6 +2162,7 @@ export default function App() {
               </details>
             ))}
           </div>
+          <CardTextSwitch />
           <div className="round-settings-toggle guide-sound">
             <strong>Sound on this phone</strong>
             <button
@@ -2956,6 +3008,7 @@ export default function App() {
                     : "Topic settings"}
                 </Button>
                 {kickoffToggle}
+                <PowerCardsSwitch view={view} send={send} busy={busy} />
                 {view.deck_status?.reason ? (
                   <>
                     <p className="muted center" role="status">
@@ -3007,6 +3060,25 @@ export default function App() {
           )}
         </>
       );
+    if (view.phase === "draw" && view.cards)
+      return (
+        <>
+          <Header
+            notice={connectionStatus}
+            back={askLeave}
+            title={`Round ${view.round_id} · Draw`}
+            right={view.is_host ? hostHeaderActions : roundHeaderActions}
+          />
+          <DrawScreen view={view} send={send} busy={busy} who={who} />
+        </>
+      );
+    if (view.phase === "last_word")
+      return (
+        <>
+          <Header notice={connectionStatus} back={askLeave} title={`Round ${view.round_id} · Results`} />
+          <LastWordScreen view={view} send={send} busy={busy} who={who} />
+        </>
+      );
     if (view.phase === "roles" || reviewingCard)
       return (
         <>
@@ -3022,6 +3094,7 @@ export default function App() {
                   : roundHeaderActions
             }
           />
+          {!reviewingCard && view.role_ready && <PlayableNudge view={view} onOpen={() => setHandOpen(true)} />}
           {nonverbal && view.round_rule && (
             <RuleIndicator rule={view.round_rule} />
           )}
@@ -3191,6 +3264,8 @@ export default function App() {
             title={`Round ${view.round_id} · Turn ${view.clue_turn || 1}`}
             right={roundHeaderActions}
           />
+          <PlayableNudge view={view} onOpen={() => setHandOpen(true)} />
+          <PlaysStrip view={view} who={who} />
           <div className="clue-discussion-heading">
             <h1>
               Who sounds
@@ -3229,6 +3304,7 @@ export default function App() {
                 : "Clues optional · clear next round."}
             </p>
           </div>
+          <PublicNotes view={view} who={who} />
           {playersList(true)}
           {footer(
             view.is_host ? (
@@ -3240,11 +3316,23 @@ export default function App() {
                 >
                   Another clue turn
                 </Button>
+                {confirmOpenVote && !!view.cards?.owed.length && (
+                  <p className="muted center compact" role="status">
+                    {view.cards.owed.map(playerName).join(", ")} still owes a clue.
+                  </p>
+                )}
                 <Button
                   disabled={busy || view.paused}
-                  onClick={() => send("open_vote")}
+                  onClick={() => {
+                    // Put on the Spot: an owed clue asks the host once.
+                    if (view.cards?.owed.length && !confirmOpenVote) {
+                      setConfirmOpenVote(true);
+                      return;
+                    }
+                    send("open_vote", view.cards?.owed.length ? { confirm: true } : null);
+                  }}
                 >
-                  Open voting
+                  {confirmOpenVote && view.cards?.owed.length ? "Open voting anyway" : "Open voting"}
                 </Button>
                 <div className="round-secondary-actions">
                   <Button
@@ -3304,6 +3392,7 @@ export default function App() {
             }
             notice={connectionStatus}
           />
+          <PlaysStrip view={view} who={who} />
           {view.my_vote ? (
             <>
               <div className="center-stage locked">
@@ -3341,6 +3430,8 @@ export default function App() {
                   linked
                 />
               </div>
+              <ColdFeet view={view} send={send} busy={busy} />
+              <PublicNotes view={view} who={who} />
 
               {!!view.clues?.length && (
                 <div className="locked-clue-board">
@@ -3537,8 +3628,16 @@ export default function App() {
               )}
               {footer(
                 <>
+                  <BallotCardSlot
+                    view={view}
+                    value={ballotCard}
+                    onChange={setBallotCard}
+                    accused={crewBallot ? accomplicePick : vote}
+                    stake={view.betting.eligible ? bet : 0}
+                    who={who}
+                  />
                   <Button
-                    disabled={busy || view.paused || !ready}
+                    disabled={busy || view.paused || !ready || !ballotCardReady(ballotCard)}
                     onClick={() =>
                       execute(async () => {
                         await act(
@@ -3548,6 +3647,8 @@ export default function App() {
                             stake: view.betting.eligible ? bet : 0,
                             ...(crewBallot && { accomplice_id: accomplicePick, decoy_id: decoyPick }),
                             ...(detective && { accomplice_id: accomplicePick }),
+                            // A power card rides with the vote.
+                            ...(ballotCard && { card: ballotCard }),
                           },
                           view.round_id,
                         );
@@ -3680,7 +3781,7 @@ export default function App() {
                   {!score.voided && <div>
                     <dt>
                       {r.was_imposter
-                        ? r.escaped ? "Escaped" : "Caught"
+                        ? r.last_word ? "Last Word · named the word" : r.escaped ? "Escaped" : "Caught"
                         : myRole === "accomplice"
                           ? r.escaped ? "Imposter escaped" : "Imposter caught"
                           : <>Voted {playerName(r.my_vote)}{myRole === "judge" && judgeDoubles(activePlayers.length) ? " ×2" : ""}</>}
@@ -4259,6 +4360,11 @@ export default function App() {
         </div>
       )}
       <AnimatePresence>
+        {handOpen && view?.cards && (
+          <HandSheet key="hand" view={view} send={send} busy={busy} who={who} onClose={() => setHandOpen(false)} />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
         {showRoundSettings && view?.is_host && view.phase !== "ended" && (
           <MotionSheet
             key="round-settings"
@@ -4304,6 +4410,7 @@ export default function App() {
                 ? "A surprise rule before every topic vote."
                 : "Upcoming rounds use Classic."}
             </p>
+            <PowerCardsSwitch view={view} send={send} busy={busy} />
             {view.round_rule && view.rule_change_pending ? (
               <>
                 <div className="round-settings-current">

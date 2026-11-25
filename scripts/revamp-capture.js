@@ -56,7 +56,7 @@ async function revampCapture(hostPage) {
     await capture(hostTab, "04-host-lobby");
     await capture(guestTab, "09-guest-lobby");
     await button(pages[5], "I’m ready").click();
-    await hostTab.getByRole("switch").first().click().catch(() => {});
+    await hostTab.getByRole("switch", { name: "Random rules" }).click().catch(() => {});
     await button(hostTab, "Start round").click();
 
     // Rule reveal (random rules), then the topic vote.
