@@ -3,6 +3,7 @@
 pub mod content;
 pub mod game;
 mod cast;
+pub mod cards;
 mod history;
 pub mod network;
 mod selection;

@@ -37,7 +37,7 @@ Astra has delivered all five Rare illustrations. The Filipino review (`FILIPINO-
 
 ## 3. Card catalog: one source
 
-`crates/party-core/data/cards.json` holds all 37 cards. Each card has:
+`crates/party-core/content/cards.json` holds all 37 cards. Each card has:
 - `id`, `tier`, `kind` (active or passive), `window` and `targets`;
 - `cant_play`, the roles that can't play it, plus flags for "leader can't play" and "needs a bet";
 - `en` and `fil` text;

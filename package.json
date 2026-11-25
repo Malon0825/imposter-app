@@ -9,7 +9,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "tauri": "tauri",
     "test:core": "node scripts/rust.mjs test -p party-core",
-    "test:content": "python scripts/prepare-content.py --check && python -m unittest discover -s scripts -p test_prepare_content.py",
+    "test:content": "python scripts/prepare-content.py --check && python scripts/cards-from-sheet.py --check && python scripts/prepare-art.py --check && python -m unittest discover -s scripts -p test_prepare_content.py",
     "dev:server": "node scripts/rust.mjs run -p party-core --bin party-dev",
     "test": "npm run test:content && npm run build && npm run test:core",
     "android:build": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-android.ps1",

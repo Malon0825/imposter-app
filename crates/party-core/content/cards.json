@@ -1,0 +1,1063 @@
+{
+  "source": "power-card-review-v11.xlsx",
+  "cards": [
+    {
+      "id": "late-arrival",
+      "name": "Late Arrival",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "role_reveal"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Give your clue last in the first clue turn.",
+        "fil": "Ikaw ang huling magbibigay ng clue sa unang ikot."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Play when hearing the room first is worth more than keeping a passive.",
+      "notes": {
+        "imposter": "you hear every clue before yours."
+      }
+    },
+    {
+      "id": "opening-act",
+      "name": "Opening Act",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "role_reveal"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Give your clue first in the first clue turn.",
+        "fil": "Ikaw ang unang magbibigay ng clue sa unang ikot."
+      },
+      "ratings": {
+        "imposter": "worst",
+        "accomplice": "fine",
+        "detective": "best",
+        "judge": "fine",
+        "decoy": "best",
+        "gambler": "fine"
+      },
+      "when": "Lead when you can set a believable clue.",
+      "notes": {
+        "decoy": "your cousin-word clue sets the room's direction."
+      }
+    },
+    {
+      "id": "put-on-the-spot",
+      "name": "Put on the Spot",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "player",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Pick a player. They owe one more clue: their name sits at the top of the clue board until they give it.",
+        "fil": "Pumili ng isang manlalaro. May utang siyang isa pang clue: nasa itaas ng clue board ang pangalan niya hanggang maibigay niya ito."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "fine",
+        "detective": "best",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Pressure the quietest or shakiest player.",
+      "notes": {
+        "imposter": "squeeze a civilian into a clumsy clue."
+      }
+    },
+    {
+      "id": "anonymous-tip",
+      "name": "Anonymous Tip",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "player",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Name a suspect. When voting opens, everyone sees 'Someone suspects Ben'. Your name stays hidden.",
+        "fil": "Ituro ang pinaghihinalaan mo. Pagbukas ng botohan, makikita ng lahat: 'May naghihinala kay Ben'. Lihim ang pangalan mo."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Point at someone without your name on it.",
+      "notes": {
+        "accomplice": "point the room away from your Imposter."
+      }
+    },
+    {
+      "id": "on-the-record",
+      "name": "On the Record",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Show everyone your vote and lock it now. Get 2 points if you picked the Imposter.",
+        "fil": "Ipakita sa lahat ang boto mo. Bawal nang palitan. May 2 puntos ka kung Imposter ang pinili mo."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "fine",
+        "detective": "best",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Commit when your read is strong and start a bandwagon.",
+      "notes": {
+        "imposter": "your shown vote looks real but never counts."
+      }
+    },
+    {
+      "id": "word-count",
+      "name": "Word Count",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [
+        "accomplice",
+        "detective",
+        "judge",
+        "gambler"
+      ],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "See how many letters the real word has. Only you see the number. Only the Imposter and the Decoy can play it.",
+        "fil": "Alamin kung ilang letra ang nasa totoong salita. Ikaw lang ang makakakita. Ang Imposter at ang Decoy lang ang makakagamit nito."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "cant",
+        "detective": "cant",
+        "judge": "cant",
+        "decoy": "best",
+        "gambler": "cant"
+      },
+      "when": "Narrow the hint, or test your Decoy word.",
+      "notes": {
+        "decoy": "could your word be the real one?"
+      }
+    },
+    {
+      "id": "cover-story",
+      "name": "Cover Story",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Claim any role on everyone's screen. Results show whether it was true.",
+        "fil": "Angkinin ang kahit anong role sa screen ng lahat. Sa resulta malalaman kung totoo."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "best",
+        "gambler": "fine"
+      },
+      "when": "Claim a role while suspicion is moving.",
+      "notes": {
+        "decoy": "claim Judge or Detective to draw votes."
+      }
+    },
+    {
+      "id": "second-opinion",
+      "name": "Second Opinion",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "ballot"
+      ],
+      "target": "none",
+      "cant_play": [
+        "imposter",
+        "accomplice"
+      ],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Name a backup suspect. If your vote is wrong and your backup is the Imposter, you score as if you were right and skip Drink/Dare. Your bet still settles as usual.",
+        "fil": "Pumili ng reserbang suspek. Kung mali ang boto mo at Imposter ang reserba mo, bibilangin kang tama at ligtas ka sa Drink/Dare. Ang taya mo ay gaya pa rin ng dati."
+      },
+      "ratings": {
+        "imposter": "cant",
+        "accomplice": "cant",
+        "detective": "fine",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Hedge between two suspects.",
+      "notes": {
+        "judge": "a saved read still pays your +2."
+      }
+    },
+    {
+      "id": "reshuffle",
+      "name": "Reshuffle",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Swap this card for a free draw now, at the normal odds, Golden included. The new card can be played from next round.",
+        "fil": "Ipagpalit ito sa isang libreng bunot ngayon, kasama ang tsansa sa Golden. Magagamit mo ang bagong baraha simula sa susunod na round."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Swap a card that doesn't fit the roles you're getting. It can turn Golden.",
+      "notes": {}
+    },
+    {
+      "id": "cold-feet",
+      "name": "Cold Feet",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "ballot"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": true,
+      "text": {
+        "en": "After you vote, you can change your bet once, until the last ballot locks.",
+        "fil": "Pagkatapos mong bumoto, puwede mong palitan ang taya mo nang isang beses hanggang ma-lock ang huling boto."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "best"
+      },
+      "when": "Vote early, watch the ballot announcements, then move your bet.",
+      "notes": {
+        "gambler": "drop off +5/−3 when a Golden lands."
+      }
+    },
+    {
+      "id": "bluff-card",
+      "name": "Bluff Card",
+      "tier": "common",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Announce a fake play under your name. Its tier is rolled like a real draw, so it can look Golden. Nothing else happens.",
+        "fil": "Magpakita ng pekeng paggamit ng baraha sa pangalan mo. Binubunot ang tier nito na parang totoong bunot, kaya puwedeng magmukhang Golden. Walang ibang mangyayari."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "best",
+        "gambler": "fine"
+      },
+      "when": "Fake a play, maybe a Golden one, to draw eyes.",
+      "notes": {
+        "decoy": "attention is what you want."
+      }
+    },
+    {
+      "id": "safety-net",
+      "name": "Safety Net",
+      "tier": "common",
+      "kind": "passive",
+      "windows": [
+        "results"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Lose a bet of 2 or 3? Get 1 point back.",
+        "fil": "Natalo ang taya mong 2 o 3? Ibabalik sa iyo ang 1 puntos."
+      }
+    },
+    {
+      "id": "rain-check",
+      "name": "Rain Check",
+      "tier": "common",
+      "kind": "passive",
+      "windows": [
+        "results"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Earned nothing (or less) this round? Your next round's lost bet costs nothing.",
+        "fil": "Wala o negatibo ang nakuha mo ngayong round? Sa susunod mong round, walang mababawas kung matalo ang taya mo."
+      }
+    },
+    {
+      "id": "clean-hands",
+      "name": "Clean Hands",
+      "tier": "common",
+      "kind": "passive",
+      "windows": [
+        "results"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Get 2 points if your vote named the Imposter and no counted vote named you.",
+        "fil": "May 2 puntos ka kung tama ang hula mo at walang binilang na boto laban sa iyo."
+      }
+    },
+    {
+      "id": "cardboard-crown",
+      "name": "Cardboard Crown",
+      "tier": "common",
+      "kind": "passive",
+      "windows": [
+        "session_end"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Tied for the highest score when the session ends? You win alone.",
+        "fil": "Tabla kayo sa pinakamataas na puntos pagtapos ng session? Ikaw lang ang panalo."
+      }
+    },
+    {
+      "id": "private-eye",
+      "name": "Private Eye",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "two_players",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Pick two other players. Secretly see whether each one is on the civilian side or the Imposter's side.",
+        "fil": "Pumili ng dalawa pang manlalaro. Lihim mong makikita kung panig ng civilian o panig ng Imposter ang bawat isa."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "worst",
+        "detective": "best",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Check two suspects' sides after the clues.",
+      "notes": {
+        "imposter": "find your Accomplice for the pair bonus."
+      }
+    },
+    {
+      "id": "borrowed-hint",
+      "name": "Borrowed Hint",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [
+        "imposter"
+      ],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Take a secret look at the hint the Imposter got. The Imposter can't play it.",
+        "fil": "Silipin ang clue na ibinigay sa Imposter. Ikaw lang ang makakakita. Hindi ito magagamit ng Imposter."
+      },
+      "ratings": {
+        "imposter": "cant",
+        "accomplice": "fine",
+        "detective": "best",
+        "judge": "fine",
+        "decoy": "best",
+        "gambler": "fine"
+      },
+      "when": "Compare the hint with the clues you've heard.",
+      "notes": {
+        "decoy": "see how close your word sits to the hint."
+      }
+    },
+    {
+      "id": "heavy-vote",
+      "name": "Heavy Vote",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "ballot"
+      ],
+      "target": "none",
+      "cant_play": [
+        "imposter"
+      ],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Your counted vote counts twice (a Judge's counts three times). The Imposter can't play it.",
+        "fil": "Dalawa ang bilang ng boto mo (tatlo kung Judge ka). Hindi ito magagamit ng Imposter."
+      },
+      "ratings": {
+        "imposter": "cant",
+        "accomplice": "best",
+        "detective": "best",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Play when the vote is close.",
+      "notes": {
+        "judge": "your vote counts 3.",
+        "accomplice": "pile onto an innocent."
+      }
+    },
+    {
+      "id": "decoy-contract",
+      "name": "Decoy Contract",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [
+        "imposter"
+      ],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Get 3 points if the room accuses you. The Imposter can't play it. It pays even if your other gains are cancelled.",
+        "fil": "May 3 puntos ka kung ikaw ang pagbibintangan ng grupo. Hindi ito magagamit ng Imposter. Makukuha mo pa rin ito kahit mabura ang iba mong puntos."
+      },
+      "ratings": {
+        "imposter": "cant",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "best",
+        "gambler": "fine"
+      },
+      "when": "Pull the accusation onto yourself.",
+      "notes": {
+        "accomplice": "being accused also frees your Imposter."
+      }
+    },
+    {
+      "id": "double-or-nothing",
+      "name": "Double or Nothing",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "ballot"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": true,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Your bet pays double and costs double this round. A Gambler's top tier pays +10 and costs 6.",
+        "fil": "Doble ang panalo at doble ang talo ng taya mo ngayong round. Sa Gambler, +10 ang pinakamataas na taya at −6 kapag talo."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "best"
+      },
+      "when": "Play when you trust your bet's goal.",
+      "notes": {
+        "gambler": "+10 / −6 at the top tier."
+      }
+    },
+    {
+      "id": "last-word",
+      "name": "Last Word",
+      "tier": "rare",
+      "kind": "passive",
+      "windows": [
+        "results"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Caught as the Imposter? Pick the real word from three. If you're right, you and your Accomplice score as if you escaped.",
+        "fil": "Nahuli ka bilang Imposter? Piliin ang totoong salita sa tatlo. Kapag tama, ikaw at ang Accomplice mo ay bibilangin na parang nakatakas."
+      }
+    },
+    {
+      "id": "jackpot",
+      "name": "Jackpot",
+      "tier": "rare",
+      "kind": "passive",
+      "windows": [
+        "results"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Stay out of Drink/Dare this round? Get 4 points.",
+        "fil": "Hindi ka napasama sa Drink/Dare ngayong round? May 4 puntos ka."
+      }
+    },
+    {
+      "id": "sealed-alibi",
+      "name": "Sealed Alibi",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Secretly predict who the room will accuse. Get 3 points if you're right and your side wins the round.",
+        "fil": "Lihim na hulaan kung sino ang pagbibintangan ng grupo. May 3 puntos ka kung tama ka at panalo ang panig mo."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Lock a prediction when you can read the room.",
+      "notes": {
+        "imposter": "predict an innocent, then steer the room onto them."
+      }
+    },
+    {
+      "id": "pocket-veto",
+      "name": "Pocket Veto",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "ballot"
+      ],
+      "target": "player",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Pick a player. Their vote isn't counted, but it still scores for them. Everyone sees 'One vote was vetoed'. A Golden Ballot can't be vetoed.",
+        "fil": "Pumili ng isang manlalaro. Hindi bibilangin ang boto niya, pero may puntos pa rin siya kung tama siya. Makikita ng lahat na may isang botong na-veto. Hindi mave-veto ang Golden Ballot."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Silence the vote you fear most.",
+      "notes": {
+        "imposter": "veto whoever you think is the Judge."
+      }
+    },
+    {
+      "id": "lawyer-up",
+      "name": "Lawyer Up",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "role_reveal",
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Common and Rare cards can't touch you this round. Golden cards still can.",
+        "fil": "Hindi ka matatamaan ng Common at Rare na baraha ngayong round. Tatama pa rin ang Golden."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Play early if you expect to be investigated.",
+      "notes": {
+        "accomplice": "hide your side from Private Eye."
+      }
+    },
+    {
+      "id": "objection",
+      "name": "Objection!",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "discussion",
+        "ballot"
+      ],
+      "target": "played_card",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Object to another player's card this round. If it was Common, it's cancelled. Anything higher is overruled. Everyone sees the verdict.",
+        "fil": "Tutulan ang baraha ng ibang manlalaro ngayong round. Kung Common ito, kanselado. Kung mas mataas, overruled. Makikita ng lahat ang hatol."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "fine",
+        "detective": "best",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Object to the play that hurts you, or to a Golden you think is fake.",
+      "notes": {
+        "detective": "a Bluff is always Common, so a fake Golden gets SUSTAINED."
+      }
+    },
+    {
+      "id": "wiretap",
+      "name": "Wiretap",
+      "tier": "rare",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "player",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Pick a player. You'll see their vote the moment they lock it.",
+        "fil": "Pumili ng isang manlalaro. Makikita mo ang boto niya sa sandaling i-lock niya ito."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "best",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Tap the player whose vote tells you the most.",
+      "notes": {
+        "judge": "know where the votes are before you place your double."
+      }
+    },
+    {
+      "id": "master-key",
+      "name": "Master Key",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [
+        "accomplice",
+        "detective",
+        "judge",
+        "gambler"
+      ],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Secretly read the real word. Only the Imposter and the Decoy can play it.",
+        "fil": "Lihim na silipin ang totoong salita. Ang Imposter at ang Decoy lang ang makakagamit nito."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "cant",
+        "detective": "cant",
+        "judge": "cant",
+        "decoy": "best",
+        "gambler": "cant"
+      },
+      "when": "Play before your clue if you only have a hint or a Decoy word.",
+      "notes": {
+        "decoy": "learn the real word behind yours."
+      }
+    },
+    {
+      "id": "x-ray",
+      "name": "X-Ray",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "player",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Pick another player. Secretly see their exact role.",
+        "fil": "Pumili ng ibang manlalaro. Lihim na silipin ang tunay niyang role."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "best",
+        "detective": "best",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Check the player whose role would change your vote.",
+      "notes": {
+        "accomplice": "find the Detective before they find you."
+      }
+    },
+    {
+      "id": "golden-ballot",
+      "name": "Golden Ballot",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "ballot"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Make your vote count as four votes. Even the Imposter can vote with this card.",
+        "fil": "Gawing apat ang bilang ng boto mo. Kahit Imposter, puwedeng bumoto gamit ito."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "best",
+        "detective": "fine",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Play in a close vote.",
+      "notes": {
+        "imposter": "the one way your vote counts.",
+        "judge": "4 in total, not 8."
+      }
+    },
+    {
+      "id": "crown-heist",
+      "name": "Crown Heist",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": true,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Win your round to raise your score to the leader's score at the start of this round. The leader can't play it.",
+        "fil": "Manalo ka sa round para mapantayan ang puntos ng nangunguna noong simula ng round. Hindi ito magagamit ng nangunguna."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Use it when you trail by a lot.",
+      "notes": {}
+    },
+    {
+      "id": "midas-touch",
+      "name": "Midas Touch",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "ballot"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Triple every point you earn from your role and your bet this round.",
+        "fil": "Triple ang bawat puntos na makukuha mo sa role at taya mo ngayong round."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "best"
+      },
+      "when": "Use it when you expect a big win.",
+      "notes": {
+        "imposter": "a perfect round becomes 24."
+      }
+    },
+    {
+      "id": "golden-pardon",
+      "name": "Golden Pardon",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "If you lose this round, turn it into a personal win and get 5 points.",
+        "fil": "Kung matalo ka ngayong round, magiging panalo iyon para sa iyo at may 5 puntos ka."
+      },
+      "ratings": {
+        "imposter": "best",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "best",
+        "gambler": "fine"
+      },
+      "when": "Play when suspicion is closing in.",
+      "notes": {
+        "imposter": "caught still pays +5 (your bet still settles)."
+      }
+    },
+    {
+      "id": "turncoat",
+      "name": "Turncoat",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [
+        "imposter",
+        "accomplice"
+      ],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Secretly switch to the Imposter's side this round. Get 4 points if the Imposter escapes. Your bet rides on the escape too. Your own role doesn't score.",
+        "fil": "Lihim kang lilipat sa panig ng Imposter ngayong round. May 4 puntos ka kung makatakas ang Imposter, at doon na rin nakasalalay ang taya mo. Hindi bibilangin ang puntos ng role mo."
+      },
+      "ratings": {
+        "imposter": "cant",
+        "accomplice": "cant",
+        "detective": "fine",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "best"
+      },
+      "when": "Play when you think the Imposter is winning the room.",
+      "notes": {
+        "judge": "your double vote now works for the Imposter."
+      }
+    },
+    {
+      "id": "spotlight",
+      "name": "Spotlight",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "player",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Pick a player. Everyone sees whether they're on the civilian side or the Imposter's side.",
+        "fil": "Pumili ng isang manlalaro. Ipapakita sa lahat kung panig siya ng civilian o ng Imposter."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "best",
+        "judge": "best",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Light up your top suspect.",
+      "notes": {
+        "imposter": "clear an innocent to push the room elsewhere."
+      }
+    },
+    {
+      "id": "shadow",
+      "name": "Shadow",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "player",
+      "cant_play": [],
+      "leader_cant_play": false,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Pick a player. You also get every point they earn this round.",
+        "fil": "Pumili ng isang manlalaro. Makukuha mo rin ang bawat puntos na makukuha niya ngayong round."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "best"
+      },
+      "when": "Pick whoever you think will have the best round.",
+      "notes": {
+        "gambler": "shadow a calm Imposter or a big bettor."
+      }
+    },
+    {
+      "id": "robin-hood",
+      "name": "Robin Hood",
+      "tier": "golden",
+      "kind": "active",
+      "windows": [
+        "discussion"
+      ],
+      "target": "none",
+      "cant_play": [],
+      "leader_cant_play": true,
+      "needs_bet": false,
+      "hidden_for_last_voter": false,
+      "text": {
+        "en": "Every leader loses 5 points. Every Underdog gets 2. With no Underdogs, you get the 5 instead. A leader can't play it.",
+        "fil": "Mababawasan ng 5 puntos ang bawat nangunguna. May 2 puntos ang bawat Underdog. Kung walang Underdog, sa iyo mapupunta ang 5. Hindi ito magagamit ng nangunguna."
+      },
+      "ratings": {
+        "imposter": "fine",
+        "accomplice": "fine",
+        "detective": "fine",
+        "judge": "fine",
+        "decoy": "fine",
+        "gambler": "fine"
+      },
+      "when": "Play when the leader is running away with it.",
+      "notes": {}
+    }
+  ]
+}
