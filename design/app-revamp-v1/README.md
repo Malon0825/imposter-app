@@ -1,6 +1,6 @@
 # Imposter app revamp — mockups v1
 
-Status: design for review, 2026-11-25, on branch `claude/power-cards`. Nothing is implemented. The approved base system in [DESIGN.md](../../DESIGN.md) still applies; this set proposes a theme on top of it.
+Status: approved and built in M1 (2026-11-25, branch `claude/power-cards`): the noir case-file theme lives in `src/theme.tsx` and the app styles. These mockups are the design record. The approved base system in [DESIGN.md](../../DESIGN.md) still applies; this set proposes a theme on top of it.
 
 ## What this is
 

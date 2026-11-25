@@ -1,6 +1,9 @@
 # Power cards — UI/UX design brief v1
 
-Status: approved for implementation, 2026-11-25 (screens, theme and sound). Rules come from `outputs/01a208a3-…/Power Card Review v11.xlsx` (37 cards: 15 Common, 12 Rare, 10 Golden; 6+ players only). The mockups still show the v10 deck; §10 lists what v11 changes on screen.
+Status: approved for implementation, 2026-11-25 (screens, theme and sound). Rules come from [power-card-review-v11.xlsx](power-card-review-v11.xlsx) (37 cards: 15 Common, 12 Rare, 10 Golden; 6+ players only).
+
+Built since (M0–M6, 2026-11-25), with these changes: the draw has **no timer** (a player who is done goes on to their role and anyone still drawing follows; the host can deal past someone who wandered off), and the rules moved on from this brief. Current rules: [power-card-review-v11.xlsx](power-card-review-v11.xlsx) → `crates/party-core/content/cards.json`, and [ROLE-MECHANICS.md](ROLE-MECHANICS.md) for what each role can do. Where this file disagrees with them or the code, they win.
+ The mockups still show the v10 deck; §10 lists what v11 changes on screen.
 
 ## 1. What we are designing for
 

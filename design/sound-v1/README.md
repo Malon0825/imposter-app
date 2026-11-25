@@ -1,6 +1,6 @@
 # Sound set v1
 
-Status: for audition, 2026-11-25, branch `claude/power-cards`. Not in the app yet.
+Status: approved and built into the app in M1 (2026-11-25, branch `claude/power-cards`): `src/sound.ts` and `src/sound-set.js`. This folder is the audition record.
 
 Every sound is synthesised in code with the Web Audio API (`sound.js`): no audio files, nothing to license, nothing to download, and it works offline. The sound board (`index.html`) plays each one and can play a whole round in order.
 
