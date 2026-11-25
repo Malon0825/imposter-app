@@ -130,7 +130,7 @@ pub struct Host {
     shutdown: axum_server::Handle,
     web: Option<web::WebHost>,
 }
-const GAMEPLAY_VERSION: &str = "full-cast-v2";
+const GAMEPLAY_VERSION: &str = "power-cards-v1";
 const UPDATE_GUEST: &str =
     "Update Imposter to join this party, or open the invitation in your browser.";
 
