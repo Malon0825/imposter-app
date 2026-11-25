@@ -2,12 +2,13 @@
 
 **The one place to look up how the game works today.** Every rule here is what `crates/party-core/` does, with the function to check named next to it. Other docs are plans, history or player copy. When this file and the code disagree, the code wins: fix this file in the same commit. Every patch that changes a mechanic updates this file (see [CLAUDE.md](CLAUDE.md)).
 
-Last checked against the code: 2026-11-25, branch `claude/power-cards`.
+Last checked against the code: 2026-11-25, branch `claude/browser-guest-cards`.
 
 ## 1. Party and session
 
 - **3–12 players.** Starting needs at least 3; a 13th can't join (`game.rs` `join`). Names are 1–28 characters.
 - **The host's phone owns the game.** State lives in host memory; guests poll. Ending the host process ends the party.
+- **Browser guests play the full game, power cards included.** They may send only the player actions in `GUEST_ACTIONS` (`network/web.rs`): ready, topic vote, role ready, clue, performed, vote, report, Drink or Dare choice and done, skip, leave, and the card actions draw, skip draw, draw ready, play card, change bet and Last Word. Host controls (start, settings, Deal now, pause) are refused with "Only the installed host app can do that."
 - **Session target:** 10, 15, 20, 25 or 30 points, set in the lobby. It locks when the first round starts.
 - **Ending a session:** after a round is scored, if anyone reached the target, the highest score wins. Ties share the win, unless Cardboard Crown breaks them (§8). The phase goes to `session_complete`.
 - **New session:** resets points, pending reports and the card session (hands, Golden odds, deck). It keeps players, settings and role history.
