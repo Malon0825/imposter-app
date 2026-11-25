@@ -2,7 +2,7 @@
 
 Status: approved for implementation, 2026-11-25 (screens, theme and sound). Rules come from [power-card-review-v11.xlsx](power-card-review-v11.xlsx) (37 cards: 15 Common, 12 Rare, 10 Golden; 6+ players only).
 
-Built since (M0–M6, 2026-11-25), with these changes: the draw has **no timer** (a player who is done goes on to their role and anyone still drawing follows; the host can deal past someone who wandered off), and the rules moved on from this brief. Current rules: [power-card-review-v11.xlsx](power-card-review-v11.xlsx) → `crates/party-core/content/cards.json`, and [ROLE-MECHANICS.md](ROLE-MECHANICS.md) for what each role can do. Where this file disagrees with them or the code, they win.
+Built since (M0–M6, 2026-11-25), with these changes: the draw has **no timer** (a player who is done goes on to their role and anyone still drawing follows; the host can deal past someone who wandered off), and the rules moved on from this brief. Current rules: [power-card-review-v11.xlsx](power-card-review-v11.xlsx) → `crates/party-core/content/cards.json`, and [MECHANICS.md](../../MECHANICS.md) for how every role, card and rule works in code. Where this file disagrees with them or the code, they win.
  The mockups still show the v10 deck; §10 lists what v11 changes on screen.
 
 ## 1. What we are designing for
@@ -190,7 +190,7 @@ The 12 screens are built in HTML/CSS with the app's own colours, fonts and spaci
 
 ## 9. Theme and role guidance
 
-- **Role guidance.** Each held card shows how it fits the role you hold this round: **Good for you**, **Fine**, or **Weak for you**. The card detail adds your role's one-line tip on an evidence tag, plus a strip of all six roles rated Best, Fine or Worst. The confirm sheet repeats the fit. It's private like the rest of the hand, and it guides without blocking: a Weak play can still be a bluff. The data is the Role guide sheet (every card × 6 roles, a rating and a tip). Rate cards against [ROLE-MECHANICS.md](ROLE-MECHANICS.md), which records what each role's ballot really does at a 6+ table.
+- **Role guidance.** Each held card shows how it fits the role you hold this round: **Good for you**, **Fine**, or **Weak for you**. The card detail adds your role's one-line tip on an evidence tag, plus a strip of all six roles rated Best, Fine or Worst. The confirm sheet repeats the fit. It's private like the rest of the hand, and it guides without blocking: a Weak play can still be a bluff. The data is the Role guide sheet (every card × 6 roles, a rating and a tip). Rate cards against [MECHANICS.md](../../MECHANICS.md), which records what each role's ballot really does at a 6+ table.
 - **Noir case file.** A theme over the approved palette and layouts, used only where it carries meaning:
   - the hand is the round's case file, and tips are evidence tags;
   - private reads are CLASSIFIED files, and the ballot is a line-up;

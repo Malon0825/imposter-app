@@ -2,7 +2,7 @@
 
 Status: plan, 2026-11-25; M0–M6 built on branch `claude/power-cards` (M7 release not done). Kept as the build record, not the current rules.
 
-Built since (M0–M6, 2026-11-25), with these changes: the draw has **no timer** (a player who is done goes on to their role and anyone still drawing follows; the host can deal past someone who wandered off), and the rules moved on from this brief. Current rules: [power-card-review-v11.xlsx](power-card-review-v11.xlsx) → `crates/party-core/content/cards.json`, and [ROLE-MECHANICS.md](ROLE-MECHANICS.md) for what each role can do. Where this file disagrees with them or the code, they win.
+Built since (M0–M6, 2026-11-25), with these changes: the draw has **no timer** (a player who is done goes on to their role and anyone still drawing follows; the host can deal past someone who wandered off), and the rules moved on from this brief. Current rules: [power-card-review-v11.xlsx](power-card-review-v11.xlsx) → `crates/party-core/content/cards.json`, and [MECHANICS.md](../../MECHANICS.md) for how every role, card and rule works in code. Where this file disagrees with them or the code, they win.
 
 **One release, three parts:**
 1. **The noir case-file theme** across all 41 screens (`design/app-revamp-v1`).

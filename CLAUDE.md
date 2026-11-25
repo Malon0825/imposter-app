@@ -1,40 +1,38 @@
 # Imposter: project rules for agents
 
-## The code is the truth. Keep the docs matching it.
+## Start with MECHANICS.md
 
-The Rust engine in `crates/party-core/` decides every game rule. When a doc disagrees with the code, the code wins: fix the doc. Never design a card, role change or rule from a doc alone. Check the code it points to first.
+**[MECHANICS.md](MECHANICS.md) is the single source of truth for how the game works.** It covers the round flow, roles, ballots, scoring, Drink or Dare, reports, sessions, power cards (every card), the comeback system, round rules and the word deck. It matches the code and names the function to check for each rule.
 
-**Every patch that changes a game mechanic updates its docs in the same commit.** Mechanics include roles, voting, scoring, bets, punishment, phases and timers, power cards, round rules, topics and session settings. Before you commit, go through the table below for each area you touched. Update every doc and in-app text it lists, or say in the commit message why it didn't change. A bug fix that changes what players can do counts as a mechanic change.
+To learn a rule, read MECHANICS.md first. Don't search through other docs. Plans, mockup folders, PLAN.md and the design briefs are history: they show why things were decided, not what the game does now.
 
-## Where each mechanic lives
+## The code is the truth. MECHANICS.md follows it.
 
-| Area | Code (truth) | Docs and player-facing text to keep in step |
-|---|---|---|
-| Roles: deal, ballots, vote weight, scoring | `party-core/src/cast.rs` (`specials`, `award`), `game.rs` (`cast_picks`, the `vote` action, vote resolution) | [ROLE-MECHANICS.md](design/power-cards-v1/ROLE-MECHANICS.md) · README "Play" (step 6 and the role list) · [PLAN.md](PLAN.md) §13 · in-app role text `src/full-cast.tsx` · ballot screen in `src/App.tsx` |
-| Power cards: rules and text | [power-card-review-v11.xlsx](design/power-cards-v1/power-card-review-v11.xlsx), sheets Card review and Role guide. `scripts/cards-from-sheet.py` generates `crates/party-core/content/cards.json` from it. Never hand-edit the JSON. | The same xlsx: How to play, Session rules, What changed in v11 · ROLE-MECHANICS.md · README "Power cards" · in-app rules ("Power cards" in `src/App.tsx`) · card copy in `src/cards/Hand.tsx` (confirm lines) and `src/cards/Results.tsx` |
-| Power cards: engine | `party-core/src/cards.rs` (catalog, deck, odds, `Weights`, `tally`, `settle`), `power.rs` (plays, views), `game.rs` (`draw`, `last_word` phases) | xlsx Session rules and System design (6+) · ROLE-MECHANICS.md |
-| Round flow and phases | `game.rs` | README "Play" · [design/ROUND-FLOW-IMPLEMENTATION-PLAN.md](design/ROUND-FLOW-IMPLEMENTATION-PLAN.md) |
-| Score sessions, bets, Drink or Dare, reports | `game.rs`, `cast.rs` | README "Play" and "Score sessions and confidence bets" · PLAN.md §12–13 · [design/session-scoring-v1/IMPLEMENTATION.md](design/session-scoring-v1/IMPLEMENTATION.md) |
-| Random round rules and the word deck | `game.rs` (`rule_weights`, `record_rule`), `selection.rs` and `history.rs` (word deck) | README "Random round rules" · [design/random-round-rules-v1/IMPLEMENTATION.md](design/random-round-rules-v1/IMPLEMENTATION.md) |
-| Topics and words | `crates/party-core/content/*.json`. Validate with `python scripts/prepare-content.py --check`. | [TOPICS.md](TOPICS.md) · [TOPIC-MODES.md](TOPIC-MODES.md): regenerate it with `--write-mode-report`, never edit it by hand |
-| Public website | none | `docs/index.html` (the player-facing tour), when a change shows up there |
+The Rust engine in `crates/party-core/` decides every rule. If MECHANICS.md disagrees with the code, the code wins: fix MECHANICS.md. Never design a card, role change or rule from a doc alone. Check it against MECHANICS.md and the function it names.
 
-Plans and mockup folders (`design/*/IMPLEMENTATION-PLAN.md`, `design/*-v1/README.md`, `PLAN.md` §1–11, `REFERENCE-FLOW.md`) are history. Don't rewrite them to match new code. When one goes stale, update its **Status** line to say what was built, what changed since, and which doc is now current.
+**Every patch that changes a game mechanic updates MECHANICS.md in the same commit.**
+- Mechanics include roles, voting, scoring, bets, punishment, reports, phases and timers, power cards, round rules, topics and session settings.
+- A bug fix that changes what players can do counts.
+- Update the "Last checked" line at the top of MECHANICS.md when you do.
 
-## Rules agents got wrong before
+Then update whichever of these the change touches:
 
-Read [ROLE-MECHANICS.md](design/power-cards-v1/ROLE-MECHANICS.md) before touching cards. Three of the biggest traps:
+| If you change | Also update |
+|---|---|
+| A card's rules or text | [power-card-review-v11.xlsx](design/power-cards-v1/power-card-review-v11.xlsx) (Card review, Role guide, and How to play / Session rules if affected), then regenerate `cards.json` with `python -I scripts/cards-from-sheet.py`. Never hand-edit the JSON. Card copy in `src/cards/Hand.tsx` (confirm lines) and `src/cards/Results.tsx`. |
+| What a role knows, picks or scores | In-app role text in `src/full-cast.tsx`, the ballot screen in `src/App.tsx`, the README "Play" role list |
+| The rules players read in the app | The in-app rules list in `src/App.tsx` (search for the "Power cards" rules section), the README "Play" steps |
+| Topics or words | Validate with `python scripts/prepare-content.py --check`, regenerate [TOPIC-MODES.md](TOPIC-MODES.md) with `--write-mode-report`. [TOPICS.md](TOPICS.md) holds the content policy. |
+| Anything on the public site | `docs/index.html` |
 
-- **Power cards only run at 6+ players** (`cards::MIN_PLAYERS`). At a card table every role is dealt, the Judge always counts twice, and the Decoy holds a related word. Small-party exceptions never apply to cards.
-- **The Imposter's ballot has no suspect.** From five players it names their Accomplice pick (sent as `player_id`) and their Decoy pick, and it never counts. Any card that boosts, locks or hedges "your vote" must say what happens for the Imposter. Usually the answer is Can't.
-- **The draw has no timer.** A player who is done goes on to their role, and anyone still drawing follows.
+**Stale history docs:** don't rewrite them. Fix their **Status** line to point at MECHANICS.md if they mislead.
 
 ## Card text
 
 - Ability text is for a young reader: "you", short sentences, one idea each, and a question then a result ("Lose a bet of 2 or 3? Get 1 point back.").
-- English is column E of Card review and Filipino is column F. Filipino covers only the card text and the How to play sheet.
+- English is column E of Card review and Filipino is column F. Filipino covers only the card text and How to play.
 - When you write or change Filipino, mark its status cell for Astra to check.
-- After editing the xlsx, run `python -I scripts/cards-from-sheet.py`. Then check the fit at `http://localhost:1428/card-gallery.html?lang=en&w=210` (`window.overflowing` must be `[]`), and again with `lang=fil`.
+- After editing, check the fit at `http://localhost:1428/card-gallery.html?lang=en&w=210` (`window.overflowing` must be `[]`), and again with `lang=fil`.
 
 ## Checks before committing a mechanic change
 

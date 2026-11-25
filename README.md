@@ -10,6 +10,8 @@ The [single-page website](docs/README.md) includes 26 actual app screenshots, ga
 
 The [visual comparison review](design/VISUAL-REVIEW.md) links all 24 before/after screenshots, the side-by-side proposal gallery, and compact/tall phone captures. Open the live gallery at `http://127.0.0.1:1428/output/playwright/visual-review/index.html` while the preview is running.
 
+How the game works, exactly as coded: [MECHANICS.md](MECHANICS.md). The steps below are the player's view.
+
 ## Play
 
 1. Download **imposter-1.2.1-android.apk** from the [v1.2.1 release](https://github.com/Malon0825/imposter-app/releases/tag/v1.2.1) on the Android host, open it, and allow installation from your browser when Android asks. Android guests may also install it; browser guests need no installation. Connect everyone to the same reachable router's Wi-Fi. The signed APK includes ARM64 phones and x86_64 emulators; minimum Android 8 / API 26. Native Android guests need 1.2.1 as well. Older installs are turned away and can join in the browser instead.
@@ -52,7 +54,7 @@ Reporting opens as an optional sheet on Results. Reports are locked on submissio
 
 ## Power cards
 
-With 6 or more players the host can turn on power cards: 37 cards in three tiers (15 Common, 12 Rare, 10 Golden), drawn before roles for 3 points (free for Underdogs), one active card per round. The rules are in [power-card-review-v11.xlsx](design/power-cards-v1/power-card-review-v11.xlsx), which generates `crates/party-core/content/cards.json`. [ROLE-MECHANICS.md](design/power-cards-v1/ROLE-MECHANICS.md) records how each role works at a card table.
+With 6 or more players the host can turn on power cards: 37 cards in three tiers (15 Common, 12 Rare, 10 Golden), drawn before roles for 3 points (free for Underdogs), one active card per round. The rules are in [power-card-review-v11.xlsx](design/power-cards-v1/power-card-review-v11.xlsx), which generates `crates/party-core/content/cards.json`. How every card, role and rule works in code: [MECHANICS.md](MECHANICS.md).
 
 ## Topic voting before every round
 
@@ -152,7 +154,7 @@ Reporting verification: the production build and all 24 Rust tests pass, includi
 
 Run `scripts/full-cast-smoke.js` the same way to play a round at 3, 4 and 5 players in separate browser contexts. It checks the lobby lineup, every role screen and its size-specific wording, the imposter's and Detective's extra picks, each player's own result and the room's results. Screenshots go to `output/playwright/full-cast-*.png`. The other round smokes step past the role screen and each player's own result. They read each player's role, so ties and point checks hold for every lineup. `native-web-smoke` needs its own native test server, and the motion and visual-capture scripts use staged sample states that still predate Full Cast.
 
-Card rules live in `design/power-cards-v1/power-card-review-v11.xlsx` (regenerate `cards.json` with `scripts/cards-from-sheet.py`). Before changing a card, read [ROLE-MECHANICS.md](design/power-cards-v1/ROLE-MECHANICS.md): it records what each role's ballot actually does at a card table (6+ players), including that the Imposter's ballot never names a suspect.
+Card rules live in `design/power-cards-v1/power-card-review-v11.xlsx` (regenerate `cards.json` with `scripts/cards-from-sheet.py`). Before changing a card, read [MECHANICS.md](MECHANICS.md): it records what each role's ballot actually does at a card table (6+ players), including that the Imposter's ballot never names a suspect.
 
 Run `scripts/power-cards-smoke.js` the same way for power cards with six players: the host's switch, the draw window (draw, sealed reveal, skip), a role-reveal card, a discussion card, a ballot card with Cold Feet, and a caught Imposter's Last Word. It needs the debug dev bridge, because it deals cards with the debug-only `dev_cards` action. `scripts/revamp-capture.js` plays a 6-player round and captures every noir-themed screen. Screenshots go to `output/playwright/power-cards/` and `output/playwright/revamp/`.
 

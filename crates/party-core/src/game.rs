@@ -607,7 +607,7 @@ impl Game {
             "begin_round" => {
                 self.require_host(actor)?;
                 self.require_phase(&["topic_chosen"])?;
-                // With power cards on, a 10-second draw window comes first.
+                // With power cards on, an untimed draw window comes first.
                 if !self.open_draw() {
                     self.deal()?;
                 }
