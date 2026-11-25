@@ -4453,7 +4453,9 @@ img.topic-emblem { object-fit: contain; }
 .pc-flip-front, .pc-flip-back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 .pc-flip-back { transform: rotateY(180deg); }
 .pc-seal { border-radius: 18px; padding: 6px; }
-.pc-seal .pc-card { --w: 218px !important; }
+/* The back fills its tier frame, inset evenly (the frame is the card's edge). */
+.pc-seal { box-sizing: border-box; }
+.pc-seal > .pc-card.back { width: 100% !important; height: 100%; aspect-ratio: auto; border-radius: 14px; }
 .pc-seal.common { background: linear-gradient(135deg, #cfd9c9, #f4f1e8 40%, #b4c8ad); box-shadow: 0 0 24px #f4f1e840; }
 .pc-seal.rare { background: linear-gradient(135deg, var(--foil-a), #d9e8ef 30%, var(--foil-b) 55%, #7fa3ba 80%, #cfe0e9); box-shadow: 0 0 38px #8fb3c973; }
 .pc-seal.golden { background: linear-gradient(135deg, var(--gold-lo), var(--gold-hi) 22%, var(--gold) 45%, #8d6417 70%, var(--gold-hi) 90%); box-shadow: 0 0 50px #e9c46a80; }
@@ -4521,9 +4523,9 @@ img.topic-emblem { object-fit: contain; }
 .pc-role-line { font-size: 15px; color: var(--muted); }
 .pc-role-line b { color: var(--ink); }
 .pc-rules { margin: 4px 0 10px; }
-.pc-hand-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 8px; justify-items: center; }
+.pc-hand-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 8px; justify-items: center; }
 .pc-hand-card { border: 0; background: none; padding: 0; display: grid; justify-items: center; gap: 6px; color: var(--ink); }
-.pc-fit { display: inline-flex; align-items: center; height: 22px; padding: 0 7px; border-radius: 11px; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; }
+.pc-fit { display: inline-flex; align-items: center; justify-content: center; min-height: 22px; max-width: 100%; padding: 2px 7px; border-radius: 11px; font-size: 10px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; text-align: center; line-height: 1.2; }
 .pc-fit.best { background: var(--lime); color: #141916; }
 .pc-fit.fine, .pc-fit.ok { border: 1.5px solid #4a544c; color: var(--muted); }
 .pc-fit.worst { border: 1.5px solid #d98672b3; color: var(--terra); }
@@ -4762,3 +4764,14 @@ img.topic-emblem { object-fit: contain; }
 }
 .pc-confirm-card { display: flex; justify-content: center; margin: 2px 0 10px; }
 .pc-card.hand { font-size: calc(var(--w) / 11); }
+
+/* The hand sheet never scrolls sideways; hand cards shrink to their column. */
+.bottom-sheet.pc-hand-sheet { overflow-x: hidden; }
+.pc-hand-card { min-width: 0; max-width: 100%; }
+.pc-hand-card .pc-card.hand { --w: min(100px, 26vw); }
+.center-stage.locked:has(.pc-cold-feet) .envelope { width: min(40vw, 150px); }
+.center-stage.locked .pc-cold-feet { width: 100%; margin-top: 14px; text-align: left; }
+.pc-stage-foot .type { text-wrap: balance; }
+.pc-classified > .type { padding-right: 104px; }
+/* The screen shake moves the app shell; the root clips it so the page never scrolls sideways. */
+#root { overflow-x: clip; }

@@ -256,7 +256,7 @@ export function StoryOfTheNight({ view, who }: { view: View; who: Who }) {
           <section>
             <h3>Best bluff</h3>
             <p>
-              <b>{who.name(bluff.player_id)}</b> {bluff.card === "bluff-card" ? "faked a Golden card and the room bought it." : `claimed ${bluff.effect.claim ?? "a role"} and lied.`}
+              <b>{who.name(bluff.player_id)}</b> {bluff.card === "bluff-card" ? "faked a Golden card and the room bought it." : `claimed to be the ${bluff.effect.claim ? bluff.effect.claim[0].toUpperCase() + bluff.effect.claim.slice(1) : "…"} and lied.`}
             </p>
           </section>
         )}

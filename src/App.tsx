@@ -727,6 +727,8 @@ export default function App() {
   // Power cards: the hand sheet, the card sent with a vote, and the host's
   // OK to open the vote while a clue is still owed.
   const [handOpen, setHandOpen] = useState(false);
+  // A new phase is a new screen: the hand closes rather than covering it.
+  useEffect(() => setHandOpen(false), [view?.phase, view?.round_id]);
   const [ballotCard, setBallotCard] = useState<BallotCard | null>(null);
   const [confirmOpenVote, setConfirmOpenVote] = useState(false);
   // Block screenshots only while a private card is face up. Browsers cannot
@@ -3481,8 +3483,9 @@ export default function App() {
                   filled={view.vote_count}
                   linked
                 />
+                {/* Cold Feet sits in view, not below the fold under the envelope. */}
+                <ColdFeet view={view} send={send} busy={busy} />
               </div>
-              <ColdFeet view={view} send={send} busy={busy} />
               <PublicNotes view={view} who={who} />
 
               {!!view.clues?.length && (
@@ -4371,7 +4374,17 @@ export default function App() {
     }
     return null;
   }
-  const screenKey = booting
+  // A drawer still on their card keeps the draw screen's identity when the
+  // round moves on to roles, so their card doesn't replay its landing.
+  const stillDrawing =
+    view?.phase === "roles" &&
+    !!view.cards?.active &&
+    !!view.cards.draw &&
+    view.cards.mine.hand.some((h) => h.new) &&
+    !view.cards.draw.ready.includes(view.my_id);
+  const screenKey = stillDrawing
+    ? "draw--"
+    : booting
     ? "boot"
     : page ||
       (!view

@@ -105,7 +105,7 @@ export function HandSheet({
                   <button key={h.id} type="button" className="pc-hand-card" onClick={() => setStep({ kind: "detail", id: h.id })}>
                     <CardFace id={h.id} size="hand" state={h.playable ? "playable" : info.kind === "passive" ? "plain" : "later"} />
                     {info.kind === "passive" ? (
-                      <span className="pc-fit ok">Waits · fires on its own</span>
+                      <span className="pc-fit ok">Fires on its own</span>
                     ) : fit ? (
                       <span className={`pc-fit ${fit}`}>{FIT_LABEL[fit]}</span>
                     ) : null}
