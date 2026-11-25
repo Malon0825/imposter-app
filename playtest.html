@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Playtest table</title>
+    <style>
+      :root { color-scheme: dark; }
+      * { box-sizing: border-box; }
+      body { margin: 0; background: #0b0e0c; color: #f4f1e8; font: 14px/1.4 system-ui, sans-serif; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
+      header { display: flex; align-items: center; gap: 12px; padding: 8px 14px; border-bottom: 1px solid #2a312c; flex: none; flex-wrap: wrap; }
+      header b { font-size: 15px; }
+      header small { color: #b4c8ad; }
+      header button { background: #1c211e; color: inherit; border: 1px solid #3c463e; border-radius: 8px; padding: 6px 10px; cursor: pointer; font: inherit; }
+      header button.on { background: #d6f56b; color: #141916; border-color: #d6f56b; }
+      #status { margin-left: auto; color: #b4c8ad; }
+      main { flex: 1; min-height: 0; display: grid; grid-template-columns: auto 1fr; gap: 14px; padding: 12px; position: relative; }
+      .seat { position: relative; border-radius: 22px; overflow: hidden; background: #141916; box-shadow: 0 0 0 2px #2a312c; }
+      .seat iframe { position: absolute; left: 0; top: 0; width: 390px; height: 844px; border: 0; transform-origin: 0 0; }
+      .seat .label { position: absolute; left: 8px; bottom: 6px; z-index: 2; background: #000a; color: #f4f1e8; border-radius: 6px; padding: 2px 8px; font-size: 12px; pointer-events: none; }
+      .seat.big { position: absolute; left: 12px; top: 12px; box-shadow: 0 0 0 3px #d6f56b; }
+      #small { display: flex; flex-wrap: wrap; gap: 12px; align-content: flex-start; overflow: auto; }
+      .seat.small { cursor: pointer; }
+      .seat.small::after { content: ""; position: absolute; inset: 0; }
+      .seat.small:hover { box-shadow: 0 0 0 2px #b4c8ad; }
+      .tip { color: #b4c8ad; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <b>Playtest table</b>
+      <small>Big phone: you play it. Click a small phone to bring it up. Small phones stay live.</small>
+      <button id="fresh">New table</button>
+      <span id="status">Setting up…</span>
+    </header>
+    <main><div id="bigslot"></div><div id="small"></div></main>
+    <script type="module">
+      // Dev only. Creates a 7-player party through the dev bridge, readies
+      // everyone, turns power cards on, gives everyone points and a starter
+      // hand, and seats each player in their own phone frame. Each frame is a
+      // separate *.localhost origin, so every player keeps their own session.
+      const names = ["Host", "Ben", "Cleo", "Dev", "Eve", "Kai", "Mia"];
+      const starter = [
+        ["lawyer-up", "jackpot"],
+        ["late-arrival", "objection"],
+        ["anonymous-tip", "heavy-vote"],
+        ["cover-story", "pocket-veto"],
+        ["bluff-card", "private-eye", "x-ray"],
+        ["on-the-record", "cold-feet", "midas-touch"],
+        ["opening-act", "second-opinion", "spotlight"],
+      ];
+      const status = (t) => (document.getElementById("status").textContent = t);
+      const post = async (method, body) => {
+        const r = await fetch(`/api/${method}`, { method: "POST", headers: { "Content-Type": "application/json", "X-Imposter-Dev": "1" }, body: JSON.stringify(body) });
+        const data = await r.json();
+        if (!r.ok) throw Error(data.error || r.statusText);
+        return data;
+      };
+      let n = 0;
+      const act = async (session, kind, value = null) => {
+        const view = await post("state", { session_id: session.session_id });
+        return post("action", { session_id: session.session_id, action: { id: `playtest-${Date.now()}-${n++}`, round_id: view.round_id, kind, value } });
+      };
+      async function setUp() {
+        status("Creating the party…");
+        const host = await post("create", { name: "Playtest", player: names[0], wifi: "Home Wi-Fi" });
+        const sessions = [host];
+        for (const name of names.slice(1)) sessions.push(await post("join", { invitation: host.credentials.native_invitation, player: name }));
+        for (const s of sessions.slice(1)) await act(s, "ready", true);
+        await act(host, "power_cards", true);
+        const ids = await Promise.all(sessions.map((s) => post("state", { session_id: s.session_id }).then((v) => v.my_id)));
+        const give = Object.fromEntries(ids.map((id, i) => [id, starter[i]]));
+        await act(host, "dev_cards", { points: 5, give });
+        localStorage.setItem("playtest.table", JSON.stringify(sessions));
+        return sessions;
+      }
+      function seat(sessions) {
+        const main = document.querySelector("main");
+        const left = document.getElementById("bigslot");
+        const right = document.getElementById("small");
+        // Every frame stays in one container for good: moving an iframe in
+        // the DOM reloads it. The big one is lifted over the left column.
+        const frames = sessions.map((s, i) => {
+          const box = document.createElement("div");
+          box.className = "seat";
+          const frame = document.createElement("iframe");
+          frame.allow = "autoplay";
+          frame.src = `http://seat${i}.localhost:${location.port}/playtest-seat.html#` + new URLSearchParams({ session: JSON.stringify(s), sound: i === 0 ? "on" : "off" });
+          const label = document.createElement("span");
+          label.className = "label";
+          label.textContent = names[i] + (i === 0 ? " · host" : "");
+          box.append(frame, label);
+          box.addEventListener("click", () => focus(i));
+          right.append(box);
+          return box;
+        });
+        let current = 0;
+        const layout = () => {
+          const h = main.clientHeight - 24;
+          const bigScale = Math.min(1, h / 844);
+          left.style.width = `${390 * bigScale}px`;
+          const restWidth = main.clientWidth - 390 * bigScale - 50;
+          const smallScale = Math.max(0.2, Math.min(0.45, (restWidth - 24) / 3 / 390));
+          frames.forEach((box, j) => {
+            const big = j === current;
+            const sc = big ? bigScale : smallScale;
+            box.classList.toggle("big", big);
+            box.classList.toggle("small", !big);
+            box.style.width = `${390 * sc}px`;
+            box.style.height = `${844 * sc}px`;
+            box.querySelector("iframe").style.transform = `scale(${sc})`;
+          });
+        };
+        // Sound follows the phone you play: only the big one is heard.
+        const sound = () =>
+          frames.forEach((box, j) => box.querySelector("iframe").contentWindow?.postMessage({ playtestSound: j === current }, "*"));
+        frames.forEach((box) => box.querySelector("iframe").addEventListener("load", sound));
+        const focus = (i) => {
+          current = i;
+          layout();
+          sound();
+        };
+        window.addEventListener("resize", layout);
+        layout();
+        status("Ready. Start the round from the host phone.");
+      }
+      document.getElementById("fresh").addEventListener("click", async () => {
+        localStorage.removeItem("playtest.table");
+        location.reload();
+      });
+      try {
+        const saved = JSON.parse(localStorage.getItem("playtest.table") || "null");
+        let sessions = saved;
+        if (saved) {
+          // Reuse the table if the party still exists on the dev bridge.
+          try {
+            await post("state", { session_id: saved[0].session_id });
+          } catch {
+            sessions = null;
+          }
+        }
+        seat(sessions ?? (await setUp()));
+      } catch (e) {
+        status("Setup failed: " + e.message + " (is the app-api preview running a debug build?)");
+      }
+    </script>
+  </body>
+</html>

@@ -208,35 +208,16 @@ export function ProgressDots({
 
 export function LockedVoteArt() {
   const reduced = useReducedMotion();
+  // The engraved, wax-sealed envelope (app art A7) settles into place.
   return (
     <div className="envelope" aria-hidden="true">
-      <svg
-        className="rays envelope-rays"
-        viewBox="0 0 72 35"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="4"
-        strokeLinecap="round"
-      >
-        <path d="M36 19V3M20 25 9 13M52 25l11-12" />
-      </svg>
       <motion.img
-        src="/art/vote-envelope.png"
+        src="/art/app/a7-envelope.webp"
         alt=""
-        initial={reduced ? false : { y: 6, rotate: -3 }}
-        animate={{ y: 0, rotate: 0 }}
+        initial={reduced ? false : { y: 10, rotate: -5, scale: 0.96 }}
+        animate={{ y: 0, rotate: -2, scale: 1 }}
         transition={{ ...MOTION.select, delay: reduced ? 0 : 0.04 }}
       />
-      <motion.span
-        className="envelope-seal"
-        initial={reduced ? false : { scale: 0.72 }}
-        animate={{ scale: 1 }}
-        transition={
-          reduced ? { duration: 0 } : { ...MOTION.select, delay: 0.12 }
-        }
-      >
-        <CheckStroke size={30} delay={0.18} />
-      </motion.span>
     </div>
   );
 }

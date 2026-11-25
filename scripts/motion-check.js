@@ -394,11 +394,23 @@ async function checkMotion(page) {
     .getByRole("button", { name: "Reveal my role", exact: true })
     .click();
   await page.waitForTimeout(450);
-  await page.getByRole("button", { name: "How to play", exact: true }).click();
-  await page.getByRole("button", { name: "Got it", exact: true }).click();
-  await page
-    .getByRole("button", { name: "Reveal my role", exact: true })
-    .waitFor();
+  // A guest's header has How to play, which leaves the card and conceals it.
+  // The host's has the invitation QR instead, which hides the card while open.
+  const help = page.getByRole("button", { name: "How to play", exact: true });
+  if (await help.count()) {
+    await help.click();
+    await page.getByRole("button", { name: "Close", exact: true }).click();
+    await page
+      .getByRole("button", { name: "Reveal my role", exact: true })
+      .waitFor();
+  } else {
+    await page.getByRole("button", { name: "Show invitation QR code", exact: true }).click();
+    assert(
+      await page.evaluate(() => document.documentElement.hasAttribute("data-private-concealed")),
+      "The invitation opened over a visible secret",
+    );
+    await page.getByRole("button", { name: "Close invitation", exact: true }).click();
+  }
 
   // Fast local work must not flash a spinner; slow work must remain single-shot.
   await phase("discussion");

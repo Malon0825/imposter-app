@@ -130,7 +130,7 @@ pub struct Host {
     shutdown: axum_server::Handle,
     web: Option<web::WebHost>,
 }
-const GAMEPLAY_VERSION: &str = "full-cast-v2";
+const GAMEPLAY_VERSION: &str = "power-cards-v1";
 const UPDATE_GUEST: &str =
     "Update Imposter to join this party, or open the invitation in your browser.";
 
@@ -436,7 +436,7 @@ impl Session {
                     continue;
                 }
                 game.advance_reveals(Instant::now());
-                if game.phase == "topic_chosen"
+                if game.topic_held(Instant::now())
                     && game.round.deal_error.is_none()
                     && game.active().iter().all(|p| p.connected)
                 {

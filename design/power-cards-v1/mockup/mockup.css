@@ -1,0 +1,273 @@
+/* Power cards mockups. Tokens copied from src/style.css so the screens match the app. */
+@font-face { font-family: "DM Sans Variable"; src: url(fonts/dm-sans-latin-wght-normal.woff2) format("woff2"); font-weight: 100 1000; }
+@font-face { font-family: Anton; src: url(fonts/anton-latin-400-normal.woff2) format("woff2"); }
+
+:root {
+  --bg: #141916;
+  --bg2: #171a18;
+  --surface: #1c211e;
+  --surface2: #222824;
+  --ink: #f4f1e8;
+  --muted: #b4c8ad;
+  --dim: #7f8c7c;
+  --lime: #d6f56b;
+  --terra: #d98672;
+  --line: #343d35;
+  --gold: #e9c46a;
+  --gold-hi: #f8e6a6;
+  --gold-lo: #a87a22;
+  --foil-a: #8fb3c9;
+  --foil-b: #b4c8ad;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #0d100e; color: var(--ink); font-family: "DM Sans Variable", sans-serif; -webkit-font-smoothing: antialiased; }
+body.single { background: var(--bg); }
+
+/* ---------- phone frame ---------- */
+.phone { width: 390px; height: 844px; position: relative; overflow: hidden; background: var(--bg); display: flex; flex-direction: column; }
+.content { flex: 1; padding: 0 20px; display: flex; flex-direction: column; min-height: 0; }
+.bottom { padding: 12px 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+
+/* ---------- header ---------- */
+.hdr { height: 66px; padding: 0 14px 0 18px; display: flex; align-items: center; gap: 6px; flex: none; }
+.hdr .title { flex: 1; text-align: center; font-weight: 700; font-size: 21px; letter-spacing: -.2px; margin-left: 30px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hdr.two .title { margin-left: 0; font-size: 19px; }
+.ico { width: 40px; height: 40px; display: grid; place-items: center; color: var(--ink); position: relative; border-radius: 12px; }
+.ico svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hand-btn { width: 46px; }
+.hand-btn .fan { position: relative; width: 26px; height: 26px; }
+.hand-btn .fan i { position: absolute; left: 7px; top: 2px; width: 13px; height: 19px; border-radius: 3px; background: var(--bg2); border: 1.6px solid var(--ink); transform-origin: 50% 100%; }
+.hand-btn .fan i:nth-child(1) { transform: rotate(-20deg) translateX(-2px); }
+.hand-btn .fan i:nth-child(2) { transform: rotate(0deg); }
+.hand-btn .fan i:nth-child(3) { transform: rotate(20deg) translateX(2px); }
+.hand-btn .badge { position: absolute; right: 0; top: 3px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--ink); color: var(--bg); font-size: 11px; font-weight: 800; display: grid; place-items: center; padding: 0 4px; }
+.hand-btn.live { box-shadow: 0 0 0 2px var(--lime); }
+.hand-btn.live .badge { background: var(--lime); }
+
+/* ---------- type ---------- */
+h1 { font-size: 32px; line-height: 1.08; font-weight: 800; margin: 4px 0 6px; letter-spacing: -.6px; }
+h2 { font-size: 20px; font-weight: 800; margin: 0; letter-spacing: -.3px; }
+.sub { color: var(--muted); font-size: 16px; line-height: 1.35; margin: 0; }
+.small { font-size: 13px; color: var(--muted); }
+.anton { font-family: Anton, sans-serif; font-weight: 400; text-transform: uppercase; letter-spacing: .5px; }
+.center { text-align: center; }
+
+/* ---------- buttons ---------- */
+.btn { height: 60px; border-radius: 18px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 20px; border: 1.5px solid transparent; }
+.btn.primary { background: var(--lime); color: #141916; }
+.btn.secondary { border-color: #5b665c; color: var(--ink); }
+.btn.gold { background: linear-gradient(180deg, var(--gold-hi), var(--gold)); color: #241b07; }
+.btn.small { height: 48px; font-size: 17px; border-radius: 15px; }
+.btn .meta { font-weight: 600; opacity: .7; margin-left: 6px; }
+
+/* ---------- pills ---------- */
+.pill { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 11px; border-radius: 14px; font-size: 13px; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; white-space: nowrap; }
+.pill.lime { background: var(--lime); color: #141916; }
+.pill.gold { background: linear-gradient(180deg, var(--gold-hi), var(--gold)); color: #2a1f05; }
+.pill.terra { background: var(--terra); color: #1e130f; }
+.pill.ghost { border: 1.5px solid var(--line); color: var(--muted); }
+.pill.sage { background: #2c3a2c; color: var(--muted); }
+.pill svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ---------- avatars ---------- */
+.av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: 15px; color: #141916; background: var(--muted); flex: none; position: relative; }
+.av.you { background: var(--lime); }
+.av.t { background: var(--terra); }
+.av.sm { width: 32px; height: 32px; font-size: 12px; }
+.av.xs { width: 26px; height: 26px; font-size: 10px; }
+
+/* ---------- rows ---------- */
+.rows { border-top: 1px solid var(--line); }
+.row { display: flex; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.row .grow { flex: 1; min-width: 0; }
+.row .name { font-weight: 700; font-size: 17px; }
+
+/* ---------- panels ---------- */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; }
+.ivory { background: var(--ink); color: #141916; border-radius: 18px; }
+
+/* ============================================================
+   CARD COMPONENT — one markup, three sizes (full / hand / chip)
+   ============================================================ */
+.card { --w: 300px; width: var(--w); aspect-ratio: 5 / 7; border-radius: calc(var(--w) * .07); position: relative; flex: none; font-size: calc(var(--w) / 18.75); }
+.card.hand { --w: 104px; font-size: 9px; }
+.card.mid { --w: 150px; }
+.card.chip { --w: 28px; border-radius: 4px; }
+.card .face { position: absolute; inset: 0; border-radius: inherit; display: flex; flex-direction: column; padding: .85em .85em .75em; overflow: hidden; }
+
+/* tier frames */
+.card.common .face { background: #f4f1e8; color: #141916; box-shadow: inset 0 0 0 calc(var(--w) * .012) #b4c8ad, 0 10px 30px rgba(0,0,0,.35); }
+.card.rare { padding: calc(var(--w) * .022); background: linear-gradient(135deg, var(--foil-a), #d9e8ef 30%, var(--foil-b) 55%, #7fa3ba 80%, #cfe0e9); box-shadow: 0 10px 30px rgba(0,0,0,.35); }
+.card.rare .face { inset: calc(var(--w) * .022); border-radius: calc(var(--w) * .055); background: #f4f1e8; color: #141916; }
+.card.golden { padding: calc(var(--w) * .026); background: linear-gradient(135deg, var(--gold-lo), var(--gold-hi) 22%, var(--gold) 45%, #8d6417 70%, var(--gold-hi) 90%); box-shadow: 0 0 calc(var(--w) * .12) rgba(233,196,106,.28), 0 10px 30px rgba(0,0,0,.45); }
+.card.golden .face { inset: calc(var(--w) * .026); border-radius: calc(var(--w) * .052); background: radial-gradient(120% 80% at 50% 30%, #2b261a, #15130d 70%); color: var(--gold-hi); }
+.card.golden .face::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, transparent 35%, rgba(255,240,190,.16) 48%, transparent 60%); background-size: 260% 100%; background-position: 100% 0; pointer-events: none; }
+.anim .card.golden .face::after { animation: sheen 4s linear infinite; }
+@keyframes sheen { to { background-position: -160% 0; } }
+
+/* face parts */
+.card .top { display: flex; justify-content: space-between; align-items: center; gap: .3em; }
+.card .win { display: inline-flex; align-items: center; gap: .3em; font-size: .62em; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; padding: .35em .65em; border-radius: 1em; background: rgba(20,25,22,.08); color: #3c473e; white-space: nowrap; }
+.card .win svg { width: 1.15em; height: 1.15em; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.card.golden .win { background: rgba(233,196,106,.12); color: var(--gold); }
+.card .win.now { background: var(--lime); color: #141916; }
+.card .tier { font-size: .58em; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #6b776c; }
+.card.rare .tier { color: #46708a; }
+.card.golden .tier { color: var(--gold); }
+.card .art { flex: 1; display: grid; place-items: center; min-height: 0; }
+.card .art svg { width: 52%; height: auto; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; opacity: .9; }
+.card.common .art svg { color: #3f5a43; }
+.card.rare .art svg { color: #3e6a86; }
+.card.golden .art svg { color: var(--gold); filter: drop-shadow(0 0 6px rgba(233,196,106,.35)); }
+.card .art .emblem { width: 62%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(233,196,106,.45); box-shadow: inset 0 0 0 .35em rgba(233,196,106,.08), inset 0 0 0 .4em rgba(233,196,106,.25); position: relative; }
+.card .art .emblem svg { width: 62%; }
+.card .art .emblem::before { content: "PLACEHOLDER ART"; position: absolute; bottom: -1.6em; font-size: .42em; letter-spacing: .14em; color: rgba(233,196,106,.5); font-weight: 700; }
+.card .nm { font-family: Anton, sans-serif; text-transform: uppercase; font-size: 1.75em; line-height: 1; letter-spacing: .02em; text-align: center; margin: .2em 0 .25em; }
+.card .fx { font-size: .8em; line-height: 1.3; text-align: center; font-weight: 500; min-height: 2.6em; }
+.card .ft { display: flex; justify-content: space-between; font-size: .56em; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; opacity: .55; margin-top: .6em; }
+/* hand size: name + glyph + window only */
+.card.hand .face { padding: .55em; }
+.card.hand .fx, .card.hand .ft, .card.hand .tier, .card.hand .emblem::before { display: none; }
+.card.hand .nm { font-size: 1.85em; margin: .15em 0 0; }
+.card.hand .win { font-size: 1em; padding: .3em .5em; }
+.card.hand .top { justify-content: center; }
+.card.mid .fx, .card.mid .ft, .card.mid .emblem::before { display: none; }
+
+/* states */
+.card.playable { outline: 3px solid var(--lime); outline-offset: 3px; }
+.card.later { opacity: .55; }
+.card.spent { opacity: .35; filter: grayscale(.6); }
+
+/* card back (neutral; identical for every tier) */
+.card.back { background: #171a18; border: calc(var(--w) * .012 + .5px) solid #3c463e; box-shadow: 0 10px 30px rgba(0,0,0,.4); overflow: hidden; }
+.card.back::before { content: ""; position: absolute; inset: 7%; border-radius: calc(var(--w) * .045); border: 1px solid #2f3831; background: repeating-linear-gradient(45deg, transparent 0 calc(var(--w) * .03), rgba(180,200,173,.05) calc(var(--w) * .03) calc(var(--w) * .033)); }
+.card.back .eye { position: absolute; left: 50%; top: 50%; width: 46%; transform: translate(-50%, -50%); color: var(--muted); }
+.card.back .eye svg { width: 100%; height: auto; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; }
+/* public tier-framed backs (announcements only: the tier is already public) */
+.card.back.t-common { border-color: #cfd9c9; }
+.card.back.t-rare { border-color: var(--foil-a); }
+.card.back.t-golden { border-color: var(--gold); box-shadow: 0 0 calc(var(--w) * .25) rgba(233,196,106,.35); }
+.card.back.t-golden .eye { color: var(--gold); }
+.card.chip.back::before { inset: 12%; border-radius: 2px; }
+
+/* ---------- plays strip ---------- */
+.plays { display: flex; align-items: center; gap: 6px; padding: 10px 0 12px; }
+.plays .card.chip { --w: 22px; }
+.plays .lbl { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); margin-right: 2px; }
+.play { display: flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 22px; padding: 3px 9px 3px 3px; }
+.play .card.chip { transform: rotate(6deg); }
+.play.new { border-color: var(--gold); }
+
+/* ---------- sheet ---------- */
+.scrim { position: absolute; inset: 0; background: rgba(6,8,7,.62); }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; background: var(--bg2); border-radius: 26px 26px 0 0; border-top: 1px solid var(--line); padding: 10px 20px 22px; }
+.sheet .handle { width: 44px; height: 5px; border-radius: 3px; background: #4a544c; margin: 0 auto 14px; }
+
+/* ---------- rays ---------- */
+.rays { position: absolute; left: 50%; top: 50%; width: 760px; height: 760px; transform: translate(-50%, -50%); background: repeating-conic-gradient(from 0deg, rgba(233,196,106,.24) 0 6deg, transparent 6deg 18deg); -webkit-mask: radial-gradient(circle, #000 12%, transparent 62%); mask: radial-gradient(circle, #000 12%, transparent 62%); pointer-events: none; }
+.glow { position: absolute; left: 50%; top: 50%; width: 420px; height: 420px; transform: translate(-50%, -50%); background: radial-gradient(circle, rgba(233,196,106,.35), transparent 65%); pointer-events: none; }
+
+/* ---------- ring timer ---------- */
+.ring { width: 64px; height: 64px; position: relative; flex: none; }
+.ring svg { width: 64px; height: 64px; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 5; }
+.ring .bgc { stroke: var(--line); }
+.ring .fgc { stroke: var(--lime); stroke-linecap: round; }
+.ring b { position: absolute; inset: 0; display: grid; place-items: center; font-size: 22px; font-weight: 800; }
+
+/* ---------- gallery ---------- */
+.gallery { padding: 32px; display: flex; flex-wrap: wrap; gap: 36px 28px; }
+.gallery figure { margin: 0; }
+.gallery figcaption { margin-top: 10px; font-size: 14px; color: var(--muted); max-width: 390px; }
+.gallery figcaption b { color: var(--ink); }
+.gallery iframe { width: 390px; height: 844px; border: 0; border-radius: 28px; background: var(--bg); }
+.gallery h1 { width: 100%; margin: 0; }
+.gallery .note { width: 100%; color: var(--muted); max-width: 900px; margin: 0; line-height: 1.45; }
+.gallery button { margin-top: 8px; font: inherit; font-weight: 700; background: var(--lime); border: 0; border-radius: 12px; padding: 9px 16px; cursor: pointer; }
+
+/* real Golden art, when present, replaces the placeholder glyph */
+.card .art .emblem img { position: absolute; inset: -6%; width: 112%; height: 112%; object-fit: cover; border-radius: 50%; }
+.card .art .emblem:has(img) svg, .card .art .emblem:has(img)::before { display: none; }
+
+/* Astra's engraved card back (art/card-back.png) replaces the CSS pattern and inline eye */
+.card.back { background: #171a18 url(../art/card-back.png) center / cover no-repeat; }
+.card.back::before, .card.back .eye { display: none; }
+
+/* ============================================================
+   THEME LAYER v2 — noir case file (screens 13–16)
+   ============================================================ */
+@font-face { font-family: "Special Elite"; src: url(fonts/special-elite-latin-400-normal.woff2) format("woff2"); }
+:root { --kraft: #e8d9bc; --kraft-dk: #cdb98f; --ink-dk: #1d1a14; --stamp: #c4503a; }
+.type { font-family: "Special Elite", "Courier New", monospace; letter-spacing: .02em; }
+
+/* stamps */
+.stamp { display: inline-block; font-family: "Special Elite", monospace; text-transform: uppercase; letter-spacing: .12em; border: 2.5px solid currentColor; border-radius: 6px; padding: 3px 10px 2px; transform: rotate(-6deg); opacity: .9; }
+.stamp.red { color: var(--stamp); }
+.stamp.lime { color: var(--lime); }
+.stamp.ink { color: #3b3326; }
+
+/* case-file sheet */
+.case { position: absolute; left: 0; right: 0; bottom: 0; }
+.case .tab { margin-left: 20px; width: 210px; height: 34px; background: #2a2620; border: 1px solid #4a4236; border-bottom: 0; border-radius: 12px 12px 0 0; display: flex; align-items: center; padding: 0 14px; color: var(--kraft); font-size: 13px; }
+.case .body { background: #2a2620; border-top: 1px solid #4a4236; border-radius: 0 22px 0 0; padding: 16px 20px 22px; box-shadow: 0 -20px 40px rgba(0,0,0,.4); }
+.case .body .ruled { background: repeating-linear-gradient(transparent 0 27px, rgba(232,217,188,.06) 27px 28px); }
+
+/* role guidance badges */
+.fit { display: inline-flex; align-items: center; justify-content: center; gap: 4px; height: 24px; padding: 0 7px; border-radius: 12px; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.fit.good { background: var(--lime); color: #141916; }
+.fit.weak { border: 1.5px solid rgba(217,134,114,.7); color: var(--terra); }
+.fit.ok { border: 1.5px solid #4a544c; color: var(--muted); }
+.fit svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+
+/* evidence tag */
+.tag { position: relative; background: var(--kraft); color: var(--ink-dk); border-radius: 6px 16px 16px 6px; padding: 14px 16px 14px 34px; clip-path: polygon(14px 0, 100% 0, 100% 100%, 14px 100%, 0 50%); }
+.tag::before { content: ""; position: absolute; left: 14px; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%; background: #2a2620; box-shadow: 0 0 0 2px var(--kraft-dk); }
+
+/* role strip */
+.roles { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+.roles .r { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.roles .face { width: 46px; height: 46px; border-radius: 50%; background: #2a2620 center 18% / 150% no-repeat; border: 2px solid #4a544c; }
+.roles .r.best .face { border-color: var(--lime); }
+.roles .r.worst .face { border-color: var(--terra); filter: grayscale(.7) brightness(.8); }
+.roles .r.you .face { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--ink); }
+.roles .nm2 { font-size: 10px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.roles .rt { font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.roles .best .rt { color: var(--lime); } .roles .worst .rt { color: var(--terra); } .roles .fine .rt { color: var(--dim); }
+
+/* wanted poster */
+.wanted { background: var(--kraft); color: var(--ink-dk); border-radius: 6px; padding: 14px 16px 16px; position: relative; box-shadow: 0 12px 30px rgba(0,0,0,.45); transform: rotate(-1.2deg);
+  background-image: radial-gradient(circle at 20% 10%, rgba(255,255,255,.35), transparent 40%), radial-gradient(circle at 90% 90%, rgba(120,90,40,.18), transparent 45%); }
+.wanted::before, .wanted::after { content: ""; position: absolute; top: -7px; width: 14px; height: 14px; border-radius: 50%; background: #8d8676; box-shadow: inset 0 -2px 0 rgba(0,0,0,.3); }
+.wanted::before { left: 16px; } .wanted::after { right: 16px; }
+.mug { width: 96px; height: 112px; flex: none; border: 2px solid var(--ink-dk); background:
+  repeating-linear-gradient(transparent 0 13px, rgba(29,26,20,.25) 13px 14px), #d9c9a6; display: grid; place-items: end center; overflow: hidden; }
+
+/* newspaper */
+.paper { background: #efe6d2; color: #1d1a14; flex: 1; margin: 0 12px; padding: 14px 16px; border-radius: 4px; overflow: hidden; position: relative;
+  background-image: radial-gradient(circle at 80% 0%, rgba(255,255,255,.5), transparent 40%), radial-gradient(circle at 0% 100%, rgba(140,110,60,.15), transparent 50%); }
+.paper .rule { border-top: 3px double #1d1a14; margin: 6px 0; }
+.paper .col { column-count: 2; column-gap: 14px; column-rule: 1px solid rgba(29,26,20,.3); }
+
+/* plays label and line-up backdrop */
+.plays .lbl { font-family: "Special Elite", monospace; font-weight: 400; color: var(--kraft-dk); letter-spacing: .06em; }
+.lineup { position: relative; padding: 10px 0 2px 34px; border-radius: 14px;
+  background: repeating-linear-gradient(to bottom, transparent 0 19px, rgba(232,217,188,.13) 19px 20px), #181c19; }
+.lineup::before { content: "7  6  5  4  3  2  1"; position: absolute; left: 10px; top: 12px; bottom: 8px; width: 12px; font-family: "Special Elite", monospace; font-size: 11px; line-height: 40px; color: rgba(232,217,188,.45); word-spacing: 100px; white-space: normal; }
+.lineup > div { margin-right: 8px; }
+
+/* Common and Rare art plate: transparent engraved vignette on the ivory face */
+.card .art .plate { position: relative; width: 84%; aspect-ratio: 1; display: grid; place-items: center; }
+.card .art .plate svg { width: 62%; }
+.card .art .plate img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.card .art .plate:has(img) svg { display: none; }
+
+/* sealed card (drawer's phone only): tier frame around the neutral engraved back */
+.seal { width: 300px; height: 420px; border-radius: 21px; position: relative; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
+.seal.golden { background: linear-gradient(135deg, var(--gold-lo), var(--gold-hi) 22%, var(--gold) 45%, #8d6417 70%, var(--gold-hi) 90%); box-shadow: 0 0 50px rgba(233,196,106,.5), 0 14px 40px rgba(0,0,0,.5); }
+.seal.rare { background: linear-gradient(135deg, var(--foil-a), #d9e8ef 30%, var(--foil-b) 55%, #7fa3ba 80%, #cfe0e9); box-shadow: 0 0 38px rgba(143,179,201,.45), 0 14px 40px rgba(0,0,0,.5); }
+.seal.common { background: linear-gradient(135deg, #cfd9c9, #f4f1e8 40%, #b4c8ad); box-shadow: 0 0 24px rgba(244,241,232,.25), 0 14px 40px rgba(0,0,0,.5); }
+.seal.plain { background: #3c463e; box-shadow: 0 14px 40px rgba(0,0,0,.5); }
+.seal .in { position: absolute; inset: 8px; border-radius: 15px; background: #171a18 url(../art/card-back.png) center / cover; }
+.seal .shine { position: absolute; inset: 0; border-radius: inherit; background: linear-gradient(115deg, transparent 38%, rgba(255,250,225,.4) 50%, transparent 62%); background-size: 250% 100%; background-position: 160% 0; mix-blend-mode: screen; }
+.gallery figcaption button { margin-right: 2px; }

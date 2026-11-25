@@ -97,7 +97,7 @@ function browserHeaders(
 ): Record<string, string> {
   const headers: Record<string, string> = {
     "X-Imposter-Client": "web-v1",
-    "X-Imposter-Gameplay": "full-cast-v2",
+    "X-Imposter-Gameplay": "power-cards-v1",
   };
   if (credentials) {
     headers.Authorization = `Bearer ${credentials.token}`;

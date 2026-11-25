@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "motion/react";
+import { Stamp } from "./theme";
 import { Icon } from "./icons";
 import { MOTION } from "./motion";
 import type { CastRole, Player } from "./types";
@@ -246,12 +247,38 @@ export function RoleStage({ role, players }: { role: CastRole; players: number }
         draggable={false}
         {...(reduced ? {} : { initial: { opacity: 0, y: 40, scale: 0.92 }, animate: { opacity: 1, y: 0, scale: 1 }, transition: { duration: 0.55, ease: MOTION.easeOut, delay: 0.05 } })}
       />
-      <motion.p className="role-stage-side" {...rise(0.25)}>
+      <Stamp className="role-stage-stamp" slam delay={0.6}>Classified</Stamp>
+      <motion.p className="role-stage-side type" {...rise(0.25)}>
         {c.side === "imposter" ? "Imposter side" : "Civilian side"}
       </motion.p>
       <motion.h1 className="role-stage-name" {...rise(0.32)}>{c.name}</motion.h1>
       <motion.p className="role-stage-goal" {...rise(0.42)}>{c.goal}</motion.p>
       <motion.p className="role-stage-power" {...rise(0.5)}>{c.power}</motion.p>
     </div>
+  );
+}
+
+/**
+ * Your role on the ballot: a dossier strip with the role's portrait peeking
+ * out of its top-right corner, the side, the role name and how your vote
+ * works. It sits above the question and never covers the ballot.
+ */
+export function BallotRole({ role, players }: { role: CastRole; players: number }) {
+  const reduced = useReducedMotion();
+  const c = castCopy(role, players);
+  return (
+    <section className={`ballot-role ${c.side}`} aria-label={`Your role: ${c.name}`}>
+      <div className="ballot-role-art" aria-hidden="true">
+        <motion.img
+          src={`/art/full-cast/${role}.webp`}
+          alt=""
+          draggable={false}
+          {...(reduced ? {} : { initial: { opacity: 0, y: 18 }, animate: { opacity: 1, y: 0 }, transition: { duration: 0.45, ease: MOTION.easeOut } })}
+        />
+      </div>
+      <p className="ballot-role-side type">{c.side === "imposter" ? "Imposter side" : "Civilian side"}</p>
+      <h2 className="ballot-role-name">{c.name}</h2>
+      <p className="ballot-role-vote">{c.vote}</p>
+    </section>
   );
 }

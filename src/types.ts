@@ -57,7 +57,80 @@ export interface PerformedClue {
   turn: number;
 }
 
+export type CardTier = "common" | "rare" | "golden";
+export type CardVerdict = "blocked" | "sustained" | "overruled" | "vetoed" | "pierced";
+
+/** Power cards as this phone sees them (see crates/party-core/src/power.rs). */
+export interface PlayEffect {
+  moved: { player_id: string; points: number }[];
+  owner_total: number | null;
+  claim: CastRole | null;
+  claim_true: boolean | null;
+}
+
+export interface StoryPlay {
+  round: number;
+  player_id: string;
+  card: string;
+  tier: CardTier;
+  real_tier: CardTier;
+  pick: string | null;
+  cancelled: boolean;
+  verdict: CardVerdict | null;
+  effect: PlayEffect;
+}
+
+export interface CardsView {
+  on: boolean;
+  active: boolean;
+  /** The draw window: who decided, and who is done (skipped, or drew and tapped Continue). */
+  draw: { decided: string[]; ready: string[] } | null;
+  drew: string[];
+  plays: {
+    seq: number;
+    player_id: string;
+    tier: CardTier;
+    /** Results only: */
+    card?: string;
+    real_tier?: CardTier;
+    pick?: string | null;
+    cancelled?: boolean;
+    verdict?: CardVerdict | null;
+    effect?: PlayEffect;
+  }[];
+  /** Results: what each Underdog got from the Bounty, if it paid. */
+  bounty_paid?: number | null;
+  /** The next round's leaders, Underdogs and Bounty, from the scores now. */
+  standing?: { leaders: string[]; underdogs: string[]; bounty: number | null };
+  /** Session complete: every card played this session. */
+  story?: { plays: StoryPlay[]; comeback: Record<string, number> } | null;
+  stamps: { verdict: CardVerdict; by: string | null; on: string | null; bluff: boolean }[];
+  tips: string[];
+  claims: { player_id: string; role: CastRole }[];
+  on_record: { player_id: string; vote: string }[];
+  spotlight: { player_id: string; side: "civilian" | "imposter" }[];
+  owed: string[];
+  vetoed: number;
+  hand_counts: Record<string, number>;
+  underdogs: string[];
+  leaders: string[];
+  bounty: number | null;
+  mine: {
+    hand: { id: string; playable: boolean; reason: string | null; new: boolean }[];
+    golden_chance: number;
+    paid_draws_left: number;
+    price: number | null;
+    decided: boolean;
+    played: { seq: number; card: string; cancelled: boolean; verdict: CardVerdict | null; read: unknown } | null;
+    wiretap: { player_id: string; vote: string | null } | null;
+    cold_feet: boolean;
+    rain_check: boolean;
+    last_word: { options: string[]; remaining_ms: number } | null;
+  };
+}
+
 export interface View {
+  cards?: CardsView | null;
   reveal?: RoundRevealStage | null;
   verdict?: RoundVerdict | null;
   deal_error?: string | null;
@@ -137,6 +210,8 @@ export interface View {
     my_vote: string | null;
     earned: number;
     was_imposter: boolean;
+    /** Power cards: the caught Imposter's Last Word was right. */
+    last_word?: boolean | null;
     report_penalty: number;
     report_round: number | null;
     score: {
@@ -146,6 +221,8 @@ export interface View {
       bluff: number;
       bonus?: number;
       voided?: boolean;
+      /** Power cards: points moved by cards, the Bounty and Robin Hood. */
+      cards?: { card: string; from: string; points: number }[];
       penalty: number;
       after: number;
     };
