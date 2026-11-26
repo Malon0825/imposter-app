@@ -759,6 +759,9 @@ export default function App() {
   const actionAttempt = useRef<{ key: string; id: string } | null>(null);
   const externalHandled = useRef("");
   const [checkingHost, setCheckingHost] = useState(false);
+  // A browser guest whose saved player couldn't reach the host (an iPhone
+  // reloads the tab as it wakes, before Wi-Fi is back) keeps trying.
+  const [retryResume, setRetryResume] = useState(false);
   const [sessionBlocked, setSessionBlocked] = useState("");
   const [canResume] = useState(() => !webGuest || persistentResume());
   const [recovery, setRecovery] = useState<{
@@ -886,6 +889,13 @@ export default function App() {
       } catch (e) {
         if (mounted) {
           if (
+            webGuest &&
+            !saved.credentials.is_host &&
+            e instanceof ApiError &&
+            e.code === "unreachable"
+          )
+            setRetryResume(true);
+          if (
             saved.credentials.is_host ||
             (e instanceof ApiError &&
               ["no_player", "invitation_expired", "party_closed"].includes(
@@ -907,25 +917,61 @@ export default function App() {
   useEffect(() => {
     if (!webGuest || booting || page !== "web_join" || sessionId || !invitation)
       return;
-    let active = true;
-    setCheckingHost(true);
-    api<NonNullable<typeof details>>("inspect", { invitation })
-      .then((d) => {
-        if (active) {
-          setDetails(d);
-          setError("");
+    let active = true,
+      inFlight = false,
+      found = false,
+      first = true;
+    // Until the host answers, keep trying: the phone may still be rejoining
+    // the Wi-Fi. A saved player is reconnected as soon as the host is back.
+    const check = async () => {
+      if (!active || inFlight || document.hidden) return;
+      inFlight = true;
+      if (first) setCheckingHost(true);
+      try {
+        const saved = retryResume ? storedSession() : null;
+        if (saved) {
+          const s = await api<SessionData>("resume", { ...saved.credentials });
+          if (active) {
+            setRetryResume(false);
+            adopt(s);
+          }
+          return;
         }
-      })
-      .catch((e) => {
-        if (active) setError(errorText(e));
-      })
-      .finally(() => {
-        if (active) setCheckingHost(false);
-      });
+        if (!found) {
+          const d = await api<NonNullable<typeof details>>("inspect", { invitation });
+          if (active) {
+            found = true;
+            setDetails(d);
+            setError("");
+          }
+        }
+      } catch (e) {
+        if (active) {
+          if (!(e instanceof ApiError) || !["unreachable", "rate_limit"].includes(e.code))
+            setRetryResume(false);
+          setError(errorText(e));
+        }
+      } finally {
+        inFlight = false;
+        if (active && first) {
+          first = false;
+          setCheckingHost(false);
+        }
+      }
+    };
+    check();
+    const timer = window.setInterval(check, 2000);
+    window.addEventListener("focus", check);
+    window.addEventListener("online", check);
+    document.addEventListener("visibilitychange", check);
     return () => {
       active = false;
+      clearInterval(timer);
+      window.removeEventListener("focus", check);
+      window.removeEventListener("online", check);
+      document.removeEventListener("visibilitychange", check);
     };
-  }, [booting, page, sessionId, invitation]);
+  }, [booting, page, sessionId, invitation, retryResume, adopt]);
 
   useEffect(() => {
     if (!webGuest || page !== "recover" || !recovery) return;
@@ -1439,7 +1485,7 @@ export default function App() {
     setConfirm({
       title: view.is_host ? "End this party?" : "Leave the party?",
       body: view.is_host
-        ? "Everyone will see the final rankings. An unfinished round earns no points."
+        ? "Everyone will see the final standings. An unfinished round earns no points."
         : "Your place will be marked as left. An unfinished round will pause.",
       label: view.is_host ? "End party" : "Leave party",
       action: () =>
@@ -1964,11 +2010,13 @@ export default function App() {
           />
           <div className="web-join-heading">
             <Cards />
-            <h1>{details?.name || "One room. One secret."}</h1>
+            <h1>{details?.name || parsed?.native.party_name || "One room. One secret."}</h1>
             <p className="muted">
               {details
                 ? `Hosted by ${details.host_name}`
-                : "Your host has the invitation."}
+                : parsed
+                  ? "Your party link"
+                  : "Your host has the invitation."}
             </p>
           </div>
           <div className="setting-row">
@@ -1980,10 +2028,10 @@ export default function App() {
                   "Join the host’s Wi-Fi"}
               </strong>
               <span>
-                {checkingHost
-                  ? "Finding the host…"
-                  : details
-                    ? "Connected locally · No internet needed"
+                {details
+                  ? "Connected locally · No internet needed"
+                  : parsed
+                    ? "Finding the host… Stay on this Wi-Fi and keep this page open."
                     : "Connect to the shared Wi-Fi, then scan the host’s QR."}
               </span>
             </div>
@@ -2177,7 +2225,7 @@ export default function App() {
                   "Underdogs & Bounty",
                   "Fall behind and draws are free. Take down the leader for the Bounty.",
                   [
-                    "From round 3, anyone a third of the target or more behind the leader is an Underdog: free draws, bets up to 3 whatever your points, and +1 on a winning bet. Lose a bet you couldn’t cover and you drink.",
+                    "From round 3, anyone a third of the target or more behind the leader is an Underdog: free draws, bets up to 3 whatever your points, and +1 on a winning bet. Lose a bet you couldn’t cover and you go to Drink or Dare.",
                     "When the leader loses a round, every Underdog gets the Bounty: +1, growing by 1 each round the leader survives, up to +3.",
                   ],
                 ],
@@ -4263,7 +4311,7 @@ export default function App() {
             {complete
               ? `Target reached · ${view.score_session.target} points`
               : ended
-                ? `${view.name} · Final rankings`
+                ? `${view.name} · Final standings`
                 : `Session ${view.score_session.number} · First to ${view.score_session.target}`}
           </p>
           {!final && (

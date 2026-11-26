@@ -48,7 +48,8 @@ fn to_roles(g: &mut Game) -> String {
                 act(g, &id, "skip_draw", Value::Null).unwrap();
             }
         }
-        g.advance_reveals(Instant::now());
+        let host = g.host.clone();
+        act(g, &host, "deal_drawn", Value::Null).unwrap();
     }
     assert_eq!(g.phase, "roles");
     let imp = ids(g)[1].clone();
@@ -136,7 +137,8 @@ fn drawing_costs_three_counts_a_paid_draw_and_deals_when_everyone_decided() {
     for id in g.round.roster.clone() {
         let _ = act(&mut g, &id, "skip_draw", Value::Null);
     }
-    g.advance_reveals(Instant::now());
+    let host = g.host.clone();
+    act(&mut g, &host, "deal_drawn", Value::Null).unwrap();
     assert_eq!(g.phase, "roles");
     assert!(!g.round.cards.ready.contains(&a));
     act(&mut g, &a, "draw_ready", Value::Null).unwrap();
@@ -162,7 +164,7 @@ fn the_host_can_deal_roles_past_someone_who_wandered_off() {
     let guest = ids(&g)[2].clone();
     assert!(act(&mut g, &guest, "deal_now", Value::Null).is_err(), "host only");
     act(&mut g, &host, "deal_now", Value::Null).unwrap();
-    g.advance_reveals(Instant::now());
+    act(&mut g, &host, "deal_drawn", Value::Null).unwrap();
     assert_eq!(g.phase, "roles");
 }
 

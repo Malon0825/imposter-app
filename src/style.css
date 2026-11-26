@@ -4184,6 +4184,8 @@ strong .player-connection-label {
 .help-heading .card-backs.cards-art,
 .boot .card-backs.cards-art { transform: none; }
 .web-join-heading .card-backs.cards-art { height: min(18vh, 140px); }
+@media (max-height: 800px) { .web-join-heading .card-backs.cards-art { height: 96px; } }
+@media (max-height: 720px) { .web-join-heading .card-backs.cards-art { height: 84px; } }
 .role-front .card-backs.cards-art { height: 100%; }
 .center-stage .card-backs.cards-art { height: 260px; }
 .discussion-art.card-backs { height: 135px; }
@@ -4681,7 +4683,7 @@ img.topic-emblem { object-fit: contain; }
 .pc-wanted small { font-size: 13px; color: #5b4a2c; }
 .pc-wanted-bounty { font-size: 13px; justify-self: start; margin-top: 4px; }
 .pc-standing-tags { display: inline-flex; align-items: center; gap: 6px; margin-left: 8px; vertical-align: middle; }
-.pc-longshot { font-size: 9px; padding: 1px 5px; }
+.pc-underdog-tag { font-size: 9px; padding: 1px 5px; }
 .pc-hand-count { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; color: var(--muted); }
 .pc-hand-count .pc-card.chip { --w: 12px; }
 

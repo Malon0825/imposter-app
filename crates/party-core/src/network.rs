@@ -139,6 +139,7 @@ impl Host {
         if self.history.is_none()
             || ![
                 "begin_round",
+                "deal_drawn",
                 "fresh_word_deck",
                 "random_rules",
                 "skip_round",
@@ -435,6 +436,26 @@ impl Session {
                 if !game.streamlined() {
                     continue;
                 }
+                // Deal after the draw through apply, so the word is saved.
+                if game.draw_done(Instant::now()) && game.round.deal_error.is_none() {
+                    let action = Action {
+                        id: Uuid::new_v4().to_string(),
+                        round_id: game.round.id,
+                        kind: "deal_drawn".into(),
+                        value: Value::Null,
+                    };
+                    let actor = game.host.clone();
+                    drop(game);
+                    if let Err(error) = host.apply(actor, action.clone()).await {
+                        let mut game = host.game.lock().await;
+                        if game.phase == "draw" && game.round.id == action.round_id {
+                            game.round.deal_error = Some(error);
+                            game.phase = "topic_chosen".into();
+                            game.revision += 1;
+                        }
+                    }
+                    continue;
+                }
                 game.advance_reveals(Instant::now());
                 if game.topic_held(Instant::now())
                     && game.round.deal_error.is_none()
@@ -635,6 +656,45 @@ mod tests {
             tokio::time::sleep(Duration::from_millis(50)).await;
         }
         panic!("the party never reached {phase}");
+    }
+    #[tokio::test]
+    async fn a_deal_after_the_power_card_draw_is_saved_to_the_word_deck() {
+        let directory = tempfile::tempdir().unwrap();
+        let path = directory.path().join("deck.sqlite3");
+        let host = Session::create_inner("Cards", "Alex", "Wi-Fi", Some("127.0.0.1".into()), None, Some(path))
+            .await
+            .unwrap();
+        let invitation = host.invitation();
+        let mut guests = Vec::new();
+        for name in ["Sam", "Mia", "Ben", "Ivy", "Leo"] {
+            guests.push(Session::join(&invitation, name).await.unwrap());
+        }
+        let command = |round_id, kind: &str, value| Action {
+            id: Uuid::new_v4().to_string(),
+            round_id,
+            kind: kind.into(),
+            value,
+        };
+        host.send(command(0, "power_cards", json!(true))).await.unwrap();
+        for guest in &guests {
+            guest.send(command(0, "ready", json!(true))).await.unwrap();
+        }
+        host.send(command(0, "start", Value::Null)).await.unwrap();
+        for session in std::iter::once(&host).chain(&guests) {
+            session.send(command(1, "topic_vote", json!(["animals"]))).await.unwrap();
+        }
+        // Everyone can pay for a draw, so the round opens on the draw.
+        host.send(command(1, "dev_cards", json!({"points": 3}))).await.unwrap();
+        wait_phase(&host, "draw").await;
+        for session in std::iter::once(&host).chain(&guests) {
+            session.send(command(1, "skip_draw", Value::Null)).await.unwrap();
+        }
+        wait_phase(&host, "roles").await;
+        let inner = host.host.as_ref().unwrap();
+        let deck = inner.game.lock().await.deck.clone();
+        assert_eq!(deck.deals.len(), 1);
+        let store = inner.history.as_ref().unwrap();
+        assert_eq!(store.lock().unwrap().saved(), (deck.revision, 1));
     }
     #[tokio::test]
     async fn durable_deal_failure_keeps_cards_concealed_and_retry_consumes_once() {

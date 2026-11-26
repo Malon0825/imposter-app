@@ -306,7 +306,16 @@ export function saveSession(session: SessionData) {
   );
   if (webGuest) {
     active = session.credentials;
-    history.replaceState(null, "", "/play");
+    // Keep the invitation in the address: a reload, or a browser that lost
+    // its saved player (in-app browsers, private tabs), can still reach the
+    // party instead of landing on a page that only says "scan the QR".
+    try {
+      const link = new URL(session.credentials.invitation);
+      if (link.origin === location.origin && link.hash.startsWith("#invite="))
+        history.replaceState(null, "", link.pathname + link.hash);
+    } catch {
+      /* Leave the address as it is. */
+    }
   }
 }
 export function storedSession(): Omit<SessionData, "view"> | null {

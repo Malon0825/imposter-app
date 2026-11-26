@@ -2,7 +2,25 @@
 
 **The one place to look up how the game works today.** Every rule here is what `crates/party-core/` does, with the function to check named next to it. Other docs are plans, history or player copy. When this file and the code disagree, the code wins: fix this file in the same commit. Every patch that changes a mechanic updates this file (see [CLAUDE.md](CLAUDE.md)).
 
-Last checked against the code: 2026-11-25, branch `claude/browser-guest-cards`.
+Last checked against the code: 2026-11-26, branch `claude/deck-and-reconnect`.
+
+## Words players see
+
+One mechanic, one word, everywhere a player can read it: app screens, card text, the cards sheet's How to play, the website. Don't add a second name for any of these, even as flavour.
+
+| Say | Never | Means |
+|---|---|---|
+| Underdog | Long shot, trailing, behind | Far behind the leader from round 3 (§7) |
+| Leader | Front-runner, top player | Tied for the top score at the round's start (§7) |
+| Bounty | Reward, Rising Bounty (in player text) | The Underdogs' bonus when the leader loses (§7) |
+| Session | Game, match | Play from 0 points to the target. Two fixed names use "night" on purpose: the end screen **Story of the night** and its headline **… TAKES THE NIGHT**. "Game night" in marketing copy is fine. |
+| Standings | Rankings, leaderboard | The scores screen |
+| Your cards | Hand, case file, evidence | The power cards you hold |
+| Draw / paid draw | Buy, pull | Taking a power card; "paid draws left" for the 4-per-session limit |
+| Common / Rare / Golden, tier | Gold, rarity | Card tiers |
+| Drink or Dare | Drink/Dare, punishment, penalty | What losers choose after a round |
+| Bet | Stake, wager | Points a player backs their vote with |
+| Imposter side / Civilian side | Crew, town, innocents | The two sides of the cast |
 
 ## 1. Party and session
 
@@ -22,7 +40,7 @@ Phases, in order. "Auto" means the host loop moves on by itself; "host" means th
 2. **`rule_reveal`** (only with Random rules on, or for a replacement round). Auto: a 1.25 s shuffle, then 3 s on the rule.
 3. **`topic_voting`.** Each player approves one or more topics. When all have voted, the top total wins; a tie is broken by one random draw. Auto.
 4. **`topic_chosen`.** The chosen topic stays on screen for 3.5 s (`TOPIC_HOLD`, `topic_held`), then the host loop begins the round on its own (`begin_round`, from `network.rs`). If the deal fails, the host gets Retry deal.
-5. **`draw`** (power cards only, §6). No timer. The deal happens as soon as everyone has drawn or skipped. A player still reading their card taps Continue later, and the table doesn't wait for them. Host Deal now skips anyone undecided.
+5. **`draw`** (power cards only, §6). No timer. The deal happens as soon as everyone has drawn or skipped: the host loop sends `deal_drawn` (`power.rs` `deal_drawn`), which goes through the same saved path as `begin_round`, so the word is written to the word deck. A failed deal returns to the topic with Retry deal. A player still reading their card taps Continue later, and the table doesn't wait for them. Host Deal now skips anyone undecided.
 6. **`roles`.** The deal (`deal`): word, cast, speaking order. Each player acknowledges; when all have, auto.
 7. **`discussion`.** Clues are given face to face. The optional clue board allows one clue of up to 60 characters per player per clue turn. The host can add clue turns. Host taps Open vote.
 8. **`voting`.** Secret ballots (§4). When the last ballot locks, the round resolves (`resolve`).

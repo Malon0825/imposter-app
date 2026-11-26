@@ -1037,6 +1037,10 @@ impl Game {
                 self.require_host(actor)?;
                 self.deal_now()?;
             }
+            "deal_drawn" => {
+                self.require_host(actor)?;
+                self.deal_drawn()?;
+            }
             "play_card" => self.play_card(actor, &action.value)?,
             "change_bet" => self.change_bet(actor, &action.value)?,
             "clue_given" => {

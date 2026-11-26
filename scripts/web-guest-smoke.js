@@ -163,9 +163,11 @@ async function smokeBrowserGuests(page) {
         stored && stored.credentials.is_host === false,
         "Browser identity is invalid",
       );
+      // The address keeps the invitation, so a reload or a browser that lost
+      // its saved player can still reach the party.
       assert(
-        new URL(p.url()).hash === "",
-        "Invitation stayed in the address bar after admission",
+        new URL(p.url()).hash.startsWith("#invite="),
+        "The invitation left the address bar after admission",
       );
       await p.reload();
       await p
