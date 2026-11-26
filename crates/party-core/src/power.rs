@@ -656,15 +656,24 @@ impl Game {
         Ok(())
     }
 
-    /// Deadlines the host loop drives: the draw window and the Last Word.
+    /// Deals once everyone has drawn or skipped. The host loop sends this as
+    /// the `deal_drawn` action so the deal is saved to the word deck like any
+    /// other. A failed deal returns to the topic with Retry deal.
+    pub(crate) fn deal_drawn(&mut self) -> GameResult<()> {
+        self.require_phase(&["draw"])?;
+        if !self.draw_done(Instant::now()) {
+            return Err("Wait until everyone has drawn or skipped.".into());
+        }
+        if let Err(error) = self.deal() {
+            self.round.deal_error = Some(error);
+            self.phase = "topic_chosen".into();
+        }
+        Ok(())
+    }
+
+    /// The deadline the host loop drives: the Last Word.
     pub(crate) fn advance_cards(&mut self, now: Instant) {
-        if self.draw_done(now) {
-            if let Err(error) = self.deal() {
-                self.round.deal_error = Some(error);
-                self.phase = "topic_chosen".into();
-            }
-            self.revision += 1;
-        } else if self.phase == "last_word" && self.round.cards.last_word.as_ref().is_some_and(|lw| now >= lw.until) {
+        if self.phase == "last_word" && self.round.cards.last_word.as_ref().is_some_and(|lw| now >= lw.until) {
             self.finish_last_word(None);
             self.revision += 1;
         }

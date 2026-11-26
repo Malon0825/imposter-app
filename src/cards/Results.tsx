@@ -115,7 +115,7 @@ export function CardsReplay({ view, who }: { view: View; who: Who }) {
       skip.current = true;
       list.current?.querySelectorAll(":scope > li").forEach((row) => row.classList.add("shown", "dealt"));
     }}>
-      <Type>Evidence review</Type>
+      <Type>Power cards</Type>
       <h2 id="pc-replay-title">Cards this round</h2>
       <ol ref={list} className={reducedMotion() ? "instant" : ""}>
         {plays.map((p) => (
@@ -187,14 +187,14 @@ export function WantedPoster({ view, who }: { view: View; who: Who }) {
   );
 }
 
-/** Tags on a standings row: Long shot for Underdogs, and the hand size. */
+/** Tags on a standings row: the Underdog stamp and the hand size. */
 export function StandingTags({ cards, id }: { cards: CardsView | null | undefined; id: string }) {
   if (!cards?.on) return null;
   const underdog = cards.standing?.underdogs.includes(id);
   const hand = cards.hand_counts[id] ?? 0;
   return (
     <span className="pc-standing-tags">
-      {underdog && <Stamp tone="lime" className="pc-longshot">Long shot</Stamp>}
+      {underdog && <Stamp tone="lime" className="pc-underdog-tag">Underdog</Stamp>}
       {hand > 0 && (
         <span className="pc-hand-count" aria-label={`${hand} cards`}>
           <CardBack size="chip" />×{hand}
@@ -229,7 +229,7 @@ export function StoryOfTheNight({ view, who }: { view: View; who: Who }) {
         <h1 className="pc-masthead">The Imposter Times</h1>
         <div className="rule" />
         <h2 className="pc-headline">
-          {winners.length ? `${winners.map((w) => w.name).join(" & ").toUpperCase()} TAKES THE NIGHT` : "CASE CLOSED"}
+          {winners.length ? `${winners.map((w) => w.name).join(" & ").toUpperCase()} ${winners.length > 1 ? "TAKE" : "TAKES"} THE NIGHT` : "CASE CLOSED"}
         </h2>
         <p className="pc-dek">{plays.length} cards played · {golden.length} Golden</p>
       </header>

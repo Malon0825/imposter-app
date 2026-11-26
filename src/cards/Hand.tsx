@@ -67,13 +67,13 @@ export function HandSheet({
   const played = c.mine.played;
   const others = view.players.filter((p) => !p.left && p.id !== view.my_id);
   const playedBy = new Set(c.plays.map((p) => p.player_id));
-  const title = step.kind === "list" ? "Your case file" : card(step.id)?.name ?? "";
+  const title = step.kind === "list" ? "Your cards" : card(step.id)?.name ?? "";
 
   const content = () => {
     if (step.kind === "list")
       return (
         <>
-          <Type>Case · {me}’s evidence</Type>
+          <Type>Case · {me}’s cards</Type>
           <div className="pc-hand-head">
             {role && <span className="pc-role-line">Your role this round: <b>{ROLE_NAME[role]}</b></span>}
             <span className="pc-pill gold">Golden {c.mine.golden_chance}%</span>
@@ -133,7 +133,7 @@ export function HandSheet({
               </button>
             )}
             <button type="button" className="button text" onClick={() => setStep({ kind: "list" })}>
-              Back to the case file
+              Back to my cards
             </button>
           </div>
         </>

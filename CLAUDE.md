@@ -30,6 +30,7 @@ Then update whichever of these the change touches:
 ## Card text
 
 - Ability text is for a young reader: "you", short sentences, one idea each, and a question then a result ("Lose a bet of 2 or 3? Get 1 point back.").
+- Use only the words in MECHANICS.md "Words players see": one name per mechanic in every screen, card and doc players read. A new mechanic gets its word added there first.
 - English is column E of Card review and Filipino is column F. Filipino covers only the card text and How to play.
 - When you write or change Filipino, mark its status cell for Astra to check.
 - After editing, check the fit at `http://localhost:1428/card-gallery.html?lang=en&w=210` (`window.overflowing` must be `[]`), and again with `lang=fil`.

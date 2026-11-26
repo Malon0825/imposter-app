@@ -124,7 +124,7 @@ function GoldenTakeover({ player, who, onDone }: { player: string; who: Who; onD
         Golden card
       </h2>
       <div ref={note} style={{ opacity: 0 }}>
-        <Type>Evidence entered · contents sealed</Type>
+        <Type>Card played · contents sealed</Type>
       </div>
     </div>
   );

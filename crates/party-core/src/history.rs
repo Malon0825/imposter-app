@@ -71,6 +71,20 @@ impl Store {
         self.connection.execute_batch(sql).unwrap();
     }
 
+    /// The saved revision and number of deals, as on disk.
+    #[cfg(test)]
+    pub fn saved(&self) -> (u64, usize) {
+        let revision = self
+            .connection
+            .query_row("SELECT revision FROM deck WHERE id=1", [], |r| r.get(0))
+            .unwrap();
+        let deals: i64 = self
+            .connection
+            .query_row("SELECT COUNT(*) FROM deals", [], |r| r.get(0))
+            .unwrap();
+        (revision, deals as usize)
+    }
+
     pub fn open(path: &Path) -> GameResult<(Self, Deck)> {
         if let Some(parent) = path.parent().filter(|p| !p.as_os_str().is_empty()) {
             std::fs::create_dir_all(parent).map_err(|_| HISTORY_ERROR)?;

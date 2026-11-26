@@ -99,12 +99,12 @@ async function cardsCapture(hostPage) {
       await shot(pages[1], "04-draw-wait");
       for (const p of pages.slice(2)) await button(p, "Skip").click();
       await hostTab.getByRole("button", { name: "Tap the card to reveal it" }).click({ force: true });
-      await button(hostTab, "Add to my case file").waitFor({ timeout: 10000 });
+      await button(hostTab, "Add to my cards").waitFor({ timeout: 10000 });
       await shot(hostTab, "05-revealed");
       // Roles are dealt while the host is still on the card.
       await pages[1].getByRole("button", { name: "Reveal my role" }).waitFor({ timeout: 15000 });
       await shot(pages[1], "06-roles-while-host-reads");
-      await button(hostTab, "Add to my case file").click();
+      await button(hostTab, "Add to my cards").click();
       await hostTab.getByRole("button", { name: "Reveal my role" }).waitFor({ timeout: 15000 });
 
       const views = await Promise.all(sessions.map((s) => call("state", { session_id: s.session_id })));
@@ -129,10 +129,11 @@ async function cardsCapture(hostPage) {
         await button(p, "Hide & ready").click();
       };
       // Role reveal window: the hand, detail and confirm for Late Arrival.
+      // Cards are clicked with .first(): a random paid draw can add a second copy.
       await passRole(pages[a]);
       await pages[a].getByRole("button", { name: /You can play a card now/ }).click();
       await shot(pages[a], "07-hand-sheet");
-      await pages[a].getByRole("img", { name: "Late Arrival, common" }).click();
+      await pages[a].getByRole("img", { name: "Late Arrival, common" }).first().click();
       await shot(pages[a], "08-card-detail");
       await button(pages[a], "Play").click();
       await shot(pages[a], "09-confirm");
@@ -145,7 +146,7 @@ async function cardsCapture(hostPage) {
       const play = async (i, cardName, pick, extra) => {
         const p = pages[i];
         await p.getByRole("button", { name: /You can play a card now/ }).click();
-        await p.getByRole("img", { name: cardName }).click();
+        await p.getByRole("img", { name: cardName }).first().click();
         await button(p, "Play").click();
         if (pick) await p.locator(".pc-pick-list button").filter({ hasText: pick }).first().click();
         if (extra) await extra(p);
@@ -153,7 +154,7 @@ async function cardsCapture(hostPage) {
         await p.waitForTimeout(900);
       };
       await pages[b].getByRole("button", { name: /You can play a card now/ }).click();
-      await pages[b].getByRole("img", { name: "Cover Story, common" }).click();
+      await pages[b].getByRole("img", { name: "Cover Story, common" }).first().click();
       await button(pages[b], "Play").click();
       await shot(pages[b], "11-pick-role");
       await pages[b].locator(".pc-pick-list button").filter({ hasText: "Detective" }).click();
@@ -183,7 +184,7 @@ async function cardsCapture(hostPage) {
       };
       await ballot(d, names[imp]);
       await pages[d].getByRole("button", { name: /^Bet 1 point/ }).click();
-      await pages[d].locator(".pc-ballot-slot").getByRole("img", { name: "Cold Feet, common" }).click();
+      await pages[d].locator(".pc-ballot-slot").getByRole("img", { name: "Cold Feet, common" }).first().click();
       // Tapping a ballot card opens its details; choose it from there.
       await pages[d].getByRole("button", { name: "Use it with my vote" }).click();
       await pages[d].locator(".pc-ballot-slot").scrollIntoViewIfNeeded();

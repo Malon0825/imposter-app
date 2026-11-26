@@ -270,7 +270,7 @@ export function LastWordScreen({ view, send, busy, who }: { view: View; send: (k
   if (!lw)
     return (
       <div className="center-stage">
-        <Type>Evidence review</Type>
+        <Type>Power card · Last Word</Type>
         <h1>One last word.</h1>
         <p className="muted">Someone gets a final chance. Results in a moment.</p>
       </div>

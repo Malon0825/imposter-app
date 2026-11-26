@@ -320,7 +320,7 @@ function SealedDraw({ id, send }: { id: string; send: Send }) {
           <>
             <p className="muted center compact">Only you can see this card. Take your time: your role waits for you.</p>
             <button type="button" className="button primary" onClick={keep}>
-              Add to my case file
+              Add to my cards
             </button>
           </>
         )}

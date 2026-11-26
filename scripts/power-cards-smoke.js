@@ -77,9 +77,9 @@ async function powerCardsSmoke(hostPage) {
     await capture(hostTab, "02-sealed");
     // The sealed card idles (spins and floats), so it is never "stable" to Playwright.
     await hostTab.getByRole("button", { name: "Tap the card to reveal it" }).click({ force: true });
-    await button(hostTab, "Add to my case file").waitFor({ timeout: 10000 });
+    await button(hostTab, "Add to my cards").waitFor({ timeout: 10000 });
     await capture(hostTab, "03-revealed");
-    await button(hostTab, "Add to my case file").click();
+    await button(hostTab, "Add to my cards").click();
     for (const page of pages.slice(1)) await button(page, "Skip").click();
     checks.push("draw, sealed reveal, skip");
 
